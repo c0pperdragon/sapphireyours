@@ -1,0 +1,6 @@
+*.class
+*/dist/*
+*/bin/*
+*.tmp
+*.log
+

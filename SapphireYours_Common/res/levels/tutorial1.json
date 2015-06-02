@@ -1,0 +1,599 @@
+[
+{   "title": "Basic Mining",
+    "author": "Reinhard",
+    "difficulty": 1,
+    "category": 0,
+    "loot": 13,
+    "hint": "A simple mine to learn how to control the miner. Use the directional keys to move or draw the path on a touch display. Move over gems to collect them.",
+    "map":
+    [   " ++++++++    ++++",
+        "++.*.++.++++++..E",
+        "+........*...*..+",
+        "+.*..*..........+",
+        "+......*.*.....++",
+        "+..............+ ",
+        "+..*.......*..++ ",
+        "+*............+  ",
+        "+....*..*....*+  ",
+        "++.......1++++   ",
+        " ++++++++++      "
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 71931,
+            "moves":
+            [   "...tlllllltt.bllttttr.ttrr.bbrrrbrrttrrr",
+                "rbbbbbbllttttttrrrrtr........"
+            ]
+        }
+    ]
+}
+,
+{   "title": "Cross",
+    "author": "Ronald",
+    "difficulty": 1,
+    "category": 0,
+    "loot": 4,
+    "map":
+    [   " ### ",
+        "##*##",
+        "#*1*#",
+        "##*##",
+        " #E# ",
+        " ### "
+    ],
+    "demos":
+    [   {   "title": "untitled",
+            "randomseed": 23452345,
+            "moves":
+            [   "...l..rrrl..bb....."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Twisted Tunnel",
+    "author": "Reinhard",
+    "difficulty": 2,
+    "category": 1,
+    "loot": 40,
+    "map":
+    [   "                      ",
+        "     +++++++   ++++   ",
+        "  +++.......+++....++ ",
+        " +....++++).......*.+ ",
+        " +)..+.*..+...+++..)+ ",
+        " +...+....$+++...+..+ ",
+        " +..............E+..+ ",
+        " +.)++*.....++++++..+ ",
+        "  ++..++.+++...+...+  ",
+        " +*.....+*.....+...+  ",
+        " ++............+)..+  ",
+        "   +....+++++...+...+ ",
+        "  +...++$....+...+..+ ",
+        "  +...+......$++.+..+ ",
+        " +)...+*...++..+.+*.+ ",
+        "  +...+......+.+..+.+ ",
+        "   +........++.+.+..+ ",
+        "  ++++++.*+++).+.+..+ ",
+        " +......++$...+)...+  ",
+        " +1.++.....+++....+   ",
+        "  ++  +++++   ++++    ",
+        "                      "
+    ],
+    "demos":
+    [   {   "title": "untitled",
+            "randomseed": 23452345,
+            "moves":
+            [   "...trrrrr.brrr.trrr..t.rtttltllltllblbbb",
+                "rrb.tlllllttll.rr.ttttlltlrrrrbrrrtrrrrb",
+                "brrbrbrbbbbblrrr.ttrttlttttll.ttrrttrttt",
+                "llllllllltlllllblllbbbbrtrrrbrtttrrbrbr.",
+                "rrrrrr......"
+            ]
+        }
+    ]
+}
+,
+{   "title": "Pushing the Stone",
+    "author": "Reinhard",
+    "difficulty": 2,
+    "category": 4,
+    "hint": "Objects that can not be collected can often be pushed aside. Make sure the space behind the rock is empty and then move the miner against the rock.", 
+    "loot": 1,
+    "map":
+    [   "++++++++++++",
+        "+..........+",
+        "+.E........+",
+        "+.1...0....+",
+        "+..000*000.+",
+        "++++++++++++"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 29200,
+            "moves":
+            [   "...r..rr..t.rr..b..ll...r.b.tt.lll.",
+                "l.........."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Sapphires Preferred",
+    "author": "Reinhard",
+    "difficulty": 2,
+    "category": 5,
+    "loot": 2,
+    "hint": "For the amount of gems to collect, every sapphire is worth two emeralds. So if you have to choose between them, take the sapphire.",  
+    "map":
+    [   "+++++++",
+        "+$.E.*+",
+        "+.+++.+",
+        "+.+0+.+",
+        "+..1..+",
+        "+++++++"
+    ],
+    "demos":
+    [   {   "title": "untitled",
+            "randomseed": 282137,
+            "moves":
+            [   "....ll.ttt.rr......."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Collect by Grabbing",
+    "author": "Reinhard",
+    "difficulty": 2,
+    "category": 5,
+    "loot": 1,
+    "hint": "To collect a nearby object without actually moving there, press the Ctrl/Action key before or while using a directional key. On touch displays simply tap on the object."; 
+    "map":
+    [   "+++++++++++",
+        "+.........+",
+        "+...1....0+",
+        "+.........+",
+        "+.E.....+*+",
+        "+++++++++++"
+    ],
+    "demos":
+    [   {   "title": "untitled",
+            "randomseed": 266222,
+            "moves":
+            [   "....brrrrrB.lllllllb......."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Welcome to the Game",
+    "author": "Reinhard",
+    "difficulty": 2,
+    "hint": "As you may have noticed, many objects tend to fall down when not properly supported. Be careful to not get smashed.",
+    "category": 6,
+    "loot": 8,    
+    "map":
+    [   "#############",
+        "#.......E...#",
+        "#...........#",
+        "#....*0*0*..#",
+        "#....0*0*0..#",
+        "#.1..*0*0*..#",
+        "#...........#",
+        "#...........#",
+        "#############"
+    ],
+    "demos":
+    [   {   "title": "untitled",
+            "randomseed": 512548,
+            "moves":
+            [   "rrrbrrTrtrtlllLttttrr......."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Open the Bag",
+    "author": "Reinhard",
+    "difficulty": 2,
+    "category": 5,
+    "loot": 1,
+    "hint": "Bags open up when they are hit by a rock.", 
+    "map":
+    [   "###########",
+        "#.........#",
+        "#...1..0..#",
+        "#.........#",
+        "#.E....@..#",
+        "###########"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 8635,
+            "moves":
+            [   ".....b..rrrr..b.lllll..l.........."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Money Rules the World",
+    "author": "Reinhard",
+    "difficulty": 2,
+    "category": 0,
+    "loot": 131,
+    "map":
+    [   "###########",
+        "E1********#",
+        "#***$*$***#",
+        "#**$$$$$**#",
+        "#*$*$*$*$*#",
+        "#*$*$*$***#",
+        "#**$$$$$**#",
+        "#***$*$*$*#",
+        "#*$*$*$*$*#",
+        "#**$$$$$**#",
+        "#***$*$***#",
+        "#*********#",
+        "###########"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 73352,
+            "moves":
+            [   "..rrrrrrrrbllllllllbrrrrrrrrbllllllllbbb",
+                "bbbbrrrrrrrrttttttllbllllllbrrrrrrrrblll",
+                "lllllbrrrrrrrrbllllllllbrrrrrrrrllllllll",
+                "ttttttttttl........"
+            ]
+        }
+    ]
+}
+,
+{   "title": "Rocks Smash Sapphires",
+    "author": "Reinhard",
+    "difficulty": 2,
+    "category": 5,
+    "loot": 1,
+    "hint": "Sapphire are not as robust as emeralds in this game and will be crushed when hit by a rock. Don't worry, in this level this is intended.", 
+    "map":
+    [   "#########",
+        "#   +   #",
+        "#   0   #",
+        "#   +   #",
+        "#E*$+  1#",
+        "#########",
+    ],
+    "demos":
+    [   {   "title": "untitled",
+            "randomseed": 23452345,
+            "moves":
+            [   "..tt.lll...ll.bb..l....."
+            ]
+        }    
+    ]
+}
+,
+{   "title": "Treasure",
+    "author": "Reinhard",
+    "difficulty": 2,
+    "category": 4,
+    "loot": 68,
+    "map":
+    [   "################",
+        "#              #",
+        "#      0       #",
+        "#     ***      #",
+        "#    *$*$$     #",
+        "#   *$$***$    #",
+        "#  $$**$$$**   #",
+        "# ******$$*$* 1#",
+        "#*$$***$**$*$$E#",
+        "################"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 25668,
+            "moves":
+            [   "...ttt.llllllllllll..brrr.r..lllbrrrr...",
+                "r...rrr.l.rrr..bb.llllllllllll.rrrrrrrrr",
+                "rr.llllll.r.trrrrrrr.b.........."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Gem Jumble",
+    "author": "Alexander",
+    "difficulty": 2,
+    "category": 6,
+    "loot": 47,
+    "swamprate": 0,
+    "map":
+    [   "#################",
+        "#..*.#$#..*0.***#",
+        "#.0...0......*$*#",
+        "#.1.0.$.*.0..***#",
+        "#.0.............#",
+        "#...............#",
+        "#0.0............#",
+        "#......*..@@....#",
+        "#.............*.#",
+        "#...............#",
+        "#.*.@.*..***....#",
+        "#........*$*..*.#",
+        "#.***....***....#",
+        "#.*$*.........E.#",
+        "#.***...........#",
+        "#.......*......*#",
+        "#################"
+    ],
+    "demos":
+    [   {   "title": "untitled",
+            "randomseed": 23452345,
+            "moves":
+            [   "...lttrrrb...r..lr.b.r.l.trrrbttrrb.l.bb",
+                "bbrttr..bbttttr.trrrrbll.brr.bbbbblltlll",
+                "lllll.bbltttttr.bbbbbb.r.ll.tllbllbbrrbl",
+                "l.brrrrrrbtttt..r.trrbllbrrrrrtrbbbbl.tt",
+                "......."
+            ]
+        }
+    ]
+}
+,
+{   "title": "More Bags",
+    "author": "Reinhard",
+    "difficulty": 3,
+    "category": 6,
+    "loot": 4,
+    "map":
+    [   "###########",
+        "E1...0....#",
+        "#..0...0..#",
+        "#....@....#",
+        "#.....0...#",
+        "#...@...@.#",
+        "#.........#",
+        "#.....@...#",
+        "###########"
+    ],
+    "demos":
+    [   {   "title": "untitled",
+            "randomseed": 218733,
+            "moves":
+            [   "....bbbrrrtttllbrrrrrr.trrbbbtttllbr....",
+                ".brrbblll.br.blllttrttttllllll......"
+            ]
+        }
+    ]
+}
+,
+{   "title": "Valuable and Delicate",
+    "author": "Reinhard",
+    "difficulty": 3,
+    "category": 4,
+    "loot": 27,
+    "hint": "Citrines are the most fragile gems in the game and will be smashed when hit by any object and even if hitting the ground themselves.",
+    "map":
+    [   "################",
+        "#..............#",
+        "#......000.....#",
+        "#......))).....#",
+        "#......))).....#",
+        "#......))).....#",
+        "#1............E#",
+        "################"
+    ],
+    "demos":
+    [   {   "title": "untitled",
+            "randomseed": 23452345,
+            "moves":
+            [   "...rttt..rrr..r..t.l..r.trrrr.b..b.rr.tl",
+                "lllll.r.brr.bll.b.rrrrrrr.b......"
+            ]
+        }
+    ]
+}
+,
+{   "title": "Five Rooms",
+    "author": "Reinhard",
+    "difficulty": 3,
+    "category": 1,
+    "loot": 60,
+    "map":
+    [   "####################",
+        "#1..*0....#.*00*.0.#",
+        "#..00..*.......*...#",
+        "#**..*000.#.0.0.00*#",
+        "#0.*00$.$.#*....$..#",
+        "#...*....*#*...0...#",
+        "#################.##",
+        "#..0.#..*...00.....#",
+        "#$0.......0.***00..#",
+        "#00**#.000$..**..$.#",
+        "#.00.#.*.$$0.0...*.#",
+        "#..*.#....*........#",
+        "#00..#########.#####",
+        "#.*.*#..$.0.*..**..#",
+        "#.00.#.000.***.0*..#",
+        "#.**.#..*.0.0...0..#",
+        "#...*#**...0...000.#",
+        "#..*.#.0000.....E..#",
+        "#....#.............#",
+        "####################"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 27726,
+            "moves":
+            [   "..rrrlllbbr.br.b.rrr.t..L.rrr.BtlllBrrrt",
+                "rr.bb.t.bbttttr.brrr.t.rb.rr.bbll..br.bb",
+                "bbbbll..lttt.....tlllllllllbll.b.L.bbl.r",
+                ".bbbbbbl..ttl...rr..Bt.Lrttttttrrbbrrrr.",
+                "...Btrr.t.bbbrr..t.bbbbll....T.llrtlllll",
+                "bbbrr..tlllttrrrrrrbrrltrrrbrrbbbll.....",
+                ".."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Citrine Deposit",
+    "author": "Reinhard",
+    "difficulty": 3,
+    "category": 4,
+    "loot": 108,
+    "map":
+    [   "+++++++++++++++++",
+        "+++++++++++++++++",
+        "+++++++++++))))++",
+        "+++++++++))))++++",
+        "++++++++++++))))+",
+        "++++++++++))))+++",
+        "++++++++)))++++++",
+        "+++++++++)))+++++",
+        "+++++++++++))++++",
+        "+++++++++))))++++",
+        "+++++++)))+++++++",
+        "+++++)))+++++++++",
+        "+E1  ))++++++++++",
+        "+++++++++++++++++",
+    ],
+    "demos":
+    [   {   "title": "untitled",
+            "randomseed": 23452345,
+            "moves":
+            [   "..rrrt.r.r.tr.rt.r.r.t.......R..t.l.....",
+                "...t..L.t.r.r....t.......R.t.......t..L.",
+                "rrlllbllrrrbrrrllblllbllrbrrbbrlllbllblb",
+                "llllll......"
+            ]
+        }
+    ]
+}
+,
+{   "title": "Adventure in a Bag",
+    "author": "Reinhard",
+    "difficulty": 3,
+    "category": 4,
+    "loot": 5,
+    "hint": "There are 5 bags, but only one rock to drop on them. Probably you need to arrange the bags in a certain way.", 
+    "map":
+    [   "###############",
+        "#E1......0....#",
+        "#.............#",
+        "#......@......#",
+        "#...@....@....#",
+        "#.............#",
+        "#....@@.......#",
+        "#.............#",
+        "#.............#",
+        "###############"
+    ],
+    "demos":
+    [   {   "title": "untitled",
+            "randomseed": 23452345,
+            "moves":
+            [   "...rbbbbbbbr.ttt.l.r.bb.r.l.ttrr..rt.l..",
+                "rr...trr.b.l.tl..tt.bbrr.tt.l..bb..b.llb",
+                ".lb.l.bl.b.tttttttlll......."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Bridge too Far",
+    "author": "Alexander",
+    "difficulty": 3,
+    "category": 4,
+    "loot": 1,
+    "map":
+    [   "########",
+        "#  @   #",
+        "# ### E#",
+        "#    0 #",
+        "#1 ### #",
+        "#      #",
+        "#      #",
+        "########"
+    ],
+    "demos":
+    [   {   "title": "untitled",
+            "randomseed": 23452345,
+            "moves":
+            [   "..tt.trrr.lllbbr.bbrrrr.tt.l..l..r.ttlll",
+                "lbbrrrrr..r.bbbtttt....."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Small Vault",
+    "author": "Reinhard",
+    "difficulty": 4,
+    "category": 2,
+    "loot": 37,
+    "hint": "Cautious handling of the fragile gems will not be enough for this level. There is also a time where swiftness of action is essential.", 
+    "map":
+    [   "############",
+        "#..........#",
+        "#..++++++..#",
+        "#..+$)$)+..#",
+        "#..+$$)$+..#",
+        "#..+$$)$+..#",
+        "E1..$$$)+..#",
+        "############"
+    ],
+    "demos":
+    [   {   "title": "untitled",
+            "randomseed": 23452345,
+            "moves":
+            [   ".....rr....r....t..........rt.........T.",
+                ".r......t.r.b.b.lllrrr.blllllll......."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Rubble",
+    "author": "Reinhard",
+    "difficulty": 4,
+    "category": 4,
+    "loot": 48,
+    "map":
+    [   "+++++++++++++++++",
+        "+E1           00+",
+        "+            00*+",
+        "+           00**+",
+        "+          0000*+",
+        "+         000***+",
+        "+        ***0***+",
+        "+       0000**0*+",
+        "+      0000**0**+",
+        "+     000**0****+",
+        "+    000********+",
+        "+   ****0*****0*+",
+        "+  0000****00000+",
+        "+++++++++++++++++",
+    ],
+    "demos":
+    [   {   "title": "untitled",
+            "randomseed": 23452345,
+            "moves":
+            [   "...bbbbb.rrrrrrr..r...R.lllllll.bbbbb..r",
+                "rrrr......brr.......t..l.......r........",
+                "t...bbr.....t..t...r......br......r.....",
+                ".....t..r......r....B........l........r.",
+                "....B..l...........r...B...t.....t...b.l",
+                ".t.l.tlll.r.b.t.rrbll.rrrbb.l...t.t.b.lb",
+                "rr...l..........l...L...B.r...B.tttttttt",
+                "tlllllllllllll...."
+            ]
+        }  
+    ]
+}
+
+]

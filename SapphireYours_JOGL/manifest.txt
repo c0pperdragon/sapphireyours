@@ -1,0 +1,3 @@
+Main-Class: Launcher
+Class-Path: jogamp/jogl-all.jar jogamp/gluegen-rt.jar
+

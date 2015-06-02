@@ -1,0 +1,522 @@
+[
+{   "title": "Mission Possible I",
+    "author": "J\u00fcrgen",
+    "difficulty": 5,
+    "category": 5,
+    "loot": 1,
+    "map":
+    [   "#######",
+        "# 0Q..#",
+        "#.....#",
+        "#@1..E#",
+        "#######"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 7682,
+            "moves":
+            [   ".....r.t..r.t.lllbb.lr.bl.rrrr........."
+            ]
+        },
+        {   "title": "Demo 2",
+            "randomseed": 12354,
+            "moves":
+            [   ".....r.....r.t.l.r.tlll.b.llb.lr.blrrrr.",
+                "........"
+            ]
+        }
+    ]
+}
+,
+{   "title": "Mission Possible II",
+    "author": "J\u00fcrgen",
+    "difficulty": 5,
+    "category": 5,
+    "loot": 1,
+    "map":
+    [   "#######",
+        "#.0Q .#",
+        "#....@#",
+        "#1...E#",
+        "#######"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 8146,
+            "moves":
+            [   "....rr....Tllttrrrr...r.b.B.b.r....."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Mission Possible III",
+    "author": "J\u00fcrgen",
+    "difficulty": 5,
+    "category": 5,
+    "loot": 1,
+    "map":
+    [   "#######",
+        "#.0Q..#",
+        "#.+.@.#",
+        "#...1.E",
+        "#######"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 25034,
+            "moves":
+            [   "......R.l...r....ttr..l.b.l..bllttrrr.b.",
+                "R..brr......."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Mission Possible IV",
+    "author": "J\u00fcrgen",
+    "difficulty": 6,
+    "category": 5,
+    "loot": 1,
+    "map":
+    [   "#######",
+        "#   0 #",
+        "#!E.# #",
+        "#@   1#",
+        "#######"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 8812,
+            "moves":
+            [   "................ll...ttll.b.trr.b.......",
+                ".....b.r.....stt....lll....brbbll.r..t......"
+            ]
+        }
+    ]
+}
+,
+{   "title": "Mission Possible V",
+    "author": "J\u00fcrgen",
+    "difficulty": 6,
+    "category": 5,
+    "loot": 1,
+    "map":
+    [   "#######",
+        "E1  0 #",
+        "#0.!+.#",
+        "#@....#",
+        "#######"
+    ],
+    "demos":
+    [   {   "title": "untitled",
+            "randomseed": 576532,
+            "moves":
+            [   "...rb.r.l.br....srtt....lll...l.bb.ttt.l",
+                "......."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Mission Possible VI",
+    "author": "J\u00fcrgen",
+    "difficulty": 6,
+    "category": 5,
+    "loot": 1,
+    "map":
+    [   "#######",
+        "#E!00.#",
+        "#0@1#.#",
+        "# .Q..#",
+        "#######"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 6922,
+            "moves":
+            [   "..........ltt.....r.bb.r...stt....llbbbb",
+                "L.ttll......"
+            ]
+        }
+    ]
+}
+,
+{   "title": "Mission Possible VII",
+    "author": "J\u00fcrgen",
+    "difficulty": 6,
+    "category": 5,
+    "loot": 1,
+    "map":
+    [   "#######",
+        "#E.00.#",
+        "#0@1#Q#",
+        "# !Q..#",
+        "#######"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 13229,
+            "moves":
+            [   "......lBt....rbb..rrll....r...r....sut..",
+                "llbllbbb..L.ttll......"
+            ]
+        }
+    ]
+}
+,
+{   "title": "Mission Possible VIII",
+    "author": "J\u00fcrgen",
+    "difficulty": 6,
+    "category": 5,
+    "loot": 1,
+    "swamprate": 35,
+    "map":
+    [   "#######",
+        "#+!00Q#",
+        "# @1#.#",
+        "#E!Q+Q#",
+        "#######"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 27897,
+            "moves":
+            [   "...lBt...rrbbr..mttt..............bbr..s",
+                ".tt...lllbbblll......."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Mission Possible IX",
+    "author": "J\u00fcrgen",
+    "difficulty": 6,
+    "category": 5,
+    "loot": 1,
+    "map":
+    [   "#######",
+        "E..Q0.#",
+        "#.@...#",
+        "#.1.Q.#",
+        "#######"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 32282,
+            "moves":
+            [   "...L....r..l..ttl..r.b..r....r..rtlllbb.",
+                ".t..L...b.L.ttll......."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Mission Possible X",
+    "author": "J\u00fcrgen",
+    "difficulty": 6,
+    "category": 5,
+    "loot": 1,
+    "map":
+    [   "#######",
+        "#!050 #",
+        "#1# .8#",
+        "#.5  @E",
+        "#######"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 24023,
+            "moves":
+            [   ".rrtrr.rrr.lllrrrrbbr.........."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Mission Possible XI",
+    "author": "Alexander",
+    "difficulty": 6,
+    "category": 1,
+    "loot": 11,
+    "map":
+    [   "#######",
+        "#  0!E#",
+        "# .+1 #",
+        "# hQ& #",
+        "#######"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 801,
+            "moves":
+            [   "....tbrb..ult.........bb.ll..rr.tt.lll..",
+                "........Brrr...........lll.brrrbllll.ttr",
+                "rrr......."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Mission Possible XII",
+    "author": "Ronald",
+    "difficulty": 7,
+    "category": 5,
+    "loot": 2,
+    "map":
+    [   "#######",
+        "#0 !1 E",
+        "#*. # #",
+        "#..  @#",
+        "#######"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 6585,
+            "moves":
+            [   "..lbb..m....TmttrrrrrbbllbbrRlttrrr....."            
+            ]
+        }
+    ]
+}
+,
+{   "title": "Mission Possible XIII",
+    "author": "J\u00fcrgen",
+    "difficulty": 7,
+    "category": 5,
+    "loot": 2,
+    "map":
+    [   "####0##",
+        "# 1 . #",
+        "#!    #",
+        "#E [ [#",
+        "#######"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 31043,
+            "moves":
+            [   "...b.Lrrb..ut...lrrrllbbr....rrtlllllb..",
+                "....."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Mission Possible XIV",
+    "author": "J\u00fcrgen",
+    "difficulty": 8,
+    "category": 5,
+    "loot": 5,
+    "map":
+    [   "####(##",
+        "#  0.*#",
+        "# a:*.#",
+        "#@1.]*#",
+        "##E####"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 8960,
+            "moves":
+            [   "......................rr................",
+                "..t..brtt...bb......u..uL.llll..bbLrRl..",
+                ".b......"
+            ]
+        }
+    ]
+}
+,
+{   "title": "Mission Possible XV",
+    "author": "J\u00fcrgen",
+    "difficulty": 8,
+    "category": 5,
+    "loot": 3,
+    "map":
+    [   "+++++++",
+        "+  0  @",
+        "+. ! +E",
+        "+. 01+*",
+        "+++#++*"
+    ],
+    "demos":
+    [   {   "title": "untitled",
+            "randomseed": 25417,
+            "moves":
+            [   "........t.Lbbm..t..tlllbbr..r..t.rrrbblrrt.t........"
+            ]
+        }
+    ]
+}
+,
+{   "title": "Mission Possible XVI",
+    "author": "J\u00fcrgen",
+    "difficulty": 8,
+    "category": 5,
+    "loot": 2,
+    "map":
+    [   "##.0.##",
+        "#....0#",
+        "#.1[[E#",
+        "$:....#",
+        "'######"
+    ],
+    "demos":
+    [   {   "title": "untitled",
+            "randomseed": 119100,
+            "moves":
+            [   ".....t.r.......r..............b..t..t...",
+                ".ll....bb...........................r...",
+                "..l............rB.....r.B..r......."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Mission Possible XVII",
+    "author": "J\u00fcrgen",
+    "difficulty": 8,
+    "category": 5,
+    "loot": 3,
+    "map":
+    [   "#E###0#",
+        "[.....+",
+        "+..1(.+",
+        "+.. ] &",
+        "#######"
+    ],
+    "demos":
+    [   {   "title": "So far away",
+            "randomseed": 15651,
+            "moves":
+            [   "....b.r.l......mlt....urr.bb.utt....lbbb",
+                "bbr..utt.ll.....bbb.rrrrrrllll.rr..rrtt.",
+                "L.bblllt.t.R.bb...l..rr....mlurrrrtlllll",
+                "bb.Ltttt......"
+            ]
+        }
+    ]
+}
+,
+{   "title": "Mission Possible XVIII",
+    "author": "J\u00fcrgen",
+    "difficulty": 8,
+    "category": 6,
+    "loot": 3,
+    "map":
+    [   "###E###",
+        "## ( 1#",
+        "&  . ##",
+        "Q# ]  &",
+        "##   #Q"
+    ],
+    "demos":
+    [  {   "title": "untitled",
+            "randomseed": 837777,
+            "moves":
+            [   "lbblltsRRRRrcblmlturstrrrrrrrlllblllrrrb",
+                "brtrrrlllttt......."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Mission Possible XIX",
+    "author": "J\u00fcrgen",
+    "difficulty": 8,
+    "category": 6,
+    "loot": 5,
+    "map":
+    [   "#&#*#&#",
+        "#.....#",
+        "#.01].#",
+        "E.#...#",
+        "#&# (.#"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 13985,
+            "moves":
+            [   "..r.mbbuttllbrrr.l.Brrb.utt...........cl",
+                "srmbbbuttttt.rrbbblttlllb.B..ll........"
+            ]
+        }
+    ]
+}
+,
+{   "title": "Mission Impossible",
+    "author": "Reinhard",
+    "difficulty": 8,
+    "category": 4,
+    "loot": 10,
+    "map":
+    [   "##############################",
+        "#E1]]]]]]]]]]]]]]]]]]]]]]]]]]#",
+        "############################.#",
+        "#5 5 5 5 5 5 5 5 5 5 5 5 5 5 #",
+        "#                            #",
+        "#5 5 5 5 5 5 5 5 5 5 5 5 5 5 #",
+        "#                            #",
+        "#5 5 5 **5 5 5 5 5 **5 5 5 5 #",
+        "#      ..          ..        #",
+        "#5 5 5 5 5 5 5 5 5 5 5 5 5 5 #",
+        "#                            #",
+        "#5 5 5 5 5 5 **5 5 5 5 5 5 5 #",
+        "#            ..              #",
+        "#5 **5 5 5 5 5 5 5 5 5 5 5 **#",
+        "#  ..                      ..#",
+        "##############################"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 18888,
+            "moves":
+            [   "..rrrrrrrrrrrrrrrrrrrrrrrrrr............",
+                ".b.um.ll........rrrr.b..........b.ut....",
+                "........ll...rr..b........b.ut..........",
+                "........................................",
+                "...bb.tt.............l.........mlll.....",
+                "...rrrrmll.........rrr.mll...r......rr.m",
+                "l.........rr...ml..........rr....mll....",
+                ".....rr.ll.rlllmlll......rrrrllmll......",
+                "..rrrrrrrrrr.mll........rrr.............",
+                ".......ml.........rr....mll........rr..m",
+                "l.........rrr..mlll......rr....mlll.....",
+                ".rrrrrr..........mll.......rrr..mll.....",
+                "...rr..r....ml.........rr.ml.......rrrr.",
+                "mlll........rrrr.mll.......rrrmll.......",
+                "rr.mll........rrrr.mll.......rrr.mll....",
+                "....rrrmll.......rrrml.........rrmll....",
+                "..rr.r..r............mll........rrr.....",
+                "ml.........rr....ml..........r.ml.......",
+                "....rrr..................r..l.......mll.",
+                ".......rr..mll........rrrr...mll.......r",
+                "rrr.bb..tt.ll..................rr.bbbbb.",
+                ".b.ttttttl..mlll......rrrr.mll........r.",
+                "r..mlll........rrr......................",
+                "...rr.r.bbbbbbbbbbbbblt.rttttttt...ttttt",
+                "lll.rr.mlllllllllllllllllsr........lll.s",
+                "rrr.....lll....srrr.....rrrrrrrrrrrrr..r",
+                "..bbb.tttl.l.....mll........rrrr........",
+                "........r.bbbbbbbbbbb..bblllllll.r.....l",
+                "..srr.............l...ll..l.lll..ll..l.s",
+                "rr...........llllrrrrrrrrrrrrrrrtttttttt",
+                "..tttttllsrbbb...tttlllllllllllllllllrrr",
+                "srr.......r..lllll...srrrr......ll..rrrs",
+                "rrr....llllllllrrrrrrrrrrrrbbbllt.......",
+                ".rrttcb..........................bbbbbbb",
+                "bb.t...tttttt..l....trrbcbbbb.......tttt",
+                "....tttt.bbb.ll.t.ll.........l......b...",
+                "....l..b.l..bl.......L.....b..l.........",
+                "s..r............t..l.l.....t.l...b......",
+                ".llbblbbbbblllllllllll.tl.brrr.tt.......",
+                "r.ll....t............cbb..ll.......rrr.t",
+                "ttt.rtt...t..R.bbbbbbbrrrrrrrrllllmllll.",
+                ".......rrrrrrrrrrrrrrrrrrrrrrttttttttttt",
+                "ttllllllllllllllllllllllllllll........"               
+            ]
+        }
+    ]
+}
+
+]

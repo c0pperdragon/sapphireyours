@@ -1,0 +1,246 @@
+[
+{   "title": "Big Welcome",
+    "author": "Reinhard",
+    "difficulty": 4,
+    "category": 5,
+    "loot": 10,
+    "map":
+    [   "#############",
+        "#........E..#",
+        "#...........#",
+        "#....0*0*0..#",
+        "#....*0*0*..#",
+        "#....0*0*0..#",
+        "#.1..*0*0*..#",
+        "#...........#",
+        "#...........#",
+        "#############"
+    ],
+    "demos":
+    [   {   
+            "randomseed": 568393,
+            "moves":
+            [   "...rrr.l.t.rrl...lttrrbtrtrrbll.rbrrbbll",
+                "bll..tttrrrbllr..bttttt......."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Psycho Tango",
+    "author": "Charilaos",
+    "difficulty": 3,
+    "category": 3,
+    "loot": 1,
+    "map":
+    [   "o       ",
+        "++&++ ++",
+        "E1   r  ",
+        "####R###",
+        "!      !"
+    ],
+    "demos":
+    [  
+        {   
+            "randomseed": 288755,
+            "moves":
+            [   "..rrr.R.b.llllrrrr.t.....cr........rr.ll",
+                "lttl..l.sr...........lllll......"
+            ]
+        }    
+    ]
+}
+,
+{   "title": "Psycho Tango II",
+    "author": "Charilaos",
+    "difficulty": 5,
+    "category": 3,
+    "loot": 2,
+    "map":
+    [   "o       ",
+        "++&++ +&",
+        "E1   r  ",
+        "####R###",
+        "!      !"
+    ],
+    "demos":
+    [
+        {   
+            "randomseed": 704597,
+            "moves":
+            [   "...rrr.Rb.llllrrrrt.....rllmll..........",
+                ".rrrrrllbbrrrlllttrrr.ml...........rrlll",
+                "llll......."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Thoughtful Sequence",
+    "author": "Charilaos",
+    "difficulty": 3,
+    "category": 3,
+    "loot": 2,
+    "map":
+    [   "#########",
+        "#1......#",
+        "#.......#",
+        "#...@...#",
+        "#...0...#",
+        "#...@...#",
+        "#.......#",
+        "#......E#",
+        "#########"
+    ],
+    "demos":
+    [   
+        {   
+            "randomseed": 159509,
+            "moves":
+            [   "..bbbbbrrrlll.ttrrtrr.bl..l..tll..bbr.l.",
+                "br..br.l..ttr.t....bbbrtrrrb......."
+            ]
+        }    
+    ]
+}
+,
+{   "title": "The Descending",
+    "author": "Charilaos",
+    "difficulty": 4,
+    "category": 3,
+    "loot": 1,
+    "map":
+    [   "+++++++",
+        "+01++&+",
+        "+|  +++",
+        "++|  ++",
+        "+&+| ++",
+        "+++  +&",
+        "++  |++",
+        "++ |+++",
+        "++  +&+",
+        "++|  ++",
+        "&++|  +",
+        "++++| +",
+        "++&+  +",
+        "+++  |&",
+        "+&  |++",
+        "+  |+++",
+        "+ |++&+",
+        "       ",
+        "     @ ",
+        "sssEsss" 
+    ],
+    "demos":
+    [
+        {   
+            "randomseed": 119998,
+            "moves":
+            [   "..brbrbblblbbrbrbrbblblblblblbrbrrtrrbll",
+                "ll.....lrr..b......."
+            ]
+        }   
+    ]
+}
+,
+{   "title": "Stormy Village",
+    "author": "Charilaos",
+    "difficulty": 6,
+    "category": 3,
+    "loot": 9,
+    "swamprate": 1,
+    "map":
+    [   "    i % i    ",
+        "    i   i    ",    
+        "    i   i    ",    
+        "  # i   i    ",    
+        " #E#i   i    ",    
+        "#   #   i    ",
+        "# .5#   i    ",
+        "#(  B   i #  ",
+        "#####   i#0# ",
+        "    i   #*.@#",
+        "    i   #.y.#",
+        "  # i   R !.#",
+        " #.#i   #####",
+        "#.Qg#   i    ",
+        "#r1.#   i    ",
+        "#.* G   i #  ",
+        "#####   i#b# ",
+        "    i   #*..#",
+        "    i   #.(&#",
+        "    i   Y .$#",
+        "    i   #####",
+        "    i   i    ",
+        "    i   i    ",
+        "    iaaai    "
+    ],
+    "demos":
+    [   
+        {   
+            "randomseed": 589109,
+            "moves":
+            [   "......L.Brt.........bb.........r....rrr.",
+                "ttl..ttrr.........rrt.blllt..br.tt.rl..r",
+                "...b.br.ll................lbbbbbbbbrr...",
+                ".tlt.bbbrr.....mttt.........bbbrl.l.....",
+                "....................................lttt",
+                "ttltt.l.tt.rrbrr.l................lttttt",
+                "t.bbbbbbr..........l..tlrr.ttl..t....lll",
+                "..lll..ttrtt......"
+            ]
+        }    
+    ]
+}
+,
+{   "title": "Wall Pattern Exhibition",
+    "author": "Reinhard",
+    "difficulty": 1,
+    "category": 3,
+    "loot": 1,
+    "map":
+    [   "##########",
+        "#..i....1#",    
+        "#.iii...i#",    
+        "#..i.....#",    
+        "#i....   #",    
+        "#..#..A  #",    
+        "#......A #",    
+        "#A..##..A#",    
+        "#.......*E",    
+        "##A##A#A##",    
+    ],
+    "demos":
+    [   
+    ]
+}
+,
+{   "title": "Reflection",
+    "author": "Reinhard",
+    "difficulty": 5,
+    "category": 3,
+    "loot": 7,
+    "map":
+    [   "##########",
+        "#.*..(..1#",    
+        "#........#",    
+        "###Q.*...#",    
+        "#E#......#",    
+        "#+..*...)#",    
+        "##########",    
+    ],
+    "demos":
+    [   
+        {   
+            "randomseed": 581608,
+            "moves":
+            [   ".......bb..............................t",
+                "...............llll.b......bbr....tt..rr",
+                "r.bl.bltll...l..B..rrr......brrllllttttl",
+                "lbrbbbllt......."
+            ]
+        }    
+    ]
+}
+
+]

@@ -1,0 +1,80 @@
+Difficulty Rating Guidelines
+----------------------------
+
+For the matter this guideline, the solve needs to be done without aiding features (Undo, Single-Step).
+
+1 Simple: "Basic mining"
+Almost nothing to do wrong. Look at it - solve it.
+Only novice players may need more than one attempt. 
+
+2 Easy: "Welcome to the game"
+Only minor difficulties. If any traps, they are fairly obvious. 
+Straight solution possible. 
+
+3 Moderate: "Adventure in a Bag"
+Should be a challenge for novice players.
+One or more of:
+ - A few time-critical moves or traps that are not too easy to avoid at first. 
+ - A solution that requires some strategy.
+ - Have to be quite fast to solve that level. 
+
+4 Normal: "The Far Side"
+Requires some experience. Solution possible after a few attempts.
+One or more of: 
+ - Contains some time-critical moves. 
+ - Traps not easy to avoid. 
+ - Solution requires considerable thinking. 
+ - Available time or other limiting factors are less than 150 % of theoretical minimum. 
+
+5 Tricky: "Find the way out"
+Virtually impossible for novice players!
+Experienced players may need more than one attempt to solve it. 
+One or more of:
+ - Rely on special time-critical moves or a time-critical sequence of moves. 
+ - Rely on features of the game that are not obvious. 
+ - Contain enemies, have large play field, are difficult to navigate through etc. 
+ - Traps difficult to avoid at first. 
+ - Rely on optimal use of time-bombs. 
+
+6 Tough: "Strip Mining II"
+Even experienced players will need more than one attempt.
+One or more of:
+ - The whole level is time-critical. 
+ - Rely on features of the game that rarely occur in normal playing.
+ - Time-critical sequences essential for solution.
+ - Solution requires special techniques.
+ - Rely on optimal use of most of the given resources.
+ - Traps are difficult to avoid. 
+
+7 Difficult: "The Swamp-Bridge"
+A challenge for experienced players.
+One or more of:
+ - Tough time-limit.
+ - Enemies are a real trouble.
+ - Rely on features of the game that almost never occur in normal playing.
+ - Whole solution is a time-critical sequence. 
+ - Solution requires a few optimal time-critical sequences.
+ - Rely on optimal use of all given resources.
+ - Requires a special approach to most of the given problems.
+ - Parts of the level seem impossible to solve at first.* 
+
+8 Hard: "Level 42"
+Virtually impossible even for experienced players.
+One or more of:
+ - Extremely tough time-limit. 
+ - Rely on obscure features of the game.
+ - Solution consists of a series of time-critical sequences.
+ - Solution requires a lot of optimal time-critical sequences.
+ - Solution seems almost impossible.* 
+
+9 M.A.D. (maximum acceptable difficulty): "The Balance III"
+A majority of experienced players would not find a solution for this level or at least be unable to play it.
+One or more of:
+- Rely on extremely strange features of the game.
+- Need time-critical moves in order to work with these features.
+- Time-limit based on optimal number of moves.
+- Solution requires knowledge of internal representation of level data or states.
+- Solution requires series of optimal time-critical sequences.
+- Whole solution is an optimal time-critical sequence.
+- Solution seems impossible even for very experienced players after dozens of attempts. 
+

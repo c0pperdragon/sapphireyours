@@ -1,0 +1,42 @@
+{   "title": "Bee Hive",
+    "author": "Alexander",
+    "difficulty": 6,
+    "category": 4,
+    "loot": 11,
+    "map":
+    [   "#################",
+        "#QQQQQQQQ QQQQQE#",
+        "#........ ......#",
+        "#         QQQQQQ#",
+        "#   Q     ......#",
+        "#||||1    QQQQQQ#",
+        "#000||Q   ......#",
+        "#..0.||Q  QQQQQQ#",
+        "#.....|   ......#",
+        "#.@@.||    00   #",
+        "#@@@.|    .$$.  #",
+        "#|||||   .7oo7. #",
+        "#QQQQQQ 0$oooo$0#",
+        "#...... 0$oooo$0#",
+        "#QQQQQQ ..7oo7..#",
+        "#......   .$$.  #",
+        "#################"
+    ],
+    "demos":
+    [   {   
+            "randomseed": 681758,
+            "moves":
+            [   "...r.rrbb.........lttll........blbbblll.",
+                ".tt..r.....l..trrr.ttrrrttlll...........",
+                "rrrr...l....b..lll..bll....trtrrrr...lll",
+                "l.l........rrrrrbbbbb..b..trrttttlllllll",
+                "bbbbbbbbl.tttttttttrrrr....bbbbbbllbbbbb",
+                "b.r.rbrrrrrrrr.tr.t.........trrtrr.tttll",
+                "llllll..r...b.l.tttllllbbbbbbbbrrbrrrr.t",
+                "ttttttt..t.....rrrrrrr..lltrrrtllllllltt",
+                "rrrrrrr.................t......."
+            ]
+        }
+    ]
+}
+,

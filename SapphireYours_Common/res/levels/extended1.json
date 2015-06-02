@@ -1,0 +1,1087 @@
+[
+{   "title": "Place the Safe II",
+    "author": "J\u00fcrgen",
+    "difficulty": 6,
+    "category": 3,
+    "loot": 2,
+    "map":
+    [   "##########",
+        "#  0    E#",
+        "#  # 1  !#",
+        "#        #",
+        "#  [     #",
+        "#        #",
+        "#        #",
+        "#        #",
+        "#    @   #",
+        "##########"
+    ],
+    "demos":
+    [   {   "title": "untitled",
+            "randomseed": 102649,
+            "moves":
+            [   "....blllbrbbrrrbblllrrrrrttttttblllll...",
+                "mtt....rllbbbbbbbbr...rrrrrrttttttt.....",
+                ".."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Speed Kills",
+    "author": "J\u00fcrgen",
+    "difficulty": 6,
+    "category": 3,
+    "loot": 6,
+    "map":
+    [   "###################",
+        "#    5   # 5 #   5#",
+        "# ###### # # $  # #",
+        "# #5 # $ # #### # #",
+        "# # ## ###  5   # #",
+        "# # #  # # ####   #",
+        "#1    ##   # 5 ## #",
+        "# ## ##  #$# # E# #",
+        "# # 5   #### # ##5#",
+        "#   #$#      #    #",
+        "###################"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 16219,
+            "moves":
+            [   "......rr.rbbrBltt..lllbb...ttrrr........",
+                "...b.brrrtrrtrrBtttttrrbrrrbbbrrbtttttbb",
+                "....bbbbbblllttrr........"
+            ]
+        }
+    ]
+}
+,
+{   "title": "Big Present",
+    "author": "Ronald",
+    "difficulty": 6,
+    "category": 3,
+    "loot": 61,
+    "map":
+    [   "########################",
+        "#E     #.0$.0.$.*.Q0.0.#",
+        "#1   .0#..*0..$0.Q.*.0*#",
+        "#!!  .|#.0Q0.0.$$..0.0.#",
+        "#!   .##..@0.0@.Q0.$..0#",
+        "# .@..##.00.0.$a.0.0.0.#",
+        "#.@.@..#*..*..0.$$*.00*#",
+        "# ###@##.*0.00.$*.0.*.0#",
+        "#  **#5#.0.00Q0.0.$.Q0.#",
+        "## #####..a0.*..0.0..$.#",
+        "#&    ##..0.00.*@0.$*.*#",
+        "#   Q.Q+.0Q.$.0...$..0.#",
+        "#& 0..&#...0.*.0.$.0*.Q#",
+        "########################"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 4018,
+            "moves":
+            [   "..bRbbrtrrbllrBrrbrll.rtttlb..mutrrtrbll",
+                "llll.bbbrbr...rr.BllllbbrrRlbbrrrblblr..",
+                "rttmlllbbr..rrrrrtrrbrRl....rrrrrR.tllll",
+                "ttttRT.bbbbrrrrtt.Rbbll.r....l..rrtttl.t",
+                ".T.bL.tll...Tl..tttttrr..Tllbb.r.bbbr...",
+                "...blrrrbbblllllrrrrrrrtrr..r.b.R..r..br",
+                "....r.t.r..Tr.BT..b.Rtrrt.t.L.tl..rb..Bt",
+                "t.l...Lrbbbbll....L.t.b.LtttlllblB.l.b.B",
+                ".ttT.r.tt..bbllllllllttttttrrrrrrT..b.B.",
+                "t.t.brb.R.bl.Brttt.Rl.blbllllbbbbbrrrrrr",
+                "rrr.tt.Lbrr.rrttl.rtt.Tb.ll..L.t..Lbbbbb",
+                "lllllbblllblllllllllltttltttttttbrt.....",
+                ".."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Stairway to Heaven",
+    "author": "J\u00fcrgen",
+    "difficulty": 6,
+    "category": 7,
+    "loot": 21,
+    "swamprate": 20,
+    "map":
+    [   "#################",
+        "#0...$......Q +E#",
+        "#......*..$.. ++#",
+        "#..Q*.*.....    #",
+        "#.......$...    #",
+        "#.*...Q...*     #",
+        "#.......*..     #",
+        "#...Q.....      #",
+        "#$....$.*.      #",
+        "#..*...Q.       #",
+        "#.....*..       #",
+        "#1..$...        #",
+        "#################"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 15080,
+            "moves":
+            [   "..........ttt..t.rrtrrb..rr...lltllbrrr.",
+                "....lllll......brrrb........b.r.........",
+                "r.brrrrrrttttttttll........T.lll..T.ll.b",
+                ".L.tt.l...llbrrrrrrr..r...........llllll",
+                "...r....b.b....l...bbll.l.bbbb.rr...t...",
+                ".l....t.ttt.r...ll..ttt...Tbbbbbbrbbrrtl",
+                "l.rrrB.llllb...rrr...tr...rbbrrrrrtttttt",
+                "lll.T.l.tllbrrrr...l..B..bb.R..tllbr..r.",
+                "...B.b.B.llbr..lbb.tllbrrr.r..l..tt..rtt",
+                "rttrttrttr.ll..rrrrrrr........."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Fearless",
+    "author": "Ronald",
+    "difficulty": 7,
+    "category": 5,
+    "loot": 16,
+    "map":
+    [   "###########",
+        "#Q000#0*0*#",
+        "#.0$. *000#",
+        "#*$*$#.*0*#",
+        "#+Q#Q#.000#",
+        "#+Q###.1..#",
+        "#+++@##$###",
+        "#   |# # 7#",
+        "#  |##6   #",
+        "# E##  E 8#",
+        "####  5   #",
+        "###########"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 4200,
+            "moves":
+            [   ".B.L..r...L..l.tlttrrbrllltll...L..bl.l.",
+                ".L...rrrtl.........lbbbbblbb.r..b..."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Cowabunga",
+    "author": "Ronald",
+    "difficulty": 4,
+    "category": 3,
+    "loot": 23,
+    "time": 600,
+    "map":
+    [   "#############################",
+        "#..QQQ...0..................#",
+        "#...*!..000....00..00.......#",
+        "#...+...0$......00Q0*....*..#",
+        "#.......Q..!..00Q...0..!....#",
+        "#..Q..0...*...........!.....#",
+        "#....00.....0.@..Q00...0....#",
+        "#......000..0...Q....000....#",
+        "#.E..0...Q.000..1..@..*00...#",
+        "#...0.0....0000.....!QQ..0..#",
+        "#000....0.!..Q0.0.Q.......0.#",
+        "#*.Q....Q.....00.0..0...00..#",
+        "#...Q..000000..0....0...QQ..#",
+        "#.....QQQ....Q..0$0.0*000...#",
+        "#....*000.......00..0000..00#",
+        "#.00000.0...000...000..0....#",
+        "#.....0.0.000$....0.!...0...#",
+        "#!.$....00...0..00....00.$QQ#",
+        "#..QQQ..0..@.0...Q00...00.++#",
+        "#.......0...0......0.....Q+$#",
+        "#############################"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 31732,
+            "moves":
+            [   "...ltt...b.....b..L...tlt..brbL.brr.b.rr",
+                "R.tt.bblbb.R.lbBttttrrrr.Rlll...rrrrtttt",
+                "R.tlL.rrrRbbbbrrrbbbbbbl.Lr......lbb....",
+                ".lb.B.rrtltr.b....bbbB.tttttlllltll.B.rt",
+                "lltllltttlltltlllT.L.ttl.L..r..bb..l...b",
+                "..............lllttl.ttlllllbbbbbrr.....",
+                "r..r.......r.brbbbllbbblllltt...Tbbbbbrr",
+                "rttt...rrrrrr...rr.......R.ll.....rrrbb.",
+                ".....sr.........lllb.L.b.Ltttt.lllttt..m",
+                "llllcbllmttttru......."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Two Columns",
+    "author": "J\u00fcrgen",
+    "difficulty": 4,
+    "category": 5,
+    "loot": 65,
+    "time": 500,
+    "map":
+    [   "#################",
+        "E&:    (.(    :&#",
+        "#&:.$(..$....$:&#",
+        "#&:.*......$*.:&#",
+        "#&:$.$........:&#",
+        "#&:.(......*.$:&#",
+        "#&:.$.*.$.$...:&#",
+        "#&:(....(..(.$:&#",
+        "#&:...$.......:&#",
+        "#&:.$.....$.(.:&#",
+        "#&:..*..1..*..:&#",
+        "#..*.(..]..(....#",
+        "#################"
+    ],
+    "demos":
+    [   {   "title": "untitled",
+            "randomseed": 980425,
+            "moves":
+            [   "..btttttttttt..cb..........ttllll.bbbbbb",
+                "bbbblttttttttt.rrbbbbbbbbblrrttttttttttr",
+                "rrrbbbb.bbbbbbrtttttttttrbbbbbbbbbrttttt",
+                "tttttlllllb..cb..........t.cb..........t",
+                ".cb..........t.cb..........t.cb.........",
+                ".t.c..b........t.cb..........t.cb.......",
+                "...t.ut..........bbbrrrrrrrttttttttttbbb",
+                "bbbbbbblllllllllllllltttttttttt.l......."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Crusher",
+    "author": "Ronald",
+    "difficulty": 4,
+    "category": 5,
+    "loot": 23,
+    "map":
+    [   "###################### ",
+        "#         1          # ",
+        "#  .0000000000000000.# ",
+        "#  .0000000000000000.# ",
+        "#  .0000000000000000.# ",
+        "#   ..................#",
+        "#   Q*.Q*.Q*.Q*.Q*.Q..#",
+        "#E.[[[[[[[[[[[[[[[[[[.#",
+        "#######################"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 28597,
+            "moves":
+            [   "...llllllll.bbbbrrrbrtrrbrtrrbrtrrbrtrrb",
+                "rtrrr..........bb.llllllllllllllllllll..",
+                "........"
+            ]
+        }
+    ]
+}
+,
+{   "title": "Bombo-Bag",
+    "author": "Ronald",
+    "difficulty": 4,
+    "category": 6,
+    "loot": 43,
+    "time": 600,
+    "map":
+    [   "#########################################",
+        "#E1#***.................................#",
+        "#..####....0.................0..........#",
+        "#..#000#..0*0...00000....0..........0...#",
+        "#...............@@@@@..........0........#",
+        "#####.##....................0...........#",
+        "#....#0.#.......     ...................#",
+        "#.0...$..#.....#QQQQQ#................###",
+        "#*0.0...0.#....#######..............##..#",
+        "#..$....*..#...................#####....#",
+        "#.0...0.....#.................#......0..#",
+        "#.0.....0..0.#######.#########..........#",
+        "#...0...........0.................00.*..#",
+        "#0..000...0...00...0....0...000....0....#",
+        "#0....$..........0....0.*....$00..0...0.#",
+        "#..0.*$.0000....00$.0.0....0......00....#",
+        "#..........*..0.$.0....0...0..0...0$....#",
+        "#.$..0...............0.0...0......0.0...#",
+        "#.0..0.......0...0....$..........0......#",
+        "#...*0.....0.0.*......0..0...0..*.....0.#",
+        "#..0........0..0...0..............0.....#",
+        "#.$..00..0...0.....0.0.*..0....0.00$.0..#",
+        "#########################################"
+    ],
+    "demos":
+    [   {   "title": "untitled",
+            "randomseed": 943855,
+            "moves":
+            [   "...bbblrrrr...B...lllrrrrrrtttllllrrrrbb",
+                "brrr..t.....l.trrrbbbbrrrllllttr...tllll",
+                "bbbrrrrrrrrllllllt.rttlllbbbrrrrrrrlllll",
+                "ltl.brrrrrr.lttttrrrrrrrrbbbblrrrrttrbbl",
+                "llllllrrrrrrrrrlllllllllt.llllll...rrrrr",
+                "r.b.trrrbbbbbllllbbbrrrbrrrbblbblbbbl.tt",
+                "tl...rrrbrbbrrbrrttrrrrr.bbrttltttrrtttt",
+                "tllllbbbbbblllltttllltlllllblllbttl..bll",
+                "llbbbrrrt.lbbb.tttllllllllt.lt.l....lllb",
+                "bblbbbbrrrtttttrt..rttt.rttrtlttllllbbll",
+                "ttrrrrrrrrbbbrbbrrrrbrrrrrrrtttllllllltt",
+                "ttttllllll..ltllblltttl......."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Swamp Breaker",
+    "author": "Ronald",
+    "difficulty": 4,
+    "category": 4,
+    "loot": 9,
+    "swamprate": 200,
+    "time": 1400,
+    "map":
+    [   "############################",
+        "#!!!!!!!!!!!!!#%%%%%%%%%%%*#",
+        "#!!!!!!!!!!!!!#%%%%*%%%%%%%#",
+        "#!!!!!!!!!!!!1#%%%%%%%%%%%%#",
+        "#]]]]]]]]]]]]]#%%%%%%%%%%%%#",
+        "############# #%%%##########",
+        "#%%%%%%%%%%%# ##%%%%%%%%%%%#",
+        "#%%%%%%%%%%%#  0%%%%%%%%*%%#",
+        "#%%%%%%%%%%%####%%%%%%%%%%%#",
+        "#%%%%%*%%%%%%%%%%%*%%%%%%%%#",
+        "#%%%%%%%%%%%%%%%%%%%%%%%%%%#",
+        "#%%%%%%%%%%%%%%%%%%%%%%%%%%#",
+        "#%%%%%%%%%%%%%%%%%%%%%%%%%%#",
+        "#*%%%%%%%%%%%%%%%%%%%%%%%%%#",
+        "#%%%%%%%%%%%%%%%%%%%%%%%%%%#",
+        "#%%%%%%%%%%%%%*%%%%%%%%%%%%#",
+        "#%%%%%%%%%%%%%%%%%%%%%%%%%%#",
+        "#%%%%%%%%%%%%%%%%%%%%%%%%%%#",
+        "#%%%%%%%%%%%%%%%%%%%%%%%%%%#",
+        "#%%%%%%%%%%%%%%%%%%*%%%%%%%#",
+        "#%%%%%%%%%%%%%%%%%%%%%%%%%%#",
+        "#%%%*%%%%%%%%%%%%%%%%%%%%%%#",
+        "#%%%%%%%%%%%%%%%%%%%%%%%%%%#",
+        "#%%%%%%%%%%%%%%%%%%%%%%%%%E#",
+        "############################"
+    ],
+    "demos":
+    [   {   "title": "untitled",
+            "randomseed": 909675,
+            "moves":
+            [   "...ttllllllllllllbrrrrrrrrrrrbllllllllll",
+                "lbrrrrrrrrrrrrbbbr..mtt.......bbbrrrLll.",
+                "rr.mll.......rrrrt..cll........rrttl.rrr",
+                ".cbmll......rrrrtttrr.mbbr......l.ttrrrt",
+                "ttcblltt.....rrttrrbmltt....rrrrrr.mll..",
+                "....rrrrrrml........rrrrrmll....rrrrrrr.",
+                ".ml......rrrrrrrlllllllbbbllbbbrbbutll..",
+                "....rrbrrmll.....rbrrrrrmll.......rrrrrm",
+                "ll........rr..rrr.mll....llb.srrrrtrr.ml",
+                "......b...rrr.ltlllllbblll.srr.......lbb",
+                "llbl.srr.ltt....bbb.mll.utt.......bbbbbt",
+                "ll.srttr...br..mllbblll.srttr.....bllbbl",
+                "llsrr.......lllbllsrtttl...srr.....t.lll",
+                "ll.sr........lttltlllsrr........ltlll.sr",
+                "r........ltll.bsr.t........bbllllsrrrrt.",
+                "..lllbllllsrr.....llllblllurrr....llblbl",
+                "lbbsrr.......lllll..srr..t....llbbllr.l.",
+                "..r..urrr.....llbblb..ml.t......rrrbbr..",
+                "uttl.....bbbbbrr.mll........rbb.ttttttrt",
+                "ttrrrrbbbrbbrrrb.lbb.ulll......rrrrbb.Ll",
+                "l.rr.mll.....rrrrrrbr.mll........rrrb..m",
+                "ll........rbrrr.mll........rrrrb.mll....",
+                "...rrrr..mll.......rr..brr..mll......rrr",
+                "rr..ml........rrrtrr.mll.l..rrrrrrrb.mll",
+                "l....sr..rrr..mll....rrrrrtrrrb.mllb....",
+                "rrrrrrrr......"
+            ]
+        }
+    ]
+}
+,
+{   "title": "Lord of the Ring",
+    "author": "Ronald",
+    "difficulty": 4,
+    "category": 2,
+    "loot": 96,
+    "time": 450,
+    "map":
+    [   "#############################",
+        "#1..........................#",
+        "#...........yyyyy...........#",
+        "#.........yy00000yy.........#",
+        "#........y00$$$$$00y........#",
+        "#.......y0$$yyyyy$$0y.......#",
+        "#......y0$yy.....yy$0y......#",
+        "#.....y0$y.........y$0y.....#",
+        "#....y0$y...........y$0y....#",
+        "#....y0$y...........y$0y....#",
+        "#...y0$yy............y$0y...#",
+        "#...y0$y.............y$0y...#",
+        "#...y0$y.............y$0y...#",
+        "#...y$0y.............y0$y...#",
+        "#...y$0y.............y0$y...#",
+        "#...y$0y.............y0$y...#",
+        "#....y$0.............0$y....#",
+        "#....y$0.............0$y....#",
+        "#.....y$0...........0$y.....#",
+        "#......y$0.........0$y......#",
+        "#.......y$00.....00$y.......#",
+        "#........y$$00000$$y........#",
+        "#.........yy$$$$$yy.........#",
+        "#...........yyyyy...........#",
+        "#..........................E#",
+        "#############################"
+    ],
+    "demos":
+    [   {   "title": "untitled",
+            "randomseed": 494786,
+            "moves":
+            [   "...rrrbbbbbbbbr.t...l.rrr..B.ll..r.R...t",
+                "r.R..tr.R..ttrrr..B.rrrrr..brr..br..br.b",
+                "r.......B..bbr..bblll.tttrrrrrrbbbbll..b",
+                "bbl....bbl..bl..bl..bl....lblllll..blll.",
+                "lllllttttlttttttttttttttrrrtrrrrrrbbbbbb",
+                "llllll....bbrrrttttlltllllbbbbbb.bb.rrtt",
+                "llbbbbrrrt.l...llbbbrrrrt..br..br.br.brr",
+                "..trrtttrrrttttrrrrtrrrrrbbbbbbbbbbbr...",
+                "...."
+            ]
+        }
+    ]
+}
+,
+{   "title": "In the Sea",
+    "author": "J\u00fcrgen",
+    "difficulty": 5,
+    "category": 1,
+    "loot": 454,
+    "map":
+    [   "$$$$$$$$$$$$$$$$$Q$$",
+        "$$Q$$$$$Q$$$$$$$$$$$",
+        "$$]$$$$$$$$$Q$$$$$$$",
+        "$$$$$$$$$$$$$$$$$$$$",
+        "$$$$$$$Q$$$$$$$$Q$$$",
+        "$$$$$$$$$$$$$$$$$$$$",
+        "$$$$$$$$$$$$$$$$$$$$",
+        "$$$$$$$$$$Q$$$$$$$Q$",
+        "$$$$Q$$$$$$$$$$$$$$$",
+        "$$$$$$$$$$$$$$$$$$$$",
+        "$$$$$$$$$$$$$$Q$$$$$",
+        "1$$$$$$$$$$$$$$$$$$E"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 10098,
+            "moves":
+            [   ".......tttttttttttrrrrrrrrrrrrrrrrllllll",
+                "lllblll..L.B.b.l.l..crr..tr.ttrrrrbrrrrr",
+                "..r....r..B.r....B..R..R...R...s.B.r....",
+                "B.llllbllltllbll.B.l...B.m.B.l.b.llllrrr",
+                "rrrrrr.B.r....B.s..Br....rrrrrblltllllb.",
+                "r.b.r.T..B..r....B...s.B.r.r.b.l.ttlllll",
+                "llllltllbllllllbrrrrrr.B..r..B.s.B.r.rrr",
+                "rrbllllllllllllllbrrrrrrrrrtrrbrrrrrrtrr",
+                "b..t.bb..B...l...B..m.Bl..lllll.B...l..B",
+                ".m.B.l.....llltllblll.b..rrr.B.r..B.s.B.",
+                "rrrrrrrrrrrrrr.ll.rrblllltllblllllllllll",
+                "llbrrrrrrrrrrrrrrrrrrsr........."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Great Dropping",
+    "author": "Ronald",
+    "hint": "Acid rain.",
+    "difficulty": 5,
+    "category": 2,
+    "loot": 12,
+    "swamprate": 10,
+    "map":
+    [   "###################################",
+        "# b #%%%%%%%%%%%%%%%%%%%%%%%%%%%#g#",
+        "#   #                           # #",
+        "##R##                           #Y#",
+        "# 1 #                           # #",
+        "#   #                           # #",
+        "#   #                           # #",
+        "#   #                           # #",
+        "#   #                           # #",
+        "#   #                           # #",
+        "#                                 #",
+        "#####aaaaaaaaaaaaaaaaaaaaaaaaaaa# #",
+        "#E  ###rB y#! #!             ***# #",
+        "###+### #####G########      ****# #",
+        "#               +         ^*****# #",
+        "# ############################### #",
+        "# #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%# #",
+        "# #                             # #",
+        "# #                             # #",
+        "# #                             # #",
+        "# #                             # #",
+        "# #                             # #",
+        "# #                             # #",
+        "# #                             # #",
+        "#                                 #",
+        "# #aaaaaaaaaaaaaaaaaaaaaaaaaaaaa# #",
+        "###################################"
+    ],
+    "demos":
+    [   {   "title": "untitled",
+            "randomseed": 427075,
+            "moves":
+            [   "....bbbbbbrrrttttttttrrrrrrrrrrrrrrrrrrr",
+                "rrrrrrrrrbbbbbbbbrrbbbbbbbbbbbbbbl..lttt",
+                "llttttllllllllllllllllllllllllllllbbbbbb",
+                "bllttttttttttrrrrrrttbbllllllbbbbbbbbbbr",
+                "r.tttttttrrrrrrrrrrrrrrrrrrrrrrrrrrrrbbb",
+                "bbbbrrtttttttttttt..tt.l.lttttttlttlllll",
+                "llllllllllllllllllllbbbbbbbbllltttttttt.",
+                "bbbbbbbbrrrtttttrtttrrrrrrrrrrrrrrrrrrrr",
+                "rrrrrr.bbbbbbbbrrbbbbbbbbbbbbbbll...tttt",
+                "tttllllllllllllllllllllllllllllllbbbbbbb",
+                "llttttttttttrrrrrrttrrlllbbllllllbbbbbbb",
+                "bbbrrtttttttrrrrrrrrrrrrrrrrrrrrrrrrrrrr",
+                "rrbbbbbbbrrttttttttttttttttttttttbbbbbbb",
+                "bbbbbbbbbbbbbbbllt.ttttttlllllllllllllll",
+                "lllllllllllllllbbbbbbbllttttttttttrrrrrr",
+                "rrrrrrt.l.rbbrrr.ml........rrrrrrrrrrrr.",
+                "..........rrrrrrrr.tllbrllllllll........",
+                "....ttlllllllrrrrrrrbblllllllllll....rrr",
+                "rrrrrrrrttll.rr.bblllllllllllllllllll...",
+                "mll.......rrrttll......."
+            ]
+        }
+    ]
+}
+,
+{   "title": "More!",
+    "author": "J\u00fcrgen",
+    "difficulty": 5,
+    "category": 4,
+    "loot": 4,
+    "map":
+    [   "#################",
+        "#     +         E",
+        "#          +    #",
+        "#+    ] + ^     #",
+        "#    ]1] < >   +#",
+        "#   + ]   V     #",
+        "#            +  #",
+        "#      +  +     #",
+        "#  +            #",
+        "#               #",
+        "#               #",
+        "#               #",
+        "#################"
+    ],
+    "demos":
+    [   {   
+            "randomseed": 781789,
+            "moves":
+            [   "...blttrrbbllutrrttrrr.bbbbllbb.t...r..u",
+                "tttllll....rrbb.r..mll.t......bbcbbll...",
+                "..tt.rrrt..bll.tt.......srrr.....tllbtb.",
+                ".b.rrmlll.......rrrmllll.....rrrr...llll",
+                "tlcbbrrr..rtrrrrr.t.rmll...rrrrbbbbl.utt",
+                ".....rr.lllbbbllll..tttttttt..b.rsrbbbb.",
+                "...tttt..cbbbrbbbblllll.srrrrr...lll..b.",
+                "l..strrr......llllllllbrrrrrrrtttttttttt",
+                ".cbb......ttt.rrtrrcbblll.....lltt.r...b",
+                "bbbbbbbrr...srrrr.....lllllbrrrttttttttt",
+                "trrrr......"
+            ]
+        }
+    ]
+}
+,
+{   "title": "Rainbow",
+    "author": "J\u00fcrgen",
+    "difficulty": 5,
+    "category": 3,
+    "loot": 750,
+    "swamprate": 30,    
+    "map":
+    [   "##############################",
+        "#$$$$$$$$$$$$$$$$$$$$$$$$$$$$#",
+        "#$$$$$$$$$$$$$$$$$$$$$$$$$$$$#",
+        "#$$$$$$$$$$$$$$$$$$$$$$$$$$$$#",
+        "#$$$$$$$$$$$$$$$$$$$$$$$$$$$$#",
+        "#$$$$$$$$$$$$$$$$$$$$$$$$$$$$#",
+        "#$$$$$$$$$$$$QQQQ$$$$$$$$$$$$#",
+        "#$$$$$$$$QQQQyyyyQQQQ$$$$$$$$#",
+        "#$$$$$QQQyyyyy%%yyyyyQQQ$$$$$#",
+        "#$$$QQyyyy%%%%bb%%%%yyyyQQ$$$#",
+        "#$$Qyyy%%bbbbb$$bbbbb%%yyyQ$$#",
+        "#$Qyy%bbb$$$$$$$$$$$$bbb%yyQ$#",
+        "#Qyy%b$$$$$$$$$$$$$$$$$$b%yyQ#",
+        "#Qy%b$$$$$$$$$$$$$$$$$$$$b%yQ#",
+        "#$$$$$$$$$$$$$$$$$$$$$$$$$$$$#",
+        "#$$$$$$$$$$$$$$$$$$$$$$$$$$$$#",
+        "#$$$$$$$$$$$$$$$$$$$$$$$$$$$$#",
+        "#$$$$$$$$$$$$$$$$$$$$$$$$$$$$#",
+        "#$$$$$$$$$$$$$E1$$$$$$$$$$$$$#",
+        "##############################"
+    ],
+    "demos":
+    [   {   
+            "randomseed": 314946,
+            "moves":
+            [   "...rrrrrrrrrr..llllllllll.t.llllllllll..",
+                ".rrrrrrrrrrrrrrrrr..tttlllllllllllllllll",
+                "l.r.r..lbrrrrrrrrrrrrrrrrrrr.tl.bbllllll",
+                "lllllllllllrrrrrrrrrrrrrrrrbllllllllllll",
+                "ll.rb.ltlrrbrrrrtrrbrrrrrr.t....t..rtrr.",
+                "...r.tr..r.........l.blbllbr..llbr..t.br",
+                "trr.t.r..........t.brbblllll.....tt.l..r",
+                "rttrr.........r.r......tt..t.......t...t",
+                "...t...ttttttllltlllllllllllllllllllllll",
+                "lbrrrrrrrrrrrrrrrrrrrrrbllllllllllllllll",
+                "lllllbrrrrrrrrrrrrrrrrrrrrrrrbllllllllll",
+                "lllllllllllllbrrrrrrrrrrrllllblllllllbrr",
+                "rrllbllbr.lbttttttrrrrrrrrrrrrrrrrbrrrrr",
+                "rrrrblllllrrrbrrrrbllrrbl....r.b...b.l..",
+                "..t..LRrr...................ll......ll..",
+                "....brrrrblllllbbbbbrrrrrr....llll..rrrr",
+                "r.ll.rrlllltlltlttttttttllllrrr...l.r...",
+                ".bbbb.lllltttttll...rrr.bbbbbbblllbbllll",
+                "lttllllllllbrrrbllllbrrrrtrbbrllllllrrrr",
+                "rrrrrrrrrr......"
+            ]
+        }
+    ]
+}
+,
+{   "title": "Softies",
+    "author": "J\u00fcrgen",
+    "difficulty": 5,
+    "category": 1,
+    "loot": 4,
+    "map":
+    [   "_________________",
+        "_Q _ __ Q __ _Q _",
+        "__   _ __  Q  _ _",
+        "_  _ 1  Q____ _ _",
+        "___  __ __&_    _",
+        "_    _    _ _Q_ _",
+        "_Q_    ___   _  _",
+        "__  Q  _E____   _",
+        "_   _  ___& _   _",
+        "_     _Q  _Q ____",
+        "_ ___  ______   _",
+        "_Q _&         & _",
+        "_________________"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 13927,
+            "moves":
+            [   "....rr...b...b...r....l..l..b.b..l..b...",
+                "tllb..r.br.br..t....r.ltt....l..b.......",
+                "b.lttl..lb..brr......r....r........t.t.l",
+                "..t..ltttrrrbbll..rr.t...t.rt...blb.rr.b",
+                "rr.....r...b.t..lll...............llbbbb",
+                "bbblrrrtt.lltttt..t.rrr..r...r.bb.r...r.",
+                ".t.......l.......rr..ttt.....bbblllllltt",
+                ".rtrrr.....rrbb..r...........b..lblrr...",
+                "..llllb.................................",
+                "....r.............t....tlllltt.l..l.b..t",
+                "rr.b.....l.......l.b.b.b.ttt...t.l.t.l..",
+                ".b.b...r......r.....b.r.rrrr..llll...l.t",
+                "....trrb.l.tlb..b.ttlllbr...r..brrrrrlll",
+                "....rrrrbbbl.B....bllbbrrrrrrtrttttt....",
+                "bbbbb.B.ttttllllbll........."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Puzzle in a Puzzle",
+    "author": "Ronald",
+    "difficulty": 6,
+    "category": 2,
+    "loot": 44,
+    "swamprate": 3,
+    "map":
+    [   "+++++++++++++++++++++++   ",
+        "+   +    ++000 +.*.*. +   ",
+        "+8+ B    B0.b. Y..... +   ",
+        "+   +a a +$$$$++..... +   ",
+        "++B+++a+a++++++++++*_ +   ",
+        "+   +     7      7+._ +   ",
+        "+.0.+  ########## +___+   ",
+        "+0@.+6     5    # + _ +   ",
+        "+@0.+  8+++++++6# +u u+   ",
+        "+0@.+   + Y Y + # +   +   ",
+        "+@0.+   + _ #E+ # +___++++",
+        "+0@.+   G #o##+ # +   Yy1+",
+        "+*0.+   +*###*+ #8++++++++",
+        "+.@.+  8+*****+ # G .*+   ",
+        "+...+   +++++++6# + .*+   ",
+        "+.r.+6    7     # + .++   ",
+        "+...+  ########## + .*+   ",
+        "++R++    5      5 + .*+   ",
+        "+# .+++++++++++++++ .*+   ",
+        "+u0.                .++   ",
+        "+ | .................*+   ",
+        "+g ++**+****+***+**+**+   ",
+        "+++++++++++++++++++++++   "
+    ],
+    "demos":
+    [   {   "title": "untitled",
+            "randomseed": 51044,
+            "moves":
+            [   "........l.ll..l.t.brt....t.rttttttll.Btt",
+                "lllbll..bl..t.b.llr.tllll..l..l.t.ll.bbr",
+                ".b.r...bbbbbbbbbbBl...R.t.R...t.....r...",
+                "..l.tl....bbbbrb....r.....b....rrrrrbbrr",
+                "rrtl..bttll.b.rlllbltltlllbbttrrrrrrrrbb",
+                "b...........tllll.l...rrrrrrrrrbrrtrrbrt",
+                "rrbrtlttrttlttrtll.....l..bbbbllllllllll",
+                "llttttttrrrr.bbrrrrtblllltttr..bbb..tttr",
+                ".ltrrr.b......."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Chaotic Room",
+    "author": "Ronald",
+    "difficulty": 6,
+    "category": 3,
+    "loot": 5,
+    "swamprate": 50,
+    "map":
+    [   "####################################",
+        "#   # 7       #           #  8    >#",
+        "#              0   V   6  <       ##",
+        "#  8  V        .              0    #",
+        "#        >   7     ^  >   6   .  6 #",
+        "## ^               0    +++++++    #",
+        "#     0  0 0 0 0   .    +++++++    #",
+        "#     .  . #####      7 +++++++   ##",
+        "#8         #1 rR  ^     +++E+++ V  #",
+        "#     7    #####        +++++++    #",
+        "##               <   ]  +++++++   <#",
+        "#   5  ]                +++++++    #",
+        "#         <    V  V         7      #",
+        "# >    5                      V  6##",
+        "#  #       #        5   #          #",
+        "####################################"
+    ],
+    "demos":
+    [   {   
+            "randomseed": 585221,
+            "moves":
+            [   "..rrrrrbbrrrlll.b...lll..........lllltll",
+                "l..b..Lrrrrr.b.rr.mll......t.......bbb..",
+                ".tuttrrrrr.....rrbbbllblllllt.rrrrtt...l",
+                "l....llll.rrrr.rstttttulll......rrr..bbb",
+                "bbbbbbllttt.....cbb.....rrtt.r..bbllrrtt",
+                "tt......llll.b.sttr..rrrrrrrr.tmlll..bl.",
+                "..rrrrrr.t.cl..l....rrrrrrt..ml.......rr",
+                "rrtrrr......"
+            ]
+        }
+    ]
+}
+,
+{   "title": "Crumble",
+    "author": "Ronald",
+    "difficulty": 6,
+    "category": 3,
+    "loot": 2,
+    "map":
+    [   "############",
+        "#10..   .0.#",
+        "# #0.Q#r#0%#",
+        "# @&.Q###0.#",
+        "# .+ #00.00#",
+        "#    #0....#",
+        "#     ..0 .#",
+        "##Q#########",
+        "# + R      E",
+        "############"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 6971,
+            "moves":
+            [   "..bbbbbrrrrrrr..t...T.r..rBlll...trtttll",
+                "BlllLrrrrrbbbll.bbllll..tll..t..r.lbb.rr",
+                "..lt.tl.tttrrllbbbbrrrttt....bbbll......",
+                "...R..........trbB....lbbbrrrrrrrr......"
+            ]
+        }
+    ]
+}
+,
+{   "title": "House",
+    "author": "Ronald",
+    "difficulty": 7,
+    "category": 1,
+    "loot": 6,
+    "map":
+    [   "#########",
+        "##!!1bE##",
+        "####B####",
+        "## 0 0 ##",
+        "## #B# ##",
+        "## # # ##",
+        "## #B# ##",
+        "## 0 0 ##",
+        "#  #B#  #",
+        "#  # #  #",
+        "#  #B#  #",
+        "#  # #  #",
+        "#  #B#  #",
+        "#  B B  #",
+        "#  # #  #",
+        "#@$# #$@#",
+        "#########"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 22084,
+            "moves":
+            [   "..r.llLrblrbblrbbbls.tttttrlbbrlbbbrmllb",
+                "blrttrrrrbbrtttttttltttttlltrr.........."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Hard Work II",
+    "author": "Ronald",
+    "difficulty": 7,
+    "category": 7,
+    "loot": 15,
+    "map":
+    [   "####&###&###&###&###&###&###&###&###&###&###&###&###&####&#####",
+        "# Q   Q   Q   Q   Q   Q   Q   Q   Q   Q   Q   Q   Q   Q   0   #",
+        "#1.0  .0  .0  .0  .0  .0  .0  .0  .0  .0  .0  .0  .0  .0  .@  #",
+        "#############################################################E#"
+    ],
+    "demos":
+    [   {   "title": "untitled",
+            "randomseed": 41937,
+            "moves":
+            [   ".ttrbrlbbbbbbrrrtrbrllbbbbbrrrrtrbrlbbbb",
+                "bbrrrtrbrlbbbbbbrrrtrbrlbbbbbbrrrtrbrllb",
+                "bbbbrrrrtrbrlbbbbbbbrrrtrbrlbbbbbbrrrtrb",
+                "rlbbbbbbrrrtrbrlbbbbbbrrrtrbrlbbbbbbrrrt",
+                "rbrlbbbbbbrrrtrbrlbbbbbbrrrtrbrlbbbbbrrr",
+                "trbrllrtrrbr.......b......."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Mission Impossible II",
+    "author": "Reinhard, J\u00fcrgen",
+    "difficulty": 8,
+    "category": 4,
+    "loot": 10,
+    "map":
+    [   "##############################",
+        "#E1]]]]]]]]]]]]]]]]]]]]]]]]]]#",
+        "############################.#",
+        "#5 5 5 5 5 5 5 5 5 5 5 5 5   #",
+        "# 7 7 7 7 7 7 7 7 7 7 7 7 7  #",
+        "#5 5 5 5 5 5 5 5 5 5 5 5 5 5 #",
+        "# 7 7 7 7 7 7 7 7 7 7 7 7 7 7#",
+        "#5 5 5 **5 5 5 5 5 **5 5 5 5 #",
+        "# 7 7 7.. 7 7 7 7 7.. 7 7 7 7#",
+        "#5 5 5 5 5 5 5 5 5 5 5 5 5 5 #",
+        "# 7 7 7 7 7 7 7 7 7 7 7 7 7 7#",
+        "#5 5 5 5 5 5 **5 5 5 5 5 5 5 #",
+        "# 7 7 7 7 7 7.. 7 7 7 7 7 7 7#",
+        "#5 **5 5 5 5 5 5 5 5 5 5 5 **#",
+        "# 7.. 7 7 7 7 7 7 7 7 7 7 7..#",
+        "##############################"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 409,
+            "moves":
+            [   "..rrrrrrrrrrrrrrrrrrrrrrr..r.....mll....",
+                "....rrr.........................mll.....",
+                "...rrr......mll..........rrr......ml....",
+                "....rrrr..mll.......rrrr....ml.........r",
+                "rr.mll.........rr.....r......ml.........",
+                ".rr.mll........rrr...ml........rrrr.mll.",
+                "........rrrmll.........rrr..ml........rr",
+                "rrmll.......rrrrmll.......rrmll.......rr",
+                "rrmll.......rrrr.mll.......rrr.ml.......",
+                "....rr....ml........rrrr...ml.........rr",
+                "r.mll........rrr.ml........rrrr.ml......",
+                "...rrr...ml.........rrr..ml.........rrr.",
+                "...ml........rrrmll.......rrrrmll.......",
+                "..rrr...mll.......rrrmll.......rrrmll...",
+                "....rrr...................ml..........rr",
+                ".b........t.......mll........rrr...ml...",
+                "......rr..ml.........rr..b...........b..",
+                ".........utll.......rr...bbutll......rr.",
+                ".ml.........rrr...ml.........rrbb....l..",
+                "....b.....stttllll..rrrr..bb....l..b....",
+                ".u.rtt......mll.........rrrb.......r.r.b",
+                "....b.....utlltl....r.bb.l..rb.....b....",
+                "...ut.......ll.b.l.............srr......",
+                ".lllbbbl.l.l.L.r.bb....r.......t.r...b..",
+                "...utt.......bb..rrrrrrbbbbb.L..b.l..sut",
+                "tt......lll..ltlllll...l..srr......ll...",
+                "..rrr...b....ut...tttrrrr.......bb..bbll",
+                "l..l.b.....ut.......lt...bbbbbbbllllllll",
+                "l..r..t..t...T......................tL.b",
+                "..................bbllllllllll..T.t.T...",
+                "L..r.t..t.....cbb..........t.r..ttt.....",
+                "cbbb........t..r.....t.....t.tttr..T.b.l",
+                "bbbbbrrrrrrrrrrrrrrtrttttttttttrrrrttlll",
+                "llllllllllllllllllllll........"
+            ]
+        }
+    ]
+}
+,
+{   "title": "Crawalla",
+    "author": "Ronald",
+    "hint": "Try to ride on the wings of the storm.",
+    "difficulty": 8,
+    "category": 3,
+    "loot": 94,
+    "map":
+    [   "######################################Q#",
+        "#QQQQQQQQQQQQ###0Q*.0QQ#######QQQQ####+#",
+        "#1...........Q##|Q|...*#QQQQQ*****QQQQ+#",
+        "############.Q###+####********###*****.#",
+        "#      $$$#..Q##Q.####################.#",
+        "# ########..Q##Q#.#$ Y B G R Y B G Rr# #",
+        "#..........Q##Q+..#R################gby#",
+        "#*Q.QQQQQQQ##Q#QQ.# G B Y R G B Y ####Q#",
+        "#*Q#########Q++QQ.###############R####Q#",
+        "#*QQQ!!!!!!!+.....#.....0..@.0..# #QQQQ#",
+        "#.QQQ+Q+Q+Q+...## #..@...0....0.#G####Q#",
+        "#............####+#.....@...@...# #QQQQ#",
+        "#################Q#.............#B####Q#",
+        "###############################.# ####Q#",
+        "#...$...........Q...Q.*...Q..Q..#Y#QQQQ#",
+        "#...Q....$...Q...$...........$..# ####Q#",
+        "#....Q.Q.*.Q...$.Q...*..Q.......#G####Q#",
+        "#.$....*$......Q...Q.Q....$.Q.*.# #QQQQ#",
+        "#..Q..$...Q...........$..*......#B####Q#",
+        "#.....Q..Q$..Q..$...Q...Q....*..# ####Q#",
+        "#...*.......*...Q...........$Q..#Y#QQQQ#",
+        "#$..Q.Q.Q.Q...$....$.Q*.$.Q.....# ####Q#",
+        "#.....Q...*.Q.Q...Q.....Q.....*.#R##QQQ#",
+        "#++*.....Q...*....*....$..*.Q..## Q###Q#",
+        "#E+....*...Q...Q$...Q...Q$..... G$QQQQQ#",
+        "########################################"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 9792,
+            "moves":
+            [   "..rrrrrrrrrrrbblblblllllllllttrrrrrrrRll",
+                "lllllbbbbbbbrrrrrrrrrrrtrr......lttrrr..",
+                "tt.rb....ttttttrrb..rrrbrrrrrrrtrrrrbrrr",
+                "rrbbblltlllllllllbrrrrrrrbbbbbbbbbll.ttr",
+                "tttttlrtttttll.llrrr.ll.tt.bbl.rrlllllrr",
+                ".llltlbrrrrt.brrrrtr.t.brrb..lL.rrrttr.b",
+                "rrb.l.L.rbbbl.Lr.bbbblllB.lltT.L.bbrbbbl",
+                "b.L.t..rtttllbllL.bB.ttttLttlLtT.bllllt.",
+                "Lbb.bbbbR...rbbl.rr.....llllB.rtllt.L..l",
+                "t....rtR.r.lltttR.bbbbblb.B.tl.T.l......",
+                "..r...l.........b...........l...........",
+                ".....bblllL.........rrrtttttr.ltl.t.....",
+                "B.t.T.bll....blll.....b...BttlL.tttRllbb",
+                "bbbbbb.rrB.tttrtlllt..bbbbbrbbl.........",
+                "."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Gunjack",
+    "author": "Ronald",
+    "difficulty": 8,
+    "category": 7,
+    "loot": 238,
+    "swamprate": 0,
+    "map":
+    [   "########################################",
+        "#############**$*$*$**                 #",
+        "#++++++++++++**$$***$$*                #",
+        "# ###########**$*$*$*$**               #",
+        "#            #*$*$*$$***$              #",
+        "#            #$$**$**$*$*$             #",
+        "#    E       #*$***$$$*$**$      1     #",
+        "#            #*$*$**$$*$*$*$     ]     #",
+        "##############*$**$*$$$$**$*$          #",
+        "#$++++++++++$#$*$**$$$***$*$*$         #",
+        "#' .        :#***$*$**$$$*$*$$*  #######",
+        "#'           #**$$$*$**$*****$*$   *#  #",
+        "#'           #***$*$$**$*$*$*$*$# *$ * #",
+        "#'           #$$*$***$*$*$**$$$*#****$*#",
+        "::::::::::::*:::::::::::::::::::::::::*#"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 3774,
+            "moves":
+            [   "..blll...bb....b...................l....",
+                ".....bl..l.l.l.lll...tttttttrrrrb..rrb..",
+                "...tll..ll...l..............brBt.bBt.ltl",
+                "llrrrrbbbltllBr.llBr.tltlttc.rbbl.Btlrmt",
+                "....tm....blL...rtl.tll.llbrrtrrrrrrbbbb",
+                "brrrrrrrr...lll.................rrrrbbbb",
+                "utl........r..r.............bbut......ll",
+                "lBrbbLrrlrBlB.lB..........ttl.llllll.tll",
+                "llllll.RRRRRRRRRRRRRRRRRRrrbbbbbbrrrrrrr",
+                "..lllllllll..rrrrrrrrrr..llllllllll..rrr",
+                "rrrrrrr..llllll...rrrrttttrrr.trrr.lbb.r",
+                "..bllll.rr..rbllllbrrrlllllllltllllbrrrr",
+                "ttttttttttllllltllllllllllllbbbbbbbbrrrr",
+                "...tt........"
+            ]
+        }
+    ]
+}
+,
+{   "title": "Acrobatica",
+    "author": "J\u00fcrgen",
+    "difficulty": 9,
+    "category": 3,
+    "loot": 1,
+    "map":
+    [   "################",
+        "#       0      #",
+        "#..... ]1 .....#",
+        "#       0      #",
+        "#@############E#"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 3106,
+            "moves":
+            [   "....R.......lb.s..t..trrbbl.l.m...t.tllb",
+                "b.r.r.r.st....trrbbl.l.l.l.mt....tllbb.r",
+                ".r.r.r.r.st....trrbbl.l.l.l.l.l.mt....tl",
+                "lbb.r.r.r.r.r.r.r.st....trrbbl.l.l.l.l.l",
+                ".l.l.mt....tllbLbr.r.r.r.r.r.r.r.r.st...",
+                ".trrbbl.l.l.l.l.l.l.l.l.l.lttll........b",
+                "..ut.rr.......llbbb.trrrrrrrrrrrrrb.....",
+                "."
+            ]
+        }
+    ]
+}
+
+]
