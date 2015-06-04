@@ -1,0 +1,3 @@
+Main-Class: Launcher
+Class-Path: AndroidEmulation_JOGL/jogl/jogl-all.jar AndroidEmulation_JOGL/jogl/gluegen-rt.jar AndroidEmulation_JOGL/jaco/jaco-mp3-player-0.9.3.jar SapphireYours_Common/res/
+

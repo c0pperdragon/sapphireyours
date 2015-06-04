@@ -1,2 +1,3 @@
-# sapphireyours
-Sapphire Yours - A 2D puzzle game
+# Sapphire Yours
+A 2D puzzle game.
+
