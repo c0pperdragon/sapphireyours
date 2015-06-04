@@ -1,3 +1,3 @@
 Main-Class: Launcher
-Class-Path: jogamp/jogl-all.jar jogamp/gluegen-rt.jar
+Class-Path: libs/jogl-all.jar libs/gluegen-rt.jar libs/jaco-mp3-player-0.9.3.jar
 
