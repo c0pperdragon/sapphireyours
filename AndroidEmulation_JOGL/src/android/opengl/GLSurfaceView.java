@@ -75,7 +75,7 @@ public class GLSurfaceView extends SurfaceView
 	
 	public void requestRender()
 	{
-        glWindow.display();		
+        if (glWindow!=null) glWindow.display();		
 	}
 	
 	public void queueEvent(Runnable r)

@@ -9,7 +9,7 @@ public class Launcher {
     public static void main(String[] s)
    	{	   		
    		GameCloser c = new GameCloser();
-   		Game g = new Game(new ContextImpl(), c, new Handler(), new SharedPreferencesImpl("SapphireYours") );
+   		Game g = new Game(new ContextImpl("SapphireYours"), c, new Handler(), new SharedPreferencesImpl("SapphireYours") );
    		c.setGame(g);
    	    g.runWithJOGL("Sapphire Yours 4.0");
     }
