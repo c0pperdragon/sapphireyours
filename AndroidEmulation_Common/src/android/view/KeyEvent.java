@@ -6,19 +6,20 @@ public class KeyEvent extends InputEvent
 	public final static int ACTION_MULTIPLE	= 0x00000002;
 	public final static int ACTION_UP       = 0x00000001;
 	
-	public final static int	KEYCODE_DPAD_CENTER	= 0x00000017;
+	public static final int KEYCODE_BACK        = 0x00000004;
+	public final static int	KEYCODE_DPAD_UP     = 0x00000013;		
 	public final static int	KEYCODE_DPAD_DOWN	= 0x00000014;
 	public final static int	KEYCODE_DPAD_LEFT	= 0x00000015;
 	public final static int	KEYCODE_DPAD_RIGHT	= 0x00000016;
-	public final static int	KEYCODE_DPAD_UP     = 0x00000013;		
+	public final static int	KEYCODE_DPAD_CENTER	= 0x00000017;
 //	public static final int KEYCODE_CTRL_LEFT   = 0x00000071;
 //	public static final int KEYCODE_CTRL_RIGHT  = 0x00000072;
 	public static final int KEYCODE_SHIFT_LEFT  = 0x0000003b;
 	public static final int KEYCODE_SHIFT_RIGHT = 0x0000003c;
 	public static final int KEYCODE_TAB         = 0x0000003d;
-	public static final int KEYCODE_BACK        = 0x00000004;
-	public static final int KEYCODE_ENTER       = 0x00000042;
 	public static final int KEYCODE_SPACE       = 0x0000003e;
+	public static final int KEYCODE_ENTER       = 0x00000042;
+	public static final int KEYCODE_DEL         = 0x00000043;
 	public static final int KEYCODE_MENU        = 0x00000052;
 	public static final int KEYCODE_SEARCH      = 0x00000054;
 //	public static final int KEYCODE_ESCAPE      = 0x0000006f;
@@ -62,17 +63,24 @@ public class KeyEvent extends InputEvent
 	
 	
 	private int code;
+	private int unicode;
 	
-	public KeyEvent(int action, int code)
+	public KeyEvent(int action, int code, int unicode)
 	{	
 		super(action);	
 		this.code = code;
+		this.unicode = unicode;
 	}
 	
 	
 	public final int getKeyCode ()
 	{
 		return code;
+	}
+	
+	public final int getUnicodeChar()
+	{
+		return unicode;
 	}
 	
 	public interface Callback

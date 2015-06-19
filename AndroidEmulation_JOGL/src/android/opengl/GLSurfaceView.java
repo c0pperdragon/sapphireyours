@@ -236,9 +236,7 @@ public class GLSurfaceView extends SurfaceView
 	 	public void	keyPressed(com.jogamp.newt.event.KeyEvent e)
  		{	
  			int code = translateKeyCode(e.getKeyCode());
- 			if (code>=0)
- 			{	onKeyDown(code, new KeyEvent(KeyEvent.ACTION_DOWN,code));
- 			}
+ 			onKeyDown(code, new KeyEvent(KeyEvent.ACTION_DOWN,translateKeyCode(e.getKeyCode()), e.getKeyChar())); 			
  		} 
            
  		public void	keyReleased(com.jogamp.newt.event.KeyEvent e)
@@ -249,9 +247,7 @@ public class GLSurfaceView extends SurfaceView
  			}
 
  			int code = translateKeyCode(e.getKeyCode());
- 			if (code>=0)
- 			{	onKeyUp(code, new KeyEvent(KeyEvent.ACTION_UP,code));
- 			}
+ 			onKeyUp(code, new KeyEvent(KeyEvent.ACTION_UP,translateKeyCode(e.getKeyCode()), e.getKeyChar())); 			
  		} 
            
  		public void	keyTyped(com.jogamp.newt.event.KeyEvent e)
@@ -281,6 +277,9 @@ public class GLSurfaceView extends SurfaceView
 					return 0x0000006f;   // ESCAPE
  				case com.jogamp.newt.event.KeyEvent.VK_SPACE:
 					return KeyEvent.KEYCODE_SPACE;
+ 				case com.jogamp.newt.event.KeyEvent.VK_DELETE:
+ 				case com.jogamp.newt.event.KeyEvent.VK_BACK_SPACE:
+					return KeyEvent.KEYCODE_DEL;
  				case com.jogamp.newt.event.KeyEvent.VK_CONTEXT_MENU:
 					return KeyEvent.KEYCODE_MENU;
  					 				
@@ -292,7 +291,7 @@ public class GLSurfaceView extends SurfaceView
  					{	return KeyEvent.KEYCODE_0 + (joglcode-'0');
  					}	
  			}
- 			return -1; 			
+ 			return 0; 			
  		}
 	}
 
