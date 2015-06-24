@@ -1,37 +1,4 @@
 [
-{   "title": "Nuclear Power Plant",
-    "author": "Reinhard",
-    "difficulty": 4,
-    "category": 6,
-    "loot": 16,
-    "time": 300,
-    "map":
-    [   "####################",
-        "#*$(...Q.........1E#",
-        "#...........Q...Q..#",
-        "#..Q....#:#........#",
-        "#......#(((#.......#",
-        "#.Q...#(((((#......#",
-        "#.....:((]((:..Q...#",
-        "#.....#(((((#......#",
-        "#...Q..#(((#...Q...#",
-        "#.......#+#........#",
-        "#..................#",
-        "####################"
-    ],
-    "demos":
-    [   {   "title": "Demo 1",
-            "randomseed": 25614,
-            "moves":
-            [   "..lllllllblllll....bbbbll.rrtttl.rbbbbbb",
-                "blllltttttttr..r.bb.tttl.tl.b..rr..bb..l",
-                "lbb.r.ltt........rrbbbrrbbbrrrrttltltrrr",
-                "r.lbrlblbbrrrrrrrrrttttttttt.........."
-            ]
-        }
-    ]
-}
-,
 {   "title": "Power Drill",
     "author": "Reinhard",
     "difficulty": 5,
@@ -41,7 +8,7 @@
     "map":
     [   "#################",
         "#E.....*...... .#",
-        "#1...*........'.#",
+        "#1...*........F.#",
         "#...........*...#",
         "#......+++......#",
         "#..(..+++++.....#",
@@ -153,7 +120,7 @@
 {   "title": "Curse of the Pharao",
     "author": "Reinhard",
     "difficulty": 5,
-    "category": 2,
+    "category": 1,
     "loot": 2,
     "time": 550,
     "map":
@@ -202,7 +169,7 @@
 {   "title": "Trick-Track",
     "author": "Thomas, Reinhard",
     "difficulty": 6,
-    "category": 3,
+    "category": 1,
     "loot": 15,
     "map":
     [   "#############################",
@@ -255,15 +222,15 @@
     [   "##################",
         "#+$$#         #**#",
         "#+(*#         #:'#",
-        "#+$!#         #:'#",
-        "#+###1        #:'#",
-        "#+            #:'#",
+        "#+$!#         #:C#",
+        "#+###1        #:D#",
+        "#+            #:F#",
         "#             #:##",
-        "#    5           #",
-        "# 8+++           #",
-        "#  +E+           #",
-        "#  +++6          #",
-        "#  7             #",
+        "#   5            #",
+        "#  +++           #",
+        "# 8+E+6          #",
+        "#  +++           #",
+        "#   7            #",
         "#                #",
         "#$             $ #",
         "##################"
@@ -272,7 +239,7 @@
     [   {   "title": "untitled",
             "randomseed": 139936,
             "moves":
-            [   "...............bllllttrRlbbrrrrt......br",
+            [   "..............bllllttrRlbbrrrrt......br",
                 "brrbbrbrbr.....bbrrr........ml.......lll",
                 "lll.llblllttttttttttrr....llbbbbbbrrr...",
                 "...."
@@ -281,72 +248,10 @@
     ]
 }
 ,
-{   "title": "Let-down",
-    "author": "J\u00fcrgen",
-    "difficulty": 6,
-    "category": 5,
-    "loot": 6,
-    "map":
-    [   "#################",
-        "#               #",
-        "# Q    _  1     #",
-        "# +         Q _ #",
-        "#    _  Q   &   #",
-        "# _     & Q     #",
-        "#   Q     &  _  #",
-        "#   &         Q #",
-        "#     Q  _    & #",
-        "#  _  &         #",
-        "#          _    #",
-        "E               #",
-        "#aaaaaaaaaaaaaaa#"
-    ],
-    "demos":
-    [   {   "title": "Much work",
-            "randomseed": 38030,
-            "moves":
-            [   "...llllltlb.rbl.bbrt.rtl.bllllbrrrr..brt",
-                ".ltr.llllbbbbbrrbrttttt...b.rrr.bbbr.ttt",
-                "t.bbbbbbrrtttttt..rrrtt.rtlllllllltlbb.r",
-                "rrr.trrrrbbbll.bbrttttrtllltlbb.trrrblll",
-                "llll.rrrrrrrbbllt.bbbllttt.r.ttrrbl.rrbb",
-                "llt.llbbllt..t.blt.bllllltttrrrr..ll.bbb",
-                "bbbl.b..trblbrrrrrrrrrr.brtttttttt.rtlll",
-                "ltl.rbl.tlb.tlllbrrrrrrbbbr...T....bb..l",
-                "...tt...r.ttlb..ttllbb.t.rr.trbb..t.rbbb",
-                "blllllltttrrr..l.bbb...ttttt.llb.r.....r",
-                "l..l..tl.b.t.ll.b..rrrbbbr...T......bbr.",
-                "r.r.rbrttt.blll...l.tt...ttrrrr.trbb.tll",
-                "llbr.r......llllbbbb..lt.ltrr.ll.t..rttl",
-                "b..blbrr..ttttllbb.tllbrrr.trbb.b..tttll",
-                "lbbr..bbbbrrbrrttt..l..ltttrrrrrr...blll",
-                "..t....l..rrbbbb.rrt..t.rrrr.tt..llllbbb",
-                "l...T..rr.....bb......l.........tt..bbb.",
-                "...ll..ttt..rrr..tl.ttr.b..t.rrrbblll.t.",
-                ".lltllll.b.rr..r.lll.b.trb.tr.b..t.t.rrr",
-                "rrrrbblt..rtllllllllllt...llbr.trbbb.t.l",
-                "lbrrrrr.tllllbbbrr.t..bbb..rrtt..t....bb",
-                "b..llllttttrr.bbbb.rr.ttt...l..rbbbllttt",
-                "...bbbrrrrrrr.ttttt..lllllllbbbl....T...",
-                "........rb.lbrrrrrrrr...br..trtl.blt..rt",
-                "t..ltttr.bbb.ttll.b.btt.l.b.............",
-                "....rrrrr..b..lll..rrrbbbll..l.tt.brt.bb",
-                "rrrtttttlllltllb..b..t..ll..b...rrrrrrbb",
-                "br..T..T...........llllllll.bll.tt......",
-                "......rr...r....ll.tttrrbl.tlbbbb..trrbb",
-                ".rrrr.trrr.bllllll.........l...tt.....ll",
-                "ttrrrrr...b...tl.b.tl.b.tlb.trrrrr......",
-                ".....b..ll...rr.b.b.r.bllllllrrrrtttllll",
-                "rrr...lllllb..B..llllbbl..b..ll......"
-            ]
-        }
-    ]
-}
-,
 {   "title": "Hard Work",
     "author": "J\u00fcrgen",
     "difficulty": 6,
-    "category": 7,
+    "category": 6,
     "loot": 22,
     "map":
     [   "################################################",
@@ -369,7 +274,7 @@
 {   "title": "How to Steal a Million",
     "author": "Reinhard",
     "difficulty": 7,
-    "category": 6,
+    "category": 2,
     "loot": 12,
     "map":
     [   "#################",
@@ -384,9 +289,9 @@
         "#  :   +++   :  #",
         "#  :** +++   : 1E",
         "# ##########:#B##",
-        "#  #        '#  #",
-        "# b#        '# !#",
-        "####        '####"
+        "#  #        F#  #",
+        "# b#        C# !#",
+        "####        D####"
     ],
     "demos":
     [   {   "title": "untitled",
@@ -405,7 +310,7 @@
 ,
 {   "title": "Blast me!",
     "author": "J\u00fcrgen",
-    "difficulty": 7,
+    "difficulty": 3,
     "category": 7,
     "loot": 1,
     "swamprate": 20,
@@ -469,7 +374,7 @@
 ,
 {   "title": "Granite",
     "author": "J\u00fcrgen",
-    "difficulty": 7,
+    "difficulty": 6,
     "category": 7,
     "loot": 351,
     "map":
@@ -596,47 +501,10 @@
     ]
 }
 ,
-{   "title": "Think Straight II",
-    "author": "Ronald, J\u00fcrgen",
-    "difficulty": 8,
-    "category": 5,
-    "loot": 33,
-    "map":
-    [   "######################",
-        "#....#0#..#......#000#",
-        "#...#0Q#..#......#0|+#",
-        "#.1.#0Q]###Q QQ..+0.0#",
-        "#...#0####b&&&&..##.##",
-        "#....0.#&#.B ..]....##",
-        "#...0Q]#&6.&&&&....[ #",
-        "#..$$00#+##QQQQ...[  #",
-        "#..$$&#...#......[   #",
-        "#..$$.#...######.#####",
-        "###########E&&&.@.&&&#",
-        "         #############"
-    ],
-    "demos":
-    [   {   "title": "untitled",
-            "randomseed": 436618,
-            "moves":
-            [   "bbrrlbllbbrrBTrbrblbbbrrltltttrrrrbbbrtt",
-                "rrttbrrrrutrtmlllbrrrlbbbbbrbbrbrbbrlttr",
-                "rtrrblrrbbllllrrtbrrttlllltlbrrrrrbbltrt",
-                "lllltllllmlttttttrrrrtttbbrTrrttrrbbrrrt",
-                "ttllllbbrrrttllllblbrrbrrbbbtttlllbblbtt",
-                "tbrbbbbttrrbllllrbbttrbtrrbbbllbttrrrttt",
-                "tllllbbbbbutlllbbbbrrrrbbbrmllllllllllsr",
-                "rrrrrmllllllllsrrrrrrmllllllllsrrrrrrrll",
-                "lllllll......."
-            ]
-        }
-    ]
-}
-,
 {   "title": "Trapped!",
     "author": "J\u00fcrgen",
     "difficulty": 8,
-    "category": 5,
+    "category": 4,
     "loot": 15,
     "map":
     [   "####################",
@@ -672,7 +540,7 @@
 {   "title": "Swimming",
     "author": "Ronald",
     "difficulty": 9,
-    "category": 1,
+    "category": 2,
     "loot": 584,
     "map":
     [   "##############################",
@@ -717,7 +585,7 @@
 {   "title": "Push Me!",
     "author": "J\u00fcrgen",
     "difficulty": 4,
-    "category": 6,
+    "category": 5,
     "loot": 1,
     "time": 25,
     "map":
@@ -776,7 +644,7 @@
 {   "title": "The Way Up",
     "author": "J\u00fcrgen",
     "difficulty": 4,
-    "category": 2,
+    "category": 6,
     "loot": 53,
     "time": 1000,
     "map":
@@ -910,88 +778,6 @@
     ]
 }
 ,
-{   "title": "The Guide",
-    "author": "J\u00fcrgen",
-    "difficulty": 5,
-    "category": 4,
-    "loot": 4,
-    "swamprate": 0,
-    "map":
-    [   "#################",
-        "#7             7#",
-        "#               #",
-        "#  _    _    _  #",
-        "#    %    %     #",
-        "#   %E%  %$%    #",
-        "#    %% 1 %%    #",
-        "#    %(%  %*%   #",
-        "#     %    %    #",
-        "#  _    _    _  #",
-        "#               #",
-        "#5             5#",
-        "#################"
-    ],
-    "demos":
-    [   {   "title": "untitled",
-            "randomseed": 732023,
-            "moves":
-            [   "...ttlltllbl..b.....bb....r.bb.l.bltrrrr",
-                ".brt..trrblllll.bltt...r..ttl..b......r.",
-                ".....ll...r......r......t.l...tt.r......",
-                ".ttl.br.b.l.t.....b..tl.bbbr..b.l..tt..t",
-                "...............rrtrr..r....bb.r.........",
-                ".bbbb.rrr.brr.tlll.......rrr..t......t..",
-                ".bblllltttllttttrrrrrrbblb.r.l..tl.ttl.b",
-                "l.bllt.rrrrrrr.trbllllllll.............r",
-                "rrrbblrbbttttllllbbbrbbblllttrltt......."
-            ]
-        }
-    ]
-}
-,
-{   "title": "Shields Up!",
-    "author": "Reinhard",
-    "difficulty": 5,
-    "category": 3,
-    "loot": 56,
-    "map":
-    [   "#################",
-        "$  #..**.*.....E#",
-        "'  #...$$...0...#",
-        "#($#.*....0..0..#",
-        "#:3#...$..00..*.#",
-        "#:##.......$....#",
-        "# ....$.$00.$...#",
-        "# ###############",
-        "# #.Q..0Q00Q.0..#",
-        "# #$..Q._..000..#",
-        "# #.(..$Q.._....#",
-        "# #..*000**.Q$..#",
-        "# #.$.$ $$ (.0.1#",
-        "#...00....*.00..#",
-        "#...*...$$.*.*$.#",
-        "#...00$0..0.Q...#",
-        "#*...**..$.*.._.#",
-        "#################"
-    ],
-    "demos":
-    [   {   "title": "untitled",
-            "randomseed": 69603,
-            "moves":
-            [   "...t.ll.rr..b.bbll.rrrtt.lllll......bbr.",
-                ".lll..ll..........llll.b......b.L..rrrrt",
-                "..brrrrr...ttr...tttt.blll..........rr..",
-                "............rttl.brbll..tl..rr.bbbblllll",
-                "l.ttttlllt.bbbbrrr.t.t.r.t.r.......rrbbl",
-                "lrrt.llll.bllttrbb.rb.llblltbrrt.l.b..t.",
-                "............................lblttttttttt",
-                "tttr...rrrtttttrrrrbllbbbbrllrrtrrrrbrrt",
-                "tttt.r......."
-            ]
-        }
-    ]
-}
-,
 {   "title": "Sisyphus",
     "author": "Reinhard",
     "difficulty": 5,
@@ -1045,7 +831,7 @@
 {   "title": "Bombon",
     "author": "J\u00fcrgen",
     "difficulty": 5,
-    "category": 5,
+    "category": 3,
     "loot": 14,
     "map":
     [   "#################",
@@ -1087,7 +873,7 @@
 {   "title": "Mining",
     "author": "J\u00fcrgen",
     "difficulty": 6,
-    "category": 1,
+    "category": 6,
     "loot": 16,
     "map":
     [   "####################",

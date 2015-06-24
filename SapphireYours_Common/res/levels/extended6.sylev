@@ -1,4 +1,162 @@
 [
+{   "title": "Big Welcome",
+    "author": "Reinhard",
+    "difficulty": 4,
+    "category": 6,
+    "loot": 10,
+    "map":
+    [   "#############",
+        "#........E..#",
+        "#...........#",
+        "#....0*0*0..#",
+        "#....*0*0*..#",
+        "#....0*0*0..#",
+        "#.1..*0*0*..#",
+        "#...........#",
+        "#...........#",
+        "#############"
+    ],
+    "demos":
+    [   {   
+            "randomseed": 568393,
+            "moves":
+            [   "...rrr.l.t.rrl...lttrrbtrtrrbll.rbrrbbll",
+                "bll..tttrrrbllr..bttttt......."
+            ]
+        }
+    ]
+}
+,
+{   "title": "The Clou",
+    "author": "Ronald",
+    "difficulty": 5,
+    "category": 3,
+    "loot": 5,
+    "map":
+    [   "    #######",
+        "    #  1  E",
+        "    # _ Q #",
+        " ###### ###",
+        " #0 7 # ## ",
+        " #. Q # .# ",
+        " #  ##...# ",
+        " #  + .. # ",
+        "#&[+Q    # ",
+        "#&  +    # ",
+        "#&  &##### ",
+        " ##a#      ",
+        "   #       "
+    ],
+    "demos":
+    [   {   "title": "untitled",
+            "randomseed": 477772,
+            "moves":
+            [   "....bbbbbbt.lrttttttllbrtrbbbbbtttttrrbl",
+                ".l..bbbrbl...r..lbrbl......tl..........r",
+                "bbltrr............llll.bbt..rrrtttlbrbll",
+                "l.tl..bttt.l....r.......bbbrbbllrrtttltt",
+                "trrbl.....l.....bbbbblltrrrrrrrtttlttttt",
+                "rrrr......"
+            ]
+        }
+    ]
+}
+,
+{   "title": "Puzzle in a Puzzle",
+    "author": "Ronald",
+    "difficulty": 6,
+    "category": 2,
+    "loot": 44,
+    "swamprate": 3,
+    "map":
+    [   "+++++++++++++++++++++++   ",
+        "+   +    ++000 +.*.*. +   ",
+        "+8+ B    B0.b. Y..... +   ",
+        "+   +a a +$$$$++..... +   ",
+        "++B+++a+a++++++++++*_ +   ",
+        "+   +     7      7+._ +   ",
+        "+.0.+  ########## +___+   ",
+        "+0@.+6     5    # + _ +   ",
+        "+@0.+  8+++++++6# +u u+   ",
+        "+0@.+   + Y Y + # +   +   ",
+        "+@0.+   + _ #E+ # +___++++",
+        "+0@.+   G #o##+ # +   Yy1+",
+        "+*0.+   +*###*+ #8++++++++",
+        "+.@.+  8+*****+ # G .*+   ",
+        "+...+   +++++++6# + .*+   ",
+        "+.r.+6    7     # + .++   ",
+        "+...+  ########## + .*+   ",
+        "++R++    5      5 + .*+   ",
+        "+# .+++++++++++++++ .*+   ",
+        "+u0.                .++   ",
+        "+ | .................*+   ",
+        "+g ++**+****+***+**+**+   ",
+        "+++++++++++++++++++++++   "
+    ],
+    "demos":
+    [   {   "title": "untitled",
+            "randomseed": 51044,
+            "moves":
+            [   "........l.ll..l.t.brt....t.rttttttll.Btt",
+                "lllbll..bl..t.b.llr.tllll..l..l.t.ll.bbr",
+                ".b.r...bbbbbbbbbbBl...R.t.R...t.....r...",
+                "..l.tl....bbbbrb....r.....b....rrrrrbbrr",
+                "rrtl..bttll.b.rlllbltltlllbbttrrrrrrrrbb",
+                "b...........tllll.l...rrrrrrrrrbrrtrrbrt",
+                "rrbrtlttrttlttrtll.....l..bbbbllllllllll",
+                "llttttttrrrr.bbrrrrtblllltttr..bbb..tttr",
+                ".ltrrr.b......."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Gunjack",
+    "author": "Ronald",
+    "difficulty": 8,
+    "category": 6,
+    "loot": 238,
+    "swamprate": 0,
+    "map":
+    [   "########################################",
+        "#############**$*$*$**                 #",
+        "#++++++++++++**$$***$$*                #",
+        "# ###########**$*$*$*$**               #",
+        "#            #*$*$*$$***$              #",
+        "#            #$$**$**$*$*$             #",
+        "#    E       #*$***$$$*$**$      1     #",
+        "#            #*$*$**$$*$*$*$     ]     #",
+        "##############*$**$*$$$$**$*$          #",
+        "#$++++++++++$#$*$**$$$***$*$*$         #",
+        "#' .        :#***$*$**$$$*$*$$*  #######",
+        "#C           #**$$$*$**$*****$*$   *#  #",
+        "#D           #***$*$$**$*$*$*$*$# *$ * #",
+        "#F           #$$*$***$*$*$**$$$*#****$*#",
+        "::::::::::::*:::::::::::::::::::::::::*#"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 3774,
+            "moves":
+            [   "..blll...bb....b...................l....",
+                ".....bl..l.l.l.lll...tttttttrrrrb..rrb..",
+                "...tll..ll...l..............brBt.bBt.ltl",
+                "llrrrrbbbltllBr.llBr.tltlttc.rbbl.Btlrmt",
+                "....tm....blL...rtl.tll.llbrrtrrrrrrbbbb",
+                "brrrrrrrr...lll.................rrrrbbbb",
+                "utl........r..r.............bbut......ll",
+                "lBrbbLrrlrBlB.lB..........ttl.llllll.tll",
+                "llllll.RRRRRRRRRRRRRRRRRRrrbbbbbbrrrrrrr",
+                "..lllllllll..rrrrrrrrrr..llllllllll..rrr",
+                "rrrrrrr..llllll...rrrrttttrrr.trrr.lbb.r",
+                "..bllll.rr..rbllllbrrrlllllllltllllbrrrr",
+                "ttttttttttllllltllllllllllllbbbbbbbbrrrr",
+                "...tt........"
+            ]
+        }
+    ]
+}
+,
 {   "title": "Factory",
     "author": "Reinhard",
     "difficulty": 4,
@@ -39,40 +197,10 @@
     ]
 }
 ,
-{   "title": "Dark Walls",
-    "author": "Reinhard",
-    "difficulty": 2,
-    "category": 1,
-    "loot": 5,
-    "map":
-    [   "###############",
-        "# i   *      E#",
-        "# i iiiiiiiiii#",
-        "# i i i *  i  #",
-        "# i*  i ii i *#",
-        "# ii ii  i i i#",
-        "# *    i i i  #",
-        "#iiii ii i ii #",
-        "#1       i    #",
-        "###############"
-    ],
-    "demos":
-    [   {   
-            "randomseed": 299630,
-            "moves":
-            [   "..rrrrttlllttltttttbbbbbrrrrbbrrrtttlttr",
-                "rrbbbbbrrrttlttrlbbrbbllltttttlllbbrbbbl",
-                "llttlttltttrrrrrrrrr..ml........rrrrr...",
-                "...."
-            ]
-        }
-    ]
-}
-,
 {   "title": "Supermarket",
     "author": "Reinhard",
-    "difficulty": 1,
-    "category": 1,
+    "difficulty": 2,
+    "category": 0,
     "loot": 16,
     "map":
     [   "###############",
@@ -104,7 +232,7 @@
     "author": "Ronald",
     "hint": "This game is nearly the same as 'Boulder problem'. It differs only in one detail.",
     "difficulty": 6,
-    "category": 5,
+    "category": 4,
     "loot": 12,
     "map":
     [   "  ############ ",
@@ -141,42 +269,11 @@
     ]
 }
 ,
-{   "title": "Converter",
-    "author": "Ronald",
-    "hint": "As the gems you have are not sufficient to solve the game, you have to increase their value.",
-    "difficulty": 3,
-    "category": 5,
-    "loot": 39,
-    "map":
-    [   "################",
-        "#E    0$$      #",
-        "#   10000$     #",
-        "#   00*****    #",
-        "#  *******00   #",
-        "#  .........   #",
-        "#              #",
-        "#  ccccccccc   #",
-        "#              #",
-        "#              #",
-        "################"
-    ],
-    "demos":
-    [   {   "title": "Demo 1",
-            "randomseed": 12010,
-            "moves":
-            [   "....llbbbrrrrrrrrrr.llllbtllllllbbbrrrrr",
-                "rrrrblllltllblllrrrrllllttttttttl.......",
-                "..."
-            ]
-        }
-    ]
-}
-,
 {   "title": "Disney Land",
     "author": "Ronald",
     "hint": "Nothing to do wrong in this level. Just keep going until everyting is done.",
-    "difficulty": 1,
-    "category": 2,
+    "difficulty": 2,
+    "category": 0,
     "loot": 34,
     "map":
     [   "..................................................",
@@ -249,7 +346,7 @@
     "author": "Ronald",
     "hint": "You can re-construct the scenery in order to get an emerald jam. Find this 'hot spot' and solve the level.",
     "difficulty": 6,
-    "category": 5,
+    "category": 6,
     "loot": 5,
     "map":
     [   "#######",
@@ -356,7 +453,7 @@
     "author": "Ronald",
     "hint": "The name of this level cannot be properly explained. It has just something to do with strange stone abuse.",
     "difficulty": 8,
-    "category": 6,
+    "category": 4,
     "loot": 15,
     "map":
     [   "#######################",
@@ -434,55 +531,12 @@
     ]
 }
 ,
-{   "title": "Rolling Stairs",
-    "author": "Ronald",
-    "hint": "Can you block an avalanche with your body only?",
-    "difficulty": 5,
-    "category": 4,
-    "loot": 1,
-    "map":
-    [   "###########",
-        "#000000000#",
-        "#+00000000#",
-        "# +0000000#",
-        "#  +000000#",
-        "#   +00000#",
-        "#    +0000#",
-        "#     +000#",
-        "#      +00#",
-        "#       +0#",
-        "#         #",
-        "#         #",
-        "#         #",
-        "#         #",
-        "#         #",
-        "#         #",
-        "#        |#",
-        "#       | #",
-        "#      |  #",
-        "#     |   #",
-        "# 1  |    #",
-        "#   |     #",
-        "#  a      #",
-        "# @E      #",
-        "###########"
-    ],
-    "demos":
-    [   {   
-            "randomseed": 957233,
-            "moves":
-            [   "......................r.................",
-                ".bllbbbb.......rr......."
-            ]
-        }
-    ]
-}
-,
 {
     "title": "Still Useful",
     "difficulty": 7,
     "author": "J\u00fcrgen B.",
     "loot": 6,
+	"category": 4,
     "hint": "The robot is very useful. Don't damage it too early.",
     "map": 
     [   "#################",
@@ -513,40 +567,187 @@
     ]
 }
 ,
-{
-    "title": "Four Cushions",
-    "difficulty": 6,
-    "author": "J\u00fcrgen B.",
-    "loot": 4,
-    "map": 
-    [   "##################",
-        "#                #",
-        "# 0  QQ          #",
-        "# .....   ### 0  #",
-        "# ....#s##1  ##  #",
-        "# .. (   #__ #S# #",
-        "# .# .#     R .# #",
-        "# .#_ # r _###.  #",
-        "#     ##   #  #  #",
-        "# .##: E#c#      #",
-        "#       # #    # #",
-        "# @  &         #a#",
-        "#00000000000000###"
+{   "title": "Firewall",
+    "author": "Ronald",
+    "difficulty": 7,
+    "category": 6,
+    "loot": 10,
+    "map":
+    [   "          #############################",
+        "          #.......Q....Q..............#",
+        "          #...(..............Q._...Q..#",
+        "          #.....Q.._...._.Q......._...#",
+        "          #..(......(..........Q(...(.#",
+        "          #...._...Q.._.(.._......._..#",
+        "          #......................(....#",
+        "          #................(..........#",
+        "          #...........................#",
+        "          #..............1............#",
+        "          #*....+..+..+..+..+..+..+..+#",
+        "          #:.###!##!##!##!##!##!##!##!#",
+        "          #:.#..#!#!#!#!#!#!#!#!#!#!#!#",
+        "          #:.#...#!#!#!#!#!#!#!#!#!#!##",
+        "          #:.#....#!#!#!#!#!#!#!#!#!#.#",
+        "          #:.#.....#!#!#!#!#!#!#!#!#..#",
+        "          #:.#......#!#!#!#!#!#!#!#...#",
+        "          #:.#.......#!#!#!#!#!#!#....#",
+        "          #:.#......E.#!#!#!#!#!#.....#",
+        "          #:.#QQQQQQQQ.#!#!#!#!#......#",
+        "          #:.#QQQQQQQQ..#!#!#!#.......#",
+        "          #*.............#!#!#........#",
+        "          #:.#############Q!#.........#",
+        "          #:...............#..........#",
+        "          #############################"
+    ],
+    "demos":
+    [   {   "title": "untitled",
+            "randomseed": 335388,
+            "moves":
+            [   "...llllllllllbl.t.ttt..b.brttrt..bllttr.",
+                "bb.rb.l.r.b.rrrrrrtt.rttlbbb.rblllllll..",
+                "..........r.ltt....bbbll......t.lt..trrb",
+                "l.ttll.....rr.llbb.r.trrrb..rrrrrrrrr..r",
+                "....bll.rrttt.brr..tt.l.br.bl.tl...lbt.r",
+                "rbl.tl.brblllllllll.tlbb.rbbttt.bbbrtttl",
+                "ltll.ttt.lbbb................b.trrrbbrrr",
+                "rb..bt..ttttr..rbbbbrbrt..tllltllllltlll",
+                "bb..brrrrrrrrrttr......blbrtr.ttr......b",
+                "bb.rbrt..lltllbrrr.t.rr....br.brt..lt.ll",
+                "lbrrrtrrb.tllbr..trrb..brt.tlllbr.....tr",
+                "r.ltt.lb.lr.rbrbblt..tlllllllllllllbllll",
+                "ltrrrrrrrrrrrrrrrrlllllllllllllllll.ttr.",
+                "bblbrrrrrrrrrrrrrrrr..br.t.ltt..rt.r...l",
+                "lttr.t.rrr.bbr..bbb.l.bll.t.brttbbrr.ttt",
+                "tll.............rtllb.t..........rr.l..b",
+                "lb.l.blb.rrr...t.rr...........lrrbrrbbll",
+                "brttlltllbrrr.trttr..........l..b...b...",
+                "....bb.ttttttttllb.r...rbbbb..b.lll.....",
+                ".l..bl...rr.ttrrrt....tlbbrblltlbbb.t.l.",
+                "ltt...b.rr.llllttt.r............b..trrrb",
+                "bll..tlbbbbttttttttllb..r...bbbbblrrrrtt",
+                "ttlbbbrblllltlbbb.tttttttllbr..rrrrrrttl",
+                "bbbbrb.lllllll.tlbbbb.ttttt...r..llt.r.t",
+                "tbb..llltt.rrr..rrbb.bbbrbllll.tlbb.....",
+                "rblb.ttllbrtr.b.tttt.ttttllrrbbb.bbbllll",
+                "lllttttttrrrrrrr.....lllllbb.trrr.b.trrb",
+                ".l.bltrtllltlbbbbbbbbtttttttrrbl.r..rbbb",
+                "b.rrrrrrrrrrrrrrrrrttttllllllllllllllllt",
+                "lbbbbbbbtttttrrbl..llllllbbbl.bb.rl.bbbb",
+                "bbbbbb..b.r.l.bbrrrrrrrrrrrrrr.ll.......",
+                "...................lllllllllllltlltlrttt",
+                "ttttttttlrrrrrrrrrrrrrrrrrrrrrrrrlllllll",
+                "llllllllllllllllbbbbbbbbbbbrrrrrrrrttt..",
+                "....."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Revolver",
+    "author": "Alexander",
+    "difficulty": 5,
+    "category": 2,
+    "loot": 0,
+    "map":
+    [   "[[[[[[[[[[[[[[[[[[[[[[[",
+        "[    5           5    [",
+        "[ #  #  # 8#  #  #  #6[",
+        "[ 7     7     7       [",
+        "[r###################R[",
+        "[          1#E        [",
+        "[[[[[[[[[[[[[[[[[[[[[[["
+    ],
+    "demos":
+    [   {   "title": "Lorrivoid",
+            "randomseed": 74074,
+            "moves":
+            [   "llllllllll...tt.r.rr..r.rr..rrrr....rr.r",
+                "..r.rrrr..rrbllllllll......."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Fallout",
+    "author": "Ronald",
+    "difficulty": 8,
+    "category": 2,
+    "loot": 14,
+    "map":
+    [   "###############",
+        "#*#*#*#0#*#*#(#",
+        "#*#*#*#$#*#*#*#",
+        "#+#+#+#+#+#+#+#",
+        "#             #",
+        "#             #",
+        "#             #",
+        "#    1]]      #",
+        "#             #",
+        "#QQQQQQQQQQQQE#",
+        "###############"
     ],
     "demos":
     [   {   
-            "randomseed": 98581,
+            "randomseed": 976698,
             "moves":
-            [   "btrrblbllbllttrbbtrrrttlbrbllbbrttlblltt",
-                "rblbrtrrrttlbrblllbltrtlrbrrblltrrrrrbrb",
-                "bllllbbllllltlllltttttrrbbrblrttltrttbbb",
-                "l.t.....bbblrtttlllbbbbrtttltrrrbrtllllt",
-                "ttrrrtrrrblllbtrrBllbrr.llbbrtlttrrbltlb",
-                "rbbllltttrbb.brttltrrrrrrrrrrrtrbbrbbbbbb",
-                "lllllbblltttttlltllbltttltrrrrrrrrrrrrtr",
-                "bbbbbblbblllbbllllllllltllbrrrrrrrrrrrrl",
-                "lllllllllltttrrrtttttrrrrrtrrrrbrrrr.bbbb",
-                "bblllbbbtlllblllltt......."
+            [   "...rrrrrrrrtttcbb...mltttr..rblltcbb....",
+                "srttl....llltcbb....srt....tlllllltsrbbl",
+                "lsrtt...lltbllcbb....srtt....llltlcb...s",
+                "rtlll..tlltbrrrrbrtrlsr.....cbbl...stlll",
+                "l......brrrrrrrrrbb......."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Some more converting",
+    "author": "Alexander",
+    "hint": "Getting the emeralds out of the rock is quite simple. But to feed them to the converter leads to some trouble.",
+    "difficulty": 5,
+    "category": 5,
+    "loot": 7,
+    "map":
+    [   "#####",
+        "# &E#",
+        "# ! #",
+        "#(1&#",
+        "#Q..#",
+        "#0.&#",
+        "#.. #",
+        "#   #",
+        "# + #",
+        "#c.c#",
+        "#.. #",
+        "#####"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 7208,
+            "moves":
+            [   "tbbbbl....tttrbb.but.........bbbbbbRLRLt",
+                "ttttttttrr....rr"
+            ]
+        }
+    ]
+}
+,
+{   "title": "Rock on Rails",
+    "author": "Alexander",
+    "difficulty": 5,
+    "category": 5,
+    "loot": 1,
+    "map":
+    [   "###############",
+        "#           01#",
+        "#       5   ###",
+        "###E@##########"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 77394,
+            "moves":
+            [   ".......................llllllll..blb..l.",
+                "......."
             ]
         }
     ]

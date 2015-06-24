@@ -2,7 +2,7 @@
 {   "title": "Basic Mining II",
     "author": "Alexander",
     "difficulty": 1,
-    "category": 1,
+    "category": 0,
     "loot": 9,
     "swamprate": 150,
     "time": 70,
@@ -41,7 +41,7 @@
 {   "title": "Elevators",
     "author": "Reinhard",
     "difficulty": 2,
-    "category": 0,
+    "category": 5,
     "loot": 1,
     "time": 50,
     "map":
@@ -66,7 +66,7 @@
 {   "title": "Convertibles",
     "author": "Reinhard",
     "difficulty": 2,
-    "category": 1,
+    "category": 5,
     "loot": 26,
     "time": 200,
     "map":
@@ -101,7 +101,7 @@
 {   "title": "Pillow Fight",
     "author": "Ronald",
     "difficulty": 2,
-    "category": 1,
+    "category": 0,
     "loot": 0,
     "time": 80,
     "map":
@@ -136,7 +136,7 @@
 {   "title": "Blocked Gate",
     "author": "Reinhard",
     "difficulty": 2,
-    "category": 1,
+    "category": 4,
     "loot": 4,
     "time": 100,
     "map":
@@ -209,7 +209,7 @@
 {   "title": "Triangle",
     "author": "Anica",
     "difficulty": 2,
-    "category": 3,
+    "category": 0,
     "loot": 68,
     "time": 170,
     "map":
@@ -244,7 +244,7 @@
 {   "title": "Ruby Lasers",
     "author": "Reinhard",
     "difficulty": 3,
-    "category": 0,
+    "category": 5,
     "loot": 1,
     "time": 60,
     "map":
@@ -300,7 +300,7 @@
 {   "title": "Yoghurt",
     "author": "Reinhard",
     "difficulty": 3,
-    "category": 5,
+    "category": 0,
     "loot": 8,
     "time": 130,
     "map":
@@ -335,7 +335,7 @@
 {   "title": "Ripple Carry",
     "author": "Reinhard",
     "difficulty": 3,
-    "category": 0,
+    "category": 5,
     "loot": 2,
     "time": 150,
     "map":
@@ -362,7 +362,7 @@
 {   "title": "Drain",
     "author": "Alexander",
     "difficulty": 3,
-    "category": 5,
+    "category": 4,
     "loot": 2,
     "time": 100,
     "map":
@@ -395,7 +395,7 @@
 {   "title": "Blackout",
     "author": "Ronald",
     "difficulty": 3,
-    "category": 6,
+    "category": 3,
     "loot": 11,
     "time": 100,
     "map":
@@ -427,7 +427,7 @@
 {   "title": "Gravel Pit",
     "author": "Reinhard",
     "difficulty": 4,
-    "category": 5,
+    "category": 6,
     "loot": 1,
     "time": 600,
     "map":
@@ -468,7 +468,7 @@
 {   "title": "Under Fire",
     "author": "Reinhard",
     "difficulty": 4,
-    "category": 6,
+    "category": 3,
     "loot": 36,
     "time": 200,
     "map":
@@ -528,7 +528,7 @@
 {   "title": "Trigger Happy",
     "author": "Reinhard",
     "difficulty": 4,
-    "category": 5,
+    "category": 6,
     "loot": 7,
     "time": 250,
     "map":
@@ -540,7 +540,7 @@
         "#...&.......#",
         "#......&....#",
         "#1..........#",
-        "#E....'.....#",
+        "#E....C.....#",
         "#############"
     ],
     "demos":
@@ -620,7 +620,7 @@
 {   "title": "Mellow Pillow",
     "author": "Erik",
     "difficulty": 5,
-    "category": 5,
+    "category": 4,
     "loot": 6,
     "time": 800,
     "map":

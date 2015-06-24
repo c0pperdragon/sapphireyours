@@ -1,36 +1,8 @@
 [
-{   "title": "No Dynamite to Waste",
-    "author": "Reinhard",
-    "difficulty": 4,
-    "category": 0,
-    "loot": 26,
-    "time": 200,
-    "map":
-    [   "###########",
-        "#E1!!!!!!!#",
-        "#&&&&&&&&&#",
-        "#&&&&&&&&&#",
-        "#&&&&&+&&&#",
-        "###########"
-    ],
-    "demos":
-    [   {   "title": "untitled",
-            "randomseed": 780270,
-            "moves":
-            [   "...rrrrrrrrllllll..r..srr......llbllbll.",
-                ".srt......b....lblltb.srrttrr....r......",
-                ".mll.llblbrrbllrrtr..urrrr..lrr..l..mlbb",
-                "ll....trrrrrr.ml............rrrblltlllll",
-                "lttl......"
-            ]
-        }
-    ]
-}
-,
 {   "title": "The Doors",
     "author": "Reinhard",
     "difficulty": 4,
-    "category": 2,
+    "category": 1,
     "loot": 3,
     "time": 150,
     "map":
@@ -69,7 +41,7 @@
 {   "title": "Emerald",
     "author": "Reinhard",
     "difficulty": 4,
-    "category": 6,
+    "category": 2,
     "loot": 90,
     "time": 200,
     "map":
@@ -100,45 +72,10 @@
     ]
 }
 ,
-{   "title": "The Far Side",
-    "author": "Thomas",
-    "difficulty": 4,
-    "category": 5,
-    "loot": 13,
-    "time": 110,
-    "map":
-    [   "#####",
-        "#1#0#",
-        "#.#*#",
-        "#..*#",
-        "#..*#",
-        "###*#",
-        "#.#*#",
-        "#.@*#",
-        "#..*#",
-        "#..*#",
-        "#.#*#",
-        "#.#*#",
-        "#.#$#",
-        "#.###",
-        "#..E#",
-        "#####"
-    ],
-    "demos":
-    [   {   "title": "Demo 1",
-            "randomseed": 13252,
-            "moves":
-            [   "...bbbrrbbbbl......l...b........R...t.R.",
-                "..b.rr.tbbbbttttllbbbbbbrrr........."
-            ]
-        }
-    ]
-}
-,
 {   "title": "Tiny Trick",
     "author": "J\u00fcrgen",
     "difficulty": 4,
-    "category": 6,
+    "category": 2,
     "loot": 2,
     "time": 30,
     "map":
@@ -160,7 +97,7 @@
 {   "title": "Empire State Building",
     "author": "Reinhard",
     "difficulty": 5,
-    "category": 1,
+    "category": 4,
     "loot": 1,
     "time": 200,
     "map":
@@ -207,45 +144,10 @@
     ]
 }
 ,
-{   "title": "Three Choices",
-    "author": "Reinhard",
-    "difficulty": 5,
-    "category": 1,
-    "loot": 23,
-    "time": 250,
-    "map":
-    [   "#################",
-        "#$..0........*..#",
-        "#..........*..0.#",
-        "#.*....+.+......#",
-        "#....0.+u+....$.#",
-        "#....$.+.+......#",
-        "#0.++0++.++Q++..#",
-        "#..............*#",
-        "#..+++++.++E++..#",
-        "#......+.+......#",
-        "#.*....+.+....0.#",
-        "#...*..+1+..*...#",
-        "#################"
-    ],
-    "demos":
-    [   {   "title": "Fourth possibility",
-            "randomseed": 87108,
-            "moves":
-            [   "...tttt.llrrt.......Tbbb....tttttttrrrbb",
-                "...rb.rrtt...........rtt.ll.rrbbblllbrrr",
-                "bllrrbbbbbllltrrttttttttllllllllbllllttl",
-                "bbbbrrrrlllbbbbbbrrllttttrrrrrrrrrb.....",
-                "..."
-            ]
-        }
-    ]
-}
-,
 {   "title": "Capture",
     "author": "Reinhard",
     "difficulty": 5,
-    "category": 4,
+    "category": 3,
     "loot": 21,
     "swamprate": 8,
     "time": 400,
@@ -294,7 +196,7 @@
 {   "title": "Inaccessible",
     "author": "Reinhard",
     "difficulty": 5,
-    "category": 7,
+    "category": 4,
     "loot": 44,
     "time": 700,
     "map":
@@ -339,7 +241,7 @@
 {   "title": "Escape",
     "author": "Reinhard",
     "difficulty": 6,
-    "category": 1,
+    "category": 4,
     "loot": 6,
     "map":
     [   "##########",
@@ -367,7 +269,7 @@
 {   "title": "Deep Blue",
     "author": "Reinhard",
     "difficulty": 6,
-    "category": 6,
+    "category": 4,
     "loot": 106,
     "hint": "You must sacrifice one gem.",
     "map":
@@ -418,7 +320,7 @@
 {   "title": "Hour Glass",
     "author": "Reinhard",
     "difficulty": 6,
-    "category": 1,
+    "category": 6,
     "loot": 25,
     "map":
     [   "#############################",
@@ -458,38 +360,6 @@
     ]
 }
 ,
-{   "title": "Reflection",
-    "author": "Reinhard",
-    "difficulty": 6,
-    "category": 5,
-    "loot": 25,
-    "map":
-    [   "#####E###########",
-        "#1..+++...*.....#",
-        "#.....*.....$...#",
-        "#.$......*.*...*#",
-        "#...$.....$.....#",
-        "#...Q*..$...$...#",
-        "#.........*..$..#",
-        "#..***..........#",
-        "#....(..........#",
-        "#################"
-    ],
-    "demos":
-    [   {   "title": "Demo 1",
-            "randomseed": 11092,
-            "moves":
-            [   "...rrbb.....rr.bb.tt..b...r..b..bblllr.b",
-                "t.rr.tttttrrrr...B.ll.bbr..bbbl...t....l",
-                "l..bbrr.l.l.ttrrrt.r..l..tttr....rtrrbbb",
-                "l.t..bl......B..l..l..rrbrrbrrtttlllllll",
-                ".bbl.tttll.lllbbbbbbrrtt..l.........bbrr",
-                "tttrrrrrblblbllltttttttt........."
-            ]
-        }
-    ]
-}
-,
 {   "title": "System Shock",
     "author": "Reinhard",
     "difficulty": 6,
@@ -523,7 +393,7 @@
 {   "title": "Corner Stone",
     "author": "Reinhard",
     "difficulty": 7,
-    "category": 7,
+    "category": 6,
     "loot": 27,
     "map":
     [   "####################",
@@ -568,7 +438,7 @@
 {   "title": "Matrix",
     "author": "Reinhard",
     "difficulty": 7,
-    "category": 6,
+    "category": 2,
     "loot": 0,
     "map":
     [   ":::::$:$:$::::$",
@@ -583,9 +453,9 @@
         "*:           :*",
         ":#  [ [ [ [  #:",
         ":#           #'",
-        ":#1          #'",
-        ":####:#:#:####'",
-        "*::::*:*:*::::'"
+        ":#1          #C",
+        ":####:#:#:####D",
+        "*::::*:*:*::::F"
     ],
     "demos":
     [   {   "title": "Demo 1",
@@ -593,42 +463,6 @@
             "moves":
             [   "rrttb...rrt.b..rrt....rrbrltrbrtl...ttlr",
                 "...ttlr...ttttr........."
-            ]
-        }
-    ]
-}
-,
-{   "title": "The Guards",
-    "author": "Reinhard",
-    "difficulty": 8,
-    "category": 6,
-    "loot": 7,
-    "map":
-    [   "    ####     ",
-        "   ##.*##    ",
-        "  ##Q...##   ",
-        " ##0.....##  ",
-        "##.E...*..## ",
-        "#*.........# ",
-        "#......*...# ",
-        "#.**.......# ",
-        "#1.........# ",
-        "##### ####.# ",
-        "## 5   5 #.# ",
-        "##8#6 8#6#.# ",
-        "## 7   7 #.# ",
-        "##### ####.# ",
-        "#E.*000!...# ",
-        "############ "
-    ],
-    "demos":
-    [   {   "title": "Demo 1",
-            "randomseed": 4678,
-            "moves":
-            [   "..rrrrrrrrrbbbbbblllrrrttttttllllltttttt",
-                "bbbll....stt..rrr...bbb.ttttlt.bbbblllll",
-                "bbbrrr.trrr..ltttrrrbbbbrbbbbbblllllllll",
-                "......."
             ]
         }
     ]
@@ -671,7 +505,7 @@
 {   "title": "Shortcut",
     "author": "Reinhard",
     "difficulty": 8,
-    "category": 7,
+    "category": 6,
     "loot": 16,
     "map":
     [   "####################",
@@ -709,7 +543,7 @@
 {   "title": "Level 42",
     "author": "J\u00fcrgen",
     "difficulty": 9,
-    "category": 2,
+    "category": 1,
     "loot": 42,
     "swamprate": 42,
     "map":
@@ -802,7 +636,7 @@
 {   "title": "Force",
     "author": "Ronald",
     "difficulty": 3,
-    "category": 4,
+    "category": 3,
     "loot": 18,
     "swamprate": 0,
     "time": 300,
@@ -838,10 +672,10 @@
     ]
 }
 ,
-{   "title": "PacMan",
+{   "title": "Pac Man",
     "author": "Reinhard",
     "difficulty": 5,
-    "category": 5,
+    "category": 3,
     "loot": 28,
     "time": 300,
     "map":
@@ -891,7 +725,7 @@
 {   "title": "Hard Mining",
     "author": "Reinhard",
     "difficulty": 4,
-    "category": 5,
+    "category": 6,
     "loot": 13,
     "time": 450,
     "map":
@@ -930,7 +764,7 @@
 {   "title": "London Bridge II",
     "author": "Reinhard",
     "difficulty": 4,
-    "category": 1,
+    "category": 6,
     "loot": 2,
     "time": 400,
     "map":
@@ -966,7 +800,7 @@
 {   "title": "Maze",
     "author": "Reinhard",
     "difficulty": 4,
-    "category": 2,
+    "category": 1,
     "loot": 14,
     "swamprate": 125,
     "time": 1500,

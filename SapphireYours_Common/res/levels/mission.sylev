@@ -2,7 +2,7 @@
 {   "title": "Mission Possible I",
     "author": "J\u00fcrgen",
     "difficulty": 5,
-    "category": 5,
+    "category": 4,
     "loot": 1,
     "map":
     [   "#######",
@@ -31,7 +31,7 @@
 {   "title": "Mission Possible II",
     "author": "J\u00fcrgen",
     "difficulty": 5,
-    "category": 5,
+    "category": 4,
     "loot": 1,
     "map":
     [   "#######",
@@ -53,7 +53,7 @@
 {   "title": "Mission Possible III",
     "author": "J\u00fcrgen",
     "difficulty": 5,
-    "category": 5,
+    "category": 4,
     "loot": 1,
     "map":
     [   "#######",
@@ -76,7 +76,7 @@
 {   "title": "Mission Possible IV",
     "author": "J\u00fcrgen",
     "difficulty": 6,
-    "category": 5,
+    "category": 4,
     "loot": 1,
     "map":
     [   "#######",
@@ -99,7 +99,7 @@
 {   "title": "Mission Possible V",
     "author": "J\u00fcrgen",
     "difficulty": 6,
-    "category": 5,
+    "category": 4,
     "loot": 1,
     "map":
     [   "#######",
@@ -122,7 +122,7 @@
 {   "title": "Mission Possible VI",
     "author": "J\u00fcrgen",
     "difficulty": 6,
-    "category": 5,
+    "category": 4,
     "loot": 1,
     "map":
     [   "#######",
@@ -145,7 +145,7 @@
 {   "title": "Mission Possible VII",
     "author": "J\u00fcrgen",
     "difficulty": 6,
-    "category": 5,
+    "category": 4,
     "loot": 1,
     "map":
     [   "#######",
@@ -168,7 +168,7 @@
 {   "title": "Mission Possible VIII",
     "author": "J\u00fcrgen",
     "difficulty": 6,
-    "category": 5,
+    "category": 4,
     "loot": 1,
     "swamprate": 35,
     "map":
@@ -192,7 +192,7 @@
 {   "title": "Mission Possible IX",
     "author": "J\u00fcrgen",
     "difficulty": 6,
-    "category": 5,
+    "category": 4,
     "loot": 1,
     "map":
     [   "#######",
@@ -215,7 +215,7 @@
 {   "title": "Mission Possible X",
     "author": "J\u00fcrgen",
     "difficulty": 6,
-    "category": 5,
+    "category": 4,
     "loot": 1,
     "map":
     [   "#######",
@@ -237,7 +237,7 @@
 {   "title": "Mission Possible XI",
     "author": "Alexander",
     "difficulty": 6,
-    "category": 1,
+    "category": 4,
     "loot": 11,
     "map":
     [   "#######",
@@ -261,7 +261,7 @@
 {   "title": "Mission Possible XII",
     "author": "Ronald",
     "difficulty": 7,
-    "category": 5,
+    "category": 4,
     "loot": 2,
     "map":
     [   "#######",
@@ -283,7 +283,7 @@
 {   "title": "Mission Possible XIII",
     "author": "J\u00fcrgen",
     "difficulty": 7,
-    "category": 5,
+    "category": 4,
     "loot": 2,
     "map":
     [   "####0##",
@@ -306,7 +306,7 @@
 {   "title": "Mission Possible XIV",
     "author": "J\u00fcrgen",
     "difficulty": 8,
-    "category": 5,
+    "category": 4,
     "loot": 5,
     "map":
     [   "####(##",
@@ -330,7 +330,7 @@
 {   "title": "Mission Possible XV",
     "author": "J\u00fcrgen",
     "difficulty": 8,
-    "category": 5,
+    "category": 4,
     "loot": 3,
     "map":
     [   "+++++++",
@@ -352,14 +352,14 @@
 {   "title": "Mission Possible XVI",
     "author": "J\u00fcrgen",
     "difficulty": 8,
-    "category": 5,
+    "category": 4,
     "loot": 2,
     "map":
     [   "##.0.##",
         "#....0#",
         "#.1[[E#",
         "$:....#",
-        "'######"
+        "C######"
     ],
     "demos":
     [   {   "title": "untitled",
@@ -376,7 +376,7 @@
 {   "title": "Mission Possible XVII",
     "author": "J\u00fcrgen",
     "difficulty": 8,
-    "category": 5,
+    "category": 4,
     "loot": 3,
     "map":
     [   "#E###0#",
@@ -401,7 +401,7 @@
 {   "title": "Mission Possible XVIII",
     "author": "J\u00fcrgen",
     "difficulty": 8,
-    "category": 6,
+    "category": 4,
     "loot": 3,
     "map":
     [   "###E###",
@@ -424,7 +424,7 @@
 {   "title": "Mission Possible XIX",
     "author": "J\u00fcrgen",
     "difficulty": 8,
-    "category": 6,
+    "category": 4,
     "loot": 5,
     "map":
     [   "#&#*#&#",
@@ -447,7 +447,7 @@
 {   "title": "Mission Impossible",
     "author": "Reinhard",
     "difficulty": 8,
-    "category": 4,
+    "category": 3,
     "loot": 10,
     "map":
     [   "##############################",

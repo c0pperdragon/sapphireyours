@@ -3,7 +3,7 @@
 {   "title": "Introducing the Swamp",
     "author": "Reinhard",
     "difficulty": 2,
-    "category": 3,
+    "category": 2,
     "loot": 3,
     "map":
     [   "###############",
@@ -31,7 +31,7 @@
 {   "title": "Swamp Spreads",
     "author": "Reinhard",
     "difficulty": 2,
-    "category": 0,
+    "category": 2,
     "loot": 1,
     "swamprate": 1,
     "map":
@@ -55,7 +55,7 @@
 {   "title": "Four Way Mirror",
     "author": "Alexander",
     "difficulty": 2,
-    "category": 6,
+    "category": 0,
     "loot": 41,
     "swamprate": 20,
     "map":
@@ -91,7 +91,7 @@
 {   "title": "Beware of the Robot",
     "author": "Reinhard",
     "difficulty": 3,
-    "category": 0,
+    "category": 3,
     "loot": 0,
     "map":
     [   "iiiiiiiiiii",
@@ -114,7 +114,7 @@
 {   "title": "Lorries Follow Walls",
     "author": "Reinhard",
     "difficulty": 3,
-    "category": 0,
+    "category": 3,
     "loot": 1,
     "map":
     [   "iiiiiiiiiii",
@@ -164,7 +164,7 @@
 {   "title": "Sapphire Rain",
     "author": "Michi",
     "difficulty": 3,
-    "category": 3,
+    "category": 2,
     "loot": 314,
     "map":
     [   "######################",
@@ -282,7 +282,7 @@
 {   "title": "Monsters Hate the Swamp",
     "author": "Reinhard",
     "difficulty": 3,
-    "category": 4,
+    "category": 5,
     "loot": 3,
     "swamprate": 0,
     "map":
@@ -311,7 +311,7 @@
 {   "title": "Virulent Disease",
     "author": "Reinhard",
     "difficulty": 3,
-    "category": 3,
+    "category": 2,
     "loot": 11,
     "swamprate": 7,
     "map":
@@ -351,7 +351,7 @@
 {   "title": "Return of the Swamp",
     "author": "Ronald",
     "difficulty": 4,
-    "category": 4,
+    "category": 3,
     "loot": 6,
     "swamprate": 20,
     "map":
@@ -392,7 +392,7 @@
 {   "title": "Bugs Contain Gems",
     "author": "Reinhard",
     "difficulty": 4,
-    "category": 0,
+    "category": 3,
     "loot": 10,
     "map":
     [   "iiiiiiiiiii",
@@ -416,7 +416,7 @@
 {   "title": "Camels in the Zoo",
     "author": "Erik",
     "difficulty": 4,
-    "category": 2,
+    "category": 1,
     "loot": 30,
     "map":
     [   "########################################",
@@ -474,7 +474,7 @@
 {   "title": "Race Condition",
     "author": "Reinhard",
     "difficulty": 4,
-    "category": 4,
+    "category": 1,
     "loot": 18,
     "swamprate": 0,
     "map":
@@ -586,7 +586,7 @@
 {   "title": "Crunch",
     "author": "Alexander",
     "difficulty": 4,
-    "category": 4,
+    "category": 3,
     "loot": 4,
     "map":
     [   "###############",
@@ -621,7 +621,7 @@
 {   "title": "Kill the Yam-Yam-Beast",
     "author": "Reinhard",
     "difficulty": 5,
-    "category": 4,
+    "category": 3,
     "loot": 7,
     "map":
     [   "##########",
@@ -680,7 +680,7 @@
 {   "title": "Bugs in a Box",
     "author": "Reinhard",
     "difficulty": 5,
-    "category": 4,
+    "category": 3,
     "loot": 20,
     "map":
     [   "###############",

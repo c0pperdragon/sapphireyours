@@ -20,5 +20,10 @@
 			<type>2</type>
 			<location>C:/Users/Reinhard/Documents/GitHub/SapphireYours Code/SapphireYours/src</location>
 		</link>
+		<link>
+			<name>src_test</name>
+			<type>2</type>
+			<location>C:/Users/Reinhard/Documents/GitHub/SapphireYours Code/SapphireYours/test</location>
+		</link>
 	</linkedResources>
 </projectDescription>

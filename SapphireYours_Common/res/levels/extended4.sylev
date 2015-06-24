@@ -1,8 +1,39 @@
 [
+{   "title": "Converter",
+    "author": "Ronald",
+    "hint": "As the gems you have are not sufficient to solve the game, you have to increase their value.",
+    "difficulty": 3,
+    "category": 5,
+    "loot": 39,
+    "map":
+    [   "################",
+        "#E    0$$      #",
+        "#   10000$     #",
+        "#   00*****    #",
+        "#  *******00   #",
+        "#  .........   #",
+        "#              #",
+        "#  ccccccccc   #",
+        "#              #",
+        "#              #",
+        "################"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 12010,
+            "moves":
+            [   "....llbbbrrrrrrrrrr.llllbtllllllbbbrrrrr",
+                "rrrrblllltllblllrrrrllllttttttttl.......",
+                "..."
+            ]
+        }
+    ]
+}
+,
 {   "title": "Bag Field",
     "author": "Alexander",
     "difficulty": 6,
-    "category": 7,
+    "category": 6,
     "loot": 16,
     "swamprate": 100,
     "map":
@@ -47,7 +78,7 @@
     "author": "Alexander",
     "hint": "Time to sacrifice some gems.",
     "difficulty": 6,
-    "category": 4,
+    "category": 3,
     "loot": 19,
     "map":
     [   "###############",
@@ -78,7 +109,7 @@
 {   "title": "Run! Run! Run!",
     "author": "Ronald",
     "difficulty": 7,
-    "category": 3,
+    "category": 2,
     "loot": 2,
     "map":
     [   "#############################",
@@ -235,37 +266,10 @@
     ]
 }
 ,
-{   "title": "The Stack II",
-    "author": "J\u00fcrgen",
-    "difficulty": 8,
-    "category": 3,
-    "loot": 6,
-    "map":
-    [   "####Q#####",
-        "# 0 1QQQQ#",
-        "# . #####Q",
-        "# @.#QQQQ#",
-        "#.@ Q#####",
-        "# @.#QQQQ#",
-        "#.@ #####Q",
-        "# @.###QQ#",
-        "#.@ ..E..#",
-        "##########"
-    ],
-    "demos":
-    [   {   
-            "randomseed": 589713,
-            "moves":
-            [   "lbllbRbRbRbRbRbrrrrr......."
-            ]
-        }
-    ]
-}
-,
 {   "title": "Tea Time II",
     "author": "Ronald, J\u00fcrgen",
     "difficulty": 9,
-    "category": 6,
+    "category": 4,
     "loot": 305,
     "map":
     [   "#######################################################",
@@ -318,7 +322,7 @@
 {   "title": "War",
     "author": "Ronald",
     "difficulty": 6,
-    "category": 4,
+    "category": 3,
     "loot": 1,
     "swamprate": 20,
     "map":
@@ -354,7 +358,7 @@
 {   "title": "Guarding the Exit",
     "author": "Alexander",
     "difficulty": 5,
-    "category": 5,
+    "category": 4,
     "loot": 14,
     "map":
     [   "###############",
@@ -390,32 +394,10 @@
     ]
 }
 ,
-{   "title": "Growing Trap",
-    "author": "Alexander",
-    "difficulty": 3,
-    "category": 3,
-    "loot": 2,
-    "map":
-    [   "#######",
-        "#%...0#",
-        "#1.*..#",
-        "#E...^#",
-        "#######"
-    ],
-    "demos":
-    [   {   
-            "randomseed": 890292,
-            "moves":
-            [   "..rrr.Rl...rrbllll......."
-            ]
-        }
-    ]
-}
-,
 {   "title": "Drop Off",
     "author": "Alexander",
     "difficulty": 5,
-    "category": 6,
+    "category": 2,
     "loot": 1,
     "map":
     [   "#&#####",
@@ -493,85 +475,10 @@
     ]
 }
 ,
-{   "title": "Sinking Isle of Treasure",
-    "author": "Ronald",
-    "hint": "Apply your time bombs at the right places and the whole treasure will collect at the bottom.",
-    "difficulty": 2,
-    "category": 2,
-    "loot": 200,
-    "map":
-    [   "########################",
-        "#1#00000000000000000000#",
-        "#!#00000000000000000000#",
-        "#!#********************#",
-        "#!#********************#",
-        "#!#********************#",
-        "#!#********************#",
-        "# #++++++++++++++++++++#",
-        "# QQQQQQQQQQQQQQQQQQQQQ#",
-        "# +++++++++++++++++++++#",
-        "# #                    #",
-        "# #                    #",
-        "# #                    #",
-        "# #                    #",
-        "# #                    #",
-        "# #                    #",
-        "# #++++++++++++++++++++#",
-        "# QQQQQQQQQQQQQQQQQQQQQ#",
-        "# +++++++++++++++++++++#",
-        "# #                    #",
-        "# #                    #",
-        "# #                    #",
-        "# #                    #",
-        "# #                    #",
-        "# #                    #",
-        "# +++++++++++++++++++++#",
-        "# QQQQQQQQQQQQQQQQQQQQQ#",
-        "# +++++++++++++++++++++#",
-        "# #                    #",
-        "# #                    #",
-        "# #                    #",
-        "# #                    #",
-        "# #                    #",
-        "# #                    #",
-        "# +++++++++++++++++++++#",
-        "# QQQQQQQQQQQQQQQQQQQQQ#",
-        "# +++++++++++++++++++++#",
-        "# #                    #",
-        "# #                    #",
-        "# #                    #",
-        "# #                    #",
-        "# #                    #",
-        "# #                    #",
-        "# +++++++++++++++++++++#",
-        "# QQQQQQQQQQQQQQQQQQQQQ#",
-        "# #++++++++++++++++++++#",
-        "# #cccccccccccccccccccc#",
-        "# #                    #",
-        "# #                    #",
-        "#                      E",
-        "########################"
-    ],
-    "demos":
-    [   {   "title": "Demo 1",
-            "randomseed": 15305,
-            "moves":
-            [   "...bbbbbbbcbbbbbbbbcbbbbbbbbcbbbbbbbbcbb",
-                "bbbbbbcbb..t......bbb..r.......rrrrrrrrr",
-                "rrrrrrrrrrr..llllllllllllllllllll..rrrrr",
-                "rrrrrrrrrrrrrrr..lllllllllllllllllllll.t",
-                "tttt.r.lr.lbbbbbrrrrrrrrrrrrrrrrrrrrr...",
-                "l.t.bllllllllllllllllllTrrrrrrrrrrrrrrrr",
-                "rrrrr......."
-            ]
-        }
-    ]
-}
-,
 {   "title": "Help the Lorry",
     "author": "Alexander",
     "difficulty": 4,
-    "category": 1,
+    "category": 4,
     "loot": 8,
     "swamprate": 0,
     "map":
@@ -598,7 +505,7 @@
 {   "title": "Danger! Lorry Zone!",
     "author": "Alexander",
     "difficulty": 4,
-    "category": 1,
+    "category": 2,
     "loot": 0,
     "map":
     [   "#########E#####",
@@ -632,7 +539,7 @@
 {   "title": "Lots of Walls",
     "author": "Linda",
     "difficulty": 4,
-    "category": 4,
+    "category": 1,
     "loot": 47,
     "map":
     [   "#########################",
@@ -692,7 +599,7 @@
     "author": "Alexander",
     "hint": "You have to get only 22 sapphires out of the cube.",
     "difficulty": 5,
-    "category": 5,
+    "category": 6,
     "loot": 44,
     "map":
     [   "#############",
@@ -725,7 +632,7 @@
 {   "title": "Room of Stone",
     "author": "Alexander",
     "difficulty": 5,
-    "category": 7,
+    "category": 6,
     "loot": 16,
     "map":
     [   "++++++++++++++++++++",
@@ -770,54 +677,6 @@
     ]
 }
 ,
-{   "title": "Lorry Risks",
-    "author": "Alexander",
-    "difficulty": 6,
-    "category": 3,
-    "loot": 17,
-    "swamprate": 40,
-    "map":
-    [   "############################",
-        "#               #* **#.*..%#",
-        "# g         *6  ##Y###.....#",
-        "# 7         .   #..........#",
-        "#     1         #......$...#",
-        "#         y     #.......Q..#",
-        "#         7     #..........#",
-        "#  8.           Y.......&..#",
-        "#               #..$....*..#",
-        "#       b6      #..........#",
-        "#  r    7    8. #..........#",
-        "#  7          * #.........$#",
-        "#             . #..... ....#",
-        "#               ######R#####",
-        "#               E          #",
-        "#       #########        0 #",
-        "#  *    G       #    @.  . #",
-        "#  .  + #######R#   ..   7 #",
-        "#  7  7 #*  B        7     #",
-        "############################"
-    ],
-    "demos":
-    [   {   "title": "Demo 1",
-            "randomseed": 96935,
-            "moves":
-            [   "...ttl.r.l.lr....l.lLrrrr.bbb.......rr.R",
-                "ll..r...........bbbBtttt.t.....l.bl.....",
-                "..lllbllbl..b..bbbr.Rbbb...rrr..r.rbbbrr",
-                "rrrrrbbr..r..rrrrtl.brrrrtrr.t.L.bb.ll..",
-                "rr..llllllll....tt.....ttr..r.....rrttrr",
-                "rrtttll.rttllttttt.bbbbbbb.Rlllltttlttt.",
-                "lrrrllbbbbbl.llb..bbBttt.rtttttl..llllll",
-                "l..l...bb.l........llbll.bbbbbbbb.....rr",
-                "..bbBtt....rrr..r.....bbbrrrrrrrblllllrr",
-                "r",
-                "....rrrr.tttt......l........"
-            ]
-        }
-    ]
-}
-,
 {   "title": "Overroll",
     "author": "Alexander",
     "hint": "This looks somehow like a 'Mission Possible'. But you have no bombs to bridge the gap for the stone.",
@@ -838,74 +697,6 @@
             "randomseed": 11425,
             "moves":
             [   "....rrttt..lr.b.llll...lbb.t.r........"
-            ]
-        }
-    ]
-}
-,
-{   "title": "Poisonous Powder",
-    "author": "Alexander",
-    "difficulty": 6,
-    "category": 5,
-    "loot": 100,
-    "swamprate": 0,
-    "map":
-    [   "###########################",
-        "#E1                       #",
-        "#                         #",
-        "#    _   %    _        %  #",
-        "#    h        h     _     #",
-        "#                   h     #",
-        "#  %  %                   #",
-        "#        _   _            #",
-        "#        h   h         %  #",
-        "#                   _     #",
-        "#    _           %  h     #",
-        "#    h                    #",
-        "#                         #",
-        "#            _            #",
-        "#            h   _        #",
-        "#    _           h        #",
-        "#    h    %               #",
-        "#                    %    #",
-        "#  %           %       %  #",
-        "#                         #",
-        "#                         #",
-        "###########################"
-    ],
-    "demos":
-    [   {   "title": "Demo 2",
-            "randomseed": 12931,
-            "moves":
-            [   "...b.lbbbbbbbbbbbbbbb..tt..r............",
-                ".rrrrrllll......rrr...t.................",
-                "......rrbbbrrbllbrrblllrrrrrrrrrrrr.t.t.",
-                "llt...........tttt.bbbbrrr.....tttt..lll",
-                "tttt..........rrll.......rrrlll.....r.tt",
-                ".......lttt..........rrrll.......bbbbbbb",
-                "bbbb......rrrblblllbrrrrrtrrrbbbllltllll",
-                "lllbrrrrrrlllllllllltttt.lttttt..trrr...",
-                ".bbb..b..b.tt........bbbtt.....bbbbrrbll",
-                "lbrrrrtttttttttt......................bl",
-                "lllllb.llblll.........ttttbbb..ll.....tt",
-                "tt.....lttt.............bbbbbbr.........",
-                ".......................rrrrrrrt..l......",
-                "..........ttttbbll...........r.ttttt....",
-                "..tt..b.t........l.......ll.rr.......llb",
-                "btrrr......l.........llbbrrrb..tt..l....",
-                "......llrr.....rrbbbbblbllllllttltttrt.r",
-                "...........rrbbttrrr.bbb......llr..r....",
-                "lllrr.....l.bbbbbb.rrrbrrrrrrrrr.tttt...",
-                "........................l.l.............",
-                "...llllllllllllrrrbbbbbbbbbblllllbblbrrr",
-                "rrrrrrr.llllllllrrrrrttttttttttttttttll.",
-                "tlllb.........bbbbbbbbbbb.ttt....bbbbbbb",
-                "rlllbrrrrrrrrrrrrrrrrrr.ttttttrrtttttttt",
-                "tt..bbllllllllllttt...........rl........",
-                ".rrrrrrrrlll....l.ttrr..r........rrbbbbb",
-                "bbbbbbbblll....rrrrbbbbbrlllbrr....rrrll",
-                "lllllllllllllllllllllttttttttttttttttttt",
-                "........"
             ]
         }
     ]
@@ -1015,7 +806,7 @@
     "author": "Alexander",
     "hint": "Hide!",
     "difficulty": 4,
-    "category": 3,
+    "category": 0,
     "loot": 7,
     "swamprate": 0,
     "map":
