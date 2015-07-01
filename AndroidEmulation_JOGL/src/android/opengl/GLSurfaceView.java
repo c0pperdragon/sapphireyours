@@ -67,9 +67,9 @@ public class GLSurfaceView extends SurfaceView
 	{
 		if (rendermode!=mode)
 		{	rendermode = mode;
-			if (glWindow!=null)
-			{	updateAnimator();
-			}
+//			if (glWindow!=null)
+//			{	updateAnimator();
+//			}
 		}
 	}
 	
@@ -116,16 +116,19 @@ public class GLSurfaceView extends SurfaceView
         glWindow.addGLEventListener(new MyGLEventListener());
         glWindow.addMouseListener(new MyMouseListener());
         glWindow.addKeyListener(new MyKeyListener());    
-        glWindow.addWindowListener(new MyWindowListener());    
-        glWindow.display();	
+        glWindow.addWindowListener(new MyWindowListener());
         
-        updateAnimator();
-
-		for (;;)
-        {	try { Thread.sleep(1000000); } catch (InterruptedException e) {}        
-        }        
+        while (true)    
+        {
+        	glWindow.display();	
+        }
+//        updateAnimator();
+//
+//		for (;;)
+//        {	try { Thread.sleep(1000000); } catch (InterruptedException e) {}        
+//        }        
 	}
-
+/*
 	private void updateAnimator()
 	{	
 		if (!hasFocus)
@@ -146,7 +149,7 @@ public class GLSurfaceView extends SurfaceView
 			animator.start();
 		}
 	}
-	
+*/	
 	
 	// inner class to handle the JOGL render notifications
 	class MyGLEventListener implements GLEventListener
@@ -303,12 +306,12 @@ public class GLSurfaceView extends SurfaceView
 		public void	windowGainedFocus(WindowEvent e)
 		{
 			hasFocus = true;
-			updateAnimator();
+//			updateAnimator();
 		}
 		public void	windowLostFocus(WindowEvent e)
 		{
 			hasFocus = false;
-			updateAnimator();
+//			updateAnimator();
 		}
 		public void	windowMoved(WindowEvent e){}
 		public void	windowRepaint(WindowUpdateEvent e){}
