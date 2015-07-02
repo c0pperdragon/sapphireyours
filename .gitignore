@@ -3,5 +3,5 @@
 */bin/*
 *.tmp
 *.log
+build_encryptedpreviewer.bat
 sapphireyours_previewer.jar
-
