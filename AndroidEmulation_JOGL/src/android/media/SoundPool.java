@@ -1,16 +1,59 @@
 package android.media;
 
-import java.io.IOException;
 import java.util.Vector;
 
+import android.content.res.AssetFileDescriptor;
+
+import kuusisto.tinysound.TinySound;
+import kuusisto.tinysound.Sound;
+
+public class SoundPool 
+{
+	Vector<Sound> sounds;
+
+	public SoundPool(int maxStreams, int streamType, int srcQuality)
+	{
+		TinySound.init();
+	
+		sounds = new Vector<Sound>();
+	}
+	
+	public int load(AssetFileDescriptor afd, int priority)
+	{
+		Sound s = TinySound.loadSound(afd.getURL());
+		if (s==null)
+		{	return -1;
+		}
+		else
+		{	sounds.addElement(s);
+			return sounds.size()-1;
+		}
+	}
+
+	public final int play(int soundID, float leftVolume, float rightVolume, int priority, int loop, float rate)
+	{	
+		float vol = (rightVolume+leftVolume)/2.0f; 
+		if (vol<=0)
+		{	return 1;	// succeeded in not playing anything
+		}
+		
+		if (soundID>=0 && soundID<sounds.size())
+		{
+			sounds.elementAt(soundID).play(vol);
+			return 1;		
+		}
+		
+		return 0;
+	}	
+}
+
+/*
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip; 
 import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
-
-import android.content.res.AssetFileDescriptor;
 
 
 public class SoundPool 
@@ -90,3 +133,4 @@ public class SoundPool
 			
 	
 }
+*/

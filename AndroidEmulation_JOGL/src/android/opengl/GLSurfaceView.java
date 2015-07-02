@@ -16,7 +16,6 @@ import com.jogamp.newt.event.WindowEvent;
 import com.jogamp.newt.event.WindowListener;
 import com.jogamp.newt.event.WindowUpdateEvent;
 import com.jogamp.newt.opengl.GLWindow;
-import com.jogamp.opengl.util.Animator;
 
 import android.content.Context;
 import android.view.SurfaceView;
@@ -41,7 +40,6 @@ public class GLSurfaceView extends SurfaceView
 	private int rendermode;
 	private boolean hasFocus;
 
-	private Animator animator;
 	private Vector<Runnable> queuedEvents;
 	private Vector<Runnable> tmpQueue;
 	
@@ -101,7 +99,7 @@ public class GLSurfaceView extends SurfaceView
     
 
 	
-	public void runWithJOGL(String programTitle)
+	public void startWithJOGL(String programTitle)
 	{
         GLCapabilities caps = new GLCapabilities(GLProfile.get(GLProfile.GL2));
 
@@ -117,7 +115,10 @@ public class GLSurfaceView extends SurfaceView
         glWindow.addMouseListener(new MyMouseListener());
         glWindow.addKeyListener(new MyKeyListener());    
         glWindow.addWindowListener(new MyWindowListener());
-        
+	}
+	
+	public void runWithJOGL()
+	{
         while (true)    
         {
         	glWindow.display();	
