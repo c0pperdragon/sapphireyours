@@ -16,7 +16,7 @@ import grafl.sy.game.Game;
 public class Launcher 
 {	
 	public static void main(String[] args)
-	{
+	{	
 		Thread t = new MainThread();		
 		t.start();
 	}    
@@ -26,7 +26,7 @@ class MainThread extends Thread
 {
 	public MainThread()
 	{
-		super(null,null,"GameThread",500000);
+		super(null,null,"GameThread",1000000);			
 	}
 
     public void run()

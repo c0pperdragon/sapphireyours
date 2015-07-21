@@ -155,36 +155,79 @@ public class GLSurfaceView extends SurfaceView
 	// inner class to handle the JOGL render notifications
 	class MyGLEventListener implements GLEventListener
 	{
+		Thread gameThread;
+		boolean did_dispatch_init;
+		int screenwidth;
+		int screenheight;
+		
+		public MyGLEventListener()
+		{
+			gameThread = Thread.currentThread();
+			did_dispatch_init = false;
+		}
 		
 		// --- the GLEventListener interface ---
 		@Override
 	    public void init(GLAutoDrawable drawable) 
 	    {
-	    	processEventQueue();
-	        GLES20.gl = drawable.getGL().getGL2();
-	        GLES20.gl.setSwapInterval(1);
-	        renderer.onSurfaceCreated(null,null);
+//System.out.println("init: "+Thread.currentThread().getName());	    
+//	    	processEventQueue();
+//	        GLES20.gl = drawable.getGL().getGL2();
+//	        GLES20.gl.setSwapInterval(1);
+//	        renderer.onSurfaceCreated(null,null);
 	    }
 
 		@Override
 	    public void reshape(GLAutoDrawable drawable, int x, int y, int w, int h)
 	    {
-	    	processEventQueue();
-	    	renderer.onSurfaceChanged(null,w,h);
+//System.out.println("reshape: "+Thread.currentThread().getName());	    
+//	    	processEventQueue();
+//	    	renderer.onSurfaceChanged(null,w,h);
 	    }
 
 		@Override
 	    public void display(GLAutoDrawable drawable) 
 	    {
-	    	processEventQueue();
-	    	renderer.onDrawFrame(null);
+	    	// will only react on the display calls that were triggered by the main loop
+	    	if (Thread.currentThread() == gameThread)
+	    	{
+	    		if (!did_dispatch_init)
+	    		{
+			    	did_dispatch_init = true;	    		
+
+	    			screenwidth = glWindow.getWidth();
+	    			screenheight = glWindow.getHeight();
+	    		
+			        GLES20.gl = drawable.getGL().getGL2();
+			        GLES20.gl.setSwapInterval(1);
+			        renderer.onSurfaceCreated(null,null);
+			    	renderer.onSurfaceChanged(null,screenwidth,screenheight);
+	    		}
+	    		else
+	    		{
+					int w = glWindow.getWidth();
+					int h = glWindow.getHeight();
+					if (screenwidth!=w || screenheight!=h)
+					{
+						screenwidth = w;
+						screenheight = h;
+				    	renderer.onSurfaceChanged(null,screenwidth,screenheight);										
+					}	    		
+	    		}
+		    	processEventQueue();
+		    	renderer.onDrawFrame(null);
+	    	}
+//System.out.println("display: "+Thread.currentThread().getName());	    
+//	    	processEventQueue();
+//	    	renderer.onDrawFrame(null);
 	    }
 
 		@Override
 	    public void dispose(GLAutoDrawable drawable)
 	    {
+System.out.println("dispose: "+Thread.currentThread().getName());	    
 	        onPause();
-	    	processEventQueue();
+//	    	processEventQueue();
 	        System.exit(0);
 	    }	
 	}
@@ -196,6 +239,7 @@ public class GLSurfaceView extends SurfaceView
 		{}
 		public void	mouseDragged(MouseEvent e)
 		{
+//System.out.println("mouseDragged: "+Thread.currentThread().getName());	    
 			onTouchEvent(new MotionEvent(MotionEvent.ACTION_MOVE, 0, e.getX(), e.getY()));
 		}
 		public void	mouseEntered(MouseEvent e)
@@ -206,10 +250,12 @@ public class GLSurfaceView extends SurfaceView
 		{}
 		public void	mousePressed(MouseEvent e) 
 		{
+//System.out.println("mousePressed: "+Thread.currentThread().getName());	    
 			onTouchEvent(new MotionEvent(MotionEvent.ACTION_DOWN, 0, e.getX(), e.getY()));			
 		}
 		public void	mouseReleased(MouseEvent e) 
 		{
+//System.out.println("mouseReleased: "+Thread.currentThread().getName());	    
 			onTouchEvent(new MotionEvent(MotionEvent.ACTION_UP, 0, e.getX(), e.getY()));			
 		}
 		public void	mouseWheelMoved(MouseEvent e)
@@ -239,12 +285,20 @@ public class GLSurfaceView extends SurfaceView
 	{
 	 	public void	keyPressed(com.jogamp.newt.event.KeyEvent e)
  		{	
+//System.out.println("keyPressed: "+Thread.currentThread().getName());	    
  			int code = translateKeyCode(e.getKeyCode());
- 			onKeyDown(code, new KeyEvent(KeyEvent.ACTION_DOWN,translateKeyCode(e.getKeyCode()), e.getKeyChar())); 			
+ 			onKeyDown(code, new KeyEvent(KeyEvent.ACTION_DOWN,translateKeyCode(e.getKeyCode()), e.getKeyChar()));
+ 			
+ 			// handle JOGL-specific key actions
+ 			if (e.getKeyCode()==com.jogamp.newt.event.KeyEvent.VK_F11)
+ 			{
+ 				glWindow.setFullscreen(!glWindow.isFullscreen());
+ 			} 			
  		} 
            
  		public void	keyReleased(com.jogamp.newt.event.KeyEvent e)
  		{
+//System.out.println("keyReleased: "+Thread.currentThread().getName());	    
  			// ignore events caused by auto-repeat
  			if ((e.getModifiers() & com.jogamp.newt.event.InputEvent.AUTOREPEAT_MASK) != 0)
  			{	return;
