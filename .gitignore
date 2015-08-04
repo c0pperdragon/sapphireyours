@@ -5,3 +5,8 @@
 *.log
 build_encryptedpreviewer.bat
 sapphireyours_previewer.jar
+DiscardingStack.java
+Level.java
+LevelPack.java
+Logic.java
+Walk.java
