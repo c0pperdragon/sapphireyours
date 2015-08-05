@@ -374,7 +374,7 @@ public class EditorScreen extends Screen implements MenuListener
 				break;
 				
 			case PauseMenu.MENUACTION_TESTLEVEL:
-				GameScreen gs = new GameScreen(game, level, null, false, true,true);
+				GameScreen gs = new GameScreen(game, level, null, false, true);
 				game.addScreen(gs);
 				gs.afterScreenCreation(); 							
 				break;

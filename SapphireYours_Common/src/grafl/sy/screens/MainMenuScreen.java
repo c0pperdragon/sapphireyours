@@ -9,9 +9,9 @@ import grafl.sy.renderer.TextRenderer;
 
 public class MainMenuScreen extends Screen 
 {
-	final static int MENUENTRY_NEWLEVEL = 0;
-	final static int MENUENTRY_EXIT = 1;	
-	final static String[] menuentrytext = { "New Level", "Exit" }; 
+	final static int MENUENTRY_EXIT = 0;	
+	final static int MENUENTRY_NEWLEVEL = 1;
+	final static String[] menuentrytext = { "Exit", "New Level" }; 
 
 
 	int selectedcolumn;
@@ -19,18 +19,33 @@ public class MainMenuScreen extends Screen
 	
 	int numcolumns;  // how many columns are in the screen 
 	int menucolumn;	 // in which column is the main menu located
+	int colwidth = 300;
+	int rowheight = 30;
+	int left;
+	int top;
+
+	int pointerdownx;
+	int pointerdowny;
+	int pointerx;
+	int pointery;
+	boolean pointeractive;
 
 	public MainMenuScreen (Game game)
 	{
 		super(game);
 		
-		this.selectedcolumn = 0;
-		this.selectedrow = 0;
-		
 		reactivate();			
+
+		this.selectedcolumn = menucolumn+1;
+		this.selectedrow = 0;		
 	}
 	
-	
+	public void resize(int width, int height)
+	{
+		super.resize(width,height);
+		snapPosition();
+	}
+		
 	public void reactivate()
 	{
 		// compute some layout data
@@ -43,6 +58,12 @@ public class MainMenuScreen extends Screen
 			{	menucolumn=i+1;
 			}		
 		}
+		
+		left = 0;
+		top = 0;
+		pointeractive = false;
+		
+		bringSelectedInView();
 	}
 	
 	
@@ -50,10 +71,8 @@ public class MainMenuScreen extends Screen
 	
 	public void draw()
 	{
-		int colwidth = 300;
-		int rowheight = 30;
-		int left = screenwidth/2 - colwidth/2 - selectedcolumn*colwidth;
-		int top = 50;
+//		int left = screenwidth/2 - colwidth/2 - selectedcolumn*colwidth;
+//		int top = 50;
 	
 	
 		// set up renderers
@@ -62,8 +81,8 @@ public class MainMenuScreen extends Screen
 		game.gfxRenderer.startDrawing (screenwidth, screenheight);
 		
 		// add background
-		game.gfxRenderer.addGraphic(game.gfxRenderer.TITLEPICTURE, 10,10,(screenheight-20)*0.2f,screenheight-20);
-		game.gfxRenderer.flush();
+//		game.gfxRenderer.addGraphic(game.gfxRenderer.TITLEPICTURE, 10,10,(screenheight-20)*0.2f,screenheight-20);
+//		game.gfxRenderer.flush();
 		
 		int background = 0xff393939;
 		int menuhighlight = 0xffffffff;
@@ -75,7 +94,7 @@ public class MainMenuScreen extends Screen
 		{	game.vectorRenderer.addRoundedRect(left+selectedcolumn*colwidth, top+selectedrow*rowheight, colwidth,rowheight, 
 				cornerradius,cornerradius+1, Game.getColorForDifficulty(selectedlevel.getDifficulty()) );
 		}
-		else if (selectedcolumn==menucolumn)
+		else if (selectedcolumn==menucolumn && selectedrow>=0 && selectedrow<menuentrytext.length)
 		{
 			game.vectorRenderer.addRoundedRect(left+selectedcolumn*colwidth, top+selectedrow*rowheight, colwidth,rowheight, 
 				cornerradius,cornerradius+1, menuhighlight );
@@ -83,6 +102,7 @@ public class MainMenuScreen extends Screen
 		game.vectorRenderer.flush();
 
 		// draw all columns of the main menu
+		int iconwidth = rowheight;
 		for (int col=0; col<numcolumns; col++)
 		{
 			float x = left+col*colwidth;
@@ -91,7 +111,7 @@ public class MainMenuScreen extends Screen
 								
 			LevelPack p = getLevelPack(col);
 			if (p!=null)
-			{	game.textRenderer.addString(p.name, left+col*colwidth, top-rowheight-15, rowheight, false, 0xffffffff, TextRenderer.WEIGHT_BOLD);		
+			{	game.textRenderer.addString(p.name, left+col*colwidth+iconwidth, top-rowheight-15, rowheight, false, 0xffffffff, TextRenderer.WEIGHT_BOLD);		
 		
 				for (int row=0; row<p.levels.length; row++)
 				{
@@ -99,7 +119,7 @@ public class MainMenuScreen extends Screen
 				
 					Level l = p.levels[row];
 					game.textRenderer.addString(l.getTitle(), 
-						x+rowheight, y, rowheight, false,
+						x+iconwidth, y, rowheight, false,
 						selectedlevel==l ? background : Game.getColorForDifficulty(l.getDifficulty()),
 						TextRenderer.WEIGHT_PLAIN);
 						
@@ -138,11 +158,6 @@ public class MainMenuScreen extends Screen
 		game.textRenderer.flush();
 		game.gfxRenderer.flush();		
 	}
-
-	private void bringSelectedInView()
-	{
-	}
-
 
 
 	// -- mapping of rows/columns to the level list ---
@@ -186,11 +201,35 @@ public class MainMenuScreen extends Screen
 		}
 	}
 		
+
+	public void startSelectedAction()
+	{
+		if (getSelectedLevel()!=null)
+		{
+			startSelectedLevel();
+		}
+		else if (selectedcolumn==menucolumn)		
+		{
+			switch (selectedrow)
+			{	case MENUENTRY_NEWLEVEL:
+    			{	EditorScreen s = new EditorScreen(game, new Level());
+					game.addScreen(s);
+					s.afterScreenCreation();
+					break;
+    			}
+				case MENUENTRY_EXIT:
+				{
+					game.removeScreen();
+					break;
+				} 
+			}
+		}
+	}
+
 	private Level getSelectedLevel()
 	{
 		return getLevel(selectedcolumn, selectedrow);
 	}
-
 
 	public void startSelectedLevel()
 	{
@@ -198,10 +237,19 @@ public class MainMenuScreen extends Screen
 		if (l!=null)
 		{
 			LevelPack lp = getLevelPack(selectedcolumn);			
-			GameScreen gs = new GameScreen(game, l, null, 
-				selectedcolumn<game.levelpacks.size()-1 || selectedrow<lp.levels.length-1, false, lp.isWriteable());
-			game.addScreen(gs);
-			gs.afterScreenCreation(); 			
+			if (lp.isWriteable())
+			{
+				EditorScreen es = new EditorScreen(game, l);
+				game.addScreen(es);
+				es.afterScreenCreation();
+			}
+			else
+			{
+				GameScreen gs = new GameScreen(game, l, null, 
+					selectedcolumn<game.levelpacks.size()-1 || selectedrow<lp.levels.length-1, false);
+				game.addScreen(gs);
+				gs.afterScreenCreation();
+			} 			
 		}	    			
 	}
 
@@ -216,27 +264,68 @@ public class MainMenuScreen extends Screen
 		}	    			
 	}
 
-	public void startSubsequentLevel(Level current)
+	public void startSubsequentLevel()
 	{
 		boolean found=false;
-		for (int col=0; col<game.levelpacks.size(); col++)
+		for (int col=0; col<numcolumns; col++)
 		{
-			LevelPack lp = game.levelpacks.elementAt(col);
-			for (int row=0; row<lp.levels.length; row++)
+			int numrows = getRows(col);
+			for (int row=0; row<numrows; row++)
 			{
-				if (found)
-				{	selectedcolumn = col;
-					selectedrow = row;
-					startSelectedLevel();
-					return;
-				}					
-				if (lp.levels[row]==current)
-				{	
-					found = true;
+				if (selectedcolumn==col && selectedrow==row)
+				{	found = true;
 				}
+				else if (found && col!=menucolumn)
+				{
+					selectedrow = row;
+					selectedcolumn = col;
+					startSelectedLevel();
+					return;					 			
+				}					
 			}
 		}
 	}
+
+	private void bringSelectedInView()
+	{
+		if (selectedcolumn>=0)
+		{	left = screenwidth/2 -selectedcolumn*colwidth - colwidth/2;
+			snapPosition();
+		}
+	}
+
+
+	private void snapPosition()
+	{		
+		left = roundtostep(left, colwidth);
+		snapEdges();
+	}
+	
+	private void snapEdges()
+	{
+		if (left>0) {
+			left=0;
+		}
+		if (left+numcolumns*colwidth < screenwidth)
+		{
+			left = screenwidth - numcolumns*colwidth;
+		}
+		top = 50;
+	}
+	
+	private int roundtostep(int value, int stepsize)
+	{
+		if (value>=0)
+		{
+			return ((value+(stepsize/2))/stepsize)*stepsize;		
+		}
+		else
+		{
+			return -((-value+(stepsize/2))/stepsize)*stepsize;		
+		}	
+	}
+
+
 
     // ---- key event handlers called in GL thread ----
     public void handleKeyEvent(KeyEvent event)
@@ -298,18 +387,47 @@ public class MainMenuScreen extends Screen
 	    				startSelectedLevel();
 	    			}
 	    			break;
-    			case KeyEvent.KEYCODE_SPACE:
-    			{	EditorScreen s = new EditorScreen(game, new Level());
-					game.addScreen(s);
-					s.afterScreenCreation();
-					break;
-    			}
     		}    		
     	}
     	
     	super.handleKeyEvent(event);
     }
 	
+    // ---- pointer event handlers called in GL thread ----
+	public void onPointerDown(int x, int y)
+	{
+		pointerx = x;
+		pointery = y;
+		pointerdownx = x;
+		pointerdowny = y;
+		pointeractive = true;
+
+		selectedcolumn = (pointerx-left) / colwidth;
+		selectedrow = (pointery-top) / rowheight;
+	}
+	public void onPointerUp()
+	{
+		pointeractive = false;
+		
+		snapPosition();		
+		startSelectedAction();		
+	}
+	public void onPointerMove(int x, int y)
+	{	
+		left = left + (x-pointerx);
+		top =  top + (y-pointery);
+	
+		pointerx = x;
+		pointery = y;
+		
+		// check if scrolling turns off level selection
+		if (Math.abs(pointerx-pointerdownx)>5 || Math.abs(pointery-pointerdowny)>5)
+		{
+			selectedrow = -1;
+		}
+				
+		snapEdges();
+	}
 	
 }
 

@@ -204,7 +204,7 @@ public class Game extends GLSurfaceView implements GLSurfaceView.Renderer
         	if (l!=null)
         	{	try
         		{	Walk walk = new Walk(w);
-        			GameScreen gs = new GameScreen(this, l,walk, false,false,false);
+        			GameScreen gs = new GameScreen(this, l,walk, false,false);
 					addScreen(gs);
 					gs.afterScreenCreation(); 	        		
         		}
@@ -653,7 +653,7 @@ public class Game extends GLSurfaceView implements GLSurfaceView.Renderer
 				startMusic("Only Solutions");
 				break;
 			case 6: // "Work"
-				startMusic("Nightshift");
+				startMusic("Time");
 				break;				
 		}
 	}

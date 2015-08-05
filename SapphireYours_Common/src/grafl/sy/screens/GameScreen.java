@@ -23,7 +23,6 @@ public class GameScreen extends Screen implements MenuListener
 	private Walk walk;
 	private boolean canFindNextLevel;
 	private boolean startFromEditor;
-	private boolean canModify;
 	
 	int step;
 	int frames_left;	 
@@ -57,14 +56,13 @@ public class GameScreen extends Screen implements MenuListener
 	int screenshaketime;
 
 
-	public GameScreen(Game game, Level le, Walk unfinishedwalk, boolean canFindNextLevel, boolean startFromEditor, boolean canModify)
+	public GameScreen(Game game, Level le, Walk unfinishedwalk, boolean canFindNextLevel, boolean startFromEditor)
 	{	           
 		super(game);				
 		
 		this.level = le;
 		this.canFindNextLevel = canFindNextLevel;
 		this.startFromEditor = startFromEditor;
-		this.canModify = canModify;
         logic = null;
         frames_left=0;
         playmode = PLAYMODE_RECORD;
@@ -882,10 +880,6 @@ public class GameScreen extends Screen implements MenuListener
 					{	m.addAction(PauseMenu.MENUACTION_SHOWDEMO3);
 					}
 				}
-				if (canModify & !startFromEditor)
-				{
-					m.addAction(PauseMenu.MENUACTION_EDITLEVEL);								
-				}
 			}		
 			else		// this should never be used...
 			{	System.out.println("invalid state at menu creation!");
@@ -991,7 +985,7 @@ public class GameScreen extends Screen implements MenuListener
 			{	game.removeScreen();
 				Screen top = game.getTopScreen();
 				if (top!=null && top instanceof MainMenuScreen)
-				{	((MainMenuScreen)top).startSubsequentLevel(level);
+				{	((MainMenuScreen)top).startSubsequentLevel();
 				}
 				break;
 			}
@@ -999,13 +993,6 @@ public class GameScreen extends Screen implements MenuListener
 				level.setDemo(walk);
 				game.removeScreen();
 				break;
-			case PauseMenu.MENUACTION_EDITLEVEL:
-				game.removeScreen();
-				Screen top = game.getTopScreen();
-				if (top!=null && top instanceof MainMenuScreen)
-				{	((MainMenuScreen)top).startEditingSelectedLevel();
-				}				
-				break;				
 			
 			case PauseMenu.MENUACTION_UNDO:
 				playmode = PLAYMODE_UNDO;
