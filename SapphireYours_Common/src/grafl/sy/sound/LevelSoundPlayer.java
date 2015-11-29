@@ -421,6 +421,11 @@ public class LevelSoundPlayer implements Runnable
 				{	return sound_grabruby;
 				}
 				break;
+			case Logic.CITRINE:
+				if (newpiece==Logic.AIR)
+				{	return sound_grabruby;
+				}
+				break;
 			case Logic.SAPPHIRE_BREAKING:
 				return sound_sphrbrk;
 			case Logic.CITRINE_BREAKING:
@@ -492,6 +497,7 @@ public class LevelSoundPlayer implements Runnable
 			case Logic.EXPLODE1_AIR:
 			case Logic.EXPLODE1_EMERALD:
 			case Logic.EXPLODE1_SAPPHIRE:
+			case Logic.EXPLODE1_RUBY:
 			case Logic.EXPLODE1_BAG:
 				return sound_explode;
 				

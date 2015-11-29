@@ -140,7 +140,7 @@ public class MainMenuScreen extends Screen
 			}
 			else if (col==menucolumn)
 			{
-				game.textRenderer.addString("Sapphire Yours", left+col*colwidth, top-rowheight-15, rowheight, false, 0xffffffff, TextRenderer.WEIGHT_BOLD);
+				game.textRenderer.addString("Sapphire Yours", left+col*colwidth+iconwidth, top-rowheight-15, rowheight, false, 0xffffffff, TextRenderer.WEIGHT_BOLD);
 				
 				for (int row=0; row<menuentrytext.length; row++)
 				{											

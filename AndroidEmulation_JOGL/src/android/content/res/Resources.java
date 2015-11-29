@@ -6,9 +6,9 @@ public class Resources
 {
 	DisplayMetrics displaymetrics;
 	
-	public Resources()
+	public Resources(DisplayMetrics displaymetrics)
 	{
-		displaymetrics = new DisplayMetrics();
+		this.displaymetrics = displaymetrics;
 	}
 
 	public DisplayMetrics getDisplayMetrics()

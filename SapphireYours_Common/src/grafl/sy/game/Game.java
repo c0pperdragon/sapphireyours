@@ -91,8 +91,8 @@ public class Game extends GLSurfaceView implements GLSurfaceView.Renderer
     	 
     	// for displays, that fit into a palm (<15 cm diag), will have smaller game details in relation to dpi 
     	if (size_cm < 15)
-    	{	detailScale = dpi / 150; 
-    		levelScale = dpi / 250;
+    	{	detailScale = dpi / 220; 
+    		levelScale = dpi / 220;
     	}
     	// for displays that will be held in both hands normally, use this relation
     	else if (size_cm < 40)

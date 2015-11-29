@@ -1341,7 +1341,7 @@ public class LevelRenderer extends Renderer
 		piece2tile[Logic.WALLEMERALD] = loadImage(h, "Wall Emerald");
 		piece2tile[Logic.EMERALD] = piece2tile[Logic.EMERALD_FALLING&0xff] = loadImage(h, "Emerald");
 		anim_emerald_fall = createAnimationDescription(h.first,h.last);
-		loadImage(h, "Emerald shine");
+		loadImage(h, "Emerald Shine");
 		anim_emerald_shine = createAnimationDescription(h.first,h.last);
 		piece2tile[Logic.CITRINE] = piece2tile[Logic.CITRINE_FALLING&0xff] = loadImage(h, "Citrine");
 		anim_citrine_fall = createAnimationDescription(h.first,h.last);

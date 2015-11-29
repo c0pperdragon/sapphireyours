@@ -8,13 +8,12 @@ public class DisplayMetrics
 	public float xdpi;
 	public float ydpi;
 	
-	public DisplayMetrics()
+	public DisplayMetrics(int width, int height, int dpi)
 	{
-		// default values averaging a standard HD-monitor
-		widthPixels = 1920;						
-		heightPixels = 1080;
-		densityDpi = 90;
-		xdpi = 90;				
-		ydpi = 90;		
+		widthPixels = width;						
+		heightPixels = height;
+		densityDpi = dpi;
+		xdpi = dpi;				
+		ydpi = dpi;			
 	}	
 }

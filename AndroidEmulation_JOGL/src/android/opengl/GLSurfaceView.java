@@ -71,6 +71,11 @@ public class GLSurfaceView extends SurfaceView
 		}
 	}
 	
+	public boolean hasFocus()
+	{
+		return hasFocus;
+	}
+	
 	public void requestRender()
 	{
         if (glWindow!=null) glWindow.display();		
@@ -99,13 +104,13 @@ public class GLSurfaceView extends SurfaceView
     
 
 	
-	public void startWithJOGL(String programTitle)
+	public void startWithJOGL(String programTitle, int width, int height)
 	{
         GLCapabilities caps = new GLCapabilities(GLProfile.get(GLProfile.GL2));
 
         glWindow = GLWindow.create(caps);
         glWindow.setTitle(programTitle);
-        glWindow.setSize(800,800);
+        glWindow.setSize(width,height);
 //        glWindow.setUndecorated(true);
         glWindow.setPointerVisible(true);
 //        glWindow.setFullscreen(true);
