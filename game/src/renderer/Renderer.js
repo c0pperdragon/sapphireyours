@@ -1,17 +1,22 @@
 
 var Renderer = function() 
 {   this.gl = null;
-    this.hasError = false;
+    this.error = false;
 };
 
-Renderer.prototoype.$ = function(gl) 
+Renderer.prototype.$ = function(gl) 
 {   this.gl = gl;
-    this.hasError = false;
+    this.error = false;
+    return this;
+};
+
+Renderer.prototype.hasError = function()
+{   return this.error;
 };
 
 Renderer.prototype.setError = function(reason)
 {   console.log(reason);
-    this.hasError = true;
+    this.error = true;
 };
 
 
@@ -37,7 +42,7 @@ Renderer.prototype.setError = function(reason)
     gl.compileShader(shader);
         
     //Check compile status.
-    var log = gl.GetShaderInfoLog(shader);
+    var log = gl.getShaderInfoLog(shader);
     if(log.length>0)
     {
         console.log("Error compiling the shader: " + log);
@@ -127,6 +132,4 @@ Renderer.prototype.createProgram = function(vertexShaderCode, fragmentShaderCode
         return new int[]{iw,ih};
 	}
 	*/
-	
-}
 

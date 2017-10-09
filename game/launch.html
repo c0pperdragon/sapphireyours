@@ -1,21 +1,19 @@
 <!doctype html>
 <html>
 <head>
-    <title>Sapphire Yours</title>
+    <title>Sapphire Yours - Development Launcher</title>
     <meta charset="utf-8">	
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />		
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"></meta>	
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"></meta> -->
+
+    <script type="text/javascript" src="src/renderer/Matrix.js"></script>
+    <script type="text/javascript" src="src/renderer/Renderer.js"></script>
+    <script type="text/javascript" src="src/renderer/VectorRenderer.js"></script>
+    <script type="text/javascript" src="src/screen/Screen.js"></script>
+    <script type="text/javascript" src="src/screen/TestScreen.js"></script>
+    <script type="text/javascript" src="src/game/Game.js"></script>
 </head>
-<body>
-<canvas id="game" style="width: 500px; height: 500px;"></canvas>
 
-
-
-<script type="text/javascript" src="src/renderer/Renderer.js"></script>
-<script type="text/javascript" src="src/renderer/VectorRenderer.js"></script>
-<script type="text/javascript" src="src/app/Game.js"></script>
-<script type="text/javascript">
-    (new Game()).$(
-</script>
+<body onLoad="(new Game()).$(document.getElementById('canvas'), function(){})">
+<canvas id="canvas" width="500" height="500" style="width:500px;height=500px;"></canvas>
 </body>
 </html>

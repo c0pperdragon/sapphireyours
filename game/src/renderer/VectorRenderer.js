@@ -1,4 +1,5 @@
 
+// object allocator function
 var VectorRenderer = function()  
 {   Renderer.call(this);
 
@@ -22,12 +23,12 @@ var VectorRenderer = function()
 	this.translatex = 0;
 	this.translatey = 0;
 			
-    this.matrix = 0;       // projection matrix
+    this.matrix = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];       // projection matrix
 };
 VectorRenderer.prototype = Object.create(Renderer.prototype);
 VectorRenderer.prototype.constructor = VectorRenderer;
 
-
+// static fields
 VectorRenderer.MAXCORNERS = 10000;  // number of vertices in the buffer
     	    
 VectorRenderer.vertexShaderCode =
@@ -52,15 +53,15 @@ VectorRenderer.fragmentShaderCode =
             "}                                                "+
             "";            
 VectorRenderer.sinustable =
-    	[ 0.0f, 0.17364817766693033f, 0.3420201433256687f, 0.5f, 
-    	  0.6427876096865393f, 0.766044443118978f, 0.8660254037844386f, 0.9396926207859083f, 
-    	  0.984807753012208f, 1.0f, 0.984807753012208f, 0.9396926207859084f, 
-    	  0.8660254037844387f, 0.766044443118978f, 0.6427876096865395f, 0.5f,
-    	  0.3420201433256689f, 0.1736481776669307f, 0.0f, -0.17364817766693047f,
-    	  -0.34202014332566866f, -0.5f, -0.6427876096865393f, -0.7660444431189779f,
-    	  -0.8660254037844384f, -0.9396926207859082f, -0.984807753012208f, -1.0f, 
-    	  -0.9848077530122081f, -0.9396926207859083f, -0.8660254037844386f, -0.7660444431189781f, 
-    	  -0.6427876096865396f, -0.5f, -0.34202014332566943f, -0.1736481776669304f  ]; 
+    	[ 0.0, 0.17364817766693033, 0.3420201433256687, 0.5, 
+    	  0.6427876096865393, 0.766044443118978, 0.8660254037844386, 0.9396926207859083, 
+    	  0.984807753012208, 1.0, 0.984807753012208, 0.9396926207859084, 
+    	  0.8660254037844387, 0.766044443118978, 0.6427876096865395, 0.5,
+    	  0.3420201433256689, 0.1736481776669307, 0.0, -0.17364817766693047,
+    	  -0.34202014332566866, -0.5, -0.6427876096865393, -0.7660444431189779,
+    	  -0.8660254037844384, -0.9396926207859082, -0.984807753012208, -1.0, 
+    	  -0.9848077530122081, -0.9396926207859083, -0.8660254037844386, -0.7660444431189781, 
+    	  -0.6427876096865396, -0.5, -0.34202014332566943, -0.1736481776669304  ]; 
     
 
 //	private int viewportx;
@@ -68,9 +69,10 @@ VectorRenderer.sinustable =
 //	private int viewportwidth;
 //	private int viewportheight;
 
-	// --------- locations of images inside the atlas -------------
-	
-	// set up opengl  and load textures
+// --------- locations of images inside the atlas -------------
+
+
+// constructor: set up opengl  and load textures
 VectorRenderer.prototype.$ = function(gl)
 {
     Renderer.prototype.$.call(this,gl);
@@ -83,17 +85,17 @@ VectorRenderer.prototype.$ = function(gl)
     this.aColor = gl.getAttribLocation(this.program, "aColor");
 				
     // create buffers (gl and client) for the vertices
-    this.bufferCorner = new Float32Array(2*MAXCORNERS);
+    this.bufferCorner = new Float32Array(2*VectorRenderer.MAXCORNERS);
     this.bufferCornerFilled = 0;
     this.vboCorner = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vboCorner);
-    gl.bufferData(gl.ARRAY_BUFFER, 4*2*MAXCORNERS, gl.DYNAMIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, 4*2*VectorRenderer.MAXCORNERS, gl.DYNAMIC_DRAW);
 
-    this.bufferColor = new Uint8Array(4*MAXCORNERS);
+    this.bufferColor = new Uint8Array(4*VectorRenderer.MAXCORNERS);
     this.bufferColorFilled = 0;
 	this.vboColor = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vboColor);
-    gl.bufferData(gl.ARRAY_BUFFER, 4*MAXCORNERS, gl.DYNAMIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, 4*VectorRenderer.MAXCORNERS, gl.DYNAMIC_DRAW);
        	
     // allocate memory for projection matrix
     matrix = [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0];      
@@ -103,6 +105,8 @@ VectorRenderer.prototype.$ = function(gl)
     if (e) 
     {   this.setError("Error on creating VectorRenderer: "+e);
     }
+    
+    return this;
 };
 
 VectorRenderer.prototype.startDrawing = function(viewportwidth, viewportheight)
@@ -114,8 +118,8 @@ VectorRenderer.prototype.startDrawing = function(viewportwidth, viewportheight)
   
     // transfer coordinate system from the opengl-standard to a pixel system (0,0 is top left)
     Matrix.setIdentityM(this.matrix,0);     
-    Matrix.translateM(this.matrix,0, -1.0f,1.0f, 0);		
-    Matrix.scaleM(this.matrix,0, 2.0f/viewportwidth, -2.0f/viewportheight, 1.0f);
+    Matrix.translateM(this.matrix,0, -1.0,1.0, 0);
+    Matrix.scaleM(this.matrix,0, 2.0/viewportwidth, -2.0/viewportheight, 1.0);
 };
 
 VectorRenderer.prototype.addCorner = function(x,y,argb)
@@ -153,8 +157,8 @@ VectorRenderer.prototype.setStripCornerTransformation = function(rotcos, rotsin,
 };
 
 VectorRenderer.prototype.addStripCorner = function(x, y, argb)
-{   var tx = (x*rotcos - y*rotsin + translatex);
-    var ty = (x*rotsin + y*rotcos + translatey);
+{   var tx = (x*this.rotcos - y*this.rotsin + this.translatex);
+    var ty = (x*this.rotsin + y*this.rotcos + this.translatey);
     this.addCorner (tx,ty, argb);
     if (this.mustDublicateNextCorner)
     {   this.addCorner(tx,ty,argb);
@@ -225,7 +229,7 @@ VectorRenderer.prototype.addShapeAlternateRGB = function(x, y, xypairs, scaling,
     }
 };
 
-VectorRenderer.addRoundedRect = function(x, y, width, height, radius, outerradius, argb)
+VectorRenderer.prototype.addRoundedRect = function(x, y, width, height, radius, outerradius, argb)
 {   var argb2 = argb & 0x00ffffff; 
     
     var xc=x+width/2;
@@ -425,7 +429,7 @@ VectorRenderer.prototype.addSquare = function(x, y, width, height, argb)
 VectorRenderer.prototype.addNextLevelArrow = function(x, y, width, height, argb)
 {
     this.startStrip();		
-    this.setStripCornerTransformation((width*0.5)/100,0, x+width/2-width*0.06f,y+width/2);		
+    this.setStripCornerTransformation((width*0.5)/100,0, x+width/2-width*0.06,y+width/2);		
     this.addStripCorner(-50,-25,argb);
     this.addStripCorner(-50,25,argb);
     this.addStripCorner(25,-25,argb);
@@ -539,10 +543,10 @@ VectorRenderer.prototype.flush = function()
     }
 
     // transfer buffers into opengl 
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.vboCorner);		
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.vboCorner);
     gl.bufferSubData(gl.ARRAY_BUFFER,0, this.bufferCorner.subarray(0,2*numcorners));	
     
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.vboColor);		
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.vboColor);
     gl.bufferSubData(gl.ARRAY_BUFFER,0, this.bufferColor.subarray(0,4*numcorners));	
 
     // Prepare buffers for future use
@@ -562,7 +566,7 @@ VectorRenderer.prototype.flush = function()
     gl.vertexAttribPointer(this.aColor, 4, gl.UNSIGNED_BYTE, false, 0, 0);
 
     // set matrix and draw all triangles
-    gl.uniformMatrix4fv(this.uMVPMatrix, 1, false, this.matrix, 0);
+    gl.uniformMatrix4fv(this.uMVPMatrix, false, this.matrix);
 
     // Draw all triangles
     gl.drawArrays(gl.TRIANGLE_STRIP,0,numcorners);
