@@ -100,12 +100,6 @@ VectorRenderer.prototype.$ = function(gl)
     // allocate memory for projection matrix
     matrix = [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0];      
         
-    // check if any error has occured
-    var e = gl.getError();
-    if (e) 
-    {   this.setError("Error on creating VectorRenderer: "+e);
-    }
-    
     return this;
 };
 
@@ -121,6 +115,49 @@ VectorRenderer.prototype.startDrawing = function(viewportwidth, viewportheight)
     Matrix.translateM(this.matrix,0, -1.0,1.0, 0);
     Matrix.scaleM(this.matrix,0, 2.0/viewportwidth, -2.0/viewportheight, 1.0);
 };
+
+VectorRenderer.prototype.flush = function()
+{   var gl = this.gl;
+
+    var numcorners = this.bufferCornerFilled / 2;
+    if (numcorners <= 0) 
+    {   return;
+    }
+
+    // transfer buffers into opengl 
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.vboCorner);
+    gl.bufferSubData(gl.ARRAY_BUFFER,0, this.bufferCorner.subarray(0,2*numcorners));	
+    
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.vboColor);
+    gl.bufferSubData(gl.ARRAY_BUFFER,0, this.bufferColor.subarray(0,4*numcorners));	
+
+    // Prepare buffers for future use
+    bufferCornerFilled = 0;
+    bufferColorFilled = 0;
+
+    // set up gl for painting all triangles
+    gl.useProgram(this.program);
+
+    // enable all vertex attribute arrays and set pointers
+    gl.enableVertexAttribArray(this.aCorner);
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.vboCorner);
+    gl.vertexAttribPointer(this.aCorner, 2, gl.FLOAT, false, 0, 0);
+
+    gl.enableVertexAttribArray(this.aColor);
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.vboColor);
+    gl.vertexAttribPointer(this.aColor, 4, gl.UNSIGNED_BYTE, false, 0, 0);
+
+    // set matrix and draw all triangles
+    gl.uniformMatrix4fv(this.uMVPMatrix, false, this.matrix);
+
+    // Draw all triangles
+    gl.drawArrays(gl.TRIANGLE_STRIP,0,numcorners);
+
+    // disable arrays
+    gl.disableVertexAttribArray(this.aCorner);
+    gl.disableVertexAttribArray(this.aColor);
+};
+
 
 VectorRenderer.prototype.addCorner = function(x,y,argb)
 {   this.bufferCorner[this.bufferCornerFilled++] = x;	
@@ -534,47 +571,6 @@ VectorRenderer.prototype.addCheckMark = function(x, y, width, height, argb)
     this.addStripCorner(80,-20,argb);
 };
 
-VectorRenderer.prototype.flush = function()
-{   var gl = this.gl;
-
-    var numcorners = this.bufferCornerFilled / 2;
-    if (numcorners <= 0) 
-    {   return;
-    }
-
-    // transfer buffers into opengl 
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.vboCorner);
-    gl.bufferSubData(gl.ARRAY_BUFFER,0, this.bufferCorner.subarray(0,2*numcorners));	
-    
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.vboColor);
-    gl.bufferSubData(gl.ARRAY_BUFFER,0, this.bufferColor.subarray(0,4*numcorners));	
-
-    // Prepare buffers for future use
-    bufferCornerFilled = 0;
-    bufferColorFilled = 0;
-
-    // set up gl for painting all triangles
-    gl.useProgram(this.program);
-
-    // enable all vertex attribute arrays and set pointers
-    gl.enableVertexAttribArray(this.aCorner);
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.vboCorner);
-    gl.vertexAttribPointer(this.aCorner, 2, gl.FLOAT, false, 0, 0);
-
-    gl.enableVertexAttribArray(this.aColor);
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.vboColor);
-    gl.vertexAttribPointer(this.aColor, 4, gl.UNSIGNED_BYTE, false, 0, 0);
-
-    // set matrix and draw all triangles
-    gl.uniformMatrix4fv(this.uMVPMatrix, false, this.matrix);
-
-    // Draw all triangles
-    gl.drawArrays(gl.TRIANGLE_STRIP,0,numcorners);
-
-    // disable arrays
-    gl.disableVertexAttribArray(this.aCorner);
-    gl.disableVertexAttribArray(this.aColor);
-};
 
 
 

@@ -20,16 +20,23 @@ TestScreen.prototype.tick = function()
 
 TestScreen.prototype.draw = function()
 {    
-    this.game.vectorRenderer.startDrawing (this.screenwidth, this.screenheight);    
-    this.game.vectorRenderer.addRoundedRect(10,10,100,100, 5,10, Game.getColorForDifficulty(3));
+    var vr = this.game.vectorRenderer;
+    vr.startDrawing (this.screenwidth, this.screenheight);    
+    vr.addRoundedRect(10,10,100,100, 5,10, Game.getColorForDifficulty(3));
     
     var s = 150;
     if (this.t<300) {
         if (this.t<150) s = 150 - this.t/2;
         else            s = 150 - (300-this.t)/2;
     }
-    this.game.vectorRenderer.addCrossArrows(250-s/2,250-s/2, s,s, Game.getColorForDifficulty(4));    
+    vr.addCrossArrows(250-s/2,250-s/2, s,s, Game.getColorForDifficulty(4));        
+    vr.flush();
     
-    this.game.vectorRenderer.flush();
+    var tr = this.game.textRenderer;
+    if (tr.isLoaded()) 
+    {   tr.startDrawing (this.screenwidth, this.screenheight);    
+        tr.addString("Hello World", 50,400, 50, false, Game.getColorForDifficulty(5), 
+            TextRenderer.WEIGHT_PLAIN);
+        tr.flush();
+    }
 };
-

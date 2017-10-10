@@ -1,22 +1,15 @@
 
 var Renderer = function() 
 {   this.gl = null;
-    this.error = false;
 };
 
 Renderer.prototype.$ = function(gl) 
 {   this.gl = gl;
-    this.error = false;
     return this;
 };
 
-Renderer.prototype.hasError = function()
-{   return this.error;
-};
-
-Renderer.prototype.setError = function(reason)
-{   console.log(reason);
-    this.error = true;
+Renderer.prototype.isLoaded = function()
+{   return true;
 };
 
 
@@ -67,6 +60,31 @@ Renderer.prototype.createProgram = function(vertexShaderCode, fragmentShaderCode
 };
 
 
+
+Renderer.prototype.loadImageToTexture = function(resourcename, texture, onlyalpha, callback)
+{   
+    var gl = this.gl;
+    var image = new Image();
+    image.src = resourcename;
+    image.addEventListener
+    (   'load', function() 
+        {   gl.bindTexture(gl.TEXTURE_2D, texture);
+            gl.texImage2D
+            (   gl.TEXTURE_2D, 
+                0,  
+                onlyalpha ? gl.ALPHA : gl.RGBA, 
+                onlyalpha ? gl.ALPHA : gl.RGBA, 
+                gl.UNSIGNED_BYTE, 
+                image
+            );
+            gl.generateMipmap(gl.TEXTURE_2D);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+            
+            callback( [image.naturalWidth,image.naturalHeight] );
+        }
+   );
+};
 	/**
 	 * Directly loads a image into a opengl texture.
 	 * @Return Array holding width,height

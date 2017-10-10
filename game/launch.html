@@ -8,12 +8,13 @@
     <script type="text/javascript" src="src/renderer/Matrix.js"></script>
     <script type="text/javascript" src="src/renderer/Renderer.js"></script>
     <script type="text/javascript" src="src/renderer/VectorRenderer.js"></script>
+    <script type="text/javascript" src="src/renderer/TextRenderer.js"></script>
     <script type="text/javascript" src="src/screen/Screen.js"></script>
     <script type="text/javascript" src="src/screen/TestScreen.js"></script>
     <script type="text/javascript" src="src/game/Game.js"></script>
 </head>
 
-<body onLoad="(new Game()).$(document.getElementById('canvas'), function(){})">
+<body onLoad="new Game().$();">
 <canvas id="canvas" width="500" height="500" style="width:500px;height=500px;"></canvas>
 </body>
 </html>

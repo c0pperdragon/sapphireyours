@@ -1,6 +1,6 @@
 
 var Game = function()  
-{   this.context = null;
+{   this.gl = null;
     this.exitcall = null;
     
     this.screenwidth = 0;         // size of surface in pixel
@@ -33,16 +33,15 @@ Game.DEFAULTSOLVEDGRADE = -3*60;  // 3 minutes waiting time before level is cons
 
 
 // construction of game object (handles loading of persistant state also)
-Game.prototype.$ = function(canvas,exitcall)
+Game.prototype.$ = function()
 {
-    this.context = canvas.getContext
+    console.log("Starting up Sapphire Yours...");
+    this.gl = document.getElementById("canvas").getContext
     (   "webgl", 
         {   antialias: false,
             alpha: false,    
         }   
     );
-    this.exitcall = exitcall;
-    
     this.screenwidth = 500;
     this.screenheight = 500;		
     this.screens = [];
@@ -337,7 +336,7 @@ Game.prototype.tick = function()
 
 Game.prototype.draw = function()
 {
-    var gl = this.context;
+    var gl = this.gl;
     gl.viewport(0,0,this.screenwidth,this.screenheight);
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT);
@@ -399,28 +398,21 @@ Game.prototype.getTopScreen = function()
 // --------- loading renderers (will be triggered by system or by user key ----
 Game.prototype.loadRenderers = function()
 {
+    var gl = this.gl;
+    
     // (re)initialize renderers  (create opengl state)
     this.levelRenderer = null;		
     this.textRenderer = null;
     this.vectorRenderer = null;
     this.gfxRenderer = null;
 
-    console.log("start loading renderers");
-
-    this.vectorRenderer = new VectorRenderer().$(this.context);
-    console.log(this.vectorRenderer);
-    if (this.vectorRenderer.hasError())
-    {   (this.exitcall)();
-        return;
-    }
-    console.log("VectorRenderer loaded");
-/*    
-    if ( (this.textRenderer = new TextRenderer().$(this.context)).hasError())
-    {   (this.exitcall)();
-        return;
-    }
-    console.log("TextRenderer loaded");
+    this.vectorRenderer = new VectorRenderer().$(gl);
+    console.log("VectorRenderer created");
     
+    this.textRenderer = new TextRenderer().$(gl);
+    console.log("TextRenderer created");
+    
+/*    
     if ( (this.levelRenderer = new LevelRenderer().$(context)).hasError())
     {   (this.exitcall)();
         return; 
@@ -432,6 +424,12 @@ Game.prototype.loadRenderers = function()
     }
     console.log("GfxRenderer loaded");    
 */    
+
+    // check if any error has occured
+    var e = gl.getError();
+    if (e) 
+    {   console.log("WebGL error on creating renderers: "+e);
+    }
 }
  
  /*
@@ -518,6 +516,8 @@ Game.prototype.loadRenderers = function()
     	super.onPause();
     }
 */    
+
+
 
 Game.prototype.startMusic = function(filename)
 {
@@ -664,5 +664,19 @@ Game.getNameForCategory = function(category)
 Game.argb = function(r, g, b)
 {
     return 0xff000000 | (r<<16) | (g<<8) | (b<<0);
+};
+
+
+Game.getJSON = function(url, callback) 
+{
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            var myObj = JSON.parse(this.responseText);
+            callback(myObj);
+        }
+    };
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
 };
 
