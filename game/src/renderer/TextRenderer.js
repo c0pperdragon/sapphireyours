@@ -23,7 +23,7 @@ var TextRenderer = function()
     this.bufferColor = null;
     this.bufferTextureCoordinates = null;
     this.bufferDistanceThreshold = null;
-    this.bufferFill = 0;  // how many glyphs are in the buffer
+//    this.bufferFill = 0;  // how many glyphs are in the buffer
             
     this.matrix = null;       // projection matrix
 
@@ -109,22 +109,22 @@ TextRenderer.prototype.$ = function(gl)
         sb = null;
         
         // create buffers (gl and client) that hold 4 entries for every glyph
-        this.bufferCorner = new Float32Array(2*4*TextRenderer.MAXGLYPHS);
+        this.bufferCorner = []; // new Float32Array(2*4*TextRenderer.MAXGLYPHS);
         this.vboCorner = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vboCorner);
         gl.bufferData(gl.ARRAY_BUFFER, 2*4*4*TextRenderer.MAXGLYPHS, gl.DYNAMIC_DRAW);
 
-        this.bufferColor = new Uint8Array(4*4*TextRenderer.MAXGLYPHS);
+        this.bufferColor = []; // new Uint8Array(4*4*TextRenderer.MAXGLYPHS);
         this.vboColor = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vboColor);
         gl.bufferData(gl.ARRAY_BUFFER, 4*4*TextRenderer.MAXGLYPHS, gl.DYNAMIC_DRAW);
 
-        this.bufferTextureCoordinates = new Uint16Array(2*4*TextRenderer.MAXGLYPHS);
+        this.bufferTextureCoordinates = []; // new Uint16Array(2*4*TextRenderer.MAXGLYPHS);
         this.vboTextureCoordinates = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vboTextureCoordinates);
         gl.bufferData(gl.ARRAY_BUFFER, 2*4*2*TextRenderer.MAXGLYPHS, gl.DYNAMIC_DRAW);
 
-        this.bufferDistanceThreshold = new Float32Array(4*TextRenderer.MAXGLYPHS);
+        this.bufferDistanceThreshold = []; // new Float32Array(4*TextRenderer.MAXGLYPHS);
         this.vboDistanceThreshold = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vboDistanceThreshold);
         gl.bufferData(gl.ARRAY_BUFFER, 4*4*TextRenderer.MAXGLYPHS, gl.DYNAMIC_DRAW);
@@ -165,8 +165,10 @@ TextRenderer.prototype.isLoaded = function()
 
 TextRenderer.prototype.startDrawing = function(viewportwidth, viewportheight)
     {
-        // clear buffer fill state
-        this.bufferFill = 0;
+        this.bufferCorner.length = 0;
+        this.bufferColor.length = 0;
+        this.bufferTextureCoordinates.length = 0;
+        this.bufferDistanceThreshold.length = 0;
         
         // transfer coordinate system from the opengl-standard to a pixel system (0,0 is top left)
         Matrix.setIdentityM(this.matrix,0);     
@@ -178,24 +180,23 @@ TextRenderer.prototype.flush = function()
 {
         var gl = this.gl;
         
-        var numglyphs = this.bufferFill;
-        this.bufferFill = 0;
+        var numglyphs = this.bufferCorner.length/4;
         if (numglyphs<=0)
         {   return;
         }
         
         // transfer buffers into opengl 
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.vboCorner);       
-        gl.bufferSubData(gl.ARRAY_BUFFER,0, this.bufferCorner.subarray(0,2*4*numglyphs));
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.vboCorner);
+        this.copyToBufferAsFloat32(gl.ARRAY_BUFFER, this.bufferCorner);
 
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vboColor);        
-        gl.bufferSubData(gl.ARRAY_BUFFER,0, this.bufferColor.subarray(0,4*4*numglyphs)); 
+        this.copyToBufferAsUint8(gl.ARRAY_BUFFER, this.bufferColor);
         
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vboTextureCoordinates);       
-        gl.bufferSubData(gl.ARRAY_BUFFER,0, this.bufferTextureCoordinates.subarray(0,2*4*numglyphs));
+        this.copyToBufferAsUint16(gl.ARRAY_BUFFER, this.bufferTextureCoordinates);
 
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vboDistanceThreshold);        
-        gl.bufferSubData(gl.ARRAY_BUFFER,0, this.bufferDistanceThreshold.subarray(0,4*numglyphs)); 
+        this.copyToBufferAsFloat32(gl.ARRAY_BUFFER, this.bufferDistanceThreshold);
     
         // set up gl for painting all triangles
         gl.useProgram(this.program);
@@ -384,16 +385,12 @@ TextRenderer.prototype.addGlyph = function(code, x, y, height, rightaligned, arg
         {   coordinates = this.glyph_coordinates[32];  // unknown letter default to space
         }
         
-        if (this.bufferFill >= TextRenderer.MAXGLYPHS)
-        {   this.flush();
-        }       
-        
             var tx1 = coordinates[0];
             var ty1 = coordinates[1];
             var twidth = coordinates[2]; 
-            var theight = coordinates[3];     
+            var theight = coordinates[3];
             var tx2 = tx1+twidth;
-            var ty2 = ty1+theight;          
+            var ty2 = ty1+theight;
             
             var magnification = height / theight;
             var width = twidth * magnification;           
@@ -409,52 +406,47 @@ TextRenderer.prototype.addGlyph = function(code, x, y, height, rightaligned, arg
             var c1 = (argb>>8)  & 0xff; 
             var c2 = (argb>>0)  & 0xff;    
             var c3 = (argb>>24) & 0xff;   
-            
-            
+                        
             // top-left corner
-            var vidx = (this.bufferFill++)*4;
-            this.bufferCorner[2*vidx+0] = x1;
-            this.bufferCorner[2*vidx+1] = y1;       
-            this.bufferTextureCoordinates[2*vidx+0] = tx1;   
-            this.bufferTextureCoordinates[2*vidx+1] = ty1;
-            this.bufferColor[4*vidx+0] = c0;    
-            this.bufferColor[4*vidx+1] = c1;    
-            this.bufferColor[4*vidx+2] = c2;    
-            this.bufferColor[4*vidx+3] = c3;    
-            this.bufferDistanceThreshold[vidx] = weight;
+            this.bufferCorner.push(x1);
+            this.bufferCorner.push(y1);    
+            this.bufferTextureCoordinates.push(tx1);   
+            this.bufferTextureCoordinates.push(ty1);
+            this.bufferColor.push(c0);    
+            this.bufferColor.push(c1);    
+            this.bufferColor.push(c2);    
+            this.bufferColor.push(c3);    
+            this.bufferDistanceThreshold.push(weight);
             // top-right corner
-            vidx++;
-            this.bufferCorner[2*vidx+0] = x2;
-            this.bufferCorner[2*vidx+1] = y1;       
-            this.bufferTextureCoordinates[2*vidx+0] = tx2;   
-            this.bufferTextureCoordinates[2*vidx+1] = ty1;
-            this.bufferColor[4*vidx+0] = c0;    
-            this.bufferColor[4*vidx+1] = c1;    
-            this.bufferColor[4*vidx+2] = c2;    
-            this.bufferColor[4*vidx+3] = c3;    
-            this.bufferDistanceThreshold[vidx] = weight;
+            this.bufferCorner.push(x2);
+            this.bufferCorner.push(y1);
+            this.bufferTextureCoordinates.push(tx2);   
+            this.bufferTextureCoordinates.push(ty1);
+            this.bufferColor.push(c0);
+            this.bufferColor.push(c1);
+            this.bufferColor.push(c2);    
+            this.bufferColor.push(c3);
+            this.bufferDistanceThreshold.push(weight);
             // bottom-left corner
-            vidx++;
-            this.bufferCorner[2*vidx+0] = x1;
-            this.bufferCorner[2*vidx+1] = y2;       
-            this.bufferTextureCoordinates[2*vidx+0] = tx1;   
-            this.bufferTextureCoordinates[2*vidx+1] = ty2;
-            this.bufferColor[4*vidx+0] = c0;    
-            this.bufferColor[4*vidx+1] = c1;    
-            this.bufferColor[4*vidx+2] = c2;    
-            this.bufferColor[4*vidx+3] = c3;    
-            this.bufferDistanceThreshold[vidx] = weight;
+            this.bufferCorner.push(x1);
+            this.bufferCorner.push(y2);
+            this.bufferTextureCoordinates.push(tx1);   
+            this.bufferTextureCoordinates.push(ty2);
+            this.bufferColor.push(c0);    
+            this.bufferColor.push(c1);    
+            this.bufferColor.push(c2);    
+            this.bufferColor.push(c3);    
+            this.bufferDistanceThreshold.push(weight);
             // bottom-right corner
-            vidx++;
-            this.bufferCorner[2*vidx+0] = x2;
-            this.bufferCorner[2*vidx+1] = y2;       
-            this.bufferTextureCoordinates[2*vidx+0] = tx2;
-            this.bufferTextureCoordinates[2*vidx+1] = ty2;
-            this.bufferColor[4*vidx+0] = c0;    
-            this.bufferColor[4*vidx+1] = c1;    
-            this.bufferColor[4*vidx+2] = c2;    
-            this.bufferColor[4*vidx+3] = c3;    
-            this.bufferDistanceThreshold[vidx] = weight;
+            this.bufferCorner.push(x2);
+            this.bufferCorner.push(y2);       
+            this.bufferTextureCoordinates.push(tx2);
+            this.bufferTextureCoordinates.push(ty2);
+            this.bufferColor.push(c0);    
+            this.bufferColor.push(c1);    
+            this.bufferColor.push(c2);
+            this.bufferColor.push(c3);    
+            this.bufferDistanceThreshold.push(weight);
 
             return width - 1*this.kerning*magnification;         
     };

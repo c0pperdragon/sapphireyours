@@ -8,21 +8,19 @@ var VectorRenderer = function()
     this.aCorner = null;
     this.aColor = null;
         
-    this.vboCorner = null;             // buffer holding float[2] - destination coordinates (in pixel)
-    this.vboColor = null;              // buffer holding int[1] - color to by applied to image (also for color area rendering)
+    this.vboCorner = null;             // gl buffer holding float[2] - destination coordinates (in pixel)
+    this.vboColor = null;              // gl buffer holding int[1] - color to by applied to image (also for color area rendering)
     
     // client-side buffers to prepare the data before moving it into their gl counterparts
-	this.bufferCorner = null;
-    this.bufferCornerFilled = 0;
-	this.bufferColor = null;
-    this.bufferColorFilled = 0;
-	// temporary data for appending corners to triangle strips 
-	this.mustDublicateNextCorner = false;
-	this.rotsin = 0;
-	this.rotcos = 0;
-	this.translatex = 0;
-	this.translatey = 0;
-			
+    this.bufferCorner = null;
+    this.bufferColor = null;
+    // temporary data for appending corners to triangle strips 
+    this.mustDublicateNextCorner = false;
+    this.rotsin = 0;
+    this.rotcos = 0;
+    this.translatex = 0;
+    this.translatey = 0;
+            
     this.matrix = null; 
 };
 VectorRenderer.prototype = Object.create(Renderer.prototype);
@@ -30,7 +28,7 @@ VectorRenderer.prototype.constructor = VectorRenderer;
 
 // static fields
 VectorRenderer.MAXCORNERS = 10000;  // number of vertices in the buffer
-    	    
+            
 VectorRenderer.vertexShaderCode =
             "uniform mat4 uMVPMatrix;                  "+
             "attribute vec2 aCorner;                   "+   // location on screen (before transformation)
@@ -47,27 +45,27 @@ VectorRenderer.vertexShaderCode =
             "}                                         "+
             "";    
 VectorRenderer.fragmentShaderCode =
-    		"varying mediump vec4 vColor;                     "+  // color to apply to texture before rendering
+            "varying mediump vec4 vColor;                     "+  // color to apply to texture before rendering
             "void main() {                                    "+
-			"   gl_FragColor = vColor;                        "+
+            "   gl_FragColor = vColor;                        "+
             "}                                                "+
             "";            
 VectorRenderer.sinustable =
-    	[ 0.0, 0.17364817766693033, 0.3420201433256687, 0.5, 
-    	  0.6427876096865393, 0.766044443118978, 0.8660254037844386, 0.9396926207859083, 
-    	  0.984807753012208, 1.0, 0.984807753012208, 0.9396926207859084, 
-    	  0.8660254037844387, 0.766044443118978, 0.6427876096865395, 0.5,
-    	  0.3420201433256689, 0.1736481776669307, 0.0, -0.17364817766693047,
-    	  -0.34202014332566866, -0.5, -0.6427876096865393, -0.7660444431189779,
-    	  -0.8660254037844384, -0.9396926207859082, -0.984807753012208, -1.0, 
-    	  -0.9848077530122081, -0.9396926207859083, -0.8660254037844386, -0.7660444431189781, 
-    	  -0.6427876096865396, -0.5, -0.34202014332566943, -0.1736481776669304  ]; 
+        [ 0.0, 0.17364817766693033, 0.3420201433256687, 0.5, 
+          0.6427876096865393, 0.766044443118978, 0.8660254037844386, 0.9396926207859083, 
+          0.984807753012208, 1.0, 0.984807753012208, 0.9396926207859084, 
+          0.8660254037844387, 0.766044443118978, 0.6427876096865395, 0.5,
+          0.3420201433256689, 0.1736481776669307, 0.0, -0.17364817766693047,
+          -0.34202014332566866, -0.5, -0.6427876096865393, -0.7660444431189779,
+          -0.8660254037844384, -0.9396926207859082, -0.984807753012208, -1.0, 
+          -0.9848077530122081, -0.9396926207859083, -0.8660254037844386, -0.7660444431189781, 
+          -0.6427876096865396, -0.5, -0.34202014332566943, -0.1736481776669304  ]; 
     
 
-//	private int viewportx;
-//	private int viewporty;
-//	private int viewportwidth;
-//	private int viewportheight;
+//  private int viewportx;
+//  private int viewporty;
+//  private int viewportwidth;
+//  private int viewportheight;
 
 // --------- locations of images inside the atlas -------------
 
@@ -83,20 +81,18 @@ VectorRenderer.prototype.$ = function(gl)
     this.uMVPMatrix = gl.getUniformLocation(this.program, "uMVPMatrix");
     this.aCorner = gl.getAttribLocation(this.program, "aCorner"); 
     this.aColor = gl.getAttribLocation(this.program, "aColor");
-				
+                
     // create buffers (gl and client) for the vertices
-    this.bufferCorner = new Float32Array(2*VectorRenderer.MAXCORNERS);
-    this.bufferCornerFilled = 0;
+    this.bufferCorner = []; 
     this.vboCorner = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vboCorner);
     gl.bufferData(gl.ARRAY_BUFFER, 4*2*VectorRenderer.MAXCORNERS, gl.DYNAMIC_DRAW);
 
-    this.bufferColor = new Uint8Array(4*VectorRenderer.MAXCORNERS);
-    this.bufferColorFilled = 0;
-	this.vboColor = gl.createBuffer();
+    this.bufferColor = [];
+    this.vboColor = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vboColor);
     gl.bufferData(gl.ARRAY_BUFFER, 4*VectorRenderer.MAXCORNERS, gl.DYNAMIC_DRAW);
-       	
+        
     // allocate memory for projection matrix
     this.matrix = new Array(16);
         
@@ -106,8 +102,8 @@ VectorRenderer.prototype.$ = function(gl)
 VectorRenderer.prototype.startDrawing = function(viewportwidth, viewportheight)
 {
     // clear client-side buffer
-    this.bufferCornerFilled = 0;
-    this.bufferColorFilled = 0;
+    this.bufferCorner.length = 0;
+    this.bufferColor.length = 0;
     this.mustDublicateNextCorner = false;
   
     // transfer coordinate system from the opengl-standard to a pixel system (0,0 is top left)
@@ -119,21 +115,23 @@ VectorRenderer.prototype.startDrawing = function(viewportwidth, viewportheight)
 VectorRenderer.prototype.flush = function()
 {   var gl = this.gl;
 
-    var numcorners = this.bufferCornerFilled / 2;
+    var numcorners = this.bufferCorner.length / 2;
     if (numcorners <= 0) 
     {   return;
     }
 
     // transfer buffers into opengl 
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vboCorner);
-    gl.bufferSubData(gl.ARRAY_BUFFER,0, this.bufferCorner.subarray(0,2*numcorners));	
+//    gl.bufferSubData(gl.ARRAY_BUFFER,0, this.bufferCorner.subarray(0,2*numcorners));    
+    this.copyToBufferAsFloat32(gl.ARRAY_BUFFER, this.bufferCorner);
     
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vboColor);
-    gl.bufferSubData(gl.ARRAY_BUFFER,0, this.bufferColor.subarray(0,4*numcorners));	
+    this.copyToBufferAsUint8(gl.ARRAY_BUFFER, this.bufferColor);
+//    gl.bufferSubData(gl.ARRAY_BUFFER,0, this.bufferColor.subarray(0,4*numcorners)); 
 
     // Prepare buffers for future use
-    bufferCornerFilled = 0;
-    bufferColorFilled = 0;
+    this.bufferCorner.length = 0;
+    this.bufferColor.length = 0;
 
     // set up gl for painting all triangles
     gl.useProgram(this.program);
@@ -160,24 +158,24 @@ VectorRenderer.prototype.flush = function()
 
 
 VectorRenderer.prototype.addCorner = function(x,y,argb)
-{   this.bufferCorner[this.bufferCornerFilled++] = x;	
-    this.bufferCorner[this.bufferCornerFilled++] = y;
-    this.bufferColor[this.bufferColorFilled++] = (argb>>16) & 0xff;
-    this.bufferColor[this.bufferColorFilled++] = (argb>>8) & 0xff;
-    this.bufferColor[this.bufferColorFilled++] = (argb>>0) & 0xff;
-    this.bufferColor[this.bufferColorFilled++] = (argb>>24) & 0xff;
+{   this.bufferCorner.push(x);
+    this.bufferCorner.push(y);
+    this.bufferColor.push((argb>>16) & 0xff);
+    this.bufferColor.push((argb>>8) & 0xff);
+    this.bufferColor.push((argb>>0) & 0xff);
+    this.bufferColor.push((argb>>24) & 0xff);
 };
 
 VectorRenderer.prototype.startStrip = function()
 {
-    var numcorners = this.bufferCornerFilled / 2;
+    var numcorners = this.bufferCorner.length / 2;
     if (numcorners>0)
-    {   this.bufferCorner[this.bufferCornerFilled++] = this.bufferCorner[2*numcorners-2];
-        this.bufferCorner[this.bufferCornerFilled++] = this.bufferCorner[2*numcorners-1];
-        this.bufferColor[this.bufferColorFilled++] = this.bufferColor[4*numcorners-4];
-        this.bufferColor[this.bufferColorFilled++] = this.bufferColor[4*numcorners-3];
-        this.bufferColor[this.bufferColorFilled++] = this.bufferColor[4*numcorners-2];
-        this.bufferColor[this.bufferColorFilled++] = this.bufferColor[4*numcorners-1];
+    {   this.bufferCorner.push(this.bufferCorner[2*numcorners-2]);
+        this.bufferCorner.push(this.bufferCorner[2*numcorners-1]);
+        this.bufferColor.push(this.bufferColor[4*numcorners-4]);
+        this.bufferColor.push(this.bufferColor[4*numcorners-3]);
+        this.bufferColor.push(this.bufferColor[4*numcorners-2]);
+        this.bufferColor.push(this.bufferColor[4*numcorners-1]);
         this.mustDublicateNextCorner = true;
     }
     this.rotsin = 0;
@@ -190,7 +188,7 @@ VectorRenderer.prototype.setStripCornerTransformation = function(rotcos, rotsin,
 {   this.rotsin = rotsin;
     this.rotcos = rotcos;
     this.translatex = translatex;
-    this.translatey = translatey;	
+    this.translatey = translatey;   
 };
 
 VectorRenderer.prototype.addStripCorner = function(x, y, argb)
@@ -246,7 +244,7 @@ VectorRenderer.prototype.addCircle = function(x, y, radius, argb)
     }
     this.addCorner (x,y, argb);
     this.addCorner (x+radius,y, argb);
-    this.mustDublicateNextCorner=true;			
+    this.mustDublicateNextCorner=true;          
 };
 
 
@@ -359,20 +357,20 @@ VectorRenderer.prototype.addRoundedRect = function(x, y, width, height, radius, 
         x1=nx1;
         y1=ny1;
         x2=nx2;
-        y2=ny2;								
+        y2=ny2;                             
     }
     // last part
     var nx1=x+width;
     var ny1=y+radius;
     var nx2=x+width-radius+outerradius;
     var ny2=ny1;
-    this.addCorner(xc,yc, argb);					
-    this.addCorner(xc,yc, argb);					
+    this.addCorner(xc,yc, argb);                    
+    this.addCorner(xc,yc, argb);                    
     this.addCorner(x1,y1, argb);
     this.addCorner(nx1,ny1, argb);
     this.addCorner(x2,y2, argb2);
     this.addCorner(nx2,ny2, argb2);
-    this.addCorner(nx2,ny2, argb2);	
+    this.addCorner(nx2,ny2, argb2); 
 };
 
 VectorRenderer.prototype.addPlayArrow = function(x, y, width, height, orientation, argb)
@@ -390,7 +388,7 @@ VectorRenderer.prototype.addPlayArrow = function(x, y, width, height, orientatio
 };
 
 VectorRenderer.prototype.addForwardArrow = function(x, y, width, height, orientation, argb)
-{   this.startStrip();		
+{   this.startStrip();      
     this.setStripCornerTransformation(orientation*(width/2)/100,0, 
         x+width/2+orientation*width*0.04,y+width/2);
     this.addStripCorner(-30,-70, argb);
@@ -419,9 +417,9 @@ VectorRenderer.prototype.addSlowMotionArrow = function(x, y, width, height, orie
         x+width/2+orientation*width*0.08,y+width/2);
     this.addStripCorner(-70,-70,argb);
     this.addStripCorner(-70,70,argb);
-    this.addStripCorner(-45,-70,argb);			
-    this.addStripCorner(-45,70,argb);			
-    this.addStripCorner(-45,70,argb);						
+    this.addStripCorner(-45,-70,argb);          
+    this.addStripCorner(-45,70,argb);           
+    this.addStripCorner(-45,70,argb);                       
     this.addStripCorner(-30,-70, argb);
     this.addStripCorner(-30,-70, argb);
     this.addStripCorner(40,0, argb);
@@ -429,28 +427,28 @@ VectorRenderer.prototype.addSlowMotionArrow = function(x, y, width, height, orie
 };
 
 VectorRenderer.prototype.addCross = function(x, y, width, height, argb)
-{   this.startStrip();		
+{   this.startStrip();      
     this.setStripCornerTransformation((width*0.40)/100,0, x+width/2,y+width/2);
     this.addStripCorner(0,10, argb);
     this.addStripCorner(-70,80,argb);
     this.addStripCorner(0,0, argb);
     this.addStripCorner(-80,70, argb);
-	this.addStripCorner(-10,0, argb);
-	this.addStripCorner(-10,0, argb);
-	this.addStripCorner(-80,-70, argb);
-	this.addStripCorner(0,0, argb);
-	this.addStripCorner(-70,-80, argb);
-	this.addStripCorner(0,-10, argb);
-	this.addStripCorner(0,-10, argb);
-	this.addStripCorner(70,-80, argb);
-	this.addStripCorner(0,0, argb);
-	this.addStripCorner(80,-70, argb);
-	this.addStripCorner(10,0, argb);
-	this.addStripCorner(10,0, argb);
-	this.addStripCorner(80,70, argb);
-	this.addStripCorner(0,0, argb);
-	this.addStripCorner(70,80, argb);
-	this.addStripCorner(0,10, argb);		 	
+    this.addStripCorner(-10,0, argb);
+    this.addStripCorner(-10,0, argb);
+    this.addStripCorner(-80,-70, argb);
+    this.addStripCorner(0,0, argb);
+    this.addStripCorner(-70,-80, argb);
+    this.addStripCorner(0,-10, argb);
+    this.addStripCorner(0,-10, argb);
+    this.addStripCorner(70,-80, argb);
+    this.addStripCorner(0,0, argb);
+    this.addStripCorner(80,-70, argb);
+    this.addStripCorner(10,0, argb);
+    this.addStripCorner(10,0, argb);
+    this.addStripCorner(80,70, argb);
+    this.addStripCorner(0,0, argb);
+    this.addStripCorner(70,80, argb);
+    this.addStripCorner(0,10, argb);            
 };
 
 VectorRenderer.prototype.addSquare = function(x, y, width, height, argb)
@@ -465,8 +463,8 @@ VectorRenderer.prototype.addSquare = function(x, y, width, height, argb)
 
 VectorRenderer.prototype.addNextLevelArrow = function(x, y, width, height, argb)
 {
-    this.startStrip();		
-    this.setStripCornerTransformation((width*0.5)/100,0, x+width/2-width*0.06,y+width/2);		
+    this.startStrip();      
+    this.setStripCornerTransformation((width*0.5)/100,0, x+width/2-width*0.06,y+width/2);       
     this.addStripCorner(-50,-25,argb);
     this.addStripCorner(-50,25,argb);
     this.addStripCorner(25,-25,argb);
@@ -486,14 +484,14 @@ VectorRenderer.prototype.addInputFocusMarker = function(x, y, width, height, arg
 };
 
 VectorRenderer.prototype.addCrossArrows = function(x, y, width, height, argb)
-{	
-    this.startStrip();		
+{   
+    this.startStrip();      
     this.setStripCornerTransformation(width/200.0,0, x+width/2,y+width/2);
     this.addStripCorner(-30,-50,argb);
     this.addStripCorner(-10,-50,argb);
     this.addStripCorner(0,-80,argb);
     this.addStripCorner(10,-50,argb);
-    this.addStripCorner(30,-50,argb);		
+    this.addStripCorner(30,-50,argb);       
     this.addStripCorner(-10,-50,argb);
     this.addStripCorner(10,-50,argb);
     this.addStripCorner(-10,0,argb);
@@ -504,18 +502,18 @@ VectorRenderer.prototype.addCrossArrows = function(x, y, width, height, argb)
     this.addStripCorner(-10,50,argb);
     this.addStripCorner(0,80,argb);
     this.addStripCorner(10,50,argb);
-    this.addStripCorner(30,50,argb);		
+    this.addStripCorner(30,50,argb);        
     this.addStripCorner(-10,50,argb);
     this.addStripCorner(10,50,argb);
     this.addStripCorner(-10,0,argb);
-    this.addStripCorner(10,0,argb);	
-    this.addStripCorner(10,0,argb);	
-    this.addStripCorner(-50,-30,argb);			
+    this.addStripCorner(10,0,argb); 
+    this.addStripCorner(10,0,argb); 
+    this.addStripCorner(-50,-30,argb);          
     this.addStripCorner(-50,-30,argb);
     this.addStripCorner(-50,-10,argb);
     this.addStripCorner(-80,0,argb);
     this.addStripCorner(-50,10,argb);
-    this.addStripCorner(-50,30,argb);		
+    this.addStripCorner(-50,30,argb);       
     this.addStripCorner(-50,-10,argb);
     this.addStripCorner(-50,10,argb);
     this.addStripCorner(0,-10,argb);
@@ -526,22 +524,22 @@ VectorRenderer.prototype.addCrossArrows = function(x, y, width, height, argb)
     this.addStripCorner(50,-10,argb);
     this.addStripCorner(80,0,argb);
     this.addStripCorner(50,10,argb);
-    this.addStripCorner(50,30,argb);		
+    this.addStripCorner(50,30,argb);        
     this.addStripCorner(50,-10,argb);
     this.addStripCorner(50,10,argb);
     this.addStripCorner(0,-10,argb);
-    this.addStripCorner(0,10,argb);		
+    this.addStripCorner(0,10,argb);     
 };
 
 VectorRenderer.prototype.addZoomArrows = function(x, y, width, height, argb)
 {
-    this.startStrip();		
+    this.startStrip();      
     this.setStripCornerTransformation(width/200.0,0, x+width/2,y+width/2);
     this.addStripCorner(-30,-60,argb);
     this.addStripCorner(-10,-60,argb);
     this.addStripCorner(0,-90,argb);
     this.addStripCorner(10,-60,argb);
-    this.addStripCorner(30,-60,argb);		
+    this.addStripCorner(30,-60,argb);       
     this.addStripCorner(-10,-60,argb);
     this.addStripCorner(10,-60,argb);
     this.addStripCorner(-10,-40,argb);
@@ -552,22 +550,22 @@ VectorRenderer.prototype.addZoomArrows = function(x, y, width, height, argb)
     this.addStripCorner(-10,60,argb);
     this.addStripCorner(0,90,argb);
     this.addStripCorner(10,60,argb);
-    this.addStripCorner(30,60,argb);		
+    this.addStripCorner(30,60,argb);        
     this.addStripCorner(-10,60,argb);
     this.addStripCorner(10,60,argb);
     this.addStripCorner(-10,40,argb);
     this.addStripCorner(10,40,argb);
 };
 
-VectorRenderer.prototype.addCheckMark = function(x, y, width, height, argb)	
-{	
-    this.startStrip();		
+VectorRenderer.prototype.addCheckMark = function(x, y, width, height, argb) 
+{   
+    this.startStrip();      
     this.setStripCornerTransformation(width/200.0,0, x+width/2,y+width/2);
     this.addStripCorner(-60,0,argb);
     this.addStripCorner(-80,20,argb);
     this.addStripCorner(-20,40,argb);
     this.addStripCorner(-20,80,argb);
-    this.addStripCorner(60,-40,argb);		
+    this.addStripCorner(60,-40,argb);       
     this.addStripCorner(80,-20,argb);
 };
 
