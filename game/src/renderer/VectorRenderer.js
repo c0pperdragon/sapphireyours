@@ -23,7 +23,7 @@ var VectorRenderer = function()
 	this.translatex = 0;
 	this.translatey = 0;
 			
-    this.matrix = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];       // projection matrix
+    this.matrix = null; 
 };
 VectorRenderer.prototype = Object.create(Renderer.prototype);
 VectorRenderer.prototype.constructor = VectorRenderer;
@@ -98,7 +98,7 @@ VectorRenderer.prototype.$ = function(gl)
     gl.bufferData(gl.ARRAY_BUFFER, 4*VectorRenderer.MAXCORNERS, gl.DYNAMIC_DRAW);
        	
     // allocate memory for projection matrix
-    matrix = [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0];      
+    this.matrix = new Array(16);
         
     return this;
 };

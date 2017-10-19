@@ -34,7 +34,6 @@ var TextRenderer = function()
     this.textureSize = null;    
 };
 TextRenderer.prototype = Object.create(Renderer.prototype);
-TextRenderer.prototype.constructor = TextRenderer;
 
 
 TextRenderer.WEIGHT_THIN = 135;
@@ -130,7 +129,7 @@ TextRenderer.prototype.$ = function(gl)
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vboDistanceThreshold);
         gl.bufferData(gl.ARRAY_BUFFER, 4*4*TextRenderer.MAXGLYPHS, gl.DYNAMIC_DRAW);
 
-        this.matrix = [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0];
+        this.matrix = new Array(16);
                                 
         var that = this;    
         // load and decode the font glyph description 
@@ -156,50 +155,6 @@ TextRenderer.prototype.$ = function(gl)
             }
         );
         
-/*        
-        // load the font image and store in GL texture (this method automatically closes the stream)
-        try 
-        {   InputStream is = context.getAssets().open("gfx/font.png");
-            textureSize = loadImageToTexture(is, txFont, true);     
-            is.close();     
-            if (hasError())
-            {   return;
-            }
-        }
-        catch (IOException e) 
-        {   setError(e.getMessage());
-            return;
-        }
-        
-        // load the font description file
-        glyph_coordinates = new short[256][];
-        try 
-        {   InputStream is = context.getAssets().open("gfx/fontdesc.json");
-            String s = Util.readStringFromStream(is);
-            is.close();
-//            System.out.println(s.substring(0,10190));
-            JSONObject o = (JSONObject) (new JSONTokener(s).nextValue());
-            JSONArray glyphs = o.getJSONArray("glyphs");
-            for (int i=0; i<glyphs.length(); i++)
-            {   JSONObject g = glyphs.getJSONObject(i);
-                int code = g.getInt("code");
-                if (code>=0 && code<glyph_coordinates.length)
-                {   glyph_coordinates[code] = new short[]{ (short)g.getInt("x"), (short)g.getInt("y"), (short)g.getInt("width"), (short)g.getInt("height") };   
-                }
-            }
-            kerning = o.getInt("kerning");
-        }
-        catch (Exception e) 
-        {   setError(e.getMessage());
-            return;
-        }
-
-        
-        // check if any error has occured
-        if (glGetError()!=0)
-        {   setError("Error on creating VectorRenderer");
-        }
-*/
         return this;
 };
 

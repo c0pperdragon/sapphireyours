@@ -101,7 +101,7 @@ Game.prototype.$ = function()
     {   window.requestAnimationFrame(ftick);
         that.tick();
     };   
-
+    
     return this;
 };
     
@@ -329,8 +329,11 @@ Game.prototype.tick = function()
     
     // when anything changed in the display, redraw
     if (this.needRedraw) 
-    {   this.needRedraw = false;
-        this.draw();
+    {   if (this.allRenderersLoaded()) 
+        {   this.needRedraw = false;
+//            console.log("drawing..");
+            this.draw();
+        }
     }
 };
 
@@ -356,10 +359,16 @@ Game.prototype.draw = function()
         if (s.screenwidth!=this.screenwidth || s.screenheight!=this.screenheight)
         {   s.resize(this.screenwidth,this.screenheight);
         }
-        s . draw();
+        s . draw();        
     }
     
-    gl.disable(gl.BLEND);       
+    gl.disable(gl.BLEND);   
+
+    var e = gl.getError();
+    if (e) 
+    {   console.log("WebGL error on drawing: "+e);
+    }
+
 };
         
 // -------------- handling of opening/closing screens and screens notifying changes -------
@@ -411,25 +420,28 @@ Game.prototype.loadRenderers = function()
     
     this.textRenderer = new TextRenderer().$(gl);
     console.log("TextRenderer created");
-    
+
 /*    
     if ( (this.levelRenderer = new LevelRenderer().$(context)).hasError())
     {   (this.exitcall)();
         return; 
     }
-    console.log("LevelRenderer loaded");
-    if ( (this.gfxRenderer = new GfxRenderer().$(context)).hasError())
-    {   (this.exitcall)();
-        return;
-    }
-    console.log("GfxRenderer loaded");    
 */    
+    this.gfxRenderer = new GfxRenderer().$(gl);
+    console.log("GfxRenderer created");      
 
     // check if any error has occured
     var e = gl.getError();
     if (e) 
     {   console.log("WebGL error on creating renderers: "+e);
     }
+}
+ 
+Game.prototype.allRenderersLoaded = function()
+{
+    return this.vectorRenderer.isLoaded() 
+        && this.textRenderer.isLoaded() 
+        && this.gfxRenderer.isLoaded();
 }
  
  /*

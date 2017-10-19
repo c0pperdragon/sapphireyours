@@ -65,7 +65,6 @@ Renderer.prototype.loadImageToTexture = function(resourcename, texture, onlyalph
 {   
     var gl = this.gl;
     var image = new Image();
-    image.src = resourcename;
     image.addEventListener
     (   'load', function() 
         {   gl.bindTexture(gl.TEXTURE_2D, texture);
@@ -84,6 +83,7 @@ Renderer.prototype.loadImageToTexture = function(resourcename, texture, onlyalph
             callback( [image.naturalWidth,image.naturalHeight] );
         }
    );
+   image.src = resourcename;
 };
 	/**
 	 * Directly loads a image into a opengl texture.
