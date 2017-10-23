@@ -23,7 +23,6 @@ var TextRenderer = function()
     this.bufferColor = null;
     this.bufferTextureCoordinates = null;
     this.bufferDistanceThreshold = null;
-//    this.bufferFill = 0;  // how many glyphs are in the buffer
             
     this.matrix = null;       // projection matrix
 
@@ -134,7 +133,8 @@ TextRenderer.prototype.$ = function(gl)
         var that = this;    
         // load and decode the font glyph description 
         Game.getJSON
-        (   "gfx/fontdesc.json", function(json)
+        (   "gfx/fontdesc.json", 
+            function(json)
             {   that.glyph_coordinates = new Array(256);
                 for (var i=0; i<json.glyphs.length; i++) 
                 {   var g = json.glyphs[i];            
@@ -150,7 +150,10 @@ TextRenderer.prototype.$ = function(gl)
         // load the font bitmap
         this.txFont = gl.createTexture();        
         this.loadImageToTexture
-        (   "gfx/font.png", this.txFont, true, function(metrics) 
+        (   "gfx/font.png", 
+            this.txFont, 
+            true, 
+            function(metrics) 
             {   that.textureSize = metrics;
             }
         );
@@ -187,16 +190,21 @@ TextRenderer.prototype.flush = function()
         
         // transfer buffers into opengl 
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vboCorner);
-        this.copyToBufferAsFloat32(gl.ARRAY_BUFFER, this.bufferCorner);
+        this.copyToBufferAsFloat32(gl.ARRAY_BUFFER, 0, this.bufferCorner);
 
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vboColor);        
-        this.copyToBufferAsUint8(gl.ARRAY_BUFFER, this.bufferColor);
+        this.copyToBufferAsUint8(gl.ARRAY_BUFFER, 0, this.bufferColor);
         
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vboTextureCoordinates);       
-        this.copyToBufferAsUint16(gl.ARRAY_BUFFER, this.bufferTextureCoordinates);
+        this.copyToBufferAsUint16(gl.ARRAY_BUFFER, 0, this.bufferTextureCoordinates);
 
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vboDistanceThreshold);        
-        this.copyToBufferAsFloat32(gl.ARRAY_BUFFER, this.bufferDistanceThreshold);
+        this.copyToBufferAsFloat32(gl.ARRAY_BUFFER, 0, this.bufferDistanceThreshold);
+
+        this.bufferCorner.length = 0;
+        this.bufferColor.length = 0;
+        this.bufferTextureCoordinates.length = 0;
+        this.bufferDistanceThreshold.length = 0;
     
         // set up gl for painting all triangles
         gl.useProgram(this.program);

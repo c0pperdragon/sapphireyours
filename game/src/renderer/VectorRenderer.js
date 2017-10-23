@@ -123,15 +123,19 @@ VectorRenderer.prototype.flush = function()
     // transfer buffers into opengl 
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vboCorner);
 //    gl.bufferSubData(gl.ARRAY_BUFFER,0, this.bufferCorner.subarray(0,2*numcorners));    
-    this.copyToBufferAsFloat32(gl.ARRAY_BUFFER, this.bufferCorner);
+    this.copyToBufferAsFloat32(gl.ARRAY_BUFFER, 0, this.bufferCorner);
     
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vboColor);
-    this.copyToBufferAsUint8(gl.ARRAY_BUFFER, this.bufferColor);
+    this.copyToBufferAsUint8(gl.ARRAY_BUFFER, 0, this.bufferColor);
 //    gl.bufferSubData(gl.ARRAY_BUFFER,0, this.bufferColor.subarray(0,4*numcorners)); 
+
+    this.bufferCorner.length = 0;
+    this.bufferColor.length = 0;
 
     // Prepare buffers for future use
     this.bufferCorner.length = 0;
     this.bufferColor.length = 0;
+    this.mustDublicateNextCorner = false;
 
     // set up gl for painting all triangles
     gl.useProgram(this.program);

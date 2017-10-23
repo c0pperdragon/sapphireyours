@@ -92,29 +92,29 @@ Renderer.prototype.loadImageToTexture = function(resourcename, texture, onlyalph
 };
 
 
-Renderer.prototype.copyToBufferAsFloat32 = function(target, array)
+Renderer.prototype.copyToBufferAsFloat32 = function(target, offset,array)
 {
     var tmp = Renderer.tmpFloat32Array;
     var len = array.length;
     
     tmp.set(array);
-    this.gl.bufferSubData(target,0, tmp.subarray(0,len));        
+    this.gl.bufferSubData(target,offset, tmp.subarray(0,len));        
 };
 
-Renderer.prototype.copyToBufferAsUint8 = function(target, array)
+Renderer.prototype.copyToBufferAsUint8 = function(target, offset, array)
 {
     var tmp = Renderer.tmpUint8Array;
     var len = array.length;
     
     tmp.set(array);
-    this.gl.bufferSubData(target,0, tmp.subarray(0,len));        
+    this.gl.bufferSubData(target,offset, tmp.subarray(0,len));        
 };
 
-Renderer.prototype.copyToBufferAsUint16 = function(target, array)
+Renderer.prototype.copyToBufferAsUint16 = function(target, offset,array)
 {
     var tmp = Renderer.tmpUint16Array;
     var len = array.length;
     
     tmp.set(array);
-    this.gl.bufferSubData(target,0, tmp.subarray(0,len));        
+    this.gl.bufferSubData(target,offset, tmp.subarray(0,len));        
 };

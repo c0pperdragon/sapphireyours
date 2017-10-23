@@ -9,7 +9,7 @@ var Game = function()
     this.levelScale = 0;
     this.minButtonSize = 0;
 
-    this.levelRenderer = null;
+    this.tileRenderer = null;
     this.textRenderer = null;
     this.vectorRenderer = null;
     this.gfxRenderer = null;
@@ -429,6 +429,10 @@ Game.prototype.loadRenderers = function()
 */    
     this.gfxRenderer = new GfxRenderer().$(gl);
     console.log("GfxRenderer created");      
+    
+    this.tileRenderer = new TileRenderer().$(gl);
+    this.tileRenderer.loadImage("Drop Down", []);
+    console.log("TileRenderer created");      
 
     // check if any error has occured
     var e = gl.getError();
@@ -441,7 +445,8 @@ Game.prototype.allRenderersLoaded = function()
 {
     return this.vectorRenderer.isLoaded() 
         && this.textRenderer.isLoaded() 
-        && this.gfxRenderer.isLoaded();
+        && this.gfxRenderer.isLoaded()
+        && this.tileRenderer.isLoaded();
 }
  
  /*

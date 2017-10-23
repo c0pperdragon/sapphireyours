@@ -26,6 +26,8 @@ TestScreen.prototype.draw = function()
     tr.startDrawing (this.screenwidth, this.screenheight);    
     var gr = this.game.gfxRenderer;
     gr.startDrawing (this.screenwidth, this.screenheight);    
+    var tir = this.game.tileRenderer;
+    tir.startDrawing (this.screenwidth, this.screenheight, 60, 0,0,0,0);
     
     vr.addRoundedRect(10,10,100,100, 5,10, Game.getColorForDifficulty(3));   
     var s = 150;
@@ -35,12 +37,16 @@ TestScreen.prototype.draw = function()
     }
     vr.addCrossArrows(250-s/2,250-s/2, s,s, Game.getColorForDifficulty(4));        
     
-    tr.addString("Hello World", 50,400, 50, false, Game.getColorForDifficulty(5), 
+    tr.addString("Hello World", 50,350, 50, false, Game.getColorForDifficulty(5), 
            TextRenderer.WEIGHT_PLAIN);
            
     gr.addGraphic(gr.TITLEPICTURE, 200,11, 100,100);
            
+    tir.addTile(300,300, 0);
+    tir.addTile(370,300, 1);
+           
     gr.flush();
     vr.flush();
     tr.flush();    
+    tir.flush();
 };

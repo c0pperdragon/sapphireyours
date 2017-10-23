@@ -22,7 +22,6 @@ var GfxRenderer = function()
     // client-side buffers to prepare the data before moving it into their gl counterparts
     this.bufferCorner = null;
     this.bufferTextureCoordinates = null;
-    this.bufferFill = 0;  // how many glyphs are in the buffer
             
     this.matrix = null;       // projection matrix    
 };
@@ -88,12 +87,12 @@ GfxRenderer.prototype.$ = function(gl)
     sb = null;
     
     // create buffers (gl and client) that hold 4 entries for every rectangle
-    this.bufferCorner = new Float32Array(2*4*GfxRenderer.MAXRECTANGLES);
+    this.bufferCorner = []; // new Float32Array(2*4*GfxRenderer.MAXRECTANGLES);
     this.vboCorner = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vboCorner);
     gl.bufferData(gl.ARRAY_BUFFER, 2*4*4*GfxRenderer.MAXRECTANGLES, gl.DYNAMIC_DRAW);
 
-    this.bufferTextureCoordinates = new Uint16Array(2*4*GfxRenderer.MAXRECTANGLES);
+    this.bufferTextureCoordinates = []; // new Uint16Array(2*4*GfxRenderer.MAXRECTANGLES);
     this.vboTextureCoordinates = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vboTextureCoordinates);
     gl.bufferData(gl.ARRAY_BUFFER, 2*4*2*GfxRenderer.MAXRECTANGLES, gl.DYNAMIC_DRAW);
@@ -112,31 +111,26 @@ GfxRenderer.prototype.$ = function(gl)
 
     // load the graphics files and put into texture atlas
     var freespace = new FreespaceManager().$(GfxRenderer.ATLASWIDTH,GfxRenderer.ATLASHEIGHT);
-
-    var that = this;
-    this.loadGfx(freespace, "splash", function(pos_and_dim)
-    {   that.TITLEPICTURE = pos_and_dim;
-    });
-    this.loadGfx(freespace, "CompletionNO", function(pos_and_dim)
-    {   that.FINISHEDMARKER_VISITED = pos_and_dim;
-    });
-    this.loadGfx(freespace, "CompletionFINISHED", function(pos_and_dim)
-    {   that.FINISHEDMARKER_SOLVED = pos_and_dim;
-    });
-    this.loadGfx(freespace, "CompletionPERFECT", function(pos_and_dim)
-    {   that.FINISHEDMARKER_PERFECT = pos_and_dim;
-    });
+    this.TITLEPICTURE = [];
+    this.FINISHEDMARKER_VISITED = [];
+    this.FINISHEDMARKER_SOLVED = [];
+    this.FINISHEDMARKER_PERFECT = [];
+    
+    this.loadGfx(freespace, "splash", this.TITLEPICTURE);
+    this.loadGfx(freespace, "CompletionNO", this.FINISHEDMARKER_VISITED);
+    this.loadGfx(freespace, "CompletionFINISHED", this.FINISHEDMARKER_SOLVED);
+    this.loadGfx(freespace, "CompletionPERFECT", this.FINISHEDMARKER_PERFECT);
     
     return this;    
 };
 
 GfxRenderer.prototype.isLoaded = function()
 {
-    return this.TITLEPICTURE!==null && this.FINISHEDMARKER_VISITE!==null 
-        && this.FINISHEDMARKER_SOLVED!==null && this.FINISHEDMARKER_PERFECT!==null;
+    return this.TITLEPICTURE.length>0 && this.FINISHEDMARKER_VISITED.length>0
+        && this.FINISHEDMARKER_SOLVED.length>0 && this.FINISHEDMARKER_PERFECT.length>0;
 };
 
-GfxRenderer.prototype.loadGfx = function(freespace, name, callback) 
+GfxRenderer.prototype.loadGfx = function(freespace, name, pos_and_dim_storage) 
 {
     var that = this;
     
@@ -154,7 +148,8 @@ GfxRenderer.prototype.loadGfx = function(freespace, name, callback)
             gl.texSubImage2D(gl.TEXTURE_2D, 0, pos_and_dim[0],pos_and_dim[1], gl.RGBA, gl.UNSIGNED_BYTE, image);
             
             console.log("done loading",name,":",pos_and_dim);
-            callback(pos_and_dim);
+            pos_and_dim_storage.length = 0;
+            pos_and_dim_storage.push.apply(pos_and_dim_storage, pos_and_dim);
         }
    );
    image.src = "gfx/" + name + ".png";
@@ -162,8 +157,8 @@ GfxRenderer.prototype.loadGfx = function(freespace, name, callback)
     
 GfxRenderer.prototype.startDrawing = function(viewportwidth,viewportheight)
 {
-        // clear buffer fill state
-        this.bufferFill = 0;
+        this.bufferCorner.length = 0;
+        this.bufferTextureCoordinates.length = 0;
         
         // transfer coordinate system from the opengl-standard to a pixel system (0,0 is top left)
         Matrix.setIdentityM(this.matrix,0);     
@@ -175,20 +170,20 @@ GfxRenderer.prototype.flush = function()
 {
         var gl = this.gl;
 
-        var numrectangles = this.bufferFill;
-        this.bufferFill = 0;
+        var numrectangles = this.bufferCorner.length / 4;
         if (numrectangles<=0)
         {   return;
         }
         
         // transfer buffers into opengl 
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vboCorner);  
-        gl.bufferSubData(gl.ARRAY_BUFFER,0, this.bufferCorner.subarray(0,4*2*numrectangles));
-
-//        console.log(numrectangles,"corners:",this.bufferCorner.subarray(0,4*2*numrectangles));
+        this.copyToBufferAsFloat32(gl.ARRAY_BUFFER, 0, this.bufferCorner);
         
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vboTextureCoordinates);       
-        gl.bufferSubData(gl.ARRAY_BUFFER,0, this.bufferTextureCoordinates.subarray(0,4*2*numrectangles));  
+        this.copyToBufferAsUint16(gl.ARRAY_BUFFER, 0, this.bufferTextureCoordinates);  
+        
+        this.bufferCorner.length = 0;
+        this.bufferTextureCoordinates.length = 0;
 
         // set up gl for painting all triangles
         gl.useProgram(this.program);
@@ -222,11 +217,6 @@ GfxRenderer.prototype.flush = function()
     
 GfxRenderer.prototype.addGraphic = function(source, x1, y1, width, height)
     {
-        if (this.bufferFill>=GfxRenderer.MAXRECTANGLES)
-        {   flush();
-        }       
-        var cursor = this.bufferFill*8;
-        
         // target coordinates        
         var x2 = x1+width;
         var y2 = y1+height;
@@ -238,26 +228,24 @@ GfxRenderer.prototype.addGraphic = function(source, x1, y1, width, height)
         var sy2 = sy1 + source[3];
             
         // top-left corner
-        this.bufferCorner[cursor+0] = x1; 
-        this.bufferCorner[cursor+1] = y1;       
-        this.bufferTextureCoordinates[cursor+0] = sx1;   
-        this.bufferTextureCoordinates[cursor+1] = sy1;
+        this.bufferCorner.push(x1); 
+        this.bufferCorner.push(y1);       
+        this.bufferTextureCoordinates.push(sx1);   
+        this.bufferTextureCoordinates.push(sy1);
         // top-right corner
-        this.bufferCorner[cursor+2] = x2; 
-        this.bufferCorner[cursor+3] = y1;       
-        this.bufferTextureCoordinates[cursor+2] = sx2;   
-        this.bufferTextureCoordinates[cursor+3] = sy1;
+        this.bufferCorner.push(x2); 
+        this.bufferCorner.push(y1);       
+        this.bufferTextureCoordinates.push(sx2);   
+        this.bufferTextureCoordinates.push(sy1);
         // bottom-left corner
-        this.bufferCorner[cursor+4] = x1; 
-        this.bufferCorner[cursor+5] = y2;       
-        this.bufferTextureCoordinates[cursor+4] = sx1;   
-        this.bufferTextureCoordinates[cursor+5] = sy2;
+        this.bufferCorner.push(x1); 
+        this.bufferCorner.push(y2);       
+        this.bufferTextureCoordinates.push(sx1);   
+        this.bufferTextureCoordinates.push(sy2);
         // bottom-right corner
-        this.bufferCorner[cursor+6] = x2; 
-        this.bufferCorner[cursor+7] = y2;       
-        this.bufferTextureCoordinates[cursor+6] = sx2;   
-        this.bufferTextureCoordinates[cursor+7] = sy2;
-        
-        this.bufferFill++;
+        this.bufferCorner.push(x2); 
+        this.bufferCorner.push(y2);       
+        this.bufferTextureCoordinates.push(sx2);   
+        this.bufferTextureCoordinates.push(sy2);
 };
     
