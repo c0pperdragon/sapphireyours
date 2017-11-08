@@ -15,7 +15,8 @@ TestScreen.prototype.$ = function(game)
 
 TestScreen.prototype.tick = function()
 {   this.t = (this.t + 1) % 600;  
-    if (this.t<=300) this.setDirty();
+//    if (this.t<=300) 
+    this.setDirty();
 };
 
 TestScreen.prototype.draw = function()
@@ -43,7 +44,8 @@ TestScreen.prototype.draw = function()
     gr.addGraphic(gr.TITLEPICTURE, 200,11, 100,100);
            
     tir.addTile(300,300, 0);
-    tir.addTile(370,300, 1);
+    tir.addTile(370,300, 1 + (Math.floor(this.t%60)<<16));
+    tir.addTile(440,300, 1 + (Math.floor((this.t%360)*60)<<16));
            
     gr.flush();
     vr.flush();

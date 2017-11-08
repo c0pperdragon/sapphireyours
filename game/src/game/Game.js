@@ -431,7 +431,7 @@ Game.prototype.loadRenderers = function()
     console.log("GfxRenderer created");      
     
     this.tileRenderer = new TileRenderer().$(gl);
-    this.tileRenderer.loadImage("Drop Down", []);
+    this.tileRenderer.loadImage("1man", []);
     console.log("TileRenderer created");      
 
     // check if any error has occured

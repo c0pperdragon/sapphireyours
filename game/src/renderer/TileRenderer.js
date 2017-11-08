@@ -187,7 +187,7 @@ TileRenderer.prototype.loadImage = function(name, tilenumbers_storage)
             var rows = Math.floor(h/TileRenderer.TILEHEIGHT);
             var cols = Math.floor(w/TileRenderer.TILEWIDTH);
             
-            tilenumbers_storage.length = 0;
+            var tiles = [];
             
             gl.bindTexture(gl.TEXTURE_2D, that.txTexture);
             var cc = that.tmpCanvas.getContext("2d");
@@ -195,7 +195,7 @@ TileRenderer.prototype.loadImage = function(name, tilenumbers_storage)
             {   for (var y=0; y<rows; y++) 
                 {   
                     var tn = that.tilesLoaded++;
-                    tilenumbers_storage.push(tn);
+                    tiles.push(tn);
                     
                     cc.drawImage(image, TileRenderer.TILEWIDTH*x, TileRenderer.TILEHEIGHT*y, 
                                         TileRenderer.TILEWIDTH, TileRenderer.TILEHEIGHT, 
@@ -211,6 +211,12 @@ TileRenderer.prototype.loadImage = function(name, tilenumbers_storage)
                         that.tmpCanvas 
                     );
                 }
+            }
+            
+            if (tiles.length<1) tiles=[0];
+            
+            for (var i=0; i<tilenumbers_storage.length; i++) 
+            {   tilenumbers_storage[i] = tiles[Math.floor(i*tiles.length / tilenumbers_storage.length)];
             }
             
             console.log("done loading",name,":",tilenumbers_storage);
