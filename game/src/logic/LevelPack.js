@@ -1,57 +1,24 @@
-package grafl.sy.logic;
-
-import grafl.util.Util;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.util.Arrays;
-
-import org.json.JSONArray;
-import org.json.JSONTokener;
-
-public class LevelPack 
+var LevelPack = function()
 {
-	public final String name;
-	public final String filename;
-	public Level[] levels;
+	this.name = null
+	this.levels = null;
+};
 
-	public LevelPack(String name, String filename)
-	{
-    	this.name = name;
-		this.filename = filename;
-    	this.levels = new Level[0];
-	}
-	
-	
-    public LevelPack(String name, InputStream stream, boolean sort, String filename) throws Exception
-    {
-    	this.name = name;
-		this.filename = filename;
-    	
-    	String packdata = Util.readStringFromStream(stream);
-    	Object o = null;
-		o = new JSONTokener(packdata).nextValue();
-		
-		if (! (o instanceof JSONArray))
-		{	throw new IOException("JSONArray expected");
-		}		
-			
-		JSONArray a = (JSONArray) o;
-		this.levels = new Level[a.length()];
-		for (int i=0; i<a.length(); i++)			
-		{
-			this.levels[i] = new Level(a.getJSONObject(i));
-		}
-		
-		if (sort)
-		{
-			Arrays.sort(this.levels,new Level.TitleComparator());
-			Arrays.sort(this.levels,new Level.DifficultyComparator());
-		}		
+Levelpack.prototype.$ = function(name, data)
+{   
+    this.name = name;
+    this.levels = [];
+
+    for (int i=0; i<data.length; i++)
+    {   this.levels.push(new Level(data[i]));        
     }
     
-    public void print(PrintStream stream) 
+    //Arrays.sort(this.levels,new Level.TitleComparator());
+    //Arrays.sort(this.levels,new Level.DifficultyComparator());    
+    return this;
+};
+        
+    public void print() 
     {
 		stream.println("[");
 		for (int i=0; i<levels.length; i++)

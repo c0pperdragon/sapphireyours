@@ -1,0 +1,892 @@
+[
+{   "title": "The Doors",
+    "author": "Reinhard",
+    "difficulty": 4,
+    "category": 1,
+    "loot": 3,
+    "time": 150,
+    "map":
+    [   "##################",
+        "#B R G R B G r*B #",
+        "# Y R Y Y G B G B#",
+        "#B G R B G B Y G #",
+        "# Y G G R B B Y B#",
+        "#B G G R G B Y B #",
+        "# * R.Y G Y G B G#",
+        "#B.R Y R Y G Y B #",
+        "# B R G Y Y Y B G#",
+        "#G Y B Y G Y Y G #",
+        "# R G Y Y G B R B#",
+        "#Y G Y Y G Y Y G #",
+        "# B Y G   B G Y B#",
+        "#R G Y G G Y G Y #",
+        "# R G Y G B B R 1#",
+        "#B Y B Y B G R By#",
+        "# E B G B G * G B#",
+        "##################"
+    ],
+    "demos":
+    [   {   "title": "untitled",
+            "randomseed": 785015,
+            "moves":
+            [   "...b.tlt.ltttttt.rlbbbbbb.r.bl.bl.rt.rt.",
+                "l..t..t.lll....bb..r.t..ll..rt.rt.ltttt.",
+                "rtt.l.blt.lbbbb.t...r.bb.lbbbb.r.rb.l...",
+                "...."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Emerald",
+    "author": "Reinhard",
+    "difficulty": 4,
+    "category": 2,
+    "loot": 90,
+    "time": 200,
+    "map":
+    [   "      #      ",
+        "     #0#     ",
+        "    #$$*#    ",
+        "   #$$$**#   ",
+        "  #$$$$***#  ",
+        " #$$$$$****# ",
+        "#1$$$$$****E#",
+        " #****$$$$$# ",
+        "  #***$$$$#  ",
+        "   #**$$$#   ",
+        "    #*$$#    ",
+        "     #Q#     ",
+        "      #      "
+    ],
+    "demos":
+    [   {   "title": "untitled",
+            "randomseed": 30212,
+            "moves":
+            [   "...rt.rt..rt..rt.r..........B..l...r....",
+                "l..b....rr....l....br.ll..rtrrbrbr.ll.tt",
+                "lb.brrrb...r......B..l...tllllllbrrrrrrb",
+                "lllllllrbrrrrrrlbllllrbrrttttrrrrr......"
+            ]
+        }
+    ]
+}
+,
+{   "title": "Tiny Trick",
+    "author": "J\u00fcrgen",
+    "difficulty": 4,
+    "category": 2,
+    "loot": 2,
+    "time": 30,
+    "map":
+    [   "##0#",
+        "#Q$#",
+        "#1.E",
+        "####"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 10315,
+            "moves":
+            [   ".....rTr.........."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Empire State Building",
+    "author": "Reinhard",
+    "difficulty": 5,
+    "category": 4,
+    "loot": 1,
+    "time": 200,
+    "map":
+    [   "    |    ",
+        "    +    ",
+        "   ###   ",
+        "   ###   ",
+        "   # #   ",
+        "   ###   ",
+        "   # #   ",
+        "  :::::  ",
+        "  #   #  ",
+        "  # + #  ",
+        " #:   :# ",
+        " #     # ",
+        " # + + # ",
+        " # + + # ",
+        " # + + # ",
+        " #     # ",
+        " # + + # ",
+        " # + + # ",
+        " # + + # ",
+        " #     # ",
+        " # + + # ",
+        " # + + # ",
+        " # + + # ",
+        "##     ##",
+        "## + + ##",
+        "#  + +  #",
+        "#  + +  #",
+        "#  @10  E",
+        "##{#{#{##"
+    ],
+    "demos":
+    [   {   "title": "untitled",
+            "randomseed": 833607,
+            "moves":
+            [   "..ttttrrbbbbl...rtttttttttttttttttltl.bb",
+                "bbbbbbbbbbbllbbbbr..rrrttttttttttttttttt",
+                "ltl...b.r..l.bbbblllltttt...............",
+                "r.....r..b..bbbbbbbbbbbrrbbbbrr......."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Capture",
+    "author": "Reinhard",
+    "difficulty": 5,
+    "category": 3,
+    "loot": 21,
+    "swamprate": 8,
+    "time": 400,
+    "map":
+    [   " $        $         Q ",
+        " :########+#########+ ",
+        " Q#................#Q ",
+        " +#...........0....#+ ",
+        " Q#...1...0........#Q ",
+        " +#0.............0.#+ ",
+        " Q#.....0.......0..#Q ",
+        " +#..0.....0..0....#+ ",
+        " Q#................#Q ",
+        " +#0..........0..0.#+ ",
+        " Q#...0..0......0..#Q ",
+        " +#.......E..0.....#+ ",
+        " Q#....0...0..0.0..#Q ",
+        " +#0..0...0........#+ ",
+        " Q#..0...........0.#Q ",
+        " +#0.....0....0....#+ ",
+        " Q#................#Q ",
+        " +#..0..%%%%%%.....#+ ",
+        " (##################( ",
+        "$*       ?(         *$",
+        "$$##################$$"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 64571,
+            "moves":
+            [   "..bbbbblbbrrrrlttttrbbbrrb.rtt..tll.rr.b",
+                "rbrrr.tr.ttrr.lbrb.tllbrrrtttlllllllllbb",
+                "bbll..llbbbbttlttr......................",
+                "..rrrrrrrr..............................",
+                "........................................",
+                "........................................",
+                "............lllll..tttttttt.rrr..tt.llll",
+                "llllllbbbbbbbbbbbbbbbbbbrbl.brtrrrrrrrrr",
+                "rrrrrrrrrrr.b.lttttttttttttttttttttlmlll",
+                "lllllbbblbbbbbb.br.b........"
+            ]
+        }
+    ]
+}
+,
+{   "title": "Inaccessible",
+    "author": "Reinhard",
+    "difficulty": 5,
+    "category": 4,
+    "loot": 44,
+    "time": 700,
+    "map":
+    [   "################",
+        "#      1       #",
+        "#++&&++&+&+]&++#",
+        "#+++++++++++++&#",
+        "#++]+++&++++&++#",
+        "#++&+++]&+&+]+&#",
+        "#+&+&+++++++&++#",
+        "#&&+++&+&&+&+&+#",
+        "#              #",
+        "#              #",
+        "#cccccccccccccc#",
+        "#              #",
+        "#E             #",
+        "################"
+    ],
+    "demos":
+    [   {   "title": "untitled",
+            "randomseed": 799099,
+            "moves":
+            [   "..rrrrb.tlllllllllll.srr.......lllbb..ur",
+                "r.......lllbbb..utrr......llbbbrrrlll...",
+                "utt........bbb.....rrr.....ll...........",
+                "..........br....mttt........brrbrr..mll.",
+                ".......rrrr...mll.......rrrrrr..mll.....",
+                ".rrrrrrbrrll.........ut..........bbbr...",
+                "utt........bbbbbllll....srrr.........t..",
+                "bll..srrrrrrrr....mll..mlll.....tt.rr...",
+                "cbrrrrrrtt....mll............srtt.......",
+                ".bll...mllllttt.l..srr....cbrrr........r",
+                "rrr...ml............rrrt....mll.........",
+                ".rtt...cbllllltt...ml.........rrrr..mll.",
+                "..........bbbbbbb...ut.........bbbbrrrrr",
+                "rrrrrbllllrrllllll.rlllltllrbl......."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Escape",
+    "author": "Reinhard",
+    "difficulty": 6,
+    "category": 4,
+    "loot": 6,
+    "map":
+    [   "##########",
+        "#...0.1!E#",
+        "#...$0...#",
+        "#0..0*.*0#",
+        "#00....0.#",
+        "#000....0#",
+        "#0000....#",
+        "#0000....#",
+        "#**......#",
+        "##########"
+    ],
+    "demos":
+    [   {   "title": "untitled",
+            "randomseed": 877098,
+            "moves":
+            [   "...rbbll..r..tllrr.bbbbbl.r.t.l.r.lll...",
+                ".srrbbllllllrrrrrrtttttttrr......."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Deep Blue",
+    "author": "Reinhard",
+    "difficulty": 6,
+    "category": 4,
+    "loot": 106,
+    "hint": "You must sacrifice one gem.",
+    "map":
+    [   "####################",
+        "#0$. B..$$...B ..b0#",
+        "#00..#.......#..00$#",
+        "#$$$.#..$$...#...$$#",
+        "#b$..#.$.....#..$$$#",
+        "######.......#######",
+        "#$.....#####.......#",
+        "#..$.#.......#..$..#",
+        "#....#.......#.....#",
+        "#.$..#...1.0.#.....#",
+        "#$...#.......#...$.#",
+        "#$...#.............#",
+        "#.$..#$$$$$$$#.....#",
+        "#......#####......Q#",
+        "#B####.......#####B#",
+        "# ...#.0$...0#.00$ #",
+        "#....#0$$000$#0$$$.#",
+        "#...b#$$..$.$#b$$$.#",
+        "#.E.$#$$$...$#.$$$.#",
+        "####################"
+    ],
+    "demos":
+    [   {   "title": "untitled",
+            "randomseed": 90103,
+            "moves":
+            [   "..........lllbb..r.ltttttt.tt.r.tr.l..t.",
+                ".l...bbbbr.l.trrl.ttrrll..t..l..rrrbbbll",
+                "..bblbbb.r.bb.t..rrrtrrb.llll....bbrrrrr",
+                "rrrrt.rb.b.tttttllllltllbbbbllllllb.rrrr",
+                "rrrrrrrl....rrrbbbb...l...b....bBl......",
+                ".........B.............T.l..B.T.Lrrrtttt",
+                "lllttlllblllllll.bbrr.b...t.llb..trrrbr.",
+                "ltlllbrrrr.l.blb..l.brr..rt.r...........",
+                "rr.B.tlllllltttllllttlt.bbbbbrrrbbtttlll",
+                "tttttrtttlrrbrtrrtttttlllrrr..l.bb......",
+                "....l........l..L..............B........",
+                "rrttrrrrrrrrrrrlll.bbb.rr....r......t...",
+                "..r...BTttlllllllllllbbbbbbbbbbbblllllbb",
+                "bbr......."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Hour Glass",
+    "author": "Reinhard",
+    "difficulty": 6,
+    "category": 6,
+    "loot": 25,
+    "map":
+    [   "#############################",
+        "#    .++00*********00++.    #",
+        "#    ..+|00*******00|+..    #",
+        "#   1.. +|00*****00|+ .. E  #",
+        "#    ..  +|00***00|+  ..    #",
+        "#    ..   +|00*00|+   ..    #",
+        "#    ..    +|000|+    ..    #",
+        "#    ..     +|0|+     ..    #",
+        "#    ..      +0+      ..    #",
+        "#    ..      ...      ..    #",
+        "#    ..      + +      ..    #",
+        "#    ..     +   +     ..    #",
+        "#    ..    +     +    ..    #",
+        "#    ..   +       +   ..    #",
+        "#    ..  +         +  ..    #",
+        "#    .. +           + ..    #",
+        "#    ..+             +..    #",
+        "#    .+               +.    #",
+        "#############################"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 12809,
+            "moves":
+            [   ".bbbbbbrrrrrrrrrrbbbbbbbbrrrt...........",
+                ".lll....................................",
+                "....................................l...",
+                ".l....l....l....B...r..r....B.r....t....",
+                "....r...........t....r...........bbr....",
+                "........t.......bbr....t..r.............",
+                "B.rr..B.tlllllttttttrrrrrrrrrrr.tttttt..",
+                "........"
+            ]
+        }
+    ]
+}
+,
+{   "title": "System Shock",
+    "author": "Reinhard",
+    "difficulty": 6,
+    "category": 3,
+    "loot": 7,
+    "map":
+    [   "####################",
+        "#!!!!!!!!!!!!!!!!!E#",
+        "#!!QQQQQ!!!!!QQQQ!!#",
+        "#!!!!!!!!QQQQ**Q!!!#",
+        "#!Q!!QQ!*!!!!!QQ!!!#",
+        "#!!QQ!!!!!!!!QQ!!!!#",
+        "#!!!*!!!!!*!QQQQ!!!#",
+        "#!!!!!!QQQQQQ!!!!!!#",
+        "#1!!!QQQQQ!!!**!!!!#",
+        "####################"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 14067,
+            "moves":
+            [   ".....tttttttrrrrrrrrrrrrrrrrbbbbbbbllllr",
+                "rrrrtttttt.ltllllll.rbllll...bbbb.rrr.t.",
+                "rlll.b.lllll.......srrrrrrtrtrtRtt......",
+                "rrrrrr......."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Corner Stone",
+    "author": "Reinhard",
+    "difficulty": 7,
+    "category": 6,
+    "loot": 27,
+    "map":
+    [   "####################",
+        "#0...........*.....#",
+        "#......*....*......#",
+        "#..................#",
+        "#..*.........*..*..#",
+        "#........*.*.......#",
+        "#...*...........*..#",
+        "#.........$........#",
+        "#....$..*..........#",
+        "#..................#",
+        "#.....*..........$.#",
+        "#.$................#",
+        "#......1......*...$#",
+        "#..................#",
+        "#..................#",
+        "#..............*...#",
+        "#....*......*......#",
+        "#E.......0@........#",
+        "####################"
+    ],
+    "demos":
+    [   {   "title": "untitled",
+            "randomseed": 807318,
+            "moves":
+            [   "........bbb....rrrrrrrrrrrtttttttttttt.l",
+                "ll......lll...B..l..b..ttll.tllllllbbllb",
+                "bbbbbbbbbb.....b.............rtttl.r...b",
+                "..brtttttttttllbbbbbbbb..rrrttttt..tllbb",
+                "bbb.rrrtttll.bb.rrr.l.trrtttttttllbbbbb.",
+                ".brrr.l.trrttll..br..trrrl.t..r.r.l..ltt",
+                "..trrrrrrbbbbbbbbrbblll..ttttttttllbbllb",
+                "bllbbllbbllbbl...l.btttttttttttttlrrbbbb",
+                "bbbbbbbb.brrrtlllll.brrrr....Brrrr.b..rr",
+                "r....lblrtllllllllllb......."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Matrix",
+    "author": "Reinhard",
+    "difficulty": 7,
+    "category": 2,
+    "loot": 0,
+    "map":
+    [   ":::::$:$:$::::$",
+        ":####:#:#:####:",
+        ":#          E#:",
+        ":#           #:",
+        ":#  [ [ [ [  #:",
+        "*:           :$",
+        ":#  [ [ [ [  #:",
+        "*:           ::",
+        ":#  [ [ [ [  #:",
+        "*:           :*",
+        ":#  [ [ [ [  #:",
+        ":#           #'",
+        ":#1          #C",
+        ":####:#:#:####D",
+        "*::::*:*:*::::F"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 21665,
+            "moves":
+            [   "rrttb...rrt.b..rrt....rrbrltrbrtl...ttlr",
+                "...ttlr...ttttr........."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Think Straight",
+    "author": "Ronald",
+    "difficulty": 8,
+    "category": 5,
+    "loot": 27,
+    "map":
+    [   "##################",
+        "#....#0#..#......#",
+        "#...#0Q#..#......#",
+        "#.1.#0Q]###Q QQ..#",
+        "#...#0####b&&&&..#",
+        "#....0.#&#.B ..].#",
+        "#...0Q]#&6.&&&&..#",
+        "#..$$00#+##QQQQ..#",
+        "#..$$&#...#......#",
+        "#..$$.#...######.#",
+        "###########E&&&&.#",
+        "         #########"
+    ],
+    "demos":
+    [   {   "title": "untitled",
+            "randomseed": 471873,
+            "moves":
+            [   "..bbrrlblbbrBTrbrbbbbbTltltttrrrrbbbrttr",
+                "rttbrrrrrtttlllllsrrrbbblbbbbblltlrbuttr",
+                "srrrrrrrbbbrrrlllblltrrmllbbbbbbbbbbtttr",
+                "trrrbbbrrbbbbuttrrrbbbbbbbllsttlbbbbrbbb",
+                "blllsrrbbbbbbbbbllllsrrbbbbbblllllll....",
+                ".."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Shortcut",
+    "author": "Reinhard",
+    "difficulty": 8,
+    "category": 6,
+    "loot": 16,
+    "map":
+    [   "####################",
+        "#QQQQQQQ.0.......#E#",
+        "#Q#####Q*....$..*# #",
+        "#QQQQQ#.0...0....#R#",
+        "#####Q#..........*.#",
+        "#QQQ#Q#..*0...0....#",
+        "#Q#Q#Q#.......$....#",
+        "#Q#Q#Q#............#",
+        "#Q#Q#Q#.....$...**.#",
+        "#Q#Q#Q#.############",
+        "#Q#Q#Q#.1.*.....*..#",
+        "#Q#Q#Q############.#",
+        "#r+QQQ.*....*......#",
+        "####################"
+    ],
+    "demos":
+    [   {   "title": "untitled",
+            "randomseed": 714376,
+            "moves":
+            [   "....ltttrr.t...br...rr......l.....r..r..",
+                "lbrrrrttttlllblll...rrrtrrblllll..rrrr..",
+                ".tttll...l...b....l..........l...B.rr.tr",
+                "r..blll.............l...t....r...l......",
+                "..t.l..rrrrrrrrbbbbblllb..lblllllbbrrrrr",
+                "rrrrrrbbbllllllllllllllllLRrr..rrrrrrrrr",
+                "rrrrrttllllllllllltttrr..B.trrrrrbbrrrtt",
+                "ttrttt......"
+            ]
+        }
+    ]
+}
+,
+{   "title": "Level 42",
+    "author": "J\u00fcrgen",
+    "difficulty": 9,
+    "category": 1,
+    "loot": 42,
+    "swamprate": 42,
+    "map":
+    [   "##########################################",
+        "#*!*.....................................#",
+        "#QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ#.#",
+        "#Q$QQQQ$$$$Q$QQQ$Q$$$$Q$QQQQQ$QQ$QQ$$QQ#.#",
+        "#Q$QQQQ$QQQQ$QQQ$Q$QQQQ$QQQQQ$QQ$Q$QQ$Q#.#",
+        "#Q$QQQQ$$$QQ$QQQ$Q$$$QQ$QQQQQ$$$$QQQ$QQ#.#",
+        "#Q$QQQQ$QQQQQ$Q$QQ$QQQQ$QQQQQQQQ$QQ$QQQ#.#",
+        "#Q$$$$Q$$$$QQQ$QQQ$$$$Q$$$$QQQQQ$Q$$$$Q#.#",
+        "#QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ#.#",
+        "############Q######################Q####.#",
+        "#*0.00*#.Q.0#Q++                0.0#Q.0  #",
+        "#00*000#*0.0#+Q+#               ...Q#...*#",
+        "#0000*0###0.#++Q+#Q Q Q Q Q Q Q Q# #Q...0#",
+        "#000000#Q.0#* ++Q+#Q#Q#Q#Q#Q#Q#Q#  Q#.0..#",
+        "#QQQQQ++....+  ++Q+#############QB #Q....#",
+        "#Q+++!+######QQQ++QQQQQQQQQQQQQQ# QQ####.#",
+        "#QQQQQQ#0!0 ##################### ###....#",
+        "#Q........QQ. B Y B G0R Y G R  B  Q...*..#",
+        "#0y    #*.Q*# #  5   0   5  # Y# 0..Q0...#",
+        "#########0###########0######## Q######@.Q#",
+        "#  00  #...##    #00#0E..Q. ##.0.   . #.##",
+        "#50000 #     .0    .1....*. Y+.#. .  7#.Q#",
+        "#g#0%#5 @#..# 0* 0.# ##  %..##.#++++++# *#",
+        "###+######Q#####Q#############...+++.+#G##",
+        "#.!.....Q...#  +#+  0...#.##!#+.++%!.+#.Q#",
+        "#...@...# QQ#Y#.00# .  .Q.0Q #++.++*++#.*#",
+        "#.@...Q....*  #..*# 0  Q#.0.Q#+Q++b++!# ##",
+        "###G##################Q###+############R##",
+        "#    #.......0#    #Q #000!0Q000...00Q000#",
+        "#* Q #.0.0*...# Q# Q# #0.00.0.0Q000.*0000#",
+        "## # #.0....r # #  +5 #0000Q0.00+.00000+0#",
+        "#  5 #*0.0  5 +  5  **+..0..00Q000Q+0++00#",
+        "#+######0######R#####%#0Q00000...00.000.Q#",
+        "# 0   #0.00..0# 00.0*0#00.0*.00Q000++0Q.0#",
+        "# .Q  #....0..#.0.0.0.#######0..00..00000#",
+        "#  . @0  0..0*G.....0.#0.0.*#000Q0+00+0Q.#",
+        "#########.#####.#####.#*0Q0.#*.00+000.000#",
+        "#G B G B ! R B G R.0*.#0.0.0#00.Q00Q0.00.#",
+        "# R G RQB G R R B#..0.#.Q.0Q#0Q.000..0Q00#",
+        "#G B B G R B G G #....#..0.0..0.0Q0.000###",
+        "#*  G RQB G R B *#...0   .Q.#.*00.0Q0..**#",
+        "##########################################"
+    ],
+    "demos":
+    [   {   "randomseed": 21918,
+            "moves":
+            [   "..rrrrRlllllllbltltlllBrbrbrltllllblttll",
+                "rrtttT.b.bbrbrr..lllllttttlllclllLr.rrrr",
+                "rrtrrbrbblbr....rbbbbblbbrrrrtrrbbrrll.r",
+                "trtrrb..Rb.r....t...rrrrrrr.Blll...rrrrr",
+                "Tllbbb.utt.......Bbb.....bbrbrr.mll.....",
+                "..r..rr......rbbl.....blL.rrrrrtrtttrRlb",
+                "bbllbbbbllbrrtttlllbbbbbrrlBtrrrrbrlttrr",
+                "rll..b..brrrbrRltlllltttlllllttttttttlll",
+                "tttllllllltllblltllbllllll...tllb.l.L.r.",
+                ".....lltlltlbBrtrrrrrllllcll............",
+                "..........b.Rt.rrrl.B.ll..t.....rrrr..rr",
+                "rllllltttllBrrrtrrbbrRlttlllbbbbb...b...",
+                ".brbllllrrrbblllbbbbr..Rlttrrrrrrbblllrr",
+                "rrrt.r...Trlltttrrrrrlttrr...RBBll......",
+                ".........b.Lb....ltttlllbbB.ttrrrbbblbbb",
+                "brrtltrr.brbr.Bltlllbbbbbrrrbr.ltllltrbb",
+                "..l..st.........bllllblllLrrrrrrtttttttl",
+                "ttrrrrrrrrrrr......rrllllllbbbrrrrtltrrb",
+                "...l.rrbbbbblltrrlllbbrrrrr.t.Rbll......",
+                "r.t.rr.trrrtttbbbbrrrrtrrr.rrrrtttrrtttt",
+                "tttltt.Rtt.RttttlttrbbrttttllLrlltltttrr",
+                "rlbbbrR..rrbbbbbllrllbBrrttttttttttttttt",
+                "ttlllLLLLLLLLLLLllllllllllllllllllllllll",
+                "lllllllllllLrrrrrrrrrrrrrrrrrrrrrrrrrrrr",
+                "rrrrrrrrrrbbbbbbbbbbbbbbbbllllllblrrllll",
+                "ltllbbB..ttt.......bbbbbrr.mltt.........",
+                "..........bb.........rbrrrrblBllttlltttt",
+                "t.rrrtttrtt.lt..........................",
+                "............................llllllllllll",
+                "llllllllllbbbL....blllllrrrrr.llttttr.ll",
+                "lBrrbbbbbllllbbtlllllLrrllBrrblr.Btrrrbl",
+                "llrr.ut.......bbbbbBtttrrrrrrrrrrttttrrr",
+                "rrrrrrrrrrrrrrrrbbbbblbblllb..t.l....ll.",
+                ".........l.........lllllll..Brrrrr...rr.",
+                ".rrrrbbblllllllt........"
+            ]
+        }
+    ]
+}
+,
+{   "title": "Force",
+    "author": "Ronald",
+    "difficulty": 3,
+    "category": 3,
+    "loot": 18,
+    "swamprate": 0,
+    "time": 300,
+    "map":
+    [   "###################",
+        "#1                #",
+        "####  #####Y###   #",
+        "#$$+Q   # *   #   #",
+        "#**+QQ  ###   #   #",
+        "#**+QQQ  %#<  #   #",
+        "#00+QQQQ#######   #",
+        "#**+QQQ# 5 r  #   #",
+        "#**+QQ######  #   #",
+        "#$$+Q#        #   #",
+        "#####        E#   #",
+        "#y R  #########   #",
+        "#* R              #",
+        "###################"
+    ],
+    "demos":
+    [  {   "title": "untitled",
+            "randomseed": 72751,
+            "moves":
+            [   "....rrrrrrrrrrrrrrrbbbbbbbbbbbllllllllll",
+                "lttrrrrrrrrtttt.lrbbllllllblblll...b..r.",
+                ".......rrrrr....rrrrrrrrrtttttttttttllll",
+                "ll.....bl.rt..llllll.....bb..bbllllr.bbr",
+                "rr.tllllbrrrrbllllbrr.ttttrtttttrrrrrrrr",
+                "rrrbbbbbbbbbbbllllllllllttrrrrrrrr......",
+                "."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Pac Man",
+    "author": "Reinhard",
+    "difficulty": 5,
+    "category": 3,
+    "loot": 28,
+    "time": 300,
+    "map":
+    [   "###########################",
+        "#    *       $            #",
+        "# ######### ### ######### #",
+        "# #   *   # *   #       # #",
+        "# #   ##    ###    ##   # #",
+        "# #  ##  ##     ##$ ##* # #",
+        "# # ## *#   # #   #  ## # #",
+        "# # #  #  # # # #  #  # # #",
+        "# #   #   # # # #o  #   # #",
+        "# #( #   $# # # #$   #  # #",
+        "# ## # #### #1# #### # ## #",
+        "#            E   *        #",
+        "# ## # #### # # #### # ## #",
+        "# #  #*   # # # #    #  # #",
+        "# #   #   # # # #  *# * # #",
+        "# # #  #  # # # #  #  # # #",
+        "# # ##  #   # #   # $## # #",
+        "# #  ##( ## $   ##  ##  # #",
+        "# #   ##    ###    ##   # #",
+        "# # $     #   ( #       # #",
+        "# ######### ### ######### #",
+        "#       *             (   #",
+        "###########################"
+    ],
+    "demos":
+    [   {   
+            "randomseed": 781771,
+            "moves":
+            [   "....tttttllbllbbblllbbbbrrrbbbrrbbllltlt",
+                "lttl.tllbbbbbrrrrrtrrrbbbllllllllllttttt",
+                "tttttrrrttlltttttttrrrrrrbrrtrrrrttlllll",
+                "lllllrrrrrrbbbbrrrrtrrrbtrrtrrrrbbrbbbbl",
+                "bblllllrrrttlllrrrbbrrbbblblbllblbbltllb",
+                "llllttrrrrtrrttrr.llbbllbbbbbrrrrrrrllll",
+                "lllttttlllltttttlltllllllllllttttttttttr",
+                "rrrrrrrrrrrrrbbbbb.bbbbbbbbbbblllltttttt",
+                "llllllltttrtrrtrlbllblbbbrrrrrrrrr......",
+                "."
+            ]
+        }
+    ]
+}
+,
+{   "title": "Hard Mining",
+    "author": "Reinhard",
+    "difficulty": 4,
+    "category": 6,
+    "loot": 13,
+    "time": 450,
+    "map":
+    [   "++++++++++++++++++++",
+        "+++++ &+++++    ++++",
+        "++++  ++&+   ++ &&++",
+        "+++    +++++++   +++",
+        "+  +&++++ ++++++ &++",
+        "++&  ++++  ++  +  ++",
+        "++++ +&+++   +  + ++",
+        "++ +     +++++++  ++",
+        "++++++&   +++    &++",
+        "++  + +++  +  ++++++",
+        "+++ + ++++ +  &+++!+",
+        "+E1]  +&+++++++&++++",
+        "++++++++++++++++++++"
+    ],
+    "demos":
+    [   {   "title": "Demo 1",
+            "randomseed": 29048,
+            "moves":
+            [   "...rrr.t..t.......c.lbl.........rtrr....",
+                "..ut..t.lllttll..sbbrr...............cbb",
+                "brlllttttttllbb.trrtttrrr....mll........",
+                ".rrrrtt..clll..........rrrrllb....trrr..",
+                ".ml...........rrrtrrrtrrrbbr...cbrbbl...",
+                ".........r.ttl.rbb.......lbb...mll......",
+                "...rrrrbbl...........ut.........bbbrrlll",
+                "l..srr.........lllbl.rrtttrttttttlltlllb",
+                "llllllllbbbbbbbbbrrllllll........."
+            ]
+        }
+    ]
+}
+,
+{   "title": "London Bridge II",
+    "author": "Reinhard",
+    "difficulty": 4,
+    "category": 6,
+    "loot": 2,
+    "time": 400,
+    "map":
+    [   "####################",
+        "#                  #",
+        "#                  #",
+        "#                  #",
+        "#                  #",
+        "# @ @           0 1#",
+        "#++++++[    [++++++#",
+        "#..++          ++..#",
+        "#..E            +..#",
+        "#..+            +..#",
+        "####aaaaaaaaaaaa####"
+    ],
+    "demos":
+    [   {   "title": "untitled",
+            "randomseed": 633496,
+            "moves":
+            [   "...tlllllll..bbbrt.lttrrblllltl.b.ll.tll",
+                "lbrrrr..b.bl.brrbrttlltt.r.blbrrbrt.lltt",
+                "r..blbrrbrt.llttr.b.lbrr.brtllttrr.l....",
+                "lbbrr.tllllrrrrt..lttrrblllltl.bb.llltll",
+                "llbrrrrrr..bbl.brrbrtt.l.lttr.blbrrbrt.l",
+                "lttr.blbrr..brt.ll.tt.r.b..lbrr.br...lll",
+                "...ttt.r.trrbb.....b.tttllb.r.bbb.ttttrr",
+                "rb.l.rtrrrbllll....l.bblblllllllll......"
+            ]
+        }
+    ]
+}
+,
+{   "title": "Maze",
+    "author": "Reinhard",
+    "difficulty": 4,
+    "category": 1,
+    "loot": 14,
+    "swamprate": 125,
+    "time": 1500,
+    "map":
+    [   "############################################################",
+        "#!!!!!!#!!!!#        #      #     #               #        #",
+        "#!1!!!!#!!!!#        #      #          #          #   *    #",
+        "#!!!!!!#!!!!#   %           #     #    #          #   .    #",
+        "### ##### ###        #      #     ############# ####### ####",
+        "#           ### ########    #     #     #           #      #",
+        "######      #    #     ### ## #####     #                  #",
+        "#    #      #    #     #    #           #           #      #",
+        "# *         #    #          #           #           #      #",
+        "# .  #      #    #     #    ## ###############      #      #",
+        "## ##########    #     ######     #          #      #      #",
+        "#         #   *  #     #          #%      %  #      #      #",
+        "#         #   .  #     #          #   %      #      #      #",
+        "## ####   #      #     #          #        % ########      #",
+        "#     #   ########### ######### #### #########   #         #",
+        "#     #     #      #         #    #***#          #         #",
+        "##### ########     #         #    #***#          #### ######",
+        "#     #      #     #  ## ##  #    #***#          #         #",
+        "#     # ## ###     #  #   #  #    #***#                    #",
+        "#     # #    #######  # E #  #    #####          #         #",
+        "#     # #             #   #  #    #      %       ###########",
+        "#  %  # #          #  #####       #              #   #     #",
+        "#     # #          #         #    #              #   #     #",
+        "#       #          #         #    #              #   #     #",
+        "#     ########################    #              #     %   #",
+        "#######     #              #      #### ###########   #     #",
+        "#    #      #          ### #      #      #      #    #     #",
+        "#       *   #          #   ##########    #           #     #",
+        "#    #  .   #### #######            #           #    ## ####",
+        "#    #      #      #   #     *      #    #     #######     #",
+        "# ###########      #   #     .      #    #     #   #   *   #",
+        "#                  #   ## ###########    #     #   #       #",
+        "#        #         #   #   #     #       ############# #####",
+        "#   %    ###########   #   #             #    #    #       #",
+        "#        #     #       #   #     #       #    #    #       #",
+        "#                      #   ## ############    #    #       #",
+        "#        #     #       #   #    #     #            #       #",
+        "#        #     #### ####        #             # %  #       #",
+        "#   *    #######      #    #    #     ######### .  ###### ##",
+        "#   .    #    #       #    #    #     #%%#     .*.      #  #",
+        "#        #            ########  #     #%%#    .***.     #  #",
+        "#        #    #       #      #  #     #%%#     .*.      #  #",
+        "##########    #       #      #  #     ######### .  ######  #",
+        "#    #        #       #      #  #     #  #    #    #  #    #",
+        "#    #        ##########     ##### ####  #    #    #       #",
+        "#    #  %     #        #     #     #     #    #    #  ######",
+        "# *  #        #     %  ## ####     #     #    #    #       #",
+        "# .           #   *    #           #     #    #    #       #",
+        "#    #        #   .                #     #    #            #",
+        "############################################################"
+    ],
+    "demos":
+    [   {   "title": "untitled",
+            "randomseed": 956637,
+            "moves":
+            [   "..ltrrrrrblllllbrrrrrlllbbrrrrrrttlttrrr",
+                "blllbrrrllbbbbblllllllbbbrblbbbrrrbbbbbb",
+                "bbrrttttttrrrbbbrrrrrrrrrrrttttttttttttt",
+                "rrbrbrrrtttttlllllllltlllb.rbr.mbbbbbbbl",
+                ".tttrtttttrrrrrrrrrrrbbbbblllllbbbbbbbbb",
+                "bbbbbrrrrrrrtr..rrtttttttttttltttltttttr",
+                "rrrrrrrtrrrrrrrrrrbbbbbrrrrrrrrttttlbrbb",
+                "bbbbbbbbbbllbbblllllllllllbb.cbb.mlllbbb",
+                "brrbrrrrtrrrrrrrtrttrrb..srrbbb..ll.srr.",
+                "....lllllbb.urrr.....llllbbl..cbr.lbbbbb",
+                "rrrbbbbbbbblllllbbbblllttttrttttllt.blrr",
+                "br.llrrtttttll.mllllbllllllllbbblbbbbbbb",
+                "lllllllllbllltllllrrrrbrrrrrrrrrrrrttttt",
+                "ttttttrrrrrrrrrrrtrrrrrbbbbbbbbbbbbrrrtt",
+                "ttrrrrtttttttttllltttttrttttttllllbbblll",
+                "lllbllllllbbbbbllllllllllbbbbllllttttttt",
+                "trrrrlllttttlllllllllbblbbbbllllllllbbbb",
+                "bbllllbrrrtttrrrrrrrrrrrrbbbbblllllllbbb",
+                "llllllbbcblllltbrrrrttttrrrrrrtttrrrrrrr",
+                "ttttttllbllllllllllllllllttttttttrrrrrrr",
+                "lllllllbbbbbbbbrrrrrrrttttrrrrrrrrtttttt",
+                "rrrrrrrrrrbbblbbbbbbbbbrrrrttttrrrrrrrrr",
+                "tttttttttttrrrrrrrrttttrrrrrrrtttttttttt",
+                "tlltlllllltttttllllllllllbllllllllbbbbbr",
+                "bbbbrbbbbbbbbbblllltttttlllbbb......."
+            ]
+        }
+    ]
+}
+]

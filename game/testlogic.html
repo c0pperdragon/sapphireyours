@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+    <title>Sapphire Yours - Logic test suite</title>
+    <meta charset="utf-8">	
+<!--    <script type="text/javascript" src="src/logic/DiscardingStack.js"></script>
+    <script type="text/javascript" src="src/logic/Walk.js"></script>
+    <script type="text/javascript" src="src/logic/Level.js"></script>
+    <script type="text/javascript" src="src/logic/Logic.js"></script>
+    <script type="text/javascript" src="src/logic/LevelPack.js"></script>
+-->    
+    <script type="text/javascript">
+    function logictest()
+    {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var data = JSON.parse(this.responseText);
+                console.log("parsed levelpack data");
+                var lp = new LevelPack().$(data);
+                lp.print();
+            }
+        };
+        xmlhttp.open("GET", "levels/tutorial1.sylev", true);
+        xmlhttp.send();
+    }
+    </script>    
+</head>
+
+<body onLoad="logictest();">
+<canvas id="canvas" width="500" height="500" style="width:500px;height=500px;"></canvas>
+</body>
+</html>

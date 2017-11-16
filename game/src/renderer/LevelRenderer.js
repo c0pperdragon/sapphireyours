@@ -175,119 +175,61 @@ LevelRenderer.prototype.$ = function(gl)
     for (var i=0; i<Logic.MAPWWIDTH*Logic.MAPHEIGHT; i++) this.tmp_disable_static_tile[i]=false;
         
     // prepare special animation redirects 
-    this.piece2tile = new int[256][];
-    this.earthtiles = new int[16][];
-    this.walltiles = new int[9][];
-    this.roundwalltiles = new int[4][];
-    this.acidtiles_leftedge = new int[2][];
-    this.acidtiles_rightedge = new int[2][];
-    this.acidtiles_bothedges = new int[2][];
-    this.acidtiles_noedge = new int[2][];
+    this.piece2tile = new Array(256);  
+    this.earthtiles = new Array(16);   
+    this.walltiles = new Array(9);     
+    this.roundwalltiles = new Array(4);
+    this.acidtiles_leftedge = new Array(2);
+    this.acidtiles_rightedge = new Array(2);
+    this.acidtiles_bothedges = new Array(2);
+    this.acidtiles_noedge = new Array(2);
+    
+    // trigger loading tiles 
+    this.anim_man1_blink = this.piece2tile[Logic.MAN1] = this.load("1man");
+    this.anim_man2_blink = this.piece2tile[Logic.MAN2] = this.load("2man");    
+    this.anim_man1_left = this.piece2tile[Logic.MAN1_LEFT] = this.load("1walklft");
+    this.anim_man1_right = this.piece2tile[Logic.MAN1_RIGHT] = this.load("1walkrgt");
+    this.anim_man1_up = this.piece2tile[Logic.MAN1_UP] = this.load("1walkup");        
+    this.anim_man1_down = this.piece2tile[Logic.MAN1_DOWN] = this.load("1walkdwn");
+    this.anim_man1_digleft = this.piece2tile[Logic.MAN1_DIGLEFT] = this.load("1diglft");
+    this.anim_man1_digright = this.piece2tile[Logic.MAN1_DIGRIGHT] = this.loadImage("1digrgt");
+    this.anim_man1_digup = this.piece2tile[Logic.MAN1_DIGUP] = this.load("1digup");    
+    this.anim_man1_digdown = this.piece2tile[Logic.MAN1_DIGDOWN] = this.load("1digdwn");
+    this.anim_man1_pushleft = this.piece2tile[Logic.MAN1_PUSHLEFT] = this.load("1pushlft");
+    this.anim_man1_pushright = piece2tile[Logic.MAN1_PUSHRIGHT] =  this.load("1pushrgt");
+    this.piece2tile[Logic.MAN1_PUSHUP] = this.anim_man1_pushup = this.anim_man1_up;
+    this.piece2tile[Logic.MAN1_PUSHDOWN] = this.anim_man1_pushdown = this.anim_man1_down;
+    this.anim_man2_left = this.piece2tile[Logic.MAN2_LEFT] = this.load("2walklft");
+    this.anim_man2_right = this.piece2tile[Logic.MAN2_RIGHT] = this.load("2walkrgt");
+    this.anim_man2_up = this.piece2tile[Logic.MAN2_UP] = this.load("2walkup");
+    this.anim_man2_down = this.piece2tile[Logic.MAN2_DOWN] = this.load("2walkdwn");
+    this.anim_man2_digleft = this.piece2tile[Logic.MAN2_DIGLEFT] = this.load("2diglft");
+    this.anim_man2_digright = this.piece2tile[Logic.MAN2_DIGRIGHT] = this.load("2digrgt");
+    this.anim_man2_digup = this.piece2tile[Logic.MAN2_DIGUP] = this.load("2digup");
+    this.anim_man2_digdown = this.piece2tile[Logic.MAN2_DIGDOWN] = this.load("2digdwn");
+    this.anim_man2_pushleft = this.piece2tile[Logic.MAN2_PUSHLEFT] = this.load("2pushlft");
+    this.anim_man2_pushright = this.piece2tile[Logic.MAN2_PUSHRIGHT] = this.load("2pushrgt");
+    this.anim_man2_pushup = this.piece2tile[Logic.MAN2_PUSHUP] = anim_man2_up;
+    this.anim_man2_pushdown = this.piece2tile[Logic.MAN2_PUSHDOWN] = anim_man2_down;
+    this.piece2tile[Logic.EARTH] = this.load("Earth All");
+    this.piece2tile[Logic.WALL] = this.load("Wall All");
+    this.piece2tile[Logic.ROUNDWALL] = this.load("Wall Round All");
+    this.anim_earth_right = this.load("Earth Right");
+    this.piece2tile[Logic.SAND] = this.load("Sand");
+    this.piece2tile[Logic.GLASSWALL] = this.load("Glass");
+    this.piece2tile[Logic.STONEWALL] = this.load("Stone Wall");
+    this.piece2tile[Logic.ROUNDSTONEWALL] = this.load("Round Stone Wall");
+    this.piece2tile[Logic.WALLEMERALD] = load("Wall Emerald");
+    this.anim_emerald_fall = this.piece2tile[Logic.EMERALD] = this.piece2tile[Logic.EMERALD_FALLING] = this.load("Emerald");   
+    this.anim_emerald_shine = this.load("Emerald Shine");
+    this.anim_citrine_fall = this.piece2tile[Logic.CITRINE] = this.piece2tile[Logic.CITRINE_FALLING] = load("Citrine");
+    this.anim_citrine_shine = this.load("Citrine Shine");
+    this.anim_sapphire_fall = this.piece2tile[Logic.SAPPHIRE] = this.piece2tile[Logic.SAPPHIRE_FALLING] = this.load("Sapphire");
+    this.anim_sapphire_shine = this.load("Sapphire Shine");
+    this.anim_ruby_fall = this.piece2tile[Logic.RUBY] = this.piece2tile[Logic.RUBY_FALLING] = this.load(h, "Ruby");
+    this.anim_ruby_shine = load("Ruby Shine");
         
-    loadImage("1man", piece2tile[Logic.MAN1]);
-        
-        anim_man1_blink = createAnimationDescription(h.first,h.last);
-        piece2tile[Logic.MAN2] = loadImage(h, "2man");      
-        anim_man2_blink = createAnimationDescription(h.first,h.last);
-        piece2tile[Logic.MAN1_LEFT&0xff] = loadImage(h, "1walklft");
-        anim_man1_left = createAnimationDescription(h.first,h.last);
-        piece2tile[Logic.MAN1_RIGHT&0xff] = loadImage(h, "1walkrgt");
-        anim_man1_right = createAnimationDescription(h.first,h.last);
-        piece2tile[Logic.MAN1_UP&0xff] = loadImage(h, "1walkup");
-        anim_man1_up = createAnimationDescription(h.first,h.last);
-        piece2tile[Logic.MAN1_DOWN&0xff] = loadImage(h, "1walkdwn");
-        anim_man1_down = createAnimationDescription(h.first,h.last);
-        piece2tile[Logic.MAN1_DIGLEFT&0xff] = loadImage(h, "1diglft");
-        anim_man1_digleft = createAnimationDescription(h.first,h.last);
-        piece2tile[Logic.MAN1_DIGRIGHT&0xff] = loadImage(h, "1digrgt");
-        anim_man1_digright = createAnimationDescription(h.first,h.last);
-        piece2tile[Logic.MAN1_DIGUP&0xff] = loadImage(h, "1digup");
-        anim_man1_digup = createAnimationDescription(h.first,h.last);
-        piece2tile[Logic.MAN1_DIGDOWN&0xff] = loadImage(h, "1digdwn");
-        anim_man1_digdown = createAnimationDescription(h.first,h.last);
-        loadImage(h, "1pushlft");
-        piece2tile[Logic.MAN1_PUSHLEFT&0xff] = anim_man1_pushleft = createAnimationDescription(h.first,h.last);
-        loadImage(h, "1pushrgt");
-        piece2tile[Logic.MAN1_PUSHRIGHT&0xff] = anim_man1_pushright = createAnimationDescription(h.first,h.last);
-        piece2tile[Logic.MAN1_PUSHUP&0xff] = anim_man1_pushup = anim_man1_up;
-        piece2tile[Logic.MAN1_PUSHDOWN&0xff] = anim_man1_pushdown = anim_man1_down;
-                    
-        piece2tile[Logic.MAN2_LEFT&0xff] = loadImage(h, "2walklft");
-        anim_man2_left = createAnimationDescription(h.first,h.last);
-        piece2tile[Logic.MAN2_RIGHT&0xff] = loadImage(h, "2walkrgt");
-        anim_man2_right = createAnimationDescription(h.first,h.last);
-        piece2tile[Logic.MAN2_UP&0xff] = loadImage(h, "2walkup");
-        anim_man2_up = createAnimationDescription(h.first,h.last);
-        piece2tile[Logic.MAN2_DOWN&0xff] = loadImage(h, "2walkdwn");
-        anim_man2_down = createAnimationDescription(h.first,h.last);
-        piece2tile[Logic.MAN2_DIGLEFT&0xff] = loadImage(h, "2diglft");
-        anim_man2_digleft = createAnimationDescription(h.first,h.last);
-        piece2tile[Logic.MAN2_DIGRIGHT&0xff] = loadImage(h, "2digrgt");
-        anim_man2_digright = createAnimationDescription(h.first,h.last);
-        piece2tile[Logic.MAN2_DIGUP&0xff] = loadImage(h, "2digup");
-        anim_man2_digup = createAnimationDescription(h.first,h.last);
-        piece2tile[Logic.MAN2_DIGDOWN&0xff] = loadImage(h, "2digdwn");
-        anim_man2_digdown = createAnimationDescription(h.first,h.last);
-        loadImage(h, "2pushlft");
-        piece2tile[Logic.MAN2_PUSHLEFT&0xff] = anim_man2_pushleft = createAnimationDescription(h.first,h.last);
-        loadImage(h, "2pushrgt");
-        piece2tile[Logic.MAN2_PUSHRIGHT&0xff] = anim_man2_pushright = createAnimationDescription(h.first,h.last);
-        piece2tile[Logic.MAN2_PUSHUP&0xff] = anim_man2_pushup = anim_man2_up;
-        piece2tile[Logic.MAN2_PUSHDOWN&0xff] = anim_man2_pushdown = anim_man2_down;
-                
-        piece2tile[Logic.EARTH] = loadImage(h, "Earth All");    
-        for (int i=0; i<16; i++) 
-        {   earthtiles[i] = createAnimationDescription(h.first+i);
-        }               
-        piece2tile[Logic.WALL] = loadImage(h, "Wall All");
-        walltiles[0] = createAnimationDescription(h.first+5);  // nothing - wall - nothing      
-        walltiles[1] = createAnimationDescription(h.first+6);  // wall    - wall - nothing
-        walltiles[2] = createAnimationDescription(h.first+2);  // rounded - wall - nothing          
-        walltiles[3] = createAnimationDescription(h.first+7);  // nothing - wall - wall         
-        walltiles[4] = createAnimationDescription(h.first+8);  // wall    - wall - wall         
-        walltiles[5] = createAnimationDescription(h.first+0);  // rounded - wall - wall     ??          
-        walltiles[6] = createAnimationDescription(h.first+3);  // nothing - wall - rounded          
-        walltiles[7] = createAnimationDescription(h.first+1);  // wall    - wall - rounded  ??          
-        walltiles[8] = createAnimationDescription(h.first+4);  // rounded - wall - rounded          
-        piece2tile[Logic.ROUNDWALL] = loadImage(h, "Wall Round All");           
-        for (int i=0; i<4; i++) 
-        {   roundwalltiles[i] = createAnimationDescription(h.first+i);
-        }               
-        anim_earth_right = new int[16][];
-        loadImage(h,"Earth Right");
-        int[] anim_removal = createAnimationDescription(h.first,h.last); 
-        for (int i=0; i<16; i++) anim_earth_right[i] = joinAnimationDescriptions(earthtiles[i], anim_removal);      
-        anim_earth_up = new int[16][];
-        anim_removal = createRotatedAnimation(anim_removal, 90);
-        for (int i=0; i<16; i++) anim_earth_up[i] = joinAnimationDescriptions(earthtiles[i], anim_removal);
-        anim_earth_left = new int[16][];
-        anim_removal = createRotatedAnimation(anim_removal, 90);
-        for (int i=0; i<16; i++) anim_earth_left[i] = joinAnimationDescriptions(earthtiles[i], anim_removal);       
-        anim_earth_down = new int[16][];
-        anim_removal = createRotatedAnimation(anim_removal, 90);
-        for (int i=0; i<16; i++) anim_earth_down[i] = joinAnimationDescriptions(earthtiles[i], anim_removal);       
-        
-        piece2tile[Logic.SAND] = loadImage(h, "Sand");
-        piece2tile[Logic.GLASSWALL] = loadImage(h, "Glass");
-        piece2tile[Logic.STONEWALL] = loadImage(h, "Stone Wall");
-        piece2tile[Logic.ROUNDSTONEWALL] = loadImage(h, "Round Stone Wall");
-        piece2tile[Logic.WALLEMERALD] = loadImage(h, "Wall Emerald");
-        piece2tile[Logic.EMERALD] = piece2tile[Logic.EMERALD_FALLING&0xff] = loadImage(h, "Emerald");
-        anim_emerald_fall = createAnimationDescription(h.first,h.last);
-        loadImage(h, "Emerald Shine");
-        anim_emerald_shine = createAnimationDescription(h.first,h.last);
-        piece2tile[Logic.CITRINE] = piece2tile[Logic.CITRINE_FALLING&0xff] = loadImage(h, "Citrine");
-        anim_citrine_fall = createAnimationDescription(h.first,h.last);
-        loadImage(h, "Citrine Shine");
-        anim_citrine_shine = createAnimationDescription(h.first,h.last);
-        piece2tile[Logic.SAPPHIRE] = piece2tile[Logic.SAPPHIRE_FALLING&0xff] = loadImage(h, "Sapphire");
-        anim_sapphire_fall = createAnimationDescription(h.first,h.last);
-        loadImage(h, "Sapphire Shine");
-        anim_sapphire_shine = createAnimationDescription(h.first,h.last);
-        piece2tile[Logic.RUBY] = piece2tile[Logic.RUBY_FALLING&0xff] = loadImage(h, "Ruby");
-        anim_ruby_fall = createAnimationDescription(h.first,h.last);
-        loadImage(h, "Ruby Shine");
-        anim_ruby_shine = createAnimationDescription(h.first,h.last);
+
         piece2tile[Logic.ROCK] = piece2tile[Logic.ROCK_FALLING&0xff] = loadImage(h, "Stone"); 
         loadImage(h, "Stone Right");
         anim_rock_right = createAnimationDescription(h.first,h.last);
@@ -524,16 +466,64 @@ LevelRenderer.prototype.$ = function(gl)
 
 Renderer.prototype.createDerivedAnimations = function ()
 {
+        // piece2tile[Logic.EARTH]
+        for (int i=0; i<16; i++) 
+        {   earthtiles[i] = createAnimationDescription(h.first+i);  
+        }               
+
+            // this.piece2tile[Logic.WALL]
+        walltiles[0] = createAnimationDescription(h.first+5);  // nothing - wall - nothing      
+        walltiles[1] = createAnimationDescription(h.first+6);  // wall    - wall - nothing
+        walltiles[2] = createAnimationDescription(h.first+2);  // rounded - wall - nothing          
+        walltiles[3] = createAnimationDescription(h.first+7);  // nothing - wall - wall         
+        walltiles[4] = createAnimationDescription(h.first+8);  // wall    - wall - wall         
+        walltiles[5] = createAnimationDescription(h.first+0);  // rounded - wall - wall     ??          
+        walltiles[6] = createAnimationDescription(h.first+3);  // nothing - wall - rounded          
+        walltiles[7] = createAnimationDescription(h.first+1);  // wall    - wall - rounded  ??          
+        walltiles[8] = createAnimationDescription(h.first+4);  // rounded - wall - rounded          
+
+        // this.piece2tile[Logic.ROUNDWALL]
+        for (int i=0; i<4; i++) 
+        {   roundwalltiles[i] = createAnimationDescription(h.first+i);
+        }               
+
+        
+        int[] anim_removal = createAnimationDescription(h.first,h.last);         
+        for (int i=0; i<16; i++) anim_earth_right[i] = joinAnimationDescriptions(earthtiles[i], anim_removal);      
+        anim_earth_up = new int[16][];
+        anim_removal = createRotatedAnimation(anim_removal, 90);
+        for (int i=0; i<16; i++) anim_earth_up[i] = joinAnimationDescriptions(earthtiles[i], anim_removal);
+        anim_earth_left = new int[16][];
+        anim_removal = createRotatedAnimation(anim_removal, 90);
+        for (int i=0; i<16; i++) anim_earth_left[i] = joinAnimationDescriptions(earthtiles[i], anim_removal);       
+        anim_earth_down = new int[16][];
+        anim_removal = createRotatedAnimation(anim_removal, 90);
+        for (int i=0; i<16; i++) anim_earth_down[i] = joinAnimationDescriptions(earthtiles[i], anim_removal);       
+        
 };
-    
+
 Renderer.prototype.isLoaded = function()    
 {   
     if (this.doneLoading) return true;
     if (TileRenderer.isLoaded.call(this)) 
-    {   this.createDerivedAnimiations();
-        this.doneLoading = true;
+    {   this.doneLoading = true;
+        this.createDerivedAnimiations();
+        return true;
     }   
+    else 
+    {   return false;
+    }
 };
+
+Renderer.prototype.load = function (name) 
+{
+    var numbers = new Array(LevelRenderer.FRAMESPERSTEP);
+    this.loadImage(name,numbers);
+    return numbers;
+};    
+
+
+    
 
     
     // -------------- draw the whole scene as defined by the logic -----------

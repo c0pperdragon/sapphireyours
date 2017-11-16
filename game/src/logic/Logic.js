@@ -12,7 +12,6 @@ var Logic = function()
     
     this.visualrandomseed = 0;   // secondary random generator used for graphics appearances (not logic relevant) 
 };
-Logic.prototype.constructor = Logic;
 
 // constant values
 var MAPWIDTH  = 64;

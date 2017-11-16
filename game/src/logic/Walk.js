@@ -1,11 +1,9 @@
-
 var Walk = function()
 {
     this.buffer = null;
     this.randomseed = 0;
     this.numturns = 0;
 };
-Walk.prototype.constructor = Walk;
 
     public final static int MOVE_REST  = 0;
     public final static int MOVE_UP    = 1;

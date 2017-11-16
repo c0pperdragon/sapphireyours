@@ -24,7 +24,6 @@ var Game = function()
 
     this.levelpacks = null;
 };
-Game.prototype.constructor = Game;
 
 
 Game.DEVELOPERMODE = !true;
