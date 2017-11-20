@@ -1,80 +1,179 @@
-package grafl.sy.logic;
+// constant values
+var MAPWIDTH  = 64;
+var MAPHEIGHT = 64; 
+var DEFAULTSWAMPRATE = 30;
+    
 
-import grafl.util.Util;
-
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.StringTokenizer;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.JSONTokener;
+// pieces in static level definition
+var OUTSIDE           = 0;
+var MAN1              = '1'.charCodeAt(0);
+var MAN2              = '2'.charCodeAt(0);
+var AIR               = ' '.charCodeAt(0);
+var EARTH             = '.'.charCodeAt(0);
+var SAND              = 's'.charCodeAt(0);
+var SAND_FULL         = 'S'.charCodeAt(0);
+var SAND_FULLEMERALD  = '}'.charCodeAt(0);
+var WALL              = '#'.charCodeAt(0);
+var ROUNDWALL         = 'A'.charCodeAt(0);
+var GLASSWALL         = ':'.charCodeAt(0);
+var STONEWALL         = '+'.charCodeAt(0);
+var ROUNDSTONEWALL    = '|'.charCodeAt(0);
+var WALLEMERALD       = '&'.charCodeAt(0);
+var EMERALD           = '*'.charCodeAt(0);
+var CITRINE           = ')'.charCodeAt(0); 
+var SAPPHIRE          = '$'.charCodeAt(0);
+var RUBY              = '('.charCodeAt(0);    
+var ROCK              = '0'.charCodeAt(0);
+var ROCKEMERALD       = 'e'.charCodeAt(0);
+var BAG               = '@'.charCodeAt(0);
+var BOMB              = 'Q'.charCodeAt(0);
+var DOOR              = 'E'.charCodeAt(0);
+var SWAMP             = '%'.charCodeAt(0);
+var DROP              = '/'.charCodeAt(0);
+var TIMEBOMB          = '!'.charCodeAt(0);
+var ACTIVEBOMB5       = '?'.charCodeAt(0);
+var TIMEBOMB10        = ']'.charCodeAt(0);
+var CONVERTER         = 'c'.charCodeAt(0);
+var BOX               = '['.charCodeAt(0);
+var CUSHION           = '_'.charCodeAt(0);
+var ELEVATOR          = '{'.charCodeAt(0);
+//  public final static byte DISPENSER         = 'd'.charCodeAt(0);
+var ACID              = 'a'.charCodeAt(0);
+var KEYBLUE           = 'b'.charCodeAt(0);
+var KEYRED            = 'r'.charCodeAt(0);
+var KEYGREEN          = 'g'.charCodeAt(0);
+var KEYYELLOW         = 'y'.charCodeAt(0);
+var DOORBLUE          = 'B'.charCodeAt(0);
+var DOORRED           = 'R'.charCodeAt(0);
+var DOORGREEN         = 'G'.charCodeAt(0);
+var DOORYELLOW        = 'Y'.charCodeAt(0);
+var ONETIMEDOOR       = '='.charCodeAt(0);
+var LORRYLEFT         = '5'.charCodeAt(0);
+var LORRYUP           = '6'.charCodeAt(0);
+var LORRYRIGHT        = '7'.charCodeAt(0);
+var LORRYDOWN         = '8'.charCodeAt(0);
+var BUGLEFT           = 'h'.charCodeAt(0);
+var BUGUP             = 'u'.charCodeAt(0);
+var BUGRIGHT          = 'k'.charCodeAt(0);
+var BUGDOWN           = 'j'.charCodeAt(0);
+var YAMYAMLEFT        = '<'.charCodeAt(0);
+var YAMYAMUP          = '^'.charCodeAt(0);
+var YAMYAMRIGHT       = '>'.charCodeAt(0);
+var YAMYAMDOWN        = 'V'.charCodeAt(0);
+var ROBOT             = 'o'.charCodeAt(0);
+var ELEVATOR_TOLEFT   = '3'.charCodeAt(0);
+var ELEVATOR_TORIGHT  = '4'.charCodeAt(0);
+var GUN0              = '\''.charCodeAt(0);
+var GUN1              = 'C'.charCodeAt(0);
+var GUN2              = 'D'.charCodeAt(0);
+var GUN3              = 'F'.charCodeAt(0);
 
 
 var Level = function()
 {
-    String title;       
-    String author;
-    String hint;
-    int difficulty;             
-    int category;                
-    int players;                // number of players
-    int loot;                   // number of emeralds to collect
-    int swamprate;              // swamp spreading speed
+    this.title = null;
+    this.author = null;
+    this.hint = null;
+    this.difficulty = 0;
+    this.category = 0;
+    this.players = 0;                // number of players
+    this.loot = 0;                   // number of emeralds to collect
+    this.swamprate = 0;         // swamp spreading speed
     
-    int datawidth;
-    int dataheight;
-    byte[] mapdata;             // contains datawidth*dataheight pieces
+    this.datawidth = 0;
+    this.dataheight = 0;
+    this.mapdata = null;        // contains datawidth*dataheight pieces
     
-    Walk[] demos;               // contains the stored demos
+    this.demos = null;          // contains the stored demos
 };
     
-var DEFAULTSWAMPRATE = 30;
 
+Level.prototype.$ = function(json) 
+{
+    this.title = json.title ? json.title : "";
+    this.author = json.author ? json.author : "";
+    this.hint = json.hint ? json.hint : "";
+    this.difficulty = Number.isInteger(json.difficulty) ? Number(json.difficulty) : 1;
+    this.category = Number.isInteger(json.category) ? Number(json.category) : 0;    
+    this.loot = Number.isInteger(json.loot) ? Number(json.loot) : 0;    
+    this.swamprate = Number.isInteger(json.swamprate) ? Number(json.swamprate) : DEFAULTSWAMPRATE;
     
-    
-    /**
-     * Create an empty level by just providing a dummy JSON string to the constructor
-     */
-    public Level()
-    {
-        this(new ByteArrayInputStream("{ \"title\":\"untitled\" }".getBytes()));    
+    this.demos = [];
+    for (var i=0; Array.isArray(json.demos) && i<json.demos.length; i++) 
+    {   this.demos.push(new Walk().$(json.demos[i]));
     }
-    /** 
-     * Load a level definition from a stream.
-     * The stream must contain an utf-8 encoded JSON representation of the level.
-     * The stream object will not be closed.
-     *   * @param stream
-     */
-    public Level(InputStream stream) 
-    {
-        String leveldata = Util.readStringFromStream(stream);
-        JSONObject json = null;
-        try {
-            json = (JSONObject) (new JSONTokener(leveldata).nextValue());
-        }
-        catch (Exception e) {}  
-        if (json!=null)
-        {   readFromJSON(json);     
-        }
-        else
-        {   StringTokenizer t = new StringTokenizer(leveldata, "\n\r");
-            String[] lines = new String[t.countTokens()];
-            for (int i=0; i<lines.length; i++)
-            {   lines[i] = t.nextToken();           
+    
+    if (!Array.isArray(json.map))
+    {    // fallback to a 1x1 map if no mapdata is present
+        this.datawidth=1;
+        this.dataheight=1;
+        this.mapdata = [49];
+        this.players=1;
+    }
+    else
+    {   this.dataheight = Math.min(json.map.length, MAPHEIGHT);
+        this.datawidth  = Math.min(this.determineLongestString(json.map), MAPWIDTH);
+        this.mapdata = new Array(this.datawidth*this.dataheight);
+        var foundp1=false;
+        var foundp2=false;
+        for (var y=0; y<this.dataheight; y++)
+        {   var l = json.map[y];
+            for (var x=0; x<this.datawidth; x++)
+            {   var p = ((l && l.length>x) ? l.charCodeAt(x) : AIR);
+                if (p==MAN1) 
+                {   if (foundp1) 
+                    {   p=AIR;
+                    }
+                    foundp1=true;
+                }
+                if (p==MAN2) 
+               {    if (foundp2) 
+                    {   p=AIR;
+                    }
+                    foundp2=true;
+                }
+                this.mapdata[x+y*this.datawidth] =  p;
             }
-            readFromTextLines(lines);
         }
+        this.players = (foundp2) ? 2 : 1;
     }
     
-    public Level (JSONObject json)
-    {
-        readFromJSON(json); 
+    return this;
+};
+
+Level.prototype.toJSON = function()
+{
+    var o = { title: this.title, 
+              difficulty: this.difficulty,
+              category: this.category,
+              loot: this.loot,
+              map: [],
+              demos: [],
+            };            
+    if (this.author.length>0)
+    {   o.author = this.author;
+    }
+    if (this.hint.length>0)
+    {   o.hint = this.hint;
+    }
+    if (this.swamprate!=DEFAULTSWAMPRATE)
+    {   o.swaprate = this.swamprate;
+    }
+    for (var y=0; y<this.dataheight; y++)
+    {   var l = [];
+        for (var x=0; x<this.datawidth; x++)
+        {   l.push(String.fromCharCode(this.mapdata[x+y*this.datawidth]));
+        }
+        o.map.push(l.join(""));
+    }
+    for (var i=0; i<this.demos.length; i++)
+    {   o.demos.push(this.demos[i].toJSON());
     }
     
+    return o;
+};
+    
+/*    
     public void copyFrom(Level l)
     {
         title = l.title;
@@ -94,360 +193,178 @@ var DEFAULTSWAMPRATE = 30;
         {   demos[i] = new Walk(l.demos[i]);
         }
     }   
+*/    
     
     
-    private void readFromJSON(JSONObject json)
-    {
-        title = json.optString("title");
-        author = json.optString("author");
-        hint = json.optString("hint");
-        difficulty = json.optInt("difficulty",1);
-        category = json.optInt("category",0);
-        loot = json.optInt("loot",0);
-        swamprate = json.optInt("swamprate",DEFAULTSWAMPRATE);
-        demos = extractDemos(json.optJSONArray("demos"));
-        
-        JSONArray a = json.optJSONArray("map");
-        // fallback to a 1x1 map if no mapdata is present
-        if (a==null || a.length()<1)
-        {   datawidth=1;
-            dataheight=1;
-            mapdata = new byte[]{ '1' };
-            players=1;
-        }
-        else
-        {   dataheight = Math.min(a.length(), Logic.MAPHEIGHT);
-            datawidth = Math.min(determineLongestString(a), Logic.MAPWIDTH);
-            mapdata = new byte[datawidth*dataheight];
-            boolean foundp1=false;
-            boolean foundp2=false;
-            for (int y=0; y<dataheight; y++)
-            {   String l = a.optString(y);
-                for (int x=0; x<datawidth; x++)
-                {   byte p = (byte) ((l!=null && l.length()>x) ? l.charAt(x) : '.');
-                    if (p==Logic.MAN1) 
-                    {   if (foundp1) 
-                        {   p=Logic.AIR;
-                        }
-                        foundp1=true;
-                    }
-                    if (p==Logic.MAN2) 
-                    {   if (foundp2) 
-                        {   p=Logic.AIR;
-                        }
-                        foundp2=true;
-                    }
-                    mapdata[x+y*datawidth] =  p;
-                }
-            }
-            players = (foundp2) ? 2 : 1;
-        }
-        if (category>=7)
-        {   category = 1;  // Fun
-        }
-    }
+Level.prototype.getTitle = function()
+{
+    return this.title;
+};
+
+Level.prototype.setTitle = function(t)
+{
+    this.title = t;
+};
     
-    // loading legacy level files
-    private void readFromTextLines(String[] lines)
-    {
-        title = "";
-        author = "";
-        hint = "";
-        difficulty = 0;
-        category = 0;
-        players = -1;
-        loot = -1;
-        swamprate = DEFAULTSWAMPRATE;
-        demos = new Walk[0];
+Level.prototype.getAuthor = function()
+{
+    return author;  
+};
+
+Level.prototype.setAuthor = function(a)
+{
+    author = a; 
+};
+
+Level.prototype.getHint = function()
+{
+    return hint;
+};
+
+Level.prototype.setHint = function(h)
+{
+    hint = h;
+};
+    
+Level.prototype.getDifficulty = function()
+{
+    return difficulty;
+};
+
+Level.prototype.setDifficulty = function(d)
+{
+    this.difficulty = d;
+};
+
+Level.prototype.getCategory = function()
+{
+    return category;
+};
+    
+Level.prototype.setCategory = function(c)
+{
+    this.category = c;
+};
+    
+Level.prototype.getSwampRate = function()
+{
+    return this.swamprate;
+};
+    
+Level.prototype.setSwampRate = function(r)
+{
+    this.swamprate = r;
+};
+    
+Level.prototype.getLoot = function()
+{
+    return this.loot;
+};
+    
+Level.prototype.setLoot = function(l)
+{
+    this.loot = l;
+};
         
-        for (int i=0; i<lines.length; i++)
-        {   String l = lines[i];
-            if (l==null || l.length()<1) 
-            {   continue;
-            }
-            char cmd = l.charAt(0);
-            l = l.substring(1).trim();
-            switch (cmd)
-            {   
-                case 'n':    
-                    title = l;
-                    break;
-                case 'a':    
-                    author = l;
-                    break;
-                case 'i': 
-                    if (hint.length()==0)
-                    {   hint = l;
-                    }
-                    else
-                    {   hint = hint + " " +l;
-                    }   
-                    break;                                  
-                case 'D':
-                    difficulty = Integer.parseInt(l);
-                    break;
-                case 'C':
-                    category = Integer.parseInt(l);
-                    break;
-                case 'e':
-                    loot = Integer.parseInt(l);
-                    break;
-                case 's':
-                    swamprate = Integer.parseInt(l);
-                    break;                      
-                    
-                case 'm':
-                {   int sp1 = l.indexOf(' ');
-                    datawidth = Integer.parseInt(l.substring(0,sp1));
-                    dataheight = Integer.parseInt(l.substring(sp1+1));
-                    mapdata = new byte[datawidth*dataheight];
+Level.prototype.numberOfDemos = function ()
+{
+    return this.demos.length;
+};
 
-                    boolean foundp1=false;
-                    for (int y=0; y<dataheight; y++)
-                    {   i++;
-                        l = lines[i];
-                        for (int x=0; x<datawidth; x++)
-                        {   byte p = (byte) ((l!=null && l.length()>x) ? l.charAt(x) : '.');
-                            if (p==Logic.MAN1) 
-                            {   if (foundp1) 
-                                {   p=Logic.AIR;
-                                }
-                                foundp1=true;
-                            }
-                            if (p==Logic.MAN2) 
-                            {   p=Logic.AIR;
-                            }
-                            if (p=='~')
-                            {   p=' ';                          
-                            }
-                            else if (p=='"')
-                            {   p=']';                          
-                            }
-                            mapdata[x+y*datawidth] =  p;
-                        }
-                    }
-                    break;
-                }                   
+Level.prototype.getDemo = function(index)
+{   
+    return this.demos[index];
+};
 
-                case 'R':
-                    Walk w = new Walk(10000);
-                    w.initialize(Integer.parseInt(l));          
-                    Walk[] d2 = new Walk[demos.length+1];
-                    System.arraycopy(demos,0,d2,0,demos.length);
-                    demos = d2;
-                    demos[demos.length-1] = w;                  
-                    break;
+Level.prototype.setDemo = function(walk)
+{
+    demos = [ new Walk().$2(walk) ];
+};
 
-                case '1':    // walkthrough title
-                    // demos[demos.length-1].setTitle(l);
-                    break;
-                case '2':
-                    for (int j=0; j<l.length(); j++)
-                    {   demos[demos.length-1].recordMovement(Walk.char2move(l.charAt(j))); 
-                    }
-                    break;
-                    
-                case 'l':   
-                    break;    // no support for multi-language              
-                case 'E':
-                    break;   // no support for "emeralds destructable" feature
-                case 'T':
-                    break;   // no support for time limit
-                case 't':
-                    break;   // no support for turn limit
-                case 'p':
-                    break;   // no support for push probability
-                case 'd':
-                    break;   // no support for dispenserspeed
-                case 'v': 
-                    break;   // no support for elevatorspeed
-                case 'o':
-                    break;   // no support for robotspeed
-                case 'w':
-                    break;   // no support for wheelturntime
-                case 'Y':    
-                    break;   // no support for silentyamyam
-                case 'L': 
-                    break;   // no support for silentlaser                  
-                case 'A': 
-                    break;   // no support for artwork                  
-                case 'O': 
-                    break;   // no support for movie set                    
-                case 'S': 
-                    break;   // no support for soundwork                    
-                case 'M': 
-                    break;   // no support for music selection                  
-                case 'N': 
-                    break;   // no support for level sequence definition                    
-                case 'f': 
-                    break;   // no support for first finisher
-                case 'y': 
-                    break;   // no support for yamyam info
-                    
-                case '0':    // no support for walkthrough flags
-                    break;
-                    
-                default: 
-                    System.out.println("Can not decode line in level file: "+l);
-            }           
-        }
-        
-        if (loot<0)
-        {   loot = calculateMaximumLoot(true);      
+Level.prototype.getWidth = function()
+{
+    return this.datawidth;
+};
+    
+Level.prototype.getHeight = function()
+{
+    return this.dataheight;
+};
+    
+Level.prototype.getPiece = function(x,y)
+{
+    return this.mapdata[x+y*this.datawidth];  
+};
+    
+Level.prototype.determineLongestString = function(a)
+{
+    var max=1;
+    for (var i=0; i<a.length; i++)
+    {   var l = a[i];
+        if (l && l.length>max)
+        {   max = l.length;
         }
     }
+    return max;
+};
     
-    public String getTitle()
-    {
-        return title;
-    }
-    public void setTitle(String t)
-    {
-        title = t;
-    }
     
-    public String getAuthor()
-    {
-        return author;  
-    }
-    public void setAuthor(String a)
-    {
-        author = a; 
-    }
-
-    public String getHint()
-    {
-        return hint;
-    }
-    public void setHint(String h)
-    {
-        hint = h;
-    }
-    
-    public int getDifficulty()
-    {
-        return difficulty;
-    }
-
-    public void setDifficulty(int d)
-    {
-        difficulty = d;
-    }
-
-    public int getCategory()
-    {
-        return category;
-    }
-    
-    public void setCategory(int c)
-    {
-        category = c;
-    }
-    
-    public int getSwampRate()
-    {
-        return swamprate;
-    }
-    
-    public void setSwampRate(int r)
-    {
-        swamprate = r;
-    }
-    
-    public int getLoot()
-    {
-        return loot;
-    }
-    
-    public void setLoot(int l)
-    {
-        loot = l;
-    }
+Level.prototype.calculateMaximumLoot = function(considerconverters)
+{
+    var count0=0;
+    var count1=0;
+    var count2=0;
+    var count3=0;
+    var haveconverter=false;
         
-    public int numberOfDemos()
+    for (var i=0; i<this.mapdata.length; i++)
     {
-        return demos.length;
-    }
-    public Walk getDemo(int index)
-    {   
-        return demos[index];
-    }
-
-    public void setDemo(Walk walk)
-    {
-        demos = new Walk[]{ new Walk(walk) };
-    }
-
-    public int getWidth()
-    {
-        return datawidth;
-    }
-    
-    public int getHeight()
-    {
-        return dataheight;
-    }
-    
-    public byte getPiece(int x, int y)
-    {
-        return mapdata[x+y*datawidth];  
-    }
-    
-    public int calculateMaximumLoot(boolean considerconverters)
-    {
-        int count0=0;
-        int count1=0;
-        int count2=0;
-        int count3=0;
-        boolean haveconverter=false;
-        
-        for (int i=0; i<mapdata.length; i++)
-        {
-            switch (mapdata[i])
-            {   case Logic.ROCK:
+            switch (this.mapdata[i])
+            {   case ROCK:
                     count0++;
                     break;
-                case Logic.WALLEMERALD:
-                case Logic.EMERALD:
-                case Logic.ROCKEMERALD:
-                case Logic.SAND_FULLEMERALD:
-                case Logic.BAG:
-                case Logic.BOX:
-                case Logic.RUBY:
+                case WALLEMERALD:
+                case EMERALD:
+                case ROCKEMERALD:
+                case SAND_FULLEMERALD:
+                case BAG:
+                case BOX:
+                case RUBY:
                     count1++;
                     break;
-                case Logic.SAPPHIRE:
+                case SAPPHIRE:
                     count2++;
                     break;
-                case Logic.CITRINE:
+                case CITRINE:
                     count3++;
                     break;
-                case Logic.BUGLEFT:
-                case Logic.BUGRIGHT:
-                case Logic.BUGUP:
-                case Logic.BUGDOWN:
+                case BUGLEFT:
+                case BUGRIGHT:
+                case BUGUP:
+                case BUGDOWN:
                     count1+=8;
                     count2++;
                     break;
-                case Logic.YAMYAMLEFT:
-                case Logic.YAMYAMUP:
-                case Logic.YAMYAMRIGHT:
-                case Logic.YAMYAMDOWN:
+                case YAMYAMLEFT:
+                case YAMYAMUP:
+                case YAMYAMRIGHT:
+                case YAMYAMDOWN:
                     count1+=1;
                     break;
-                case Logic.CONVERTER:
+                case CONVERTER:
                     haveconverter=true;
                     break;           
             }           
-        }
-        if (haveconverter && considerconverters) // when a converter is present any gem or stone could count 3
-        {   return 3*(count0+count1+count2+count3);
-        }
-        else
-        {   return count1+2*count2+3*count3;
-        }
     }
-    
+    if (haveconverter && considerconverters) // when a converter is present any gem or stone could count 3
+    {   return 3*(count0+count1+count2+count3);
+    }
+    else
+    {   return count1+2*count2+3*count3;
+    }
+};
+
+/*    
     public boolean containsPiece(byte piece)
     {
         for (int i=0; i<mapdata.length; i++)
@@ -469,8 +386,7 @@ var DEFAULTSWAMPRATE = 30;
         }
         return shortest;
     }
-    
-    
+        
     public int[] setPieceAndAdjustLoot(int x, int y, byte piece)
     {
         if (piece<=0)       // these pieces must not be used in level map 
@@ -662,17 +578,6 @@ var DEFAULTSWAMPRATE = 30;
         return w;
     }
     
-    private static int determineLongestString(JSONArray a)
-    {
-        int max=1;
-        for (int i=0; i<a.length(); i++)
-        {   String l = a.optString(i);
-            if (l!=null && l.length()>max)
-            {   max = l.length();
-            }
-        }
-        return max;
-    }
     
     private static int valueForLoot(byte piece)
     {
@@ -738,7 +643,5 @@ var DEFAULTSWAMPRATE = 30;
             return n;
         } 
     }
+    */
     
-    
-    
-}

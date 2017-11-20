@@ -1,16 +1,16 @@
 var LevelPack = function()
 {
-	this.name = null
-	this.levels = null;
+    this.name = null
+    this.levels = null;
 };
 
-Levelpack.prototype.$ = function(name, data)
+LevelPack.prototype.$ = function(name, json)
 {   
     this.name = name;
     this.levels = [];
 
-    for (int i=0; i<data.length; i++)
-    {   this.levels.push(new Level(data[i]));        
+    for (var i=0; i<json.length; i++)
+    {   this.levels.push(new Level().$(json[i]));
     }
     
     //Arrays.sort(this.levels,new Level.TitleComparator());
@@ -18,61 +18,60 @@ Levelpack.prototype.$ = function(name, data)
     return this;
 };
         
-    public void print() 
-    {
-		stream.println("[");
-		for (int i=0; i<levels.length; i++)
-		{
-			levels[i].print(stream);
-			if (i<levels.length-1)
-			{	stream.println(",");
-			}					
-		}
-		stream.println("]");    
+LevelPack.prototype.toJSON = function()
+{
+    var p = [];
+    for (var i=0; i<this.levels.length; i++)
+    {   p.push( this.levels[i].toJSON() );
     }
-    
-    public void addLevel(Level l)
-    {
-		Level[] n= new Level[levels.length + 1];
-		System.arraycopy(levels,0, n,0, levels.length);
-		n[n.length-1] = l;
-		levels = n;
-    }
-	
-	public Level findLevel(String title)
-	{
-		for (Level l:levels)
-		{
-			if (l.title.equals(title))	
-			{	return l;
-			}
-		}
-		return null;
-	}
-	
-	public boolean containsLevel(Level l)
-	{
-		for (int i=0; i<levels.length; i++)
-		{
-			if (levels[i]==l)
-			{	return true;
-			}
-		}
-		return false;			
-	}
-	
-	public int numberOfLevels()
-	{
-		return levels.length;
-	}
-	
-	public boolean isWriteable()
-	{
-		return filename!=null;
-	}
-	
-	public String getName()
-	{
-		return name;	
-	}
+    return p;
 }
+    
+LevelPack.prototype.addLevel = function(level)
+{
+    this.levels.push(level);
+};
+    
+LevelPack.prototype.findLevel = function(title)
+{
+    for (var i=0; i<this.levels.length; i++)
+    {   var l = this.levels[i];
+        if (l.title.equals(title))  
+        {   return l;
+        }
+    }
+    return null;
+};
+   
+/*
+   LevelPack.prototype.containsLevel = functoi(Level l)
+    {
+        for (int i=0; i<levels.length; i++)
+        {
+            if (levels[i]==l)
+            {   return true;
+            }
+        }
+        return false;           
+    }
+    */
+    
+LevelPack.prototype.numberOfLevels = function()
+{
+    return this.levels.length;
+};
+
+LevelPack.prototype.getLevel = function(index)
+{
+    return this.levels[index];
+};
+    
+LevelPack.prototype.isWriteable = function()
+{
+    return this.filename;
+};
+    
+LevelPack.prototype.getName = function()
+{
+    return name;    
+};

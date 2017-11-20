@@ -8,11 +8,11 @@
  */
 var DiscardingStack = function() 
 {
-    capacity = 0;           // size if the data array
-    elements = null;            // the data is put into the buffer in round-robin manner
-    offset = 0;             // position inside the array where the bottom-most stack element lies 
-    length = 0;             // length of "active" part of the array - may wrap around the border
-    destroypermission = 0;  // permission was given to auto-discard this many elements
+    this.capacity = 0;           // size if the data array
+    this.elements = null;        // the data is put into the buffer in round-robin manner
+    this.offset = 0;             // position inside the array where the bottom-most stack element lies 
+    this.length = 0;             // length of "active" part of the array - may wrap around the border
+    this.destroypermission = 0;  // permission was given to auto-discard this many elements
 };
 
     /**
@@ -23,11 +23,12 @@ var DiscardingStack = function()
      */
 DiscardingStack.prototype.$ = function(capacity)
 {
-        this.capacity = capacity;
-        this.elements = new Array(capacity);
-        this.offset = 0;
-        this.length = 0;
-        this.destroypermission = 0;
+    this.capacity = capacity;
+    this.elements = new Array(capacity);
+    this.offset = 0;
+    this.length = 0;
+    this.destroypermission = 0;
+    return this;
 };
     
     /** 
@@ -77,7 +78,7 @@ DiscardingStack.prototype.push = function(value)
 };
 
     /**
-     * Give the stack the permission to discard the the bottom-most values on the
+     * Give the stack the permission to discard the bottom-most values on the
      * stack.
      * @param number How many elements (from current point of view) may be auto-destroyed.
      *   When auto-discard is later performed the number is also decremented then to
@@ -117,7 +118,7 @@ DiscardingStack.prototype.size = function()
      * Query the number of elements in the "save" area , that means, the elements
      * for which there was not given a permission to discard. 
      */
-DiscardinStack.prototype.keepingSize = function()
+DiscardingStack.prototype.keepingSize = function()
 {
     return this.length - this.destroypermission;
 };

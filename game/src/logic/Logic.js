@@ -1,85 +1,18 @@
 var Logic = function() 
 {
     this.map = null;                     // fixed-size buffer to hold current map   
-    this.counters = null;                 // various counter values / flags that get modified in game
-    this.transactions = null;           // the transaction buffer
-    this.hasmoved = null;               // temporary info to prevent double-actions of pieces
+    this.counters = null;                // various counter values / flags that get modified in game
+    this.transactions = null;            // the transaction buffer
+    this.movedflags = null;                // temporary info to prevent double-actions of pieces
     
-    this.level = null;                 // level currently played
-    this.walk = null;                  // the walk currently running
+    this.level = null;                   // level currently played
+    this.walk = null;                    // the walk currently running
     this.turnsdone = 0
     this.numberofplayers = 0;
     
     this.visualrandomseed = 0;   // secondary random generator used for graphics appearances (not logic relevant) 
 };
 
-// constant values
-var MAPWIDTH  = 64;
-var MAPHEIGHT = 64; 
-
-// pieces in static level definition
-var OUTSIDE           = 0;
-var MAN1              = '1'.charCodeAt(0);
-var MAN2              = '2'.charCodeAt(0);
-var AIR               = ' '.charCodeAt(0);
-var EARTH             = '.'.charCodeAt(0);
-var SAND              = 's'.charCodeAt(0);
-var SAND_FULL         = 'S'.charCodeAt(0);
-var SAND_FULLEMERALD  = '}'.charCodeAt(0);
-var WALL              = '#'.charCodeAt(0);
-var ROUNDWALL         = 'A'.charCodeAt(0);
-var GLASSWALL         = ':'.charCodeAt(0);
-var STONEWALL         = '+'.charCodeAt(0);
-var ROUNDSTONEWALL    = '|'.charCodeAt(0);
-var WALLEMERALD       = '&'.charCodeAt(0);
-var EMERALD           = '*'.charCodeAt(0);
-var CITRINE           = ')'.charCodeAt(0); 
-var SAPPHIRE          = '$'.charCodeAt(0);
-var RUBY              = '('.charCodeAt(0);    
-var ROCK              = '0'.charCodeAt(0);
-var ROCKEMERALD       = 'e'.charCodeAt(0);
-var BAG               = '@'.charCodeAt(0);
-var BOMB              = 'Q'.charCodeAt(0);
-var DOOR              = 'E'.charCodeAt(0);
-var SWAMP             = '%'.charCodeAt(0);
-var DROP              = '/'.charCodeAt(0);
-var TIMEBOMB          = '!'.charCodeAt(0);
-var ACTIVEBOMB5       = '?'.charCodeAt(0);
-var TIMEBOMB10        = ']'.charCodeAt(0);
-var CONVERTER         = 'c'.charCodeAt(0);
-var BOX               = '['.charCodeAt(0);
-var CUSHION           = '_'.charCodeAt(0);
-var ELEVATOR          = '{'.charCodeAt(0);
-//  public final static byte DISPENSER         = 'd'.charCodeAt(0);
-var ACID              = 'a'.charCodeAt(0);
-var KEYBLUE           = 'b'.charCodeAt(0);
-var KEYRED            = 'r'.charCodeAt(0);
-var KEYGREEN          = 'g'.charCodeAt(0);
-var KEYYELLOW         = 'y'.charCodeAt(0);
-var DOORBLUE          = 'B'.charCodeAt(0);
-var DOORRED           = 'R'.charCodeAt(0);
-var DOORGREEN         = 'G'.charCodeAt(0);
-var DOORYELLOW        = 'Y'.charCodeAt(0);
-var ONETIMEDOOR       = '='.charCodeAt(0);
-var LORRYLEFT         = '5'.charCodeAt(0);
-var LORRYUP           = '6'.charCodeAt(0);
-var LORRYRIGHT        = '7'.charCodeAt(0);
-var LORRYDOWN         = '8'.charCodeAt(0);
-var BUGLEFT           = 'h'.charCodeAt(0);
-var BUGUP             = 'u'.charCodeAt(0);
-var BUGRIGHT          = 'k'.charCodeAt(0);
-var BUGDOWN           = 'j'.charCodeAt(0);
-var YAMYAMLEFT        = '<'.charCodeAt(0);
-var YAMYAMUP          = '^'.charCodeAt(0);
-var YAMYAMRIGHT       = '>'.charCodeAt(0);
-var YAMYAMDOWN        = 'V'.charCodeAt(0);
-var ROBOT             = 'o'.charCodeAt(0);
-var ELEVATOR_TOLEFT   = '3'.charCodeAt(0);
-var ELEVATOR_TORIGHT  = '4'.charCodeAt(0);
-var GUN0              = '\''.charCodeAt(0);
-var GUN1              = 'C'.charCodeAt(0);
-var GUN2              = 'D'.charCodeAt(0);
-var GUN3              = 'F'.charCodeAt(0);
     
     // pieces created during game   
 var ROCK_FALLING      = 128;
@@ -186,7 +119,6 @@ var SWAMP_LEFT        = 235;
 var SWAMP_UP          = 236;
 var SWAMP_DOWN        = 237;
 
-
     // the counters are references with this index
 //  public final static int CTR_NUMPLAYERS              = 0;
 var CTR_MANPOSX1                = 1;
@@ -224,11 +156,12 @@ var TRN_HIGHLIGHT   = 0xc0000000;
 
 Logic.prototype.$ = function(transactionhistory)
 {
-    this.map = new Array[MAPWIDTH*MAPHEIGHT];       
+    this.map = new Array(MAPWIDTH*MAPHEIGHT);       
     this.counters = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
     this.transactions = new DiscardingStack().$(transactionhistory);
-    this.hasmoved = new Array(MAPWIDTH*MAPHEIGHT);
+    this.movedflags = new Array(MAPWIDTH*MAPHEIGHT);
     this.visualrandomseed = 23452;
+    return this;
 };
 
 Logic.prototype.attach = function(l, w)
@@ -276,7 +209,7 @@ Logic.prototype.gototurn = function(t)
                 // to fix up everything, the keep-counter in the 
                 // transaction buffer needs to be set correctly.
                 // if this fails, also do a complete reset 
-                for (int i = this.transactions.size()-1; i>=0; i--)
+                for (var i = this.transactions.size()-1; i>=0; i--)
                 {   if (this.transactions.get(i)==TRN_STARTOFTURN)
                     {   this.transactions.mayDiscard(i);
                         return;
@@ -300,7 +233,7 @@ Logic.prototype.reset = function()
         
         this.transactions.clear();       
         
-        for (var i=0; i<this.map.length; i++) map[i]=OUTSIDE;
+        for (var i=0; i<this.map.length; i++) this.map[i]=OUTSIDE;
         var dw = this.level.datawidth;
         for (var y=0; y<this.level.dataheight; y++)
         {   for (var x=0; x<dw; x++) 
@@ -313,11 +246,11 @@ Logic.prototype.reset = function()
         var populatedwidth = this.level.datawidth;
         for (var y=this.level.dataheight-1; y>=0; y--)
         {   for (var x=0; x<populatedwidth; x++)
-            {   if (is(x,y,MAN1))
+            {   if (this.is(x,y,MAN1))
                 {   this.counters[CTR_MANPOSX1] = x;
                     this.counters[CTR_MANPOSY1] = y;
                 }
-                else if (is(x,y,MAN2))
+                else if (this.is(x,y,MAN2))
                 {   counters[CTR_MANPOSX2] = x;
                     counters[CTR_MANPOSY2] = y; 
                     this.numberofplayers = 2;            
@@ -341,12 +274,12 @@ Logic.prototype.computeturn = function()
         this.transactions.push (TRN_STARTOFTURN);
 
         // clear the array of the moved flags
-        for (var i=0; i<this.hasmoved.length; i++) 
-        {   this.hasmoved[i] = false;
+        for (var i=0; i<this.movedflags.length; i++) 
+        {   this.movedflags[i] = false;
         }
         
         // special handling if man1 moves towards man2:  man2 will move first to allow close proximity while walking
-        int num = this.getNumberOfPlayers();
+        var num = this.getNumberOfPlayers();
         if (num==2 && this.man1_moves_toward_man2())
         {   this.playermove(1);
             this.playermove(0);
@@ -371,7 +304,7 @@ Logic.prototype.piecesmove = function()
         // only pieces inside the populated area can actually move
         var populatedwidth = this.level.datawidth;
         for (var y=this.level.dataheight-1; y>=0; y--)
-        {   for (var x=0; x<this.populatedwidth; x++)
+        {   for (var x=0; x<populatedwidth; x++)
             {   
                 // when found a flag on a piece while processing, this piece must
                 // not be moved in this turn again
@@ -382,7 +315,7 @@ Logic.prototype.piecesmove = function()
                 // huge decision - tree what to do with each piece 
                 switch (this.piece(x,y))
                 {   case DOOR:
-                        if (this.counters[CTR_EMERALDSCOLLECTED]>=this.level.loot)
+                        if (this.counters[CTR_EMERALDSCOLLECTED]>=this.level.getLoot())
                         {   this.transform(x,y, DOOR_OPENED);
                         }
                         break;
@@ -841,10 +774,11 @@ Logic.prototype.piecesmove = function()
                     case SWAMP_LEFT:
                     case SWAMP_RIGHT:
                     case SWAMP_DOWN:
-                        this.transform(x,y, SWAMP);
-                        //$FALL-THROUGH$                            
+                        this.transform(x,y, SWAMP);                        
+                        //$FALL-THROUGH$           
+                        
                     case SWAMP:                     
-                        if (this.level.swamprate>0)
+                        if (this.level.getSwampRate()>0)
                         {   randomseed = this.nextrandomseed(randomseed);
                             switch (randomseed % (4*this.level.getSwampRate()))
                             {   case 0: 
@@ -883,7 +817,7 @@ Logic.prototype.piecesmove = function()
                                     this.highlight(x,y,SWAMP);
                                     if (this.is(x,y+1,EARTH))
                                     {   this.highlight(x,y+1, EARTH);
-                                        this.transform(x,y+1, SWAMP_DOWN);                                                                   
+                                        this.transform(x,y+1, SWAMP_DOWN);
                                     }
                                     else if (this.is(x,y+1,AIR))
                                     {   this.transform(x,y+1, DROP);                                 
@@ -1282,8 +1216,8 @@ Logic.prototype.piecesmove = function()
         }
         
         // if the random seed got modified during the logic, need to store it back to the counters array
-        if (randomseed != counters[CTR_RANDOMSEED])
-        {   changecounter(CTR_RANDOMSEED, randomseed-counters[CTR_RANDOMSEED]);
+        if (randomseed != this.counters[CTR_RANDOMSEED])
+        {   this.changecounter(CTR_RANDOMSEED, randomseed-this.counters[CTR_RANDOMSEED]);
         }
 };
     
@@ -1600,7 +1534,7 @@ Logic.prototype.is_hit_by_non_bomb = function(x, y, bywhat)
         }                
 };
     
-Logic.prototype.is_neardestruct_target = function (int x, int y) 
+Logic.prototype.is_neardestruct_target = function (x, y) 
 {
         var pi = this.piece(x,y-1);
         var wpp;
@@ -1641,8 +1575,8 @@ Logic.prototype.is_neardestruct_target = function (int x, int y)
         }
 
         // check presence of player on diagonally adjacent square
-        boolean player0diagonally = false;
-        boolean player1diagonally = false;      
+        var player0diagonally = false;
+        var player1diagonally = false;      
         if ((wpp=this.whose_player_piece(this.piece(x-1,y-1)))>=0)
         {   if (wpp==0) player0diagonally = true;
             else        player1diagonally = true; 
@@ -1702,7 +1636,7 @@ Logic.prototype.is_near_origin_position_of_player = function(x, y, playeridx)
         return Math.abs(px-x)<=1 && Math.abs(py-y)<=1;
 };
     
-Logic.prototype.add_laser_beam (x, y, dx, dy)
+Logic.prototype.add_laser_beam = function(x, y, dx, dy)
 {
         var startx = x;
         var starty = y;
@@ -1838,7 +1772,7 @@ Logic.prototype.add_laser_beam (x, y, dx, dy)
 };
     
     
-Logic.prototype.playermove = function (int player)
+Logic.prototype.playermove = function (player)
 {
         // determine piece and position of this player
         var x = this.counters[CTR_MANPOSX1+player];
@@ -1867,7 +1801,7 @@ Logic.prototype.playermove = function (int player)
         var dy = 0;
         var manpiece = this.piece(x,y);
         
-        var m = this.walk.getMovement(player, turnsdone);
+        var m = this.walk.getMovement(player, this.turnsdone);
         switch (m)
         {   case Walk.MOVE_REST:
                 //  revert player piece to the proper neutral state
@@ -1925,7 +1859,7 @@ Logic.prototype.playermove = function (int player)
             this.changecounter (CTR_EXITED_PLAYER1+player, 1);
             
             // optionally place a goodbye-bomb 
-            int cidx = CTR_TIMEBOMBS_PLAYER1+player;
+            var cidx = CTR_TIMEBOMBS_PLAYER1+player;
             if (setbomb && this.counters[cidx]>0)
             {   this.changecounter(cidx,-1);
                 this.transform(x,y, ACTIVEBOMB5);
@@ -2142,7 +2076,7 @@ Logic.prototype.is = function(x, y, p)
     
 Logic.prototype.hasmoved = function(x,y)
 {
-        return this.hasmoved[x+y*MAPWIDTH];
+        return this.movedflags[x+y*MAPWIDTH];
 };
     
 Logic.prototype.may_roll_to_left = function(x, y, isconvertible)
@@ -2154,7 +2088,7 @@ Logic.prototype.may_roll_to_left = function(x, y, isconvertible)
         if (!this.is(x-1,y-1,AIR))
         {   return false;
         }
-        int pl = this.piece(x-1,y);
+        var pl = this.piece(x-1,y);
         if (pl==AIR || pl==ACID || (isconvertible && pl==CONVERTER && this.is(x-1,y+1,AIR)))
         {   if (p==ELEVATOR_TOLEFT) 
             {   this.highlight(x,y, ELEVATOR_TOLEFT);
@@ -2379,9 +2313,10 @@ Logic.prototype.rollback = function()
                     return true;
                 }
                 case TRN_COUNTER:
-                {   var index = (t>>16) & 0x0fff;
-                    var increment = (t<<16) >> 16;
-                    this.counters[index] = this.counters[index] - increment;
+                {   var index = (t>>24) & 0xf;
+                    var increment = t & 0xffffff;
+                    if (increment >= 0x800000) increment-=0x1000000;
+                    this.counters[index] -= increment;
                     break;
                 }
                 case TRN_TRANSFORM:
@@ -2389,7 +2324,7 @@ Logic.prototype.rollback = function()
                 {   var x = (t>>22) & 0x03f;
                     var y = (t>>16) & 0x03f;
                     var oldpiece = (t>>8) & 0xff;
-                    this.map[x+y*MAPWIDTH] = )oldpiece;
+                    this.map[x+y*MAPWIDTH] = oldpiece;
                     break;
                 }
                 case TRN_MOVEDOWN:
@@ -2470,21 +2405,10 @@ Logic.prototype.rollback = function()
     
     //  ------ modifications of the map that cause one or more entries in the transaction table -----
     
-Logic.prototype.changecounter = function(index, increment)
+Logic.prototype.changecounter = function(index, increment)   // index<=16, only increment by a 24-bit value
 {
         this.counters[index] += increment;
-        // in case of a counter change that can not fit into a "short", need to add multiple change transactions
-        // ATTENTION: This should normally only happen for values that are "just" too big to fit into a short, like
-        // some changes of a 16 bit unsigned value for the random generator 
-        while (increment>32767)
-        {   this.transactions.push (TRN_COUNTER | (index<<16) | 0x7fff);
-            this.increment -= 32767; 
-        }
-        while (increment<-32768)
-        {   this.transactions.push (TRN_COUNTER | (index<<16) | 0x8000);
-            this.increment += 32768; 
-        }
-        this.transactions.push (TRN_COUNTER | (index<<16) | (increment&0xffff));         
+        this.transactions.push (TRN_COUNTER | (index<<24) | (increment&0xffffff));
 };
 
 Logic.prototype.transform = function(x, y, newpiece)
@@ -2496,7 +2420,7 @@ Logic.prototype.transform = function(x, y, newpiece)
                     +oldpiece+"->"+newpiece);
         }
         this.map[index] = newpiece;
-        this.hasmoved[index] = true;
+        this.movedflags[index] = true;
         this.transactions.push (TRN_TRANSFORM | (x<<22) | (y<<16) | (oldpiece<<8) | newpiece );
 };
 
@@ -2508,8 +2432,8 @@ Logic.prototype.changestate = function(x, y, newpiece)
         {   throw new Error("Can not use changestate for not visibly equivalent pieces:" 
                 +oldpiece_i+"->"+newpiece_i);
         }
-        this.map[index] = newpiece;
-        this.transactions.push (TRN_CHANGESTATE | (x<<22) | (y<<16) | (oldpiece<<8) | newpiece );
+    this.map[index] = newpiece;
+    this.transactions.push (TRN_CHANGESTATE | (x<<22) | (y<<16) | (oldpiece<<8) | newpiece );
 };
 
 Logic.prototype.highlight = function(x, y, highlightpiece)
@@ -2526,10 +2450,10 @@ Logic.prototype.move = function(x, y, dx, dy, newpiece)
         // move and transform piece on the way
         var index = x+y*MAPWIDTH;
         var index2 = x+dx + (y+dy)*MAPWIDTH;
-        var oldpiece = map[index];
+        var oldpiece = this.map[index];
         this.map[index] = AIR;
         this.map[index2] = newpiece;     
-        this.hasmoved[index2] = true;
+        this.movedflags[index2] = true;
         
         // store what happened into transaction log
         switch (dx+10*dy)
@@ -2628,24 +2552,25 @@ Logic.prototype.timeSinceAllExited = function()
     }
 };
     
-Logic.prototype.getCounter = function(int ctr)
+Logic.prototype.getCounter = function(ctr)
 {   
         return this.counters[ctr];
 };
     
-Logic.prototype.getCounterAtStartOfTurn = function(int ctr)
+Logic.prototype.getCounterAtStartOfTurn = function(ctr)
 {
-        var value = this.counters[ctr];
+        var valuenow = this.counters[ctr];   
+        var valuebefore = valuenow;            
         for (var idx=this.getAnimationBufferSize()-1; idx>=0; idx--)
-        {   var trn = this.getAnimation(idx);
-            if ( (trn&TRN_MASK) == TRN_COUNTER)
-            {   var index = (trn>>16) & 0x0fff;             
-                if (index==ctr)
-                {   value -= ((trn<<16)>>16);
-                }
+        {   var t = this.getAnimation(idx);
+            if ( (t&TRN_MASK) == TRN_COUNTER && ((t>>24)&0xf)==ctr)
+            {   var increment = t & 0xffffff;
+                if (increment >= 0x800000) increment-=0x1000000;
+                valuebefore -= increment;
             }
         }
-        return value;
+        console.log("counter:",ctr,"before:",valuebefore,"now:",valuenow);
+        return valuebefore;
 };
     
 Logic.prototype.getPopulatedWidth = function()
@@ -2728,3 +2653,19 @@ Logic.prototype.getCollectedTimeBombs = function(player)
     return this.counters[CTR_TIMEBOMBS_PLAYER1+player];
 };
     
+// ----------- for debug: print internal state of logic -----
+    
+Logic.prototype.printState = function()
+{    
+    var level = this.level;
+    console.log(this.turnsdone,this.numberofplayers,this.level.getLoot(),this.counters);
+    for (var y=0; y<level.getHeight(); y++)
+    {   var line = [];
+        for (var x=0; x<level.getWidth(); x++) {
+            var piece = this.map[x+y*MAPWIDTH];
+            if (piece>=32 && piece<=127) line.push(String.fromCharCode(piece));
+            else                         line.push("~");
+        }
+        console.log(line.join(""));
+    }
+};

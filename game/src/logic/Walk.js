@@ -2,237 +2,167 @@ var Walk = function()
 {
     this.buffer = null;
     this.randomseed = 0;
-    this.numturns = 0;
 };
 
-    public final static int MOVE_REST  = 0;
-    public final static int MOVE_UP    = 1;
-    public final static int MOVE_DOWN  = 2;
-    public final static int MOVE_LEFT  = 3;
-    public final static int MOVE_RIGHT = 4;
-    public final static int GRAB_UP    = 5;
-    public final static int GRAB_DOWN  = 6;
-    public final static int GRAB_LEFT  = 7;
-    public final static int GRAB_RIGHT = 8;
-    public final static int BOMB_UP    = 9;
-    public final static int BOMB_DOWN  = 10;
-    public final static int BOMB_LEFT  = 11;
-    public final static int BOMB_RIGHT = 12;
+Walk.MOVE_REST  = 0;
+Walk.MOVE_UP    = 1;
+Walk.MOVE_DOWN  = 2;
+Walk.MOVE_LEFT  = 3;
+Walk.MOVE_RIGHT = 4;
+Walk.GRAB_UP    = 5;
+Walk.GRAB_DOWN  = 6;
+Walk.GRAB_LEFT  = 7;
+Walk.GRAB_RIGHT = 8;
+Walk.BOMB_UP    = 9;
+Walk.BOMB_DOWN  = 10;
+Walk.BOMB_LEFT  = 11;
+Walk.BOMB_RIGHT = 12;
     
-Walk.prototype.$ = function(JSONObject json)
-    {
-        this(countMovements(json.optJSONArray("moves"), json.optString("moves")) / json.optInt("players",1));  // estimate buffer size needed
-        initialize(json.optInt("randomseed"));
+Walk.prototype.$ = function(json)
+{
+    this.buffer = [];
+    this.randomseed = 0;
 
-        if (json.optInt("players",1)>1)     // having 2 moves for each turn
-        {   JSONArray a = json.optJSONArray("moves");
-            if (a!=null)
-            {   for (int i=0; i<a.length(); i++)
-                {   String s = a.optString(i);
-                    for (int j=0; s!=null && j+1<s.length(); j+=2)
-                    {   recordMovement(char2move(s.charAt(j)), char2move(s.charAt(j+1)));
-                    }
-                }
-            }
-            else
-            {   String s = json.optString("moves");
-                for (int j=0; s!=null && j+1<s.length(); j+=2)
-                {   recordMovement(char2move(s.charAt(j)), char2move(s.charAt(j+1)));
-                }
+    this.initialize(Number.isInteger(json.randomseed) ? json.randomseed : 0);
+    
+    var a = json.moves;
+    if (a && !Array.isArray(a)) a = [a];
+    
+    if (json.players === 2)     // having 2 moves for each turn
+    {   for (var i=0; a && i<a.length; i++)
+        {   var s = a[i];
+            for (var j=0; s && j+1<s.length; j+=2)
+            {   this.recordMovements(this.char2move(s.charCodeAt(j)), this.char2move(s.charCodeAt(j+1)));
             }
         }
-        else                            // only one move for each turn
-        {   JSONArray a = json.optJSONArray("moves");
-            if (a!=null)
-            {   for (int i=0; i<a.length(); i++)
-                {   String s = a.optString(i);
-                    for (int j=0; s!=null && j<s.length(); j++)
-                    {   recordMovement(char2move(s.charAt(j)));
-                    }
-                }
+    }
+    else                            // only one move for each turn
+    {   for (var i=0; a && i<a.length; i++)
+        {   var s = a[i];
+            for (var j=0; s && j<s.length; j++)
+            {   this.recordMovement(this.char2move(s.charCodeAt(j)));
             }
-            else
-            {   String s = json.optString("moves");
-                for (int j=0; s!=null && j<s.length(); j++)
-                {   recordMovement(char2move(s.charAt(j)));
-                }
-            }       
         }
-    }   
-    
-    public Walk(String walkdata) throws JSONException
-    {   
-        this((JSONObject) (new JSONTokener(walkdata).nextValue()));
     }
     
-    public Walk(int turns_to_store)
-    {
-        randomseed = 0;
-        numturns = 0;
-        buffer = new byte[turns_to_store];
-    }
+    return this;
+};
     
-    public Walk(Walk original)
-    {
-        buffer = new byte[original.buffer.length];
-        System.arraycopy(original.buffer,0,buffer,0,buffer.length);
-        randomseed = original.randomseed;
-        numturns = original.numturns;
-    }
+Walk.prototype.$2 = function(original)
+{
+    this.buffer = original.buffer.slice();
+    this.randomseed = original.randomseed;
+    return this;
+};
     
-    public void print(PrintStream ps)
-    {
-        boolean hassecond = hasMovementsForSecondPlayer();
-        ps.println("{   ");
+Walk.prototype.toJSON = function()
+{
+    var hassecond = this.hasMovementsForSecondPlayer();
+    var numturns = this.buffer.length;
+    
+    var a = [ ];
+    var m = [ ];
+    for (var i=0; i<numturns; i++)
+    {   m.push(this.move2str(this.getMovement(0,i)));
         if (hassecond)
-        {   ps.println("            \"players\": 2,");
+        {   m.push(this.move2str(this.getMovement(1,i)));
         }
-        ps.print("            \"randomseed\": ");
-        ps.print(randomseed);
-        ps.println(",");
-        
-        ps.println("            \"moves\":");
-        ps.print("            [   \"");
-        for (int i=0; i<numturns; i++)
-        {   if (i>0 && i%40==0)
-            {   ps.println("\",");
-                ps.print("                \"");
-            }
-            ps.print(move2char(getMovement(0,i)));
-            if (hassecond)
-            {   ps.print(move2char(getMovement(1,i)));
-            }
-        }
-        ps.println("\"");
-        ps.println("            ]");
-        ps.print("        }");
-    }
-    
-    public String toJSON()
-    {
-        boolean hassecond = hasMovementsForSecondPlayer();
-        StringBuffer b = new StringBuffer();
-        b.append("{");
-        if (hassecond)
-        {   b.append("\"players\":2,");
-        }
-        b.append("\"randomseed\":");
-        b.append(randomseed);
-        b.append(",");
-        b.append("\"moves\":\"");
-        for (int i=0; i<numturns; i++)
-        {   b.append((char)move2char(getMovement(0,i)));
-            if (hassecond)
-            {   b.append((char)move2char(getMovement(1,i)));
-            }
-        }
-        b.append("\"");
-        b.append("}");      
-        return b.toString();    
-    }
-    
-    public void initialize(int randomseed)
-    {
-        this.randomseed = randomseed;
-        this.numturns=0;
-    }
-    
-    public int getTurns()
-    {
-        return numturns;
-    }
-    
-    public void trimRecord(int turns)
-    {
-        if (turns<numturns)
-        {   numturns=turns;
+        if (m.length>=40 || i===numturns-1) 
+        {   a.push (m.join(""));
+            m.length = 0;
         }
     }
     
-    public void recordMovement(int movement1)
-    {
-        recordMovement(movement1, MOVE_REST);
+    if (hassecond) 
+    {   return {    randomseed: this.randomseed,
+                    players:    2,
+                    moves:      a                      
+                };
     }
+    else
+    {   return {    randomseed: this.randomseed,
+                    moves:      a                      
+                };
+    }
+};
     
-    public void recordMovement(int movement1, int movement2)
-    {
-        // enlarge buffer if necessary
-        if (numturns>=buffer.length)
-        {   byte[] b2 = new byte[Math.max(buffer.length*2, 50)];
-            System.arraycopy(buffer,0,b2,0,buffer.length);
-            buffer = b2;
-        }
-        buffer[numturns] = (byte) ((movement2<<4) | movement1);
-        numturns++;
+Walk.prototype.initialize = function(randomseed)
+{
+    this.randomseed = randomseed;
+    this.buffer.length = 0;
+};
+    
+Walk.prototype.getTurns = function()
+{
+    return this.buffer.length;
+};
+    
+Walk.prototype.trimRecord = function(turns)
+{    
+    if (turns<this.buffer.length)
+    {   this.buffer.length = turns;
     }
+};
+    
+Walk.prototype.recordMovement = function(movement1)
+{
+    this.recordMovements(movement1, Walk.MOVE_REST);
+};
+    
+Walk.prototype.recordMovements = function(movement1, movement2)
+{
+    this.buffer.push(movement1 | (movement2<<4));
+};
 
-    public int getRandomSeed()
-    {
-        return randomseed;
-    }
+Walk.prototype.getRandomSeed = function()
+{
+    return this.randomseed;
+};
     
-    public int getMovement(int player, int turn)
-    {
-        if (turn<0 || turn>=numturns)
-        {   return MOVE_REST;
-        }
-        return (buffer[turn] >> (player*4)) & 0xf;
+Walk.prototype.getMovement = function(player, turn)
+{
+    if (turn<0 || turn>=this.buffer.length)
+    {   return Walk.MOVE_REST;
     }
+    return (this.buffer[turn] >> (player*4)) & 0xf;
+};
     
-    public int currentNumberOfCompleteTurns()
-    {
-        return numturns;
-    }
+Walk.prototype.currentNumberOfCompleteTurns = function()
+{
+    return this.buffer.length;
+};
     
-    public boolean hasMovementsForSecondPlayer()
-    {
-        for (int i=0; i<numturns; i++)
-        {   if ( ((buffer[i]>>4) & 0xf) != 0)
-            {   return true;
-            }
-        }
-        return false;
-    }
-    
-//  public boolean hasNonRestMovements()
-//  {
-//      for (int i=0; i<numturns; i++)
-//      {   if (buffer[i]!=0)
-//          {   return true;
-//          }
-//      }
-//      return false;
-//  }
-    
-    private static int countMovements(JSONArray a, String s)
-    {
-        int c = (s==null) ? 0 : s.length();     
-        for (int i=0; a!=null && i<a.length(); i++)
-        {   c = c + a.optString(i).length();
-        }       
-        return c;
-    }
-    public static int char2move(char c)
-    {
-        switch (c)
-        {   default:  return MOVE_REST;
-            case 't': return MOVE_UP;
-            case 'b': return MOVE_DOWN;
-            case 'l': return MOVE_LEFT;
-            case 'r': return MOVE_RIGHT;
-            case 'T': return GRAB_UP;
-            case 'B': return GRAB_DOWN;
-            case 'L': return GRAB_LEFT;
-            case 'R': return GRAB_RIGHT;
-            case 'u': return BOMB_UP;
-            case 'c': return BOMB_DOWN;
-            case 'm': return BOMB_LEFT;
-            case 's': return BOMB_RIGHT;
-//          case '2': return CALL_ASSISTANT;
+Walk.prototype.hasMovementsForSecondPlayer = function()
+{
+    for (var i=0; i<this.buffer.length; i++)
+    {   if ( ((this.buffer[i]>>4) & 0xf) != Walk.MOVE_REST)
+        {   return true;
         }
     }
-    private static char move2char(int m)
-    {
-        return ".tblrTBLRucms".charAt(m);
+    return false;
+};
+    
+Walk.prototype.char2move = function(c)
+{
+    switch (c)
+    {   default:  return Walk.MOVE_REST;
+        case 116: return Walk.MOVE_UP;      // 't'
+        case 98:  return Walk.MOVE_DOWN;    // 'b'
+        case 108: return Walk.MOVE_LEFT;    // 'l'
+        case 114: return Walk.MOVE_RIGHT;   // 'r'
+        case 84:  return Walk.GRAB_UP;      // 'T'
+        case 66:  return Walk.GRAB_DOWN;    // 'B'
+        case 76:  return Walk.GRAB_LEFT;     // 'L'
+        case 82:  return Walk.GRAB_RIGHT;    // 'R'
+        case 117: return Walk.BOMB_UP;      // 'u'
+        case 99:  return Walk.BOMB_DOWN;     // 'c'
+        case 109: return Walk.BOMB_LEFT;    // 'm'
+        case 115: return Walk.BOMB_RIGHT;   // 's'
     }
 }
+
+Walk.prototype.move2str = function(m)
+{
+    return ".tblrTBLRucms".substring(m,m+1);
+};
+
