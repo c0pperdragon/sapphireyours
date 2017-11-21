@@ -3,7 +3,6 @@ var Logic = function()
     this.map = null;                     // fixed-size buffer to hold current map   
     this.counters = null;                // various counter values / flags that get modified in game
     this.transactions = null;            // the transaction buffer
-    this.movedflags = null;                // temporary info to prevent double-actions of pieces
     
     this.level = null;                   // level currently played
     this.walk = null;                    // the walk currently running
@@ -11,6 +10,8 @@ var Logic = function()
     this.numberofplayers = 0;
     
     this.visualrandomseed = 0;   // secondary random generator used for graphics appearances (not logic relevant) 
+    this.movedflags = null;                // temporary info to prevent double-actions of pieces
+    this.countersatbeginofturn = null;
 };
 
     
@@ -137,29 +138,33 @@ var CTR_KEYS_PLAYER2            = 13;
 var CTR_RANDOMSEED              = 14;
 var CTR_EMERALDSTOOMUCH         = 15;
     
-    // opcodes for the transaction stack
-var TRN_MASK        = 0xf0000000;
-var TRN_STARTOFTURN = 0x00000000;
-var TRN_COUNTER     = 0x10000000;
-var TRN_TRANSFORM   = 0x20000000;
-var TRN_CHANGESTATE = 0x30000000;
-var TRN_MOVEUP      = 0x40000000;
-var TRN_MOVEDOWN    = 0x50000000;
-var TRN_MOVELEFT    = 0x60000000;
-var TRN_MOVERIGHT   = 0x70000000;
-var TRN_MOVEUP2     = 0x80000000;
-var TRN_MOVEDOWN2   = 0x90000000;
-var TRN_MOVELEFT2   = 0xa0000000;
-var TRN_MOVERIGHT2  = 0xb0000000;
-var TRN_HIGHLIGHT   = 0xc0000000; 
+    // opcodes for the transaction stack 
+    // these are organized in a way to prefer values nearer to zero,
+    // so the runtime may do some optimizations here 
+var OPCODE_STARTOFTURN = 0;
+var OPCODE_MASK     = 0xf0000000 | 0;
+var TRN_HIGHLIGHT   = 0x00000000 | 0;  
+var TRN_COUNTER     = 0x10000000 | 0;
+var TRN_TRANSFORM   = 0x20000000 | 0;
+var TRN_CHANGESTATE = 0x30000000 | 0;
+var TRN_MOVEUP      = 0xf0000000 | 0;
+var TRN_MOVEDOWN    = 0xe0000000 | 0;
+var TRN_MOVELEFT    = 0xd0000000 | 0;
+var TRN_MOVERIGHT   = 0xc0000000 | 0;
+var TRN_MOVEUP2     = 0x40000000 | 0;
+var TRN_MOVEDOWN2   = 0x50000000 | 0;
+var TRN_MOVELEFT2   = 0x60000000 | 0;
+var TRN_MOVERIGHT2  = 0x70000000 | 0;
 
+var MAXTRANSACTIONS = 20000;
 
-Logic.prototype.$ = function(transactionhistory)
+Logic.prototype.$ = function()
 {
     this.map = new Array(MAPWIDTH*MAPHEIGHT);       
     this.counters = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-    this.transactions = new DiscardingStack().$(transactionhistory);
+    this.transactions = [];
     this.movedflags = new Array(MAPWIDTH*MAPHEIGHT);
+    this.countersatbeginofturn = new Array(this.counters.length);
     this.visualrandomseed = 23452;
     return this;
 };
@@ -196,7 +201,8 @@ Logic.prototype.gototurn = function(t)
                 // transactions were already discarded
                 while (this.turnsdone>t)
                 {   if (!this.rollback())
-                    {   // when rollback indeed failed, just reset
+                    {   console.log("rollback failed - need to restart from begin");
+                        // when rollback indeed failed, just reset
                         // and start from begin
                         this.reset();
                         while (this.turnsdone<t)
@@ -204,22 +210,6 @@ Logic.prototype.gototurn = function(t)
                         }
                         return;
                     }
-                }
-
-                // to fix up everything, the keep-counter in the 
-                // transaction buffer needs to be set correctly.
-                // if this fails, also do a complete reset 
-                for (var i = this.transactions.size()-1; i>=0; i--)
-                {   if (this.transactions.get(i)==TRN_STARTOFTURN)
-                    {   this.transactions.mayDiscard(i);
-                        return;
-                    }
-                }
-                // no STARTOFTURN - transaction could be found-
-                // must completely recompute everything
-                this.reset();
-                while (this.turnsdone<t)
-                {   this.computeturn();
                 }               
             }
         }
@@ -229,9 +219,8 @@ Logic.prototype.gototurn = function(t)
 Logic.prototype.reset = function()
 {
         this.turnsdone = 0;
-        this.numberofplayers = 1;
-        
-        this.transactions.clear();       
+        this.numberofplayers = 1;        
+        this.transactions.length = 0;
         
         for (var i=0; i<this.map.length; i++) this.map[i]=OUTSIDE;
         var dw = this.level.datawidth;
@@ -251,8 +240,8 @@ Logic.prototype.reset = function()
                     this.counters[CTR_MANPOSY1] = y;
                 }
                 else if (this.is(x,y,MAN2))
-                {   counters[CTR_MANPOSX2] = x;
-                    counters[CTR_MANPOSY2] = y; 
+                {   this.counters[CTR_MANPOSX2] = x;
+                    this.counters[CTR_MANPOSY2] = y; 
                     this.numberofplayers = 2;            
                 }
             }
@@ -269,13 +258,21 @@ Logic.prototype.reset = function()
     // first transaction which will set to a TRN_STARTOFTURN value.
 Logic.prototype.computeturn = function()
 {
-        // everything from previous step may be deleted if necessary
-        this.transactions.mayDiscard(this.transactions.size());
-        this.transactions.push (TRN_STARTOFTURN);
+        // transactions from previous steps may be deleted if too big
+        if (this.transactions.length>=MAXTRANSACTIONS)
+        {   this.transactions.length = 0
+        }
+        
+        // insert turn start marker
+        this.transactions.push (OPCODE_STARTOFTURN);
 
         // clear the array of the moved flags
         for (var i=0; i<this.movedflags.length; i++) 
         {   this.movedflags[i] = false;
+        }
+        // memorize the values of the counters at the begin of the turn 
+        for (var i=0; i<this.counters.length; i++) 
+        {   this.countersatbeginofturn[i] = this.counters[i];
         }
         
         // special handling if man1 moves towards man2:  man2 will move first to allow close proximity while walking
@@ -995,14 +992,14 @@ Logic.prototype.piecesmove = function()
                             this.changecounter(CTR_EMERALDSTOOMUCH, -2); 
                         }
                         else
-                        {   randomseed = nextrandomseed(randomseed);
+                        {   randomseed = this.nextrandomseed(randomseed);
                             switch (randomseed % 4)
                             {   case 0:  this.transform(x,y, YAMYAMLEFT);    break;
                                 case 1:  this.transform(x,y, YAMYAMRIGHT);   break;
                                 case 2:  this.transform(x,y, YAMYAMUP);  break;
                                 case 3:  this.transform(x,y, YAMYAMDOWN);    break;
                             }
-                            this.highlight(x,y, piece(x,y));                     
+                            this.highlight(x,y, this.piece(x,y));                     
                         }
                         break;                      
                     }
@@ -1012,8 +1009,8 @@ Logic.prototype.piecesmove = function()
                             var nearx = 1000;
                             var neary = 1000;
                             for (var i=0; i<this.getNumberOfPlayers(); i++)
-                            {   var px = this.getCounterAtStartOfTurn(CTR_MANPOSX1+i);       
-                                var py = this.getCounterAtStartOfTurn(CTR_MANPOSY1+i);
+                            {   var px = this.countersatbeginofturn[CTR_MANPOSX1+i];       
+                                var py = this.countersatbeginofturn[CTR_MANPOSY1+i];
                                 if (Math.abs(px-x)+Math.abs(py-y) < Math.abs(nearx-x)+Math.abs(neary-y))
                                 {   nearx = px;
                                     neary = py;
@@ -1624,15 +1621,15 @@ Logic.prototype.is_neardestruct_target = function (x, y)
     
 Logic.prototype.is_next_to_origin_position_of_player = function(x, y, playeridx)
 {
-        var px = this.getCounterAtStartOfTurn(CTR_MANPOSX1+playeridx);       
-        var py = this.getCounterAtStartOfTurn(CTR_MANPOSY1+playeridx);
+        var px = this.countersatbeginofturn[CTR_MANPOSX1+playeridx];       
+        var py = this.countersatbeginofturn[CTR_MANPOSY1+playeridx];
         return Math.abs(px-x) + Math.abs(py-y)==1;
 };
     
 Logic.prototype.is_near_origin_position_of_player = function(x, y, playeridx)
 {
-        var px = this.getCounterAtStartOfTurn(CTR_MANPOSX1+playeridx);       
-        var py = this.getCounterAtStartOfTurn(CTR_MANPOSY1+playeridx);
+        var px = this.countersatbeginofturn[CTR_MANPOSX1+playeridx];       
+        var py = this.countersatbeginofturn[CTR_MANPOSY1+playeridx];
         return Math.abs(px-x)<=1 && Math.abs(py-y)<=1;
 };
     
@@ -1819,18 +1816,18 @@ Logic.prototype.playermove = function (player)
                     }                               
                 }
                 return;
-            case Walk.MOVE_LEFT:  dx = -1; manpiece=(MAN1_LEFT-player); break;
-            case Walk.MOVE_RIGHT: dx = 1;  manpiece=(MAN1_RIGHT-player); break;
-            case Walk.MOVE_UP:    dy = -1; manpiece=(MAN1_UP-player); break;
-            case Walk.MOVE_DOWN:  dy = 1;  manpiece=(MAN1_DOWN-player); break;
-            case Walk.GRAB_LEFT:  dx = -1;  grab = true;  manpiece=(MAN1_LEFT-player); break;
-            case Walk.GRAB_RIGHT: dx = 1;  grab = true; manpiece=(MAN1_RIGHT-player); break;
-            case Walk.GRAB_UP:    dy = -1; grab = true;  manpiece=(MAN1_UP-player); break;
-            case Walk.GRAB_DOWN:  dy = 1;  grab = true;  manpiece=(MAN1_DOWN-player); break;
-            case Walk.BOMB_LEFT:  dx = -1; setbomb = true; manpiece=(MAN1_LEFT-player); break;
-            case Walk.BOMB_RIGHT: dx = 1; setbomb = true; manpiece=(MAN1_RIGHT-player); break;
-            case Walk.BOMB_UP:    dy = -1; setbomb = true; manpiece=(MAN1_UP-player); break;
-            case Walk.BOMB_DOWN:  dy = 1; setbomb = true; manpiece=(MAN1_DOWN-player); break;           
+            case Walk.MOVE_LEFT:  dx = -1; manpiece=(MAN1_LEFT+player); break;
+            case Walk.MOVE_RIGHT: dx = 1;  manpiece=(MAN1_RIGHT+player); break;
+            case Walk.MOVE_UP:    dy = -1; manpiece=(MAN1_UP+player); break;
+            case Walk.MOVE_DOWN:  dy = 1;  manpiece=(MAN1_DOWN+player); break;
+            case Walk.GRAB_LEFT:  dx = -1;  grab = true;  manpiece=(MAN1_LEFT+player); break;
+            case Walk.GRAB_RIGHT: dx = 1;  grab = true; manpiece=(MAN1_RIGHT+player); break;
+            case Walk.GRAB_UP:    dy = -1; grab = true;  manpiece=(MAN1_UP+player); break;
+            case Walk.GRAB_DOWN:  dy = 1;  grab = true;  manpiece=(MAN1_DOWN+player); break;
+            case Walk.BOMB_LEFT:  dx = -1; setbomb = true; manpiece=(MAN1_LEFT+player); break;
+            case Walk.BOMB_RIGHT: dx = 1; setbomb = true; manpiece=(MAN1_RIGHT+player); break;
+            case Walk.BOMB_UP:    dy = -1; setbomb = true; manpiece=(MAN1_UP+player); break;
+            case Walk.BOMB_DOWN:  dy = 1; setbomb = true; manpiece=(MAN1_DOWN+player); break;           
         }
         // disable bomb setting if not already in possession of a bomb (to prevent picking and placing a bomb in same turn)
         if (this.counters[CTR_TIMEBOMBS_PLAYER1+player]==0) 
@@ -1930,19 +1927,19 @@ Logic.prototype.playermove = function (player)
                     break;              
                 case GUN1:
                     if (this.is(x+2*dx,y+2*dy,AIR)  &&  (this.turnsdone%4!=1))    // must refuse pushing if laser is about to shoot now
-                    {   this.move (x+dx,y+dy, dx,dy, piece(x+dx,y+dy));                          
+                    {   this.move (x+dx,y+dy, dx,dy, this.piece(x+dx,y+dy));                          
                     }
                     manpiece += (MAN1_PUSHLEFT - MAN1_LEFT);  // need to show different image when trying to push 
                     break;              
                 case GUN2:
                     if (this.is(x+2*dx,y+2*dy,AIR)  &&  (this.turnsdone%4!=2))    // must refuse pushing if laser is about to shoot now
-                    {   this.move (x+dx,y+dy, dx,dy, piece(x+dx,y+dy));                          
+                    {   this.move (x+dx,y+dy, dx,dy, this.piece(x+dx,y+dy));                          
                     }
                     manpiece += (MAN1_PUSHLEFT - MAN1_LEFT);  // need to show different image when trying to push 
                     break;              
                 case GUN3:
-                    if (is(x+2*dx,y+2*dy,AIR)  &&  (this.turnsdone%4!=3))    // must refuse pushing if laser is about to shoot now
-                    {   this.move (x+dx,y+dy, dx,dy, piece(x+dx,y+dy));                          
+                    if (this.is(x+2*dx,y+2*dy,AIR)  &&  (this.turnsdone%4!=3))    // must refuse pushing if laser is about to shoot now
+                    {   this.move (x+dx,y+dy, dx,dy, this.piece(x+dx,y+dy));                          
                     }
                     manpiece += (MAN1_PUSHLEFT - MAN1_LEFT);  // need to show different image when trying to push 
                     break;              
@@ -2108,7 +2105,7 @@ Logic.prototype.may_roll_to_right = function(x,y,isconvertible)
         {   return false;
         }
         var pr = this.piece(x+1,y);
-        if (pr==AIR || pr==ACID || (isconvertible && pr==CONVERTER && is(x+1,y+1,AIR)))
+        if (pr==AIR || pr==ACID || (isconvertible && pr==CONVERTER && this.is(x+1,y+1,AIR)))
         {   
             if (p==ELEVATOR_TORIGHT)
             {   this.highlight(x,y, ELEVATOR_TORIGHT);
@@ -2272,12 +2269,12 @@ Logic.prototype.have_matching_key = function(player, otherpiece)
 
 Logic.prototype.man1_moves_toward_man2 = function()
 {
-        var x1 = counters[CTR_MANPOSX1];
-        var y1 = counters[CTR_MANPOSY1];
-        var x2 = counters[CTR_MANPOSX2];
-        var y2 = counters[CTR_MANPOSY2];
+        var x1 = this.counters[CTR_MANPOSX1];
+        var y1 = this.counters[CTR_MANPOSY1];
+        var x2 = this.counters[CTR_MANPOSX2];
+        var y2 = this.counters[CTR_MANPOSY2];
         
-        switch (this.walk.getMovement(0, turnsdone))
+        switch (this.walk.getMovement(0, this.turnsdone))
         {   case Walk.MOVE_LEFT: 
             case Walk.BOMB_LEFT:  
                 return x2<x1;
@@ -2304,18 +2301,19 @@ Logic.prototype.man1_moves_toward_man2 = function()
     // the position of the keep-location will be undefined in any case.
 Logic.prototype.rollback = function()
 {
-        while (this.transactions.size()>0)
+        while (this.transactions.length>0)
         {
             var t = this.transactions.pop();
-            switch (t & TRN_MASK)
-            {   case TRN_STARTOFTURN:
-                {   this.turnsdone--;
-                    return true;
-                }
-                case TRN_COUNTER:
-                {   var index = (t>>24) & 0xf;
-                    var increment = t & 0xffffff;
-                    if (increment >= 0x800000) increment-=0x1000000;
+            if (t===OPCODE_STARTOFTURN) {
+                this.turnsdone--;
+                return true;
+            }
+            
+            switch (t & OPCODE_MASK)
+            {   case TRN_COUNTER:
+                {   var index = (t>>20) & 0xff;
+                    var increment = t & 0xfffff;
+                    if (increment >= 0x80000) increment-=0x100000;
                     this.counters[index] -= increment;
                     break;
                 }
@@ -2353,7 +2351,7 @@ Logic.prototype.rollback = function()
                 }
                 case TRN_MOVERIGHT:
                 {   var x = (t>>22) & 0x03f;
-                    vary = (t>>16) & 0x03f;
+                    var y = (t>>16) & 0x03f;
                     var oldpiece = (t>>8) & 0xff;
                     this.map[x+y*MAPWIDTH] = oldpiece;
                     this.map[x+y*MAPWIDTH+1] = AIR;
@@ -2395,20 +2393,20 @@ Logic.prototype.rollback = function()
                 {   break;      // nothing to do. highlights do not change state
                 }
                 default:
-                {   throw Error("Transaction can not be undone");
+                {   throw Error("Transaction can not be undone: "+t);
                 }
             }
         }
-        return false;
+        return false;  // did not encounter the turn start marker - rollback failed
 };
     
     
     //  ------ modifications of the map that cause one or more entries in the transaction table -----
     
-Logic.prototype.changecounter = function(index, increment)   // index<=16, only increment by a 24-bit value
+Logic.prototype.changecounter = function(index, increment)   // index<=255, only increment by a 20-bit value
 {
         this.counters[index] += increment;
-        this.transactions.push (TRN_COUNTER | (index<<24) | (increment&0xffffff));
+        this.transactions.push (TRN_COUNTER | (index<<20) | (increment&0xfffff));
 };
 
 Logic.prototype.transform = function(x, y, newpiece)
@@ -2492,29 +2490,7 @@ Logic.prototype.move = function(x, y, dx, dy, newpiece)
             default:
                 throw new Error("Move direction out of range: "+dx+","+dy);
         }
-};
-    
-    // -- debug methods ---
-Logic.prototype.printDump = function()
-{
-        // write counters
-        console.log(this.turnsdone, "turns. ",this.counters);
-
-        // write information about transaction buffer
-        console.log(this.transactions.size(),"transactions(",this.transactions.keepingSize(),"kept)");
-        
-        // write content of the map
-        for (var y=0; y<MAPHEIGHT; y++)
-        {   var l = "";
-            for (var x=0; x<MAPWIDTH; x++)
-            {   var c = map[x+y*MAPWIDTH];
-                if (c!=OUTSIDE) {
-                    l = l + String.fromCharCode(c);
-                }
-            }
-            if (l.length>0) console.log(l);
-        }
-};
+};    
     
     // --------- query methods to extract public game info ------
 Logic.prototype.isKilled = function()
@@ -2556,23 +2532,7 @@ Logic.prototype.getCounter = function(ctr)
 {   
         return this.counters[ctr];
 };
-    
-Logic.prototype.getCounterAtStartOfTurn = function(ctr)
-{
-        var valuenow = this.counters[ctr];   
-        var valuebefore = valuenow;            
-        for (var idx=this.getAnimationBufferSize()-1; idx>=0; idx--)
-        {   var t = this.getAnimation(idx);
-            if ( (t&TRN_MASK) == TRN_COUNTER && ((t>>24)&0xf)==ctr)
-            {   var increment = t & 0xffffff;
-                if (increment >= 0x800000) increment-=0x1000000;
-                valuebefore -= increment;
-            }
-        }
-        console.log("counter:",ctr,"before:",valuebefore,"now:",valuenow);
-        return valuebefore;
-};
-    
+        
 Logic.prototype.getPopulatedWidth = function()
 {
     return this.level.datawidth;
@@ -2619,15 +2579,16 @@ Logic.prototype.getPlayerPositionY = function(idx)
 //  {   
 //      return (pos / MAPWIDTH)-1;
 //  }
-Logic.prototype.getAnimationBufferSize = function()
-{
-    return this.transactions.keepingSize();
-};
 
-Logic.prototype.getAnimation = function(idx)
-{
-    return this.transactions.get(this.transactions.size()-this.transactions.keepingSize()+idx);
-};
+//Logic.prototype.getAnimationBufferSize = function()
+//{
+//    return this.transactions.keepingSize();
+//};
+//
+//Logic.prototype.getAnimation = function(idx)
+//{
+//    return this.transactions.get(this.transactions.size()-this.transactions.keepingSize()+idx);
+//};
     
 Logic.prototype.getNumberOfEmeraldsStillNeeded = function()
 {   return this.level.loot - this.counters[CTR_EMERALDSCOLLECTED];
@@ -2654,11 +2615,18 @@ Logic.prototype.getCollectedTimeBombs = function(player)
 };
     
 // ----------- for debug: print internal state of logic -----
-    
-Logic.prototype.printState = function()
+
+// create array of string, holding everything relevant
+Logic.prototype.extractState = function()     
 {    
     var level = this.level;
-    console.log(this.turnsdone,this.numberofplayers,this.level.getLoot(),this.counters);
+    var s = [];
+    s.push("TURN:" + this.turnsdone  + " "
+          +"PLAYERS:" + this.numberofplayers + " "
+          +"LOOT:" + this.level.getLoot() + " "
+          +"SOLVED:" + this.isSolved() + " "
+          +"COUNTERS:" + (this.counters.join(","))
+          );    
     for (var y=0; y<level.getHeight(); y++)
     {   var line = [];
         for (var x=0; x<level.getWidth(); x++) {
@@ -2666,6 +2634,20 @@ Logic.prototype.printState = function()
             if (piece>=32 && piece<=127) line.push(String.fromCharCode(piece));
             else                         line.push("~");
         }
-        console.log(line.join(""));
+        s.push(line.join(""));
     }
+    return s;
+};
+
+Logic.prototype.printState = function()     
+{
+    var s = this.extractState();
+    for (var i=0; i<s.length; i++) 
+    {   console.log(s[i]);
+    }
+};
+
+Logic.prototype.toString = function()
+{
+    return this.extractState().join("\n");
 };

@@ -26,12 +26,12 @@ Walk.prototype.$ = function(json)
     this.initialize(Number.isInteger(json.randomseed) ? json.randomseed : 0);
     
     var a = json.moves;
-    if (a && !Array.isArray(a)) a = [a];
+    if (!Array.isArray(a)) a = [a];
     
     if (json.players === 2)     // having 2 moves for each turn
     {   for (var i=0; a && i<a.length; i++)
         {   var s = a[i];
-            for (var j=0; s && j+1<s.length; j+=2)
+            for (var j=0; s && s.constructor==String && j+1<s.length; j+=2)
             {   this.recordMovements(this.char2move(s.charCodeAt(j)), this.char2move(s.charCodeAt(j+1)));
             }
         }
@@ -39,7 +39,7 @@ Walk.prototype.$ = function(json)
     else                            // only one move for each turn
     {   for (var i=0; a && i<a.length; i++)
         {   var s = a[i];
-            for (var j=0; s && j<s.length; j++)
+            for (var j=0; s && s.constructor==String && j<s.length; j++)
             {   this.recordMovement(this.char2move(s.charCodeAt(j)));
             }
         }

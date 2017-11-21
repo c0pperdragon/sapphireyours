@@ -15,39 +15,46 @@
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                var logic = new Logic().$();
+               var logic = new Logic().$();
                 var data = JSON.parse(this.responseText);
                 var lp = new LevelPack().$("tutorial1", data);
                 for (var i=0; i<lp.numberOfLevels(); i++)
                 {   
                     var l = lp.getLevel(i);
-                    var singlestep = false; // (l.getTitle()=="Green Saloon");
-                    for (var j=0; j<l.numberOfDemos(); j++) {
+                    var singlestep = false; 
+                    for (var j=0; j<l.numberOfDemos(); j++) {                        
                         var d = l.getDemo(j);
                         logic.attach(l, d);
+                        var allsteps = [ logic.toString() ];    // create full history of all steps
                         for (var turn=0; turn<d.getTurns(); turn++) 
                         {   if (singlestep) 
                             {   console.log("MOVES:",d.getMovement(0,turn),d.getMovement(1,turn));
                             }
                             logic.gototurn(turn+1);
+                            allsteps.push(logic.toString());
                             if (singlestep) 
                             {   logic.printState();
                             }
                         }
                         if (logic.isSolved()) 
-                        {   console.log("Successfull: "+l.getTitle(),j);
+                        {   
+                            // test rewinding the logic in single steps
+                            for (var turn=d.getTurns(); turn>=0; turn--) 
+                            {   logic.gototurn(turn);
+                                if (! (allsteps[turn] === logic.toString()) ) 
+                                {   console.log("Mismatching turn history and logic after undo: "+l.getTitle(),j);
+                                    console.log(allsteps[turn]);
+                                    console.log(logic.toString());
+                                    return;
+                                }
+                            }
+                            
+                            console.log("Successfull: "+l.getTitle(),j);
                         }
                         else
                         {
                             console.log("Unsuccessfull: "+l.getTitle(),j);
-//                            console.log("TURN:",logic.getTurnsDone(),
-//                                        "LOOT:",l.getLoot(),
-//                                        "NEED:",logic.getNumberOfEmeraldsStillNeeded(),
-//                                        "SOLVED:",logic.isSolved(),
-//                                        "X:",logic.getPlayerPositionX(0),
-//                                        "Y:",logic.getPlayerPositionY(0),
-//                                        logic.counters,
-//                                        );    
+
                             logic.reset();
                             for (var turn=0; turn<d.getTurns(); turn++) 
                             {   console.log("MOVES:",d.getMovement(0,turn),d.getMovement(1,turn));
@@ -64,24 +71,25 @@
         xmlhttp.send();
     }
     function testlogic() 
-    {   
-        testlevelpack("tutorial1");           
+    {       
+        testlevelpack("advanced1");        
+        testlevelpack("advanced2");
+        testlevelpack("advanced3");
+        testlevelpack("extended1");
+        testlevelpack("extended2");
+        testlevelpack("extended3");
+        testlevelpack("extended4");
+        testlevelpack("extended5");
+        testlevelpack("extended6");
+        testlevelpack("extended7");        
+        testlevelpack("legacy");
+        testlevelpack("mission");
+        testlevelpack("tutorial1");
         testlevelpack("tutorial2");
         testlevelpack("tutorial3");      
         testlevelpack("tutorial4");
-//        testlevelpack("tutorial5");
-//        testlevelpack("advanced1");
-//        testlevelpack("advanced2");
-//        testlevelpack("advanced3");
-//        testlevelpack("extended1");
-//        testlevelpack("extended2");
-//        testlevelpack("extended3");
-//        testlevelpack("extended4");
-//        testlevelpack("extended5");
-//        testlevelpack("extended6");
-//        testlevelpack("extended7");        
-//        testlevelpack("mission");
-//        testlevelpack("twoplayer");        
+        testlevelpack("tutorial5");
+        testlevelpack("twoplayer");        
     }
     </script>    
 </head>

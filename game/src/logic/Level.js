@@ -90,9 +90,9 @@ var Level = function()
 
 Level.prototype.$ = function(json) 
 {
-    this.title = json.title ? json.title : "";
-    this.author = json.author ? json.author : "";
-    this.hint = json.hint ? json.hint : "";
+    this.title = json.title && json.title.constructor == String ? json.title : "";
+    this.author = json.author && json.author.constructor == String ? json.author : "";
+    this.hint = json.hint && json.author.constructor == String ? json.hint : "";
     this.difficulty = Number.isInteger(json.difficulty) ? Number(json.difficulty) : 1;
     this.category = Number.isInteger(json.category) ? Number(json.category) : 0;    
     this.loot = Number.isInteger(json.loot) ? Number(json.loot) : 0;    
@@ -100,7 +100,8 @@ Level.prototype.$ = function(json)
     
     this.demos = [];
     for (var i=0; Array.isArray(json.demos) && i<json.demos.length; i++) 
-    {   this.demos.push(new Walk().$(json.demos[i]));
+    {   var dj = json.demos[i];
+        if (dj) this.demos.push(new Walk().$(dj));
     }
     
     if (!Array.isArray(json.map))
@@ -119,7 +120,7 @@ Level.prototype.$ = function(json)
         for (var y=0; y<this.dataheight; y++)
         {   var l = json.map[y];
             for (var x=0; x<this.datawidth; x++)
-            {   var p = ((l && l.length>x) ? l.charCodeAt(x) : AIR);
+            {   var p = ((l && l.constructor==String && l.length>x) ? l.charCodeAt(x) : AIR);
                 if (p==MAN1) 
                 {   if (foundp1) 
                     {   p=AIR;
@@ -301,7 +302,7 @@ Level.prototype.determineLongestString = function(a)
     var max=1;
     for (var i=0; i<a.length; i++)
     {   var l = a[i];
-        if (l && l.length>max)
+        if (l && l.constructor==String && l.length>max)
         {   max = l.length;
         }
     }
