@@ -41,8 +41,8 @@ Game.prototype.$ = function()
             alpha: false,    
         }   
     );
-    this.screenwidth = 500;
-    this.screenheight = 500;		
+    this.screenwidth = 1000;
+    this.screenheight = 660;
     this.screens = [];
     this.levelpacks = [];
         
@@ -83,51 +83,42 @@ Game.prototype.$ = function()
     // load sounds directly at startup (and do not release them)
     this.soundPlayer = null; // new LevelSoundPlayer(context, asyncHandler);
 
-    // load all levels at startup
-    this.loadLevels();
-
+    // show a loading screen at start
+    this.addScreen(new LoadingScreen().$(this));
+    
     // create the main menu screen
 //    addScreen (new MainMenuScreen().$(this));
-    this.addScreen (new TestScreen().$(this));
+//    this.addScreen (new TestScreen().$(this));
                 
 //    // if necessary load some stored state and continue
 //    loadGameState();
 
     // set up game loop
     var that = this;
+    
     window.requestAnimationFrame (ftick);
     function ftick() 
     {   window.requestAnimationFrame(ftick);
         that.tick();
     };   
     
+    // install input handlers
+    document.addEventListener('keydown', function(event)
+    {   that.onKeyDown(KeyEvent.toNumericCode(event.code)); 
+    });
+    document.addEventListener('keyup', function(event)
+    {   that.onKeyUp(KeyEvent.toNumericCode(event.code)); 
+    });
+
+    
+    // cause further loading to progress
+    this.loadLevels(function() 
+    {   that.addScreen(new MainMenuScreen().$(that));        
+    });
+    
     return this;
 };
     
-Game.prototype.loadLevels = function()
-{
-    levelpacks = [];
-/*    
-    	readUserLevelPacks();    	   
-		readIntegratedLevelPack("Lesson 1: Mining", "tutorial1", false);
-		readIntegratedLevelPack("Lesson 2: Explosives", "tutorial2", false);
-		readIntegratedLevelPack("Lesson 3: Maze", "tutorial3", false);
-		readIntegratedLevelPack("Lesson 4: Enemies", "tutorial4", false);
-		readIntegratedLevelPack("Lesson 5: Machinery", "tutorial5", false);
-	    readIntegratedLevelPack("Teamwork", "twoplayer", true);
-		readIntegratedLevelPack("Advanced 1", "advanced1", true);
-		readIntegratedLevelPack("Advanced 2", "advanced2", true);
-		readIntegratedLevelPack("Advanced 3", "advanced3", true);
-	    readIntegratedLevelPack("Extended 1", "extended1", true);
-	    readIntegratedLevelPack("Extended 2", "extended2", true);
-	    readIntegratedLevelPack("Extended 3", "extended3", true);
-	    readIntegratedLevelPack("Extended 4", "extended4", true);
-	    readIntegratedLevelPack("Extended 5", "extended5", true);
-	    readIntegratedLevelPack("Extended 6", "extended6", true);
-	    readIntegratedLevelPack("Extended 7", "extended7", true);
-		readIntegratedLevelPack("Mission Possible", "mission", false);
-*/        
-};
     
 /*    
     // persistent state handling
@@ -199,13 +190,14 @@ Game.prototype.loadLevels = function()
 			edit.apply();
 		}
 	}
-	
-	public int getLevelSolvedGrade(Level l)
-	{
-		String key = "state_"+l.getTitle();
-		return preferences.getInt(key,DEFAULTSOLVEDGRADE);
-	}
+*/	
+
+Game.prototype.getLevelSolvedGrade = function(level)
+{
+    return Game.DEFAULTSOLVEDGRADE;
+};
 		
+/*        
 	public void setMusicActive(boolean active)
 	{
 		SharedPreferences.Editor edit = preferences.edit();
@@ -217,24 +209,50 @@ Game.prototype.loadLevels = function()
 	{
 		return preferences.getInt("music",1) != 0;
 	}		
-		
-	public void readIntegratedLevelPack(String name, String filename, boolean sort)
-	{
-		try 
-		{	InputStream is = context.getAssets().open("levels/"+filename+".sylev");
-			try 
-			{	levelpacks.addElement(new LevelPack(name, is, sort, null));
-			} 
-			catch (Exception e)
-			{	is.close();
-				throw e;
-			}
-			is.close();				
-        } catch (Exception e)
-    	{	e.printStackTrace();    		
-    	}	
-	}		
-
+*/		
+	
+Game.prototype.loadLevels = function(callback)
+{
+    this.levelpacks = [];
+    var pending=0;
+    
+//    	readUserLevelPacks();    	   
+    pending++; this.readIntegratedLevelPack("Lesson 1: Mining", "tutorial1", false, done);
+    pending++; this.readIntegratedLevelPack("Lesson 2: Explosives", "tutorial2", false, done);
+    pending++; this.readIntegratedLevelPack("Lesson 3: Maze", "tutorial3", false, done);
+    pending++; this.readIntegratedLevelPack("Lesson 4: Enemies", "tutorial4", false, done);
+    pending++; this.readIntegratedLevelPack("Lesson 5: Machinery", "tutorial5", false, done);
+    pending++; this.readIntegratedLevelPack("Teamwork", "twoplayer", true, done);
+    pending++; this.readIntegratedLevelPack("Advanced 1", "advanced1", true, done);
+    pending++; this.readIntegratedLevelPack("Advanced 2", "advanced2", true, done);
+    pending++; this.readIntegratedLevelPack("Advanced 3", "advanced3", true, done);
+    pending++; this.readIntegratedLevelPack("Extended 1", "extended1", true, done); 
+    pending++; this.readIntegratedLevelPack("Extended 2", "extended2", true, done);
+    pending++; this.readIntegratedLevelPack("Extended 3", "extended3", true, done);
+    pending++; this.readIntegratedLevelPack("Extended 4", "extended4", true, done);
+    pending++; this.readIntegratedLevelPack("Extended 5", "extended5", true, done);
+    pending++; this.readIntegratedLevelPack("Extended 6", "extended6", true, done);
+    pending++; this.readIntegratedLevelPack("Extended 7", "extended7", true, done); 
+    pending++; this.readIntegratedLevelPack("Mission Possible", "mission", false, done);
+  
+    function done()
+    {   pending--;
+        if (pending===0) callback();
+    }
+};
+    
+Game.prototype.readIntegratedLevelPack = function(name, filename, sort, callback)
+{
+    var levelpacks = this.levelpacks;
+    Game.getJSON("levels/"+filename+".sylev", function(data) 
+    {   if (data) 
+        {   levelpacks.push(new LevelPack().$(name, data, sort));
+        }
+        callback();
+    });
+};
+    
+/*
 	public void readUserLevelPacks()
 	{		
 		try 
@@ -330,7 +348,6 @@ Game.prototype.tick = function()
     if (this.needRedraw) 
     {   if (this.allRenderersLoaded()) 
         {   this.needRedraw = false;
-//            console.log("drawing..");
             this.draw();
         }
     }
@@ -373,28 +390,35 @@ Game.prototype.draw = function()
 // -------------- handling of opening/closing screens and screens notifying changes -------
     
 Game.prototype.setDirty = function()    
-{    this.needRedraw = true;
+{   this.needRedraw = true;
 };
+    
     
 Game.prototype.addScreen = function(screen)
 {   this.screens.push(screen);
-    this.needRedraw = true;
+    this.setDirty();
 };
     
 Game.prototype.removeScreen = function()
 {
-    this.needRedraw = true;
+    this.setDirty();
     if (this.screens.length<=1)
     {   //	clearGameState();   // when leaving game on purpose, do not keep stored game state
         this.screens = [];
         (this.exitcall)();		// after closing last remaining screen, try to exit program
     }
     else
-    {   var olds = screens.pop();
-        var news = screens[screens.length-1];
+    {   var olds = this.screens.pop();
+        var news = this.screens[this.screens.length-1];
         olds.discard();    		
         news.reactivate();
     }
+};
+
+Game.prototype.replaceTopScreen = function(screen)
+{
+    this.screens[this.screens.length-1] = screen;
+    this.setDirty();
 };
     
 Game.prototype.getTopScreen = function()
@@ -448,8 +472,9 @@ Game.prototype.allRenderersLoaded = function()
         && this.tileRenderer.isLoaded();
 }
  
- /*
- 	// ---- handling of events in the GL thread 
+
+ 	// ---- handling of user input events 
+/*    
     public void handleTouchEvent(final MotionEvent event) 
     {
     	usingKeyboardInput = false;
@@ -458,29 +483,27 @@ Game.prototype.allRenderersLoaded = function()
         {	motionEventSimplifier.handleTouchEvent(event, screens.lastElement());
         }
     }	
-
-    public void handleKeyEvent(final KeyEvent event) 
-    {
-    	int action = event.getAction();
-    	int code = event.getKeyCode();
-    	
-    	// check if there was really some keyboard input (not virtual key actions)
-    	if (code!=KeyEvent.KEYCODE_BACK && code!=KeyEvent.KEYCODE_MENU) 
-    	{	usingKeyboardInput = true;
-    	}
-    	
-		if (action==KeyEvent.ACTION_DOWN && screens.size()>0 && (code==KeyEvent.KEYCODE_BACK || code==0x0000006f))
-       	{	screens.lastElement().handleBackNavigation();
-       	}        			
-       	else if (screens.size()>0)
-       	{	
-			screens.lastElement().handleKeyEvent(event);
+*/
+Game.prototype.onKeyDown = function(keycode) 
+{    
+        this.usingKeyboardInput = true;
+        
+        if (this.screens.length>0 && (keycode==KeyEvent.KEYCODE_BACK))
+        {   this.getTopScreen().handleBackNavigation();
         }
-    }	
- 	
- 		
- 	
- 	
+        else if (this.screens.length>0)
+        {
+            this.getTopScreen().onKeyDown(keycode);
+        }
+};
+
+Game.prototype.onKeyUp = function(keycode) {    
+        if (this.screens.length>0)
+        {
+            this.getTopScreen().onKeyUp(keycode);
+        }
+};
+/* 	
     // ---- they are called in the android UI thread - must pass through to GL thread ---
     @Override
     public boolean onTouchEvent(final MotionEvent event) {
@@ -686,10 +709,16 @@ Game.argb = function(r, g, b)
 Game.getJSON = function(url, callback) 
 {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            var myObj = JSON.parse(this.responseText);
-            callback(myObj);
+    xmlhttp.overrideMimeType("text/plain");
+    xmlhttp.onreadystatechange = function() 
+    {   if (this.readyState == 4)
+        {   if (this.status == 200) 
+            {   var myObj = JSON.parse(this.responseText);
+                callback(myObj);
+            }
+            else
+            {   callback(null);
+            }
         }
     };
     xmlhttp.open("GET", url, true);

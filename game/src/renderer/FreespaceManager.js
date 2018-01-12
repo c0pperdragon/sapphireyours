@@ -68,7 +68,6 @@ FreespaceManager.prototype.allocateArea = function (w, h)
 //          System.out.println(" -> "+area2string(bestarea));
         }
                 
-        console.log("Allocated area:",allocated);
         return allocated;
 };
 /*        

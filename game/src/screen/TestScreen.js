@@ -5,7 +5,6 @@ var TestScreen = function()
     this.t = 0;
 };
 TestScreen.prototype = Object.create(Screen.prototype);
-TestScreen.prototype.constructor = TestScreen;
 
 TestScreen.prototype.$ = function(game)
 {   Screen.prototype.$.call(this,game);

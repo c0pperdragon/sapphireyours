@@ -6,11 +6,11 @@ var Screen = function()
 };
 Screen.prototype.constructor = Screen;
 
-Screen.prototype.$ = function(game)
+Screen.prototype.$ = function(game,width,height)
 {
     this.game = game;
-    this.screenwidth = 0;
-    this.screenheight = 0;
+    this.screenwidth = game.screenwidth;
+    this.screenheight = game.screenheight;
     return this;
 };
 
@@ -18,10 +18,10 @@ Screen.prototype.discard = function()
 {
 };
 
-Screen.prototype.resize = function(width, height)
+Screen.prototype.resize = function()
 {
-    this.screenwidth = width;
-    this.screenheight = height;
+    this.screenwidth = this.game.screenwidth;
+    this.screenheight = this.game.screenheight;
 };
 
 Screen.prototype.setDirty = function()
@@ -46,12 +46,16 @@ Screen.prototype.isOverlay = function()
 {   return false;
 };
 
-// ---- key event handlers called in GL thread ----
-Screen.prototype.handleKeyEvent = function(event)
+// ---- default key event handlers  ----
+Screen.prototype.onKeyDown = function(keycode)
 {
 };
 
-Screen.prototype.handleBackNavigation = function()
+Screen.prototype.onKeyUp = function(keycode)
+{
+};
+
+Screen.prototype.onBackNavigation = function()
 {
     this.game.removeScreen();
 };

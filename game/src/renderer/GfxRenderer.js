@@ -103,9 +103,15 @@ GfxRenderer.prototype.$ = function(gl)
     // allocate memory for texture atlas
     this.txTexture = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, this.txTexture);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, GfxRenderer.ATLASWIDTH,GfxRenderer.ATLASHEIGHT, 
-        0, gl.RGBA, gl.UNSIGNED_BYTE, null);
-
+    gl.texImage2D(gl.TEXTURE_2D, 
+        0,                  // level 
+        gl.RGBA,            // internal format
+        GfxRenderer.ATLASWIDTH,GfxRenderer.ATLASHEIGHT, 
+        0,                  // border
+        gl.RGBA,            // format
+        gl.UNSIGNED_BYTE,   // texel data type
+        null);
+        
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR); // NEAREST);                  
 
@@ -147,7 +153,7 @@ GfxRenderer.prototype.loadGfx = function(freespace, name, pos_and_dim_storage)
             gl.bindTexture(gl.TEXTURE_2D, that.txTexture);
             gl.texSubImage2D(gl.TEXTURE_2D, 0, pos_and_dim[0],pos_and_dim[1], gl.RGBA, gl.UNSIGNED_BYTE, image);
             
-            console.log("done loading",name,":",pos_and_dim);
+//            console.log("done loading",name,":",pos_and_dim);
             pos_and_dim_storage.length = 0;
             pos_and_dim_storage.push.apply(pos_and_dim_storage, pos_and_dim);
         }

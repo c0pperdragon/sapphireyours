@@ -24,7 +24,6 @@ var VectorRenderer = function()
     this.matrix = null; 
 };
 VectorRenderer.prototype = Object.create(Renderer.prototype);
-VectorRenderer.prototype.constructor = VectorRenderer;
 
 // static fields
 VectorRenderer.MAXCORNERS = 10000;  // number of vertices in the buffer

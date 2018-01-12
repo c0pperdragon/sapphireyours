@@ -5,6 +5,11 @@
     <meta charset="utf-8">	
 <!--    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"></meta> -->
 
+    <script type="text/javascript" src="src/logic/DiscardingStack.js"></script>    
+    <script type="text/javascript" src="src/logic/Level.js"></script>
+    <script type="text/javascript" src="src/logic/LevelPack.js"></script>
+    <script type="text/javascript" src="src/logic/Logic.js"></script>
+    <script type="text/javascript" src="src/logic/Walk.js"></script>
     <script type="text/javascript" src="src/renderer/FreespaceManager.js"></script>
     <script type="text/javascript" src="src/renderer/Matrix.js"></script>
     <script type="text/javascript" src="src/renderer/Renderer.js"></script>
@@ -12,12 +17,16 @@
     <script type="text/javascript" src="src/renderer/TextRenderer.js"></script>
     <script type="text/javascript" src="src/renderer/GfxRenderer.js"></script>
     <script type="text/javascript" src="src/renderer/TileRenderer.js"></script>
-    <script type="text/javascript" src="src/screen/Screen.js"></script>
-    <script type="text/javascript" src="src/screen/TestScreen.js"></script>
     <script type="text/javascript" src="src/game/Game.js"></script>
+    <script type="text/javascript" src="src/game/KeyEvent.js"></script>
+    <script type="text/javascript" src="src/screen/Screen.js"></script>
+    <script type="text/javascript" src="src/screen/LoadingScreen.js"></script>
+    <script type="text/javascript" src="src/screen/TestScreen.js"></script>
+    <script type="text/javascript" src="src/screen/MainMenuScreen.js"></script>
 </head>
 
-<body onLoad="new Game().$();">
-<canvas id="canvas" width="500" height="500" style="width:500px;height=500px;"></canvas>
+<body style="height:100%; overflow: hidden; margin:0; margin:0; padding:0; border:0; background-color:black"
+      onLoad="new Game().$();" >
+<canvas id="canvas" width="1000" height="660" style="width:1000px;height=660px;border=0px"></canvas>
 </body>
 </html>

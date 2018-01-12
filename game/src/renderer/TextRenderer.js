@@ -74,7 +74,7 @@ TextRenderer.fragmentShaderCode =
             "}                                                                        "+
             "";
     
-TextRenderer.MAXGLYPHS = 2000;  // number of glyphs that can be rendered in one call
+TextRenderer.MAXGLYPHS = 5000;  // number of glyphs that can be rendered in one call
 
 
 TextRenderer.prototype.$ = function(gl)
@@ -93,8 +93,7 @@ TextRenderer.prototype.$ = function(gl)
         this.aDistanceThreshold = gl.getAttribLocation(this.program, "aDistanceThreshold");
         
         // create index buffer
-        this.iboIndex = gl.createBuffer();
-        var sb = new Uint16Array(6*4*TextRenderer.MAXGLYPHS);
+        var sb = new Uint16Array(6*TextRenderer.MAXGLYPHS);
         for (var i=0; i<TextRenderer.MAXGLYPHS; i++)
         {   sb[6*i+0] = 4*i+0; 
             sb[6*i+1] = 4*i+1; 
@@ -103,6 +102,7 @@ TextRenderer.prototype.$ = function(gl)
             sb[6*i+4] = 4*i+3; 
             sb[6*i+5] = 4*i+2; 
         }
+        this.iboIndex = gl.createBuffer();
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.iboIndex);
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, sb, gl.STATIC_DRAW);
         sb = null;
@@ -183,7 +183,7 @@ TextRenderer.prototype.flush = function()
 {
         var gl = this.gl;
         
-        var numglyphs = this.bufferCorner.length/4;
+        var numglyphs = this.bufferDistanceThreshold.length/4;
         if (numglyphs<=0)
         {   return;
         }
@@ -237,7 +237,7 @@ TextRenderer.prototype.flush = function()
 
         // Draw all quads in one big call
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.iboIndex);
-        gl.drawElements(gl.TRIANGLES,numglyphs*6, gl.UNSIGNED_SHORT, 0);
+        gl.drawElements(gl.TRIANGLES,6*numglyphs, gl.UNSIGNED_SHORT, 0);
 
         // disable arrays
         gl.disableVertexAttribArray(this.aCorner);
@@ -336,7 +336,8 @@ TextRenderer.prototype.wordWrap = function(string, height, pagewidth)
 };
     
 TextRenderer.prototype.addString = function(string, x, y, height, rightaligned, argb, weight)
-{       var x2 = x;
+{       
+        var x2 = x;
         if (rightaligned)
         {   for (var i=string.length-1; i>=0; i--)
             {   x2 -= this.addGlyph(string.charCodeAt(i), x2,y,height, rightaligned, argb, weight);  
@@ -415,46 +416,10 @@ TextRenderer.prototype.addGlyph = function(code, x, y, height, rightaligned, arg
             var c2 = (argb>>0)  & 0xff;    
             var c3 = (argb>>24) & 0xff;   
                         
-            // top-left corner
-            this.bufferCorner.push(x1);
-            this.bufferCorner.push(y1);    
-            this.bufferTextureCoordinates.push(tx1);   
-            this.bufferTextureCoordinates.push(ty1);
-            this.bufferColor.push(c0);    
-            this.bufferColor.push(c1);    
-            this.bufferColor.push(c2);    
-            this.bufferColor.push(c3);    
-            this.bufferDistanceThreshold.push(weight);
-            // top-right corner
-            this.bufferCorner.push(x2);
-            this.bufferCorner.push(y1);
-            this.bufferTextureCoordinates.push(tx2);   
-            this.bufferTextureCoordinates.push(ty1);
-            this.bufferColor.push(c0);
-            this.bufferColor.push(c1);
-            this.bufferColor.push(c2);    
-            this.bufferColor.push(c3);
-            this.bufferDistanceThreshold.push(weight);
-            // bottom-left corner
-            this.bufferCorner.push(x1);
-            this.bufferCorner.push(y2);
-            this.bufferTextureCoordinates.push(tx1);   
-            this.bufferTextureCoordinates.push(ty2);
-            this.bufferColor.push(c0);    
-            this.bufferColor.push(c1);    
-            this.bufferColor.push(c2);    
-            this.bufferColor.push(c3);    
-            this.bufferDistanceThreshold.push(weight);
-            // bottom-right corner
-            this.bufferCorner.push(x2);
-            this.bufferCorner.push(y2);       
-            this.bufferTextureCoordinates.push(tx2);
-            this.bufferTextureCoordinates.push(ty2);
-            this.bufferColor.push(c0);    
-            this.bufferColor.push(c1);    
-            this.bufferColor.push(c2);
-            this.bufferColor.push(c3);    
-            this.bufferDistanceThreshold.push(weight);
+            this.bufferCorner.push             (x1,y1,       x2,y1,       x1,y2,       x2,y2);    
+            this.bufferTextureCoordinates.push (tx1,ty1,     tx2,ty1,     tx1,ty2,     tx2,ty2);
+            this.bufferColor.push              (c0,c1,c2,c3, c0,c1,c2,c3, c0,c1,c2,c3, c0,c1,c2,c3 );    
+            this.bufferDistanceThreshold.push  (weight,      weight,      weight,      weight);
 
             return width - 1*this.kerning*magnification;         
     };

@@ -229,7 +229,7 @@ Level.prototype.setHint = function(h)
     
 Level.prototype.getDifficulty = function()
 {
-    return difficulty;
+    return this.difficulty;
 };
 
 Level.prototype.setDifficulty = function(d)

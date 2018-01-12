@@ -4,7 +4,7 @@ var LevelPack = function()
     this.levels = null;
 };
 
-LevelPack.prototype.$ = function(name, json)
+LevelPack.prototype.$ = function(name, json, sortit)
 {   
     this.name = name;
     this.levels = [];
@@ -13,8 +13,15 @@ LevelPack.prototype.$ = function(name, json)
     {   this.levels.push(new Level().$(json[i]));
     }
     
-    //Arrays.sort(this.levels,new Level.TitleComparator());
-    //Arrays.sort(this.levels,new Level.DifficultyComparator());    
+    if (sortit)
+    {   this.levels.sort( function(l1,l2) 
+        {   var d = l1.getDifficulty() - l2.getDifficulty();
+            if (d!==0) return d;
+            if (l1.getTitle() < l2.getTitle()) return -1;
+            if (l1.getTitle() > l2.getTitle()) return 1;
+            return 0;
+        });
+    }
     return this;
 };
         
