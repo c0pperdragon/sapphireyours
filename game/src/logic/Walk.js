@@ -48,10 +48,17 @@ Walk.prototype.$ = function(json)
     return this;
 };
     
-Walk.prototype.$2 = function(original)
+Walk.prototype.$original = function(original)
 {
     this.buffer = original.buffer.slice();
     this.randomseed = original.randomseed;
+    return this;
+};
+
+Walk.prototype.$randomseed = function(randomseed)
+{
+    this.buffer = [];
+    this.randomseed = randomseed;
     return this;
 };
     

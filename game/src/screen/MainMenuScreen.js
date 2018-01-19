@@ -21,8 +21,7 @@ var MainMenuScreen = function()
     
 };
 MainMenuScreen.prototype = Object.create(Screen.prototype);
-MainMenuScreen.prototype.constructor = MainMenuScreen;
-    
+   
   
 MainMenuScreen.MENUENTRY_EXIT = 0;  
 MainMenuScreen.MENUENTRY_NEWLEVEL = 1;
@@ -257,24 +256,15 @@ MainMenuScreen.prototype.startSelectedLevel = function()
             }
             else
             {
-//                var gs = new GameScreen().$(this.game, l, null, 
-//                    this.selectedcolumn<this.game.levelpacks.length || this.selectedrow<lp.levels.length-1, false);
-//                this.game.addScreen(gs);
-//                gs.afterScreenCreation();
+                var gs = new GameScreen().$(this.game, l, null, 
+                    this.selectedcolumn<this.game.levelpacks.length 
+                 || this.selectedrow<lp.levels.length-1, false);
+                this.game.addScreen(gs);
+                gs.afterScreenCreation();
             }           
         }                   
 };
 
-MainMenuScreen.prototype.startEditingSelectedLevel = function()
-{
-        var l = getSelectedLevel();
-//        if (l!=null)
-//        {   
-//            EditorScreen es = new EditorScreen(game, l);
-//            game.addScreen(es);
-//            es.afterScreenCreation();
-//        }                   
-};
 
 MainMenuScreen.prototype.startSubsequentLevel = function()
 {
