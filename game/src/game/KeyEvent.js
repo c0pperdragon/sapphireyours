@@ -17,12 +17,14 @@ var KeyEvent = {
     KEYCODE_DEL:         0x00000043,
     KEYCODE_MENU:        0x00000052,
     KEYCODE_SEARCH:      0x00000054,
-//  KEYCODE_ESCAPE      = 0x0000006f,
+//    KEYCODE_ESCAPE:      0x0000006f,
 
     toNumericCode: function(c)
     {   
+// console.log("toNumericCode",c);    
         switch (c) 
-        {   case "ArrowUp":         return KeyEvent.KEYCODE_DPAD_UP;
+        {   case "Escape":          return KeyEvent.KEYCODE_BACK;
+            case "ArrowUp":         return KeyEvent.KEYCODE_DPAD_UP;
             case "ArrowDown":       return KeyEvent.KEYCODE_DPAD_DOWN;
             case "ArrowLeft":       return KeyEvent.KEYCODE_DPAD_LEFT;
             case "ArrowRight":      return KeyEvent.KEYCODE_DPAD_RIGHT;

@@ -37,18 +37,12 @@ MainMenuScreen.prototype.$ = function (game)
     this.colwidth = 300;
     this.rowheight = 30;
         
-    this.reactivate();     
+    this.layout();     
 
     return this;
 };
 
-MainMenuScreen.prototype.resize = function()
-{
-    Screen.prototype.resize.call(this);
-    this.snapPosition();    
-}
-
-MainMenuScreen.prototype.reactivate = function()
+MainMenuScreen.prototype.layout = function()
 {
     // compute some layout data
     this.numcolumns = this.game.levelpacks.length + 1;
@@ -67,6 +61,7 @@ MainMenuScreen.prototype.reactivate = function()
 
     this.bringSelectedInView();
 }
+
     
 MainMenuScreen.prototype.draw = function()
 {
@@ -74,8 +69,10 @@ MainMenuScreen.prototype.draw = function()
         
     var background = 0xff393939;
     var menuhighlight = 0xffffffff;
-
-    game.vectorRenderer.startDrawing (this.screenwidth, this.screenheight);
+    var screenwidth = this.game.screenwidth;
+    var screenheight = this.game.screenheight;
+    
+    game.vectorRenderer.startDrawing (screenwidth, screenheight);
     
         // draw selection
         var selectedlevel = this.getSelectedLevel(); 
@@ -101,8 +98,8 @@ MainMenuScreen.prototype.draw = function()
         
     game.vectorRenderer.flush();
 
-    game.textRenderer.startDrawing (this.screenwidth, this.screenheight);
-    game.gfxRenderer.startDrawing (this.screenwidth, this.screenheight);
+    game.textRenderer.startDrawing (screenwidth, screenheight);
+    game.gfxRenderer.startDrawing (screenwidth, screenheight);
 
         // draw all columns of the main menu
         var iconwidth = this.rowheight;
@@ -110,7 +107,7 @@ MainMenuScreen.prototype.draw = function()
         {
             var x = this.left+col*this.colwidth;
             if (x+this.colwidth < 0) continue;
-            if (x > this.screenwidth) continue;
+            if (x > screenwidth) continue;
                                 
             var p = this.getLevelPack(col);
 
@@ -291,8 +288,8 @@ MainMenuScreen.prototype.startSubsequentLevel = function()
 MainMenuScreen.prototype.bringSelectedInView = function()
 {    
     if (this.selectedcolumn>=0)
-    {   
-        this.left = Math.floor(this.screenwidth/2 -this.selectedcolumn*this.colwidth - this.colwidth/2);
+    {           
+        this.left = Math.floor(this.game.screenwidth/2 -this.selectedcolumn*this.colwidth - this.colwidth/2);
         this.snapPosition();
     }
 };
@@ -309,9 +306,9 @@ MainMenuScreen.prototype.snapEdges = function()
         if (this.left>0) {
             this.left=0;
         }
-        if (this.left+this.numcolumns*this.colwidth < this.screenwidth)
+        if (this.left+this.numcolumns*this.colwidth < this.game.screenwidth)
         {
-            this.left = this.screenwidth - this.numcolumns*this.colwidth;
+            this.left = this.game.screenwidth - this.numcolumns*this.colwidth;
         }
         this.top = 50;
 };
@@ -322,6 +319,10 @@ MainMenuScreen.prototype.roundtostep = function(value, stepsize)
 };
 
 
+MainMenuScreen.prototype.onResize = function()
+{
+    this.snapPosition();    
+}
 
     // ---- key event handlers --
 MainMenuScreen.prototype.onKeyDown = function(keycode)

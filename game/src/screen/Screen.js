@@ -1,16 +1,11 @@
 
 var Screen = function() 
 {   this.game = null;   
-    this.screenwidth = 0;
-    this.screenheight = 0;
 };
-Screen.prototype.constructor = Screen;
 
-Screen.prototype.$ = function(game,width,height)
+Screen.prototype.$ = function(game)
 {
     this.game = game;
-    this.screenwidth = game.screenwidth;
-    this.screenheight = game.screenheight;
     return this;
 };
 
@@ -18,21 +13,15 @@ Screen.prototype.discard = function()
 {
 };
 
-Screen.prototype.resize = function()
+Screen.prototype.setDirty = function()
 {
-    this.screenwidth = this.game.screenwidth;
-    this.screenheight = this.game.screenheight;
+    this.game.setDirty();
 };
 
-Screen.prototype.setDirty = function()
-{   this.game.setDirty();
-};
 
 // can be overwritten to get notified about events and things to do
+// and things to report
 
-Screen.prototype.onResize = function()
-{
-};
 
 Screen.prototype.tick = function()
 {
@@ -44,6 +33,10 @@ Screen.prototype.draw = function()
 
 Screen.prototype.isOverlay = function()
 {   return false;
+};
+
+Screen.prototype.onResize = function()
+{
 };
 
 // ---- default key event handlers  ----

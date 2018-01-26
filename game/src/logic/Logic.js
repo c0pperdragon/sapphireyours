@@ -2580,15 +2580,15 @@ Logic.prototype.getPlayerPositionY = function(idx)
 //      return (pos / MAPWIDTH)-1;
 //  }
 
-//Logic.prototype.getAnimationBufferSize = function()
-//{
-//    return this.transactions.keepingSize();
-//};
-//
-//Logic.prototype.getAnimation = function(idx)
-//{
-//    return this.transactions.get(this.transactions.size()-this.transactions.keepingSize()+idx);
-//};
+Logic.prototype.getAnimationBufferSize = function()
+{
+    return this.transactions.length;
+};
+
+Logic.prototype.getAnimation = function(idx)
+{
+    return this.transactions.get(idx);
+};
     
 Logic.prototype.getNumberOfEmeraldsStillNeeded = function()
 {   return this.level.loot - this.counters[CTR_EMERALDSCOLLECTED];

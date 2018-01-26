@@ -48,8 +48,7 @@ GamePadInputBuffer.removeFromArray = function(a, len, value)
         }  
     }
     return writecursor;
-}
-;
+};
     
     
 GamePadInputBuffer.prototype.$=function()
@@ -65,6 +64,8 @@ GamePadInputBuffer.prototype.$=function()
     this.movebuffer = [0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0];
     this.actionmode = GamePadInputBuffer.MODE_NORMAL;
     this.actionmode_was_used = false;
+    
+    return this;
 };
 
     // forget any stored state and reset to start values 

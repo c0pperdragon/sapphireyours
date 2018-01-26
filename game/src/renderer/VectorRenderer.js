@@ -161,24 +161,19 @@ VectorRenderer.prototype.flush = function()
 
 
 VectorRenderer.prototype.addCorner = function(x,y,argb)
-{   this.bufferCorner.push(x);
-    this.bufferCorner.push(y);
-    this.bufferColor.push((argb>>16) & 0xff);
-    this.bufferColor.push((argb>>8) & 0xff);
-    this.bufferColor.push((argb>>0) & 0xff);
-    this.bufferColor.push((argb>>24) & 0xff);
+{   this.bufferCorner.push(x,y);
+    this.bufferColor.push((argb>>16) & 0xff,((argb>>8) & 0xff),((argb>>0) & 0xff),((argb>>24) & 0xff));
 };
 
 VectorRenderer.prototype.startStrip = function()
 {
     var numcorners = this.bufferCorner.length / 2;
     if (numcorners>0)
-    {   this.bufferCorner.push(this.bufferCorner[2*numcorners-2]);
-        this.bufferCorner.push(this.bufferCorner[2*numcorners-1]);
-        this.bufferColor.push(this.bufferColor[4*numcorners-4]);
-        this.bufferColor.push(this.bufferColor[4*numcorners-3]);
-        this.bufferColor.push(this.bufferColor[4*numcorners-2]);
-        this.bufferColor.push(this.bufferColor[4*numcorners-1]);
+    {   this.bufferCorner.push(this.bufferCorner[2*numcorners-2], this.bufferCorner[2*numcorners-1]);
+        this.bufferColor.push(this.bufferColor[4*numcorners-4], 
+                              this.bufferColor[4*numcorners-3],
+                              this.bufferColor[4*numcorners-2],
+                              this.bufferColor[4*numcorners-1]);
         this.mustDublicateNextCorner = true;
     }
     this.rotsin = 0;
@@ -377,7 +372,8 @@ VectorRenderer.prototype.addRoundedRect = function(x, y, width, height, radius, 
 };
 
 VectorRenderer.prototype.addPlayArrow = function(x, y, width, height, orientation, argb)
-{   this.startStrip();
+{
+    this.startStrip();
     this.setStripCornerTransformation(orientation*(width/2)/100,0, 
         x+width/2+orientation*width*0.04,y+width/2);
     this.addStripCorner(-35,-85, argb);
@@ -451,7 +447,7 @@ VectorRenderer.prototype.addCross = function(x, y, width, height, argb)
     this.addStripCorner(80,70, argb);
     this.addStripCorner(0,0, argb);
     this.addStripCorner(70,80, argb);
-    this.addStripCorner(0,10, argb);            
+    this.addStripCorner(0,10, argb);  
 };
 
 VectorRenderer.prototype.addSquare = function(x, y, width, height, argb)

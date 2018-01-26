@@ -13,7 +13,7 @@ LoadingScreen.prototype.$ = function(game)
 LoadingScreen.prototype.draw = function()
 {    
     var tr = this.game.textRenderer;
-    tr.startDrawing (this.screenwidth, this.screenheight);    
+    tr.startDrawing (this.game.screenwidth, this.game.screenheight);    
     
     tr.addString("Loading", 50,50, 50, false, Game.getColorForDifficulty(5), 
            TextRenderer.WEIGHT_PLAIN);

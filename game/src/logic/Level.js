@@ -209,22 +209,22 @@ Level.prototype.setTitle = function(t)
     
 Level.prototype.getAuthor = function()
 {
-    return author;  
+    return this.author;  
 };
 
 Level.prototype.setAuthor = function(a)
 {
-    author = a; 
+    this.author = a; 
 };
 
 Level.prototype.getHint = function()
 {
-    return hint;
+    return this.hint;
 };
 
 Level.prototype.setHint = function(h)
 {
-    hint = h;
+    this.hint = h;
 };
     
 Level.prototype.getDifficulty = function()
@@ -239,7 +239,7 @@ Level.prototype.setDifficulty = function(d)
 
 Level.prototype.getCategory = function()
 {
-    return category;
+    return this.category;
 };
     
 Level.prototype.setCategory = function(c)

@@ -159,15 +159,15 @@ var LevelRenderer = function()
     this.anim_laser_right = null; 
     this.anim_laser_up = null;    
     this.anim_laser_down = null;  
-
 };
+LevelRenderer.prototype = Object.create(TileRenderer.prototype);
 
 LevelRenderer.FRAMESPERSTEP = 15;
 
     // set up opengl  and load textures
 LevelRenderer.prototype.$ = function(gl)
-{   TileRenderer.call(this);
-
+{   TileRenderer.prototype.$.call(this,gl);
+/*
     this.doneLoading = false;
         
     // temporary data
@@ -462,8 +462,10 @@ LevelRenderer.prototype.$ = function(gl)
         anim_laser_right = createRotatedAnimation(anim_laser_down, 90);     
         anim_laser_up = createRotatedAnimation(anim_laser_down, 180);       
         anim_laser_left = createRotatedAnimation(anim_laser_down, 270); 
+*/     
+    return this;
 };
-
+/*
 Renderer.prototype.createDerivedAnimations = function ()
 {
         // piece2tile[Logic.EARTH]
@@ -501,7 +503,8 @@ Renderer.prototype.createDerivedAnimations = function ()
         for (int i=0; i<16; i++) anim_earth_down[i] = joinAnimationDescriptions(earthtiles[i], anim_removal);       
         
 };
-
+*/
+/*
 Renderer.prototype.isLoaded = function()    
 {   
     if (this.doneLoading) return true;
@@ -522,9 +525,9 @@ Renderer.prototype.load = function (name)
     return numbers;
 };    
 
-
-    
-
+*/
+   
+/*
     
     // -------------- draw the whole scene as defined by the logic -----------
     public void draw(int displaywidth, int displayheight, int screentilesize, Logic logic, int frames_until_endposition, int offx0, int offy0, int offx1, int offy1)
@@ -1532,12 +1535,13 @@ Renderer.prototype.load = function (name)
         return b;   
     }
     
-    
-    
-    // --------------------------------- tile rendering -----------------
+*/    
+   
+// --------------------------- direct piece tile rendering -----------------
 
-    public void addSimplePieceToBuffer(int x, int y, byte piece)
-    {       
+LevelRenderer.prototype.addSimplePieceToBuffer = function(x, y, piece)
+{       
+/*
         int[] anim = piece2tile[piece&0xff];
         if (anim!=null)
         {   
@@ -1546,6 +1550,5 @@ Renderer.prototype.load = function (name)
             {   addTileToBuffer(x,y, anim[FRAMESPERSTEP]);
             }
         }
-    }
-    
-
+*/        
+};

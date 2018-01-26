@@ -257,7 +257,7 @@ TextRenderer.prototype.determineSubStringWidth = function(string, start, length,
 
 TextRenderer.prototype.determineStringWidth = function(string, height)
 {   var total = 0;
-    var len = string.length();
+    var len = string.length;
     for (var i=0; i<len; i++)
     {   total += this.determineGlyphWidth(string.charCodeAt(i), height);
     }
@@ -273,22 +273,23 @@ TextRenderer.prototype.determineNumberWidth = function(number, height)
     do
     {   var lastdigit = number % 10;
         total += this.determineGlyphWidth(48+lastdigit,height);
-        number = number/10;
+        number = Math.floor(number/10);
     } while (number>0);
     return total;
 };
 
 TextRenderer.prototype.determineGlyphWidth = function(c, height)
-{   if (c<this.glyph_coordinates.length)
-    {   var coordinates = glyph_coordinates[c];
+{   var w = 0;
+    if (c<this.glyph_coordinates.length)
+    {   var coordinates = this.glyph_coordinates[c];
         if (coordinates!==null)
         {   var twidth = coordinates[2];
             var theight = coordinates[3];                               
             var magnification = height / theight;
-            return ((twidth*magnification) - (kerning*magnification));
+            w = ((twidth*magnification) - (this.kerning*magnification));
         }
     }
-    return 0;
+    return w;
 };
 
 
@@ -307,7 +308,7 @@ TextRenderer.prototype.wordWrap = function(string, height, pagewidth)
                 var endthatfits = start;
                 var endofwords = string.indexOf(" ",start);
                 if (endofwords<0) endofwords=len;
-                while (this.determineStringWidth(string, start,endofwords-start, height) < pagewidth)
+                while (this.determineSubStringWidth(string, start,endofwords-start, height) < pagewidth)
                 {   endthatfits = endofwords;
                     if (endofwords==len)
                     {   break;
@@ -326,7 +327,7 @@ TextRenderer.prototype.wordWrap = function(string, height, pagewidth)
                 }               
                 // otherwise use the whole next word even if it does not fit
                 else
-                {   v.pusht(string.substring(start,endofwords));
+                {   v.push(string.substring(start,endofwords));
                     start=endofwords;
                 }
             }
@@ -337,6 +338,7 @@ TextRenderer.prototype.wordWrap = function(string, height, pagewidth)
     
 TextRenderer.prototype.addString = function(string, x, y, height, rightaligned, argb, weight)
 {       
+// console.warn("addString",string,x,y,height,rightaligned,argb,weight);
         var x2 = x;
         if (rightaligned)
         {   for (var i=string.length-1; i>=0; i--)
@@ -363,7 +365,7 @@ TextRenderer.prototype.addNumber = function(number, x, y, height, rightaligned, 
         {   do
             {   var lastdigit = number % 10;
                 x2 -= this.addGlyph(48+lastdigit, x2,y,height, rightaligned, argb, weight);
-                number = number/10;
+                number = Math.floor(number/10);
             } while (number>0);
             if (minussign)
             {   x2 -= this.addGlyph (45, x2,y,height, rightaligned, argb, weight);
@@ -380,8 +382,8 @@ TextRenderer.prototype.addNumber = function(number, x, y, height, rightaligned, 
             while (highestdigit>0)
             {   
                 var digit = (number / highestdigit) % 10;
-                x2 += addGlyph(48 + digit, x2,y,height,rightaligned, argb, weight);
-                highestdigit = highestdigit/10;         
+                x2 += this.addGlyph(48 + digit, x2,y,height,rightaligned, argb, weight);
+                highestdigit = Math.floor(highestdigit/10);
             }
         }
         return x2;
