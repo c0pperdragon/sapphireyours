@@ -60,7 +60,7 @@ KeyboardToGamepadTranslator.prototype.keyUp = function(keycode)
             writecursor++;
         } 
     }
-    this.numpressed=this.writecursor;
+    this.numpressed=writecursor;
         
     // send change info to listeners    
     this.sendGamePadStates();
@@ -142,10 +142,11 @@ KeyboardToGamepadTranslator.prototype.sendGamePadStates = function()
     // switch listeners if needed       
     var l1 = this.listener1;
     var l2 = this.listener2;
-    if (switchedcontrols)
+    if (this.switchedcontrols)
     {   l1 = this.listener2;
         l2 = this.listener1;
     }       
+    
     // send collected state to both listeners (or to the same if only one player is present)
     l1.setAction1Button(0, action1_0);
     l1.setAction2Button(0, action2_0);

@@ -21,8 +21,8 @@ var TileRenderer = function()
     this.screentilesize = 0;         // size of tiles on screen in pixels    
     
     // data for the loading process
-    this.imagesRequested = 0;
-    this.imagesLoaded = 0;
+    this.imagesRequested = null;  // array of string
+    this.imagesLoaded = null;     // Map: string -> array of tile indizes
     this.tilesLoaded = 0;
     this.tmpCanvas = null;
 };    
@@ -83,10 +83,10 @@ TileRenderer.fragmentShaderCode =
     
     
 // set up opengl  and load textures
-TileRenderer.prototype.$ = function(gl)
+TileRenderer.prototype.$ = function(gl,imagelist)
 {
     Renderer.prototype.$.call(this,gl);
-    
+        
     // allocate memory for projection matrix
     this.matrix = new Array(16);
     this.matrix2 = new Array(16);
@@ -154,33 +154,27 @@ TileRenderer.prototype.$ = function(gl)
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR); // NEAREST);             
     
     // loading progress information
-    this.imagesRequested = 0;
-    this.imagesLoaded = 0;
-    this.tilesLoaded = 0;
+    this.imagesRequested = imagelist;
+    this.imagesLoaded = new Map();
+    this.tilesLoaded = 1;  // tile 0 is empty air
     this.tmpCanvas = document.createElement('canvas');
     this.tmpCanvas.width = TileRenderer.TILEWIDTH;
     this.tmpCanvas.height = TileRenderer.TILEHEIGHT;
+    for (var i=0; i<imagelist.length; i++)
+    {   this.startLoadImage(imagelist[i]);
+    }
     
     return this;
 };
 
-TileRenderer.prototype.isLoaded = function()
+TileRenderer.prototype.startLoadImage = function(filename)
 {
-    return this.imagesLoaded >= this.imagesRequested;
-}
-
-TileRenderer.prototype.loadImage = function(name, tilenumbers_storage)
-{
-    this.imagesRequested++;
-    
     var image = new Image();
     
     var that = this;
     image.addEventListener
     (   'load', function() 
-        {   that.imagesLoaded++;
-        
-            var gl = that.gl;
+        {   var gl = that.gl;
         
             var w = image.naturalWidth;
             var h = image.naturalHeight;
@@ -215,16 +209,34 @@ TileRenderer.prototype.loadImage = function(name, tilenumbers_storage)
             
             if (tiles.length<1) tiles=[0];
             
-            for (var i=0; i<tilenumbers_storage.length; i++) 
-            {   tilenumbers_storage[i] = tiles[Math.floor(i*tiles.length / tilenumbers_storage.length)];
-            }
-            
-            console.log("done loading",name,":",tilenumbers_storage);
+            that.imagesLoaded.set(filename, tiles);            
+//            console.log("done loading",filename,":",tiles);            
         }
-   );
-   image.src = "art/" + name + ".png";
+    );
+    image.addEventListener
+    (   'error', function()
+        {   console.log("Error loading image "+fullname);
+        }
+    );
+    var fullname = "art/" + filename + ".png";
+    image.src = fullname;
+//   console.log("started loading",fullname);
+};
+
+TileRenderer.prototype.isLoaded = function()
+{
+    return this.imagesLoaded.size >= this.imagesRequested.length;
 };
     
+TileRenderer.prototype.getImage = function(filename)
+{
+    var tiles = this.imagesLoaded.get(filename);
+    if (!tiles) 
+    {   console.log("Referenced non-loaded image:",filename);
+        return [];
+    }
+    return tiles;
+};    
     
 TileRenderer.prototype.startDrawing = function(viewportwidth,viewportheight, screentilesize, offx0, offy0, offx1, offy1)
 {

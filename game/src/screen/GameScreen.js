@@ -144,10 +144,15 @@ GameScreen.prototype.tick = function()
             this.adjustScrolling(true);
             break;
     }
+    
+    this.setDirty();
 };
 
 GameScreen.prototype.draw = function()
 {           
+    var screenwidth = this.game.screenwidth;
+    var screenheight = this.game.screenheight;
+
     // handle screen shaking feature
     var screenshake=0;
     if (this.screenshaketime>0)
@@ -157,10 +162,12 @@ GameScreen.prototype.draw = function()
     
     // paint the level tiles in a big action
     var lr = this.game.levelRenderer; 
-//    if (lr!=null && (this.logic!=null))
-//    {   lr.draw(screenwidth, screenheight, screentilesize, logic, frames_left,
-//          screenscrollx0, screenscrolly0+screenshake, screenscrollx1, screenscrolly1+screenshake); 
-//    }
+    if (lr!=null && (this.logic!=null))
+    {   lr.draw(screenwidth, screenheight, 
+            this.screentilesize, this.logic, this.frames_left,
+            this.screenscrollx0, this.screenscrolly0+screenshake, 
+            this.screenscrollx1, this.screenscrolly1+screenshake); 
+    }
 
     var statusbarheight = this.screentilesize*0.833;
     var statustextheight = this.statusbarheight*0.8;
@@ -168,11 +175,11 @@ GameScreen.prototype.draw = function()
     var hspace = this.statusbarheight/10.0;
     
     // set up the renderers for decoration rendering
-    lr.startDrawing(this.screenwidth,this.screenheight, this.statustilesize);     
+    lr.startDrawing(screenwidth,screenheight, this.statustilesize);     
     var tr = this.game.textRenderer;
-    tr.startDrawing(this.screenwidth,this.screenheight);
+    tr.startDrawing(screenwidth,screenheight);
     vr = this.game.vectorRenderer;
-    vr.startDrawing(this.screenwidth, this.screenheight);
+    vr.startDrawing(screenwidth, screenheight);
 
     // add a focus highlight
     if (this.inputmodeswitchtime>0)
@@ -194,8 +201,8 @@ GameScreen.prototype.draw = function()
     if (this.playmode!=GameScreen.PLAYMODE_RECORD && this.game.getTopScreen()==this)
     {   var iconsize = this.screentilesize * 6.0;
         var color = 0x887799ff;
-        var x = (this.screenwidth-iconsize)/2; 
-        var y = (this.screenheight-iconsize)/2; 
+        var x = (screenwidth-iconsize)/2; 
+        var y = (screenheight-iconsize)/2; 
         if (this.playmode==GameScreen.PLAYMODE_UNDO)
         {   vr.addPlayArrow(x,y, iconsize,iconsize, -1, color);
         }
@@ -219,8 +226,8 @@ GameScreen.prototype.draw = function()
     }               
 
     // paint status display
-    var x2 = this.screenwidth-hspace - statusbarheight - 2*hspace;
-    var y2 = this.screenheight-hspace;
+    var x2 = screenwidth-hspace - statusbarheight - 2*hspace;
+    var y2 = screenheight-hspace;
     var y1 = this.y2-statusbarheight;
     var x1 = x2 - hspace;
     var ycenter = (y1+y2)/2;
@@ -335,7 +342,7 @@ GameScreen.prototype.draw = function()
 
     // paint the touch motion raster(s)
     for (var i=0; i<this.inputGrid.length; i++)      
-    {   this.inputGrid[i].draw(this.screenwidth, this.screenheight);
+    {   this.inputGrid[i].draw(screenwidth, screenheight);
     }
 };
 
@@ -405,6 +412,8 @@ GameScreen.prototype.adjustScrolling = function(force)
         }
     }
         
+    var screenwidth = this.game.screenwidth;
+    var screenheight = this.game.screenheight;
     var screentilesize = this.screentilesize;
     var frames_left = this.frames_left;
     
@@ -450,9 +459,9 @@ GameScreen.prototype.adjustScrolling = function(force)
         {   // when scrolling is re-enabled, do fast scrolling to the target position
             var step = force ? 1000000000 : (screentilesize/3);  
             this.screenscrollx0 = approach(this.screenscrollx0, 
-                calculateScreenOffsetX(this.screenwidth, screentilesize, playerposx0, populatedwidth, true), step);
+                calculateScreenOffsetX(screenwidth, screentilesize, playerposx0, populatedwidth, true), step);
             this.screenscrolly0 = approach(this.screenscrolly0, 
-                calculateScreenOffsetY(this.screenheight, screentilesize, playerposy0, populatedheight, true), step);
+                calculateScreenOffsetY(screenheight, screentilesize, playerposy0, populatedheight, true), step);
         }                               
         // use the values also for second set of values to only get a single screen
         this.screenscrollx1 = this.screenscrollx0;            
@@ -463,8 +472,8 @@ GameScreen.prototype.adjustScrolling = function(force)
     else
     {   
         // when the players are near together, compute an average position
-        var splitthreasholdx = this.screenwidth/4;
-        var splitthreasholdy = this.screenheight/4;  
+        var splitthreasholdx = screenwidth/4;
+        var splitthreasholdy = screenheight/4;  
         // in two-player mode, when the players are not too far separated, use a middle-position for both views
         if ( Math.abs(playerposx0 - playerposx1) < 2*splitthreasholdx)
         {   playerposx0 = playerposx1 = (playerposx0 + playerposx1)/2;  
@@ -495,13 +504,13 @@ GameScreen.prototype.adjustScrolling = function(force)
         {   // when scrolling is re-enabled, do fast scrolling to the target position
             var step = force ? 1000000000 : (screentilesize/3);  
             this.screenscrollx0 = approach(this.screenscrollx0, 
-                calculateScreenOffsetX(this.screenwidth, screentilesize, playerposx0, populatedwidth, true), step);
+                calculateScreenOffsetX(screenwidth, screentilesize, playerposx0, populatedwidth, true), step);
             this.screenscrolly0 = approach(this.screenscrolly0, 
-                calculateScreenOffsetY(this.screenheight, screentilesize, playerposy0, populatedheight, true), step);
+                calculateScreenOffsetY(screenheight, screentilesize, playerposy0, populatedheight, true), step);
             this.screenscrollx1 = approach(this.screenscrollx1, 
-                calculateScreenOffsetX(this.screenwidth, screentilesize, playerposx1, populatedwidth, true), step);
+                calculateScreenOffsetX(screenwidth, screentilesize, playerposx1, populatedwidth, true), step);
             this.screenscrolly1 = approach(this.screenscrolly1, 
-                calculateScreenOffsetY(this.screenheight, screentilesize, playerposy1, populatedheight, true), step);
+                calculateScreenOffsetY(screenheight, screentilesize, playerposy1, populatedheight, true), step);
         }
     }
     
@@ -512,8 +521,6 @@ GameScreen.prototype.adjustScrolling = function(force)
     {   this.inputGrid[1].synchronizeWithGame(
             this.screenscrollx1, this.screenscrolly1, screentilesize, playerx_at_end_1, playery_at_end_1);
     }
-    
-    
     
     function approach(value, target, step)
     {   
@@ -539,10 +546,10 @@ GameScreen.prototype.adjustScrolling = function(force)
         var lw = screentilewidth*populatedwidth;  // size of the populated area in pixel
         // when level fits into display completely, just simply center it 
         if (displaywidth>lw)
-        {   return (displaywidth - lw) / 2;         
+        {   return (displaywidth - lw) / 2;
         }
         // move screen to have player in center
-        var ox = Math.floor(displaywidth/2) - pixelx;
+        var ox = (displaywidth/2) - pixelx;
         // but stop at edges in single-player mode
         if (stopatedges)
         {   if (ox>0) 
@@ -559,10 +566,10 @@ GameScreen.prototype.adjustScrolling = function(force)
         var lh = screentileheight*populatedheight;
         // when level fits into display completely, just simply center it 
         if (displayheight>=lh)
-        {   return (displayheight - lh) / 2;            
+        {   return (displayheight - lh) / 2;
         }
         // move screen to have player in center
-        var oy = Math.floor(displayheight/2) - pixely;
+        var oy = (displayheight/2) - pixely;
         // but stop at edges in single-player mode
         if (stopatedges)
         {   if (oy>0) 
@@ -618,7 +625,7 @@ GameScreen.prototype.gameRecording = function()
                 {   this.inputGrid[1].reset();
                     this.inputmodeswitchtime = 0;
                 }
-            }                   
+            }                  
             this.walk.recordMovement(m0,m1);
         }
             
@@ -710,13 +717,13 @@ GameScreen.prototype.gameUndo = function()
 
 GameScreen.prototype.startRecordingTimeMeasurement = function()
 {
-    this.time_at_record_start = this.game.currentTimeMillis();   
+    this.time_at_record_start = Game.currentTimeMillis();   
 };
 
 GameScreen.prototype.stopRecordingTimeMeasurement = function()
 {   
     if (this.time_at_record_start>0)
-    {   var seconds = Math.floor((this.game.currentTimeMillis() - time_at_record_start) / 1000);
+    {   var seconds = Math.floor((Game.currentTimeMillis() - this.time_at_record_start) / 1000);
         this.time_at_record_start = 0;
         if (seconds>0)
         {   var solvegrade = this.game.getLevelSolvedGrade(level);
@@ -899,74 +906,73 @@ GameScreen.prototype.menuAction = function(id)
     switch (id)
     {   case PauseMenu.MENUACTION_EXIT:
         case PauseMenu.MENUACTION_EXITTOEDITOR:
-            this.game.removeScreen();
+        {   this.game.removeScreen();
             break;
-
+        }
         case PauseMenu.MENUACTION_START:    
         case PauseMenu.MENUACTION_RESTART:
-            this.diduse_undo = false;
+        {   this.diduse_undo = false;
             this.diduse_singlestep = this.singlestep;
 
             this.step=0;
             this.frames_left=0;
             this.playmode = GameScreen.PLAYMODE_RECORD;
-            this.walk.initialize((int)(Math.random()*1000000));
-            this.logic.attach(level,walk);
+            this.walk.initialize(Math.floor((Math.random()*1000000)));
+            this.logic.attach(this.level,this.walk);
             this.adjustScrolling(true);
             this.startRecordingTimeMeasurement();
             break;
-                
+        }       
         case PauseMenu.MENUACTION_CONTINUERECORDING:
-            this.playmode = GameScreen.PLAYMODE_RECORD;         
+        {   this.playmode = GameScreen.PLAYMODE_RECORD;         
             this.startRecordingTimeMeasurement();
             break;
-                
+        }       
         case PauseMenu.MENUACTION_LEAVEDEMO:
-            this.logic.attach(level,walk);
-            this.logic.gototurn(walk.getTurns());
-            this.step=walk.getTurns();
+        {   this.logic.attach(this.level,this.walk);
+            this.logic.gototurn(this.walk.getTurns());
+            this.step=this.walk.getTurns();
             this.frames_left=0;
             this.playmode=GameScreen.PLAYMODE_RECORD;
             this.adjustScrolling(true);
             this.startRecordingTimeMeasurement();
             break;
-          
+        } 
         case PauseMenu.MENUACTION_LEAVEREPLAY:
-            this.logic.attach(level,walk);
-            this.logic.gototurn(walk.getTurns());
-            this.step=walk.getTurns();
+        {   this.logic.attach(this.level,this.walk);
+            this.logic.gototurn(this.walk.getTurns());
+            this.step=this.walk.getTurns();
             this.frames_left=0;
             this.playmode=GameScreen.PLAYMODE_RECORD;
             this.adjustScrolling(true);
             this.createMenuScreen(false);
             this.startRecordingTimeMeasurement();
             break;                      
-
+        }
         case PauseMenu.MENUACTION_REPLAY:
-            this.step=0;
+        {   this.step=0;
             this.frames_left=0;
             this.playmode = GameScreen.PLAYMODE_REPLAY;
             this.playbackspeed = 1;
             this.slowmotion_counter = 0;
             this.logic.gototurn(step);               
             break;
-                
+        }    
         case PauseMenu.MENUACTION_SHOWDEMO:
         case PauseMenu.MENUACTION_SHOWDEMO2:
         case PauseMenu.MENUACTION_SHOWDEMO3:
-            {   var idx = id==(PauseMenu.MENUACTION_SHOWDEMO) ? 0 : (1 + (id-PauseMenu.MENUACTION_SHOWDEMO2));
-                if (this.level.numberOfDemos()>idx)
-                {   this.logic.attach(this.level,this.level.getDemo(idx));
-                    this.step=0;
-                    this.frames_left=0;
-                    this.playmode = GameScreen.PLAYMODE_DEMO;
-                    this.playbackspeed = 1;
-                    this.slowmotion_counter = 0;
-                    this.adjustScrolling(true);
-                }
-            }
+        {   var idx = id==(PauseMenu.MENUACTION_SHOWDEMO) ? 0 : (1 + (id-PauseMenu.MENUACTION_SHOWDEMO2));
+            if (this.level.numberOfDemos()>idx)
+            {   this.logic.attach(this.level,this.level.getDemo(idx));
+                this.step=0;
+                this.frames_left=0;
+                this.playmode = GameScreen.PLAYMODE_DEMO;
+                this.playbackspeed = 1;
+                this.slowmotion_counter = 0;
+                this.adjustScrolling(true);
+            }            
             break;
-                
+        }       
         case PauseMenu.MENUACTION_NEXTLEVEL:
         {   this.game.removeScreen();
             var top = this.game.getTopScreen();
@@ -976,60 +982,68 @@ GameScreen.prototype.menuAction = function(id)
             break;
         }
         case PauseMenu.MENUACTION_STOREWALK:
-            this.level.setDemo(walk);
+        {   this.level.setDemo(walk);
             this.game.removeScreen();
             break;
-            
+        }
         case PauseMenu.MENUACTION_UNDO:
-            this.playmode = PLAYMODE_UNDO;
+        {   this.playmode = PLAYMODE_UNDO;
             this.diduse_undo = true;
             break;
-                            
+        }                   
         case PauseMenu.MENUACTION_SINGLESTEP_ON:
-            this.singlestep = true;
+        {   this.singlestep = true;
             this.diduse_singlestep = true;
             this.createMenuScreen(true);
             break;      
-                
+        }        
         case PauseMenu.MENUACTION_SINGLESTEP_OFF:
-            this.singlestep = false;
+        {   this.singlestep = false;
             this.createMenuScreen(true);
             break;      
-                
+        }        
         case PauseMenu.MENUACTION_FORWARD:
-            this.playbackspeed = 1;
+        {   this.playbackspeed = 1;
             break;
+        }
         case PauseMenu.MENUACTION_BACKWARD:
-            this.playbackspeed = -1;
+        {   this.playbackspeed = -1;
             break;              
+        }
         case PauseMenu.MENUACTION_FASTFORWARD:
-            this.playbackspeed = 16;
+        {   this.playbackspeed = 16;
             break;              
+        }
         case PauseMenu.MENUACTION_FASTBACKWARD:
-            this.playbackspeed = -16;
+        {   this.playbackspeed = -16;
             break;              
+        }
         case PauseMenu.MENUACTION_SLOWMOTION:
-            this.playbackspeed = 0;      // value 0 has special meaning  
+        {   this.playbackspeed = 0;      // value 0 has special meaning  
             break;
-                
+        }    
         case PauseMenu.MENUACTION_MUSIC_OFF:
-            this.game.setMusicActive(false);
+        {   this.game.setMusicActive(false);
             this.game.stopMusic();
             this.createMenuScreen(false);
             break;                      
+        }
         case PauseMenu.MENUACTION_MUSIC_OFF_POPUP:
-            this.game.setMusicActive(false);
+        {   this.game.setMusicActive(false);
             this.game.stopMusic();
             break;       
+        }
         case PauseMenu.MENUACTION_MUSIC_ON:
-            this.game.setMusicActive(true);
+        {   this.game.setMusicActive(true);
             this.game.startCategoryMusic(this.level.getCategory());
             this.createMenuScreen(false);
             break;
+        }
         case PauseMenu.MENUACTION_MUSIC_ON_POPUP:
-            this.game.setMusicActive(true);
+        {   this.game.setMusicActive(true);
             this.game.startCategoryMusic(this.level.getCategory());
             break;                  
+        }
     }
 };
 

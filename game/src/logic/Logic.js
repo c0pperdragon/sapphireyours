@@ -108,7 +108,7 @@ var EARTH_RIGHT       = 223;
 var LASER_H           = 224;
 var LASER_V           = 225;
 var LASER_BL          = 226;
-var  LASER_BR         = 227;
+var LASER_BR          = 227;
 var LASER_TL          = 228;
 var LASER_TR          = 229;
 var LASER_L           = 230;
@@ -2585,9 +2585,17 @@ Logic.prototype.getAnimationBufferSize = function()
     return this.transactions.length;
 };
 
+Logic.prototype.getFistAnimationOfTurn = function()
+{
+    for (var i=this.transactions.length-1; i>=0; i--)
+    {   if (this.transactions[i]===OPCODE_STARTOFTURN) return i;
+    }
+    return 0;
+};
+
 Logic.prototype.getAnimation = function(idx)
 {
-    return this.transactions.get(idx);
+    return this.transactions[idx];
 };
     
 Logic.prototype.getNumberOfEmeraldsStillNeeded = function()

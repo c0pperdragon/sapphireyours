@@ -118,7 +118,7 @@ GamePadInputBuffer.prototype.setAction1Button = function(device,pressed)
 GamePadInputBuffer.prototype.setAction2Button = function(device,pressed)
 {
     // memorize previous state of the action key
-    var prev = numaction2buttons>0; 
+    var prev = this.numaction2buttons>0; 
     
     // insert press-info for device into array if not already present
     if (pressed)
@@ -132,7 +132,7 @@ GamePadInputBuffer.prototype.setAction2Button = function(device,pressed)
     }
         
     // check if state of buttons has changed - must adjust action mode
-    var now = numaction2buttons>0;
+    var now = this.numaction2buttons>0;
     if (now && !prev)
     {   this.actionmode = GamePadInputBuffer.MODE_BOMB; 
         this.actionmode_was_used = false;
@@ -150,7 +150,7 @@ GamePadInputBuffer.prototype.setAction2Button = function(device,pressed)
 GamePadInputBuffer.prototype.setDirection = function(device, dir)
 {
     // memorize previous direction state
-    var prev = currentDirection();
+    var prev = this.currentDirection();
     
     // add a direction info to the stack or just update an existing one 
     updatestack: 
@@ -185,7 +185,7 @@ GamePadInputBuffer.prototype.setDirection = function(device, dir)
     }
         
     // if direction state was changed, do post-processing
-    var curr = currentDirection(); 
+    var curr = this.currentDirection(); 
     if (curr!=prev)     
     {   // enqueue command for new direction (but not the none-direction)
         if (curr!=GamePadInputBuffer.DIRECTION_NONE && this.nummoves<this.movebuffer.length)

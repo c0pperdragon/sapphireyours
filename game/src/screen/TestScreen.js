@@ -20,14 +20,17 @@ TestScreen.prototype.tick = function()
 
 TestScreen.prototype.draw = function()
 {    
+    var screenwidth = this.game.screenwidth;
+    var screenheight = this.game.screenheight;
+
     var vr = this.game.vectorRenderer;
-    vr.startDrawing (this.screenwidth, this.screenheight);  
+    vr.startDrawing (screenwidth, screenheight);  
     var tr = this.game.textRenderer;
-    tr.startDrawing (this.screenwidth, this.screenheight);    
+    tr.startDrawing (screenwidth, screenheight);    
     var gr = this.game.gfxRenderer;
-    gr.startDrawing (this.screenwidth, this.screenheight);    
+    gr.startDrawing (screenwidth, screenheight);    
     var tir = this.game.tileRenderer;
-    tir.startDrawing (this.screenwidth, this.screenheight, 60, 0,0,0,0);
+    tir.startDrawing (screenwidth, screenheight, 60, 0,0,0,0);
     
     vr.addRoundedRect(10,10,100,100, 5,10, Game.getColorForDifficulty(3));   
     var s = 150;

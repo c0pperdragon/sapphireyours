@@ -71,15 +71,7 @@ Game.prototype.$ = function()
 
     // show a loading screen at start
     this.addScreen(new LoadingScreen().$(this));
-    
-    // set up game loop
-    
-    window.requestAnimationFrame (ftick);
-    function ftick() 
-    {   window.requestAnimationFrame(ftick);
-        that.tick();
-    };   
-    
+        
     // install input handlers
     document.addEventListener('keydown', function(event)
     {   that.onKeyDown(KeyEvent.toNumericCode(event.code)); 
@@ -90,9 +82,17 @@ Game.prototype.$ = function()
     
     // cause further loading to progress
     this.loadLevels(function() 
-    {   that.replaceTopScreen(new MainMenuScreen().$(that));        
+    {   //that.replaceTopScreen(new TestScreen().$(that));
+        that.replaceTopScreen(new MainMenuScreen().$(that));        
     });
     
+    // set up game loop
+    window.requestAnimationFrame (ftick);
+    function ftick() 
+    {   that.tick();    // in case of exception stop the loop
+        window.requestAnimationFrame(ftick);        
+    };   
+
     return this;
 };
     
@@ -320,7 +320,8 @@ Game.prototype.tick = function()
     if (this.needRedraw) 
     {   if (this.allRenderersLoaded()) 
         {   this.needRedraw = false;
-            this.draw();
+            try { this.draw(); } 
+            catch (e) { console.warn(e); }            
         }
     }
 };
@@ -422,8 +423,7 @@ Game.prototype.loadRenderers = function()
     this.gfxRenderer = new GfxRenderer().$(gl);
     console.log("GfxRenderer created");      
     
-    this.tileRenderer = new TileRenderer().$(gl);
-    this.tileRenderer.loadImage("1man", []);
+    this.tileRenderer = new TileRenderer().$(gl, ["1man"]);
     console.log("TileRenderer created");      
 
     // check if any error has occured
@@ -650,5 +650,10 @@ Game.arraycopy = function(from,fromstart,to,tostart,length)
     else
     {   for (var i=length-1; i>=0; i--) to[tostart+i] = from[fromstart+i];
     }    
+};
+
+Game.currentTimeMillis = function()
+{
+    return Date.now();
 };
 
