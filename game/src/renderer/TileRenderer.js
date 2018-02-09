@@ -156,7 +156,7 @@ TileRenderer.prototype.$ = function(gl,imagelist)
     // loading progress information
     this.imagesRequested = imagelist;
     this.imagesLoaded = new Map();
-    this.tilesLoaded = 1;  // tile 0 is empty air
+    this.tilesLoaded = 0;
     this.tmpCanvas = document.createElement('canvas');
     this.tmpCanvas.width = TileRenderer.TILEWIDTH;
     this.tmpCanvas.height = TileRenderer.TILEHEIGHT;
@@ -191,6 +191,7 @@ TileRenderer.prototype.startLoadImage = function(filename)
                     var tn = that.tilesLoaded++;
                     tiles.push(tn);
                     
+                    cc.clearRect(0,0, TileRenderer.TILEWIDTH, TileRenderer.TILEHEIGHT);
                     cc.drawImage(image, TileRenderer.TILEWIDTH*x, TileRenderer.TILEHEIGHT*y, 
                                         TileRenderer.TILEWIDTH, TileRenderer.TILEHEIGHT, 
                                         0,0,
@@ -207,10 +208,13 @@ TileRenderer.prototype.startLoadImage = function(filename)
                 }
             }
             
-            if (tiles.length<1) tiles=[0];
+            if (tiles.length<1) tiles=[0];  // have 0-tile as default (may clash with real 0-tile)
+            that.imagesLoaded.set(filename, tiles);   
             
-            that.imagesLoaded.set(filename, tiles);            
-//            console.log("done loading",filename,":",tiles);            
+            if (that.imagesLoaded.size==that.imagesRequested.length)
+            {   console.log("Loaded "+that.imagesRequested.length
+                +" images into "+that.tilesLoaded+" tiles");
+            }
         }
     );
     image.addEventListener

@@ -45,7 +45,6 @@ var EXPLODE2_SAPPHIRE = 153;
 var EXPLODE3_SAPPHIRE = 154;
 var EXPLODE4_SAPPHIRE = 156;
 var BIGBOMB_EXPLODE   = 157;
-//  public final static byte YAMYAM_EXPLODE    = -30;
 var BUG_EXPLODE       = 158;
 var LORRY_EXPLODE     = 159;
 var ACTIVEBOMB0       = 160;
@@ -89,7 +88,6 @@ var MAN2_DIGDOWN      = 197;
 var CITRINE_FALLING   = 198;
 var CITRINE_BREAKING  = 199;
 var ROCKEMERALD_FALLING= 200;
-var CUSHION_BUMPING   = 201;
 var EXPLODE1_RUBY     = 202;
 var EXPLODE2_RUBY     = 203;
 var EXPLODE3_RUBY     = 204;
@@ -101,6 +99,7 @@ var EXPLODE3_TNT     = 209;
 var EXPLODE4_TNT     = 210;
     
 // virtual pieces (exist only during animations)
+var CUSHION_BUMPING   = 219;
 var EARTH_UP          = 220;
 var EARTH_DOWN        = 221;
 var EARTH_LEFT        = 222;
@@ -765,14 +764,7 @@ Logic.prototype.piecesmove = function()
                         else 
                         {   this.transform(x,y, BOMB_EXPLODE);
                         }
-                        break;
-
-                    case SWAMP_UP:
-                    case SWAMP_LEFT:
-                    case SWAMP_RIGHT:
-                    case SWAMP_DOWN:
-                        this.transform(x,y, SWAMP);                        
-                        //$FALL-THROUGH$           
+                        break;          
                         
                     case SWAMP:                     
                         if (this.level.getSwampRate()>0)
@@ -783,9 +775,11 @@ Logic.prototype.piecesmove = function()
                                     if (this.is(x,y-1,EARTH))
                                     {   this.highlight(x,y-1, EARTH);
                                         this.transform(x,y-1, SWAMP_UP);
+                                        this.transform(x,y-1, SWAMP);
                                     }
                                     else if(this.is(x,y-1,AIR))
-                                    {   this.transform(x,y-1, SWAMP_UP);                                 
+                                    {   this.transform(x,y-1, SWAMP_UP);
+                                        this.transform(x,y-1, SWAMP);
                                     }
                                     break;
                                 case 1:
@@ -793,6 +787,7 @@ Logic.prototype.piecesmove = function()
                                     if (this.is(x-1,y,EARTH))
                                     {   this.highlight(x-1,y, EARTH);
                                         this.transform(x-1,y, SWAMP_LEFT);
+                                        this.transform(x-1,y, SWAMP);
                                     }
                                     else if (this.is(x-1,y,AIR))
                                     {   this.transform(x-1,y, SWAMP_LEFT);
@@ -804,6 +799,7 @@ Logic.prototype.piecesmove = function()
                                     if (this.is(x+1,y,EARTH))
                                     {   this.highlight(x+1,y, EARTH);
                                         this.transform(x+1,y, SWAMP_RIGHT);                                  
+                                        this.transform(x+1,y, SWAMP);  
                                     }
                                     else if (this.is(x+1,y,AIR))
                                     {   this.transform(x+1,y, SWAMP_RIGHT);
@@ -815,6 +811,7 @@ Logic.prototype.piecesmove = function()
                                     if (this.is(x,y+1,EARTH))
                                     {   this.highlight(x,y+1, EARTH);
                                         this.transform(x,y+1, SWAMP_DOWN);
+                                        this.transform(x,y+1, SWAMP);
                                     }
                                     else if (this.is(x,y+1,AIR))
                                     {   this.transform(x,y+1, DROP);                                 
@@ -1539,7 +1536,7 @@ Logic.prototype.is_neardestruct_target = function (x, y)
         // check presence of player/enemies on directly adjacent square
         var player0adjacent = false;
         var player1adjacent = false;
-        if (pi==SWAMP || pi==SWAMP_LEFT || pi==SWAMP_RIGHT || pi==SWAMP_UP || pi==SWAMP_DOWN)
+        if (pi==SWAMP)
         {   return true;
         }
         if ((wpp=this.whose_player_piece(pi))>=0)
@@ -1547,7 +1544,7 @@ Logic.prototype.is_neardestruct_target = function (x, y)
             else        player1adjacent = true; 
         }
         pi = this.piece(x,y+1);
-        if (pi==SWAMP || pi==SWAMP_LEFT || pi==SWAMP_RIGHT || pi==SWAMP_UP || pi==SWAMP_DOWN)
+        if (pi==SWAMP)
         {   return true;
         }
         if ((wpp=this.whose_player_piece(pi))>=0)
@@ -1555,7 +1552,7 @@ Logic.prototype.is_neardestruct_target = function (x, y)
             else        player1adjacent = true; 
         }
         pi = this.piece(x-1,y);
-        if (pi==SWAMP || pi==SWAMP_LEFT || pi==SWAMP_RIGHT || pi==SWAMP_UP || pi==SWAMP_DOWN)
+        if (pi==SWAMP)
         {   return true;
         }
         if ((wpp=this.whose_player_piece(pi))>=0)
@@ -1563,7 +1560,7 @@ Logic.prototype.is_neardestruct_target = function (x, y)
             else        player1adjacent = true; 
         }
         pi = this.piece(x+1,y);
-        if (pi==SWAMP || pi==SWAMP_LEFT || pi==SWAMP_RIGHT || pi==SWAMP_UP || pi==SWAMP_DOWN)
+        if (pi==SWAMP)
         {   return true;
         }
         if ((wpp=this.whose_player_piece(pi))>=0)
