@@ -177,7 +177,8 @@ LevelRenderer.prototype.$ = function(gl)
         "Laser", "Laser Side", "Laser Reflect"
     ]);
     this.doneLoading = false;
-    this.tmp_disable_static_tile = (new Array(MAPWIDTH*MAPHEIGHT)).map(x=>false);
+    this.tmp_disable_static_tile = new Array(MAPWIDTH*MAPHEIGHT);
+    this.tmp_disable_static_tile.fill(false);
     
     return this;
 };

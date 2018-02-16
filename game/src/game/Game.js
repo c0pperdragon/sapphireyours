@@ -47,8 +47,10 @@ Game.prototype.$ = function()
     (   "webgl", 
         {   antialias: false,
             alpha: false,    
+            depth: false
         }   
     );
+    console.log("canvas",this.canvas, "context",this.gl);
     
     this.screens = [];
     this.levelpacks = [];
