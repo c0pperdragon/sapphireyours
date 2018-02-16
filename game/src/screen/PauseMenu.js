@@ -132,7 +132,7 @@ PauseMenu.prototype.addAction = function(action)
     
 PauseMenu.prototype.addNonAction = function(label)
 {
-    this.actions[numactions] = MENUACTION_NONEACTION;
+    this.actions[this.numactions] = PauseMenu.MENUACTION_NONEACTION;
     this.numactions++;
     this.none_action_label = label;
 };
@@ -227,8 +227,8 @@ PauseMenu.prototype.drawOrLayout = function(draw)
     {   for (var i=0; i<this.info.length; i++)
         {   if (draw)
             {   if (this.message!=null)  // info comes from an important message: display it centered
-                {   tr.addString(this.info[i], menux+menuwidth/2-tr.determineStringWidth(this.info[i],th)/2,
-                                 y, th, false, 0xffffffff, TextRenderer.WEIGHT_PLAIN);
+                {   tr.addString(this.info[i], this.menux+this.menuwidth/2-tr.determineStringWidth(this.info[i],th)/2
+                        ,y, th, false, 0xffffffff, TextRenderer.WEIGHT_PLAIN);
                 }
                 else    
                 {   tr.addString(this.info[i], x,y, th, false, 0xffffffff, TextRenderer.WEIGHT_PLAIN);

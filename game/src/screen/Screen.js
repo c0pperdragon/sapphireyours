@@ -66,21 +66,4 @@ Screen.prototype.onPointerMove = function(x,y)
 {
 };
 
-// some toolbox methods to be used on various screens
 
-/** 
- * 	Create string of the form m:ss of a given number of seconds. 
- *  Only non-negative seconds work correctly.
- */ 
-
-Screen.buildTimeString = function(seconds)
-{
-    var s = seconds%60;
-    var m = seconds - s*60;
-    if (s>=10)
-    {   return m+":"+s;
-    }
-    else
-    {	return m+":0"+s;
-    }			
-} ;

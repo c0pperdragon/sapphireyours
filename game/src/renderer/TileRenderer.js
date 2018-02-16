@@ -33,8 +33,8 @@ TileRenderer.TILEWIDTH = 60;
 TileRenderer.TILEHEIGHT = 60;
 TileRenderer.ATLASWIDTH = 2048;
 TileRenderer.ATLASHEIGHT = 2048; // 1024; 
-TileRenderer.TILESPERROW = Math.floor(TileRenderer.ATLASWIDTH/(TileRenderer.TILEWIDTH+2));
-TileRenderer.TILEROWS    = Math.floor(TileRenderer.ATLASHEIGHT/(TileRenderer.TILEHEIGHT+2));
+TileRenderer.TILESPERROW = Math.floor(TileRenderer.ATLASWIDTH/(TileRenderer.TILEWIDTH+4));
+TileRenderer.TILEROWS    = Math.floor(TileRenderer.ATLASHEIGHT/(TileRenderer.TILEHEIGHT+4));
 TileRenderer.ATLASTILES = TileRenderer.TILESPERROW*TileRenderer.TILEROWS;
 
 TileRenderer.MAXTILES = 64*64;
@@ -53,8 +53,8 @@ TileRenderer.vertexShaderCode =
             "  float tx = aTile[2]-ty*"+TileRenderer.TILESPERROW+".0;      "+     // x position (in tiles in atlas)
             "  float rotate = idiv(aTile[3],60.0);            "+     // rotation modifier
             "  float shrink = aTile[3]-rotate*60.0;           "+     // shrink modifier
-            "  vTextureCoordinates[0] = (tx*("+(TileRenderer.TILEWIDTH+2)+".0)+1.0+aCorner[0]*"+TileRenderer.TILEWIDTH+".0)/"+TileRenderer.ATLASWIDTH+".0;  "+
-            "  vTextureCoordinates[1] = (ty*("+(TileRenderer.TILEWIDTH+2)+".0)+1.0+aCorner[1]*"+TileRenderer.TILEWIDTH+".0)/"+TileRenderer.ATLASHEIGHT+".0; "+
+            "  vTextureCoordinates[0] = (tx*"+(TileRenderer.TILEWIDTH+4)+".0+2.0+aCorner[0]*"+TileRenderer.TILEWIDTH+".0)/"+TileRenderer.ATLASWIDTH+".0;  "+
+            "  vTextureCoordinates[1] = (ty*"+(TileRenderer.TILEHEIGHT+4)+".0+2.0+aCorner[1]*"+TileRenderer.TILEWIDTH+".0)/"+TileRenderer.ATLASHEIGHT+".0; "+
             "  float px = aCorner[0]-0.5;                 "+    // bring center of tile to 0/0 
             "  float py = aCorner[1]-0.5;                 "+
             "  px = px*(1.0-shrink/60.0);                 "+    // apply shrink value
@@ -199,8 +199,8 @@ TileRenderer.prototype.startLoadImage = function(filename)
                     gl.texSubImage2D
                     (   gl.TEXTURE_2D, 
                         0, 
-                        (tn % (TileRenderer.TILESPERROW)) * (TileRenderer.TILEWIDTH+2),
-                        Math.floor(tn / (TileRenderer.TILESPERROW)) * (TileRenderer.TILEHEIGHT+2), 
+                        (tn % (TileRenderer.TILESPERROW)) * (TileRenderer.TILEWIDTH+4) + 2,
+                        Math.floor(tn / (TileRenderer.TILESPERROW)) * (TileRenderer.TILEHEIGHT+4) + 2, 
                         gl.RGBA, 
                         gl.UNSIGNED_BYTE,
                         that.tmpCanvas 
@@ -246,7 +246,7 @@ TileRenderer.prototype.startDrawing = function(viewportwidth,viewportheight, scr
 {
     this.screentilesize = screentilesize;        
     this.bufferTile.length = 0;
-    
+
     // when having same offsets, only one draw is necessary      
     if (offx0==offx1 && offy0==offy1)
     {   Matrix.setIdentityM(this.matrix,0);     

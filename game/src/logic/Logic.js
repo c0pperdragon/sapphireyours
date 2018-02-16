@@ -2400,10 +2400,12 @@ Logic.prototype.rollback = function()
     
     //  ------ modifications of the map that cause one or more entries in the transaction table -----
     
-Logic.prototype.changecounter = function(index, increment)   // index<=255, only increment by a 20-bit value
+Logic.prototype.changecounter = function(index, increment)   // index<=255, only increment by a signed 20-bit value
 {
-        this.counters[index] += increment;
+    if (increment!==0)
+    {   this.counters[index] += increment;
         this.transactions.push (TRN_COUNTER | (index<<20) | (increment&0xfffff));
+    }
 };
 
 Logic.prototype.transform = function(x, y, newpiece)
@@ -2512,7 +2514,7 @@ Logic.prototype.isOverForSomeTime = function()
 Logic.prototype.totalTimeForSolution = function()
 {
     if (!this.isSolved()) return 0;
-    return turnsdone - this.timeSinceAllExited() + 1;
+    return this.turnsdone - this.timeSinceAllExited() + 1;
 };
     
 Logic.prototype.timeSinceAllExited = function()

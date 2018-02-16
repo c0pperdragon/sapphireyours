@@ -34,6 +34,8 @@ var LevelRenderer = function()
     this.anim_earth_left = null;        // int[][]  -- contains animation for each configuration
     this.anim_earth_right = null;       // int[][]  -- contains animation for each configuration
     
+    this.anim_man1_nonmoving = null; 
+    this.anim_man2_nonmoving = null;
 //    this.anim_sapphire_fall = null; 
     this.anim_sapphire_away = null; 
 //    this.anim_sapphire_shine = null; 
@@ -55,7 +57,7 @@ var LevelRenderer = function()
     this.anim_bag_left = null;
     this.anim_bag_right = null;
     this.anim_bag_opening = null;
-    this.anim_bomb_fall = null;
+//    this.anim_bomb_fall = null;
     this.anim_bomb_left = null;
     this.anim_bomb_right = null;
 //    this.anim_sand = null;
@@ -362,6 +364,8 @@ LevelRenderer.prototype.isLoaded = function()
     {   this.anim_earth_down[i] = this.createOverlayAnimation(this.earthtiles[i], anim_removal);
     }
     
+    this.anim_man1_nonmoving = this.createAnimationDescription(this.getImage("1man")[0]); 
+    this.anim_man2_nonmoving = this.createAnimationDescription(this.getImage("2man")[0]); 
     this.anim_rock_right = this.createAnimationDescription(this.getImage("Stone Right")[0]);    
     this.anim_rock_left = this.createAnimationDescription(this.getImage("Stone Left")[0]);
     this.anim_bag_right = this.createAnimationDescription(this.getImage("Bag")[0]);
@@ -769,26 +773,6 @@ LevelRenderer.prototype.determineMoveAnimation = function(oldpiece, newpiece, x,
             else if (dx>0) { return this.anim_bag_right; }                           
             break;
         }
-        case EMERALD:
-        case EMERALD_FALLING:
-        {   if (dy>=0) { return this.anim_emerald_fall; }
-            break;              
-        }
-        case SAPPHIRE:
-        case SAPPHIRE_FALLING:
-        {   if (dy>=0) { return this.anim_sapphire_fall; }
-            break;          
-        }
-        case CITRINE:
-        case CITRINE_FALLING:
-        {   if (dy>=0) { return this.anim_citrine_fall; }
-            break;
-        }
-        case RUBY:
-        case RUBY_FALLING:
-        {   if (dy>=0) { return this.anim_ruby_fall; }
-            break;              
-        }
         case BOMB:
         case BOMB_FALLING:
         {   if (dx<0) { return this.anim_bomb_left; }
@@ -813,7 +797,7 @@ LevelRenderer.prototype.determineMoveAnimation = function(oldpiece, newpiece, x,
         }
     }
 
-    // when no animation is explicitly defined, use the still-stand animation of the new piece (covers many "falling" and "pushing" actions)
+    // when no animation is explicitly defined, use the default animation of the new piece (covers many "falling" and "pushing" actions)
     return this.piecetiles[newpiece];
 };
     
@@ -971,7 +955,9 @@ LevelRenderer.prototype.determineTransformAnimation = function (oldpiece, newpie
         case EXPLODE4_TNT: { return this.anim_explode4_tnt; }
     }
     switch (newpiece)
-    {   case ACTIVEBOMB5:
+    {   case MAN1: { return this.anim_man1_nonmoving; }
+        case MAN2: { return this.anim_man2_nonmoving; }   
+        case ACTIVEBOMB5:
         {   if (oldpiece==AIR) { return this.anim_timebomb_placement; }
             break;
         }
@@ -996,22 +982,6 @@ LevelRenderer.prototype.determineTransformAnimation = function (oldpiece, newpie
         case DOOR_CLOSING: { return null; }
         case DOOR_CLOSED: { return this.anim_door_closing; }
         case ONETIMEDOOR_CLOSED: { return this.anim_door_onetime; }
-        case MAN1_DIGLEFT: { return this.anim_man1_digleft; }
-        case MAN1_DIGRIGHT: { return this.anim_man1_digright; }
-        case MAN1_DIGUP: { return this.anim_man1_digup; }
-        case MAN1_DIGDOWN: { return this.anim_man1_digdown; }
-        case MAN1_PUSHLEFT: { return this.anim_man1_pushleft; }
-        case MAN1_PUSHRIGHT: { return this.anim_man1_pushright; }
-        case MAN1_PUSHUP: { return this.anim_man1_pushup; }
-        case MAN1_PUSHDOWN: { return this.anim_man1_pushdown; }
-        case MAN2_DIGLEFT: { return this.anim_man2_digleft; }
-        case MAN2_DIGRIGHT: { return this.anim_man2_digright; }
-        case MAN2_DIGUP: { return this.anim_man2_digup; }
-        case MAN2_DIGDOWN: { return this.anim_man2_digdown; }
-        case MAN2_PUSHLEFT: { return this.anim_man2_pushleft; }
-        case MAN2_PUSHRIGHT: { return this.anim_man2_pushright; }
-        case MAN2_PUSHUP: { return this.anim_man2_pushup; }
-        case MAN2_PUSHDOWN: { return this.anim_man2_pushdown; }
         case CUSHION: 
         {   if (oldpiece==CUSHION_BUMPING) { return null; }
             break;
@@ -1029,7 +999,7 @@ LevelRenderer.prototype.determineTransformAnimation = function (oldpiece, newpie
         }
         case EXPLODE1_TNT: { return this.anim_explode0_tnt; }
     }
-    // when no animation is explicitly defined, use the still-stand animation of the new piece (covers many "falling" and "pushing" actions)
+    // when no animation is explicitly defined, use the default animation of the new piece (covers many "falling" and "pushing" actions)
     return this.piecetiles[newpiece]; 
 };
 

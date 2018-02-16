@@ -132,7 +132,7 @@ GameScreen.prototype.tick = function()
         case GameScreen.PLAYMODE_DEMO:
         case GameScreen.PLAYMODE_REPLAY:
             for (var i=0; i<frames; i++)
-            {   gamePlayback();
+            {   this.gamePlayback();
             }
             this.adjustScrolling(true);              
             break;           
@@ -206,7 +206,7 @@ GameScreen.prototype.draw = function()
         if (this.playmode==GameScreen.PLAYMODE_UNDO)
         {   vr.addPlayArrow(x,y, iconsize,iconsize, -1, color);
         }
-        else if (playmode==GameScreen.PLAYMODE_REPLAY || playmode==GameScreen.PLAYMODE_DEMO)
+        else if (this.playmode==GameScreen.PLAYMODE_REPLAY || this.playmode==GameScreen.PLAYMODE_DEMO)
         {   if(this.playbackspeed>1)
             {   vr.addFastForwardArrow(x,y,iconsize,iconsize, 1, color);
             }
@@ -369,6 +369,11 @@ GameScreen.prototype.adjustScrolling = function(force)
     {   this.screentilesize=5;
     }
 
+    var screenwidth = this.game.screenwidth;
+    var screenheight = this.game.screenheight;
+    var screentilesize = this.screentilesize;
+    var frames_left = this.frames_left;
+
     this.inputfocushighlightx = -1;
     this.inputfocushighlighty = -1;      
     var populatedwidth = this.logic.getPopulatedWidth();
@@ -382,29 +387,30 @@ GameScreen.prototype.adjustScrolling = function(force)
     var playerx_at_end_1 = this.logic.getPlayerPositionX(1);
     var playerx_at_begin_1 = playerx_at_end_1;
     var playery_at_end_1 = this.logic.getPlayerPositionY(1);
-    var playery_at_begin_1 = this.playery_at_end_1;
+    var playery_at_begin_1 = playery_at_end_1;
 
-    if (this.frames_left>0)
+    if (frames_left>0)
     {
-        var num = this.logic.getAnimationBufferSize();
-        for (var idx=0; idx<num; idx++)
+        var animstart = this.logic.getFistAnimationOfTurn();
+        var animend = this.logic.getAnimationBufferSize();
+        for (var idx=animstart; idx<animend; idx++)
         {
             var trn = this.logic.getAnimation(idx);
-            if ((trn & Logic.TRN_MASK)==Logic.TRN_COUNTER)              
-            {   var index = (trn>>16) & 0x0fff;
-                var increment = trn & 0xffff;
-                if (increment>=0x8000) increment=0x10000-increment; // sign extend
+            if ((trn & OPCODE_MASK)==TRN_COUNTER)              
+            {   var index = (trn>>20) & 0xff;
+                var increment = trn & 0xfffff;
+                if (increment>=0x80000) increment-=0x100000; // sign extend
                 switch (index) 
-                {   case Logic.CTR_MANPOSX1:
+                {   case CTR_MANPOSX1:
                         playerx_at_begin_0 -= increment;
                         break;
-                    case Logic.CTR_MANPOSY1:
+                    case CTR_MANPOSY1:
                         playery_at_begin_0 -= increment;
                         break;
-                    case Logic.CTR_MANPOSX2:
+                    case CTR_MANPOSX2:
                         playerx_at_begin_1 -= increment;
                         break;
-                    case Logic.CTR_MANPOSY2:
+                    case CTR_MANPOSY2:
                         playery_at_begin_1 -= increment;
                         break;
                 }                       
@@ -412,11 +418,6 @@ GameScreen.prototype.adjustScrolling = function(force)
         }
     }
         
-    var screenwidth = this.game.screenwidth;
-    var screenheight = this.game.screenheight;
-    var screentilesize = this.screentilesize;
-    var frames_left = this.frames_left;
-    
     // compute current player positions
     var playerposx0 = interpolatePixels(playerx_at_begin_0*screentilesize+screentilesize/2,
                                             playerx_at_end_0*screentilesize+screentilesize/2, frames_left); 
@@ -426,6 +427,7 @@ GameScreen.prototype.adjustScrolling = function(force)
                                             playerx_at_end_1*screentilesize+screentilesize/2, frames_left); 
     var playerposy1 = interpolatePixels(playery_at_begin_1*screentilesize+screentilesize/2, 
                                             playery_at_end_1*screentilesize+screentilesize/2, frames_left);                                                             
+                                           
     // when input is switched to second player, move highlight there also 
     if (this.logic.getNumberOfPlayers()>1 && this.keyboardTranslator.hasSwitchedControls())
     {   inputfocushighlightx = playerposx1;
@@ -465,7 +467,7 @@ GameScreen.prototype.adjustScrolling = function(force)
         }                               
         // use the values also for second set of values to only get a single screen
         this.screenscrollx1 = this.screenscrollx0;            
-        this.screenscrolly1 = this.screenscrolly0;            
+        this.screenscrolly1 = this.screenscrolly0;   
     }
         
     // for the two-player mode, the calculation is also done with locking the scolling when any drag is in progress
@@ -513,7 +515,7 @@ GameScreen.prototype.adjustScrolling = function(force)
                 calculateScreenOffsetY(screenheight, screentilesize, playerposy1, populatedheight, true), step);
         }
     }
-    
+   
     // after computation send current scrolling information to the touch input handler(s)
     this.inputGrid[0].synchronizeWithGame(
             this.screenscrollx0, this.screenscrolly0, screentilesize, playerx_at_end_0, playery_at_end_0);
@@ -526,15 +528,15 @@ GameScreen.prototype.adjustScrolling = function(force)
     {   
         if (value<target)
         {   if (value+step<target)
-            {   return value+step;
+            {   return Math.round(value+step);
             }
         }
         else if (value>target)
         {   if (value-step>target)
-            {   return value-step;
+            {   return Math.round(value-step);
             }
         }
-        return target;
+        return Math.round(target);
     }    
     function interpolatePixels(pix1, pix2, frames_until_endposition)
     {
@@ -654,10 +656,10 @@ GameScreen.prototype.gamePlayback = function()
     while (this.frames_left<0)           
     {   if (this.step<=this.logic.getTurnsInWalk())
         {   this.step++;
-            this.logic.gototurn(step);
+            this.logic.gototurn(this.step);
             this.frames_left += LevelRenderer.FRAMESPERSTEP;             
             if (this.playbackspeed==1) 
-            {   if (this.game.soundPlayer.playStep(this.logic))
+            {   if (this.game.soundPlayer && this.game.soundPlayer.playStep(this.logic))
                 {   screenshaketime = 3;
                 }
             }               
@@ -704,11 +706,11 @@ GameScreen.prototype.gameUndo = function()
     {   this.frames_left++;
         if (this.frames_left>LevelRenderer.FRAMESPERSTEP-1)
         {   this.step--;
-            this.logic.gototurn(step);
-            this.walk.trimRecord(step);
+            this.logic.gototurn(this.step);
+            this.walk.trimRecord(this.step);
             this.frames_left = 0;
             if ( this.step<=0)       
-            {   this.playmode = PLAYMODE_RECORD;
+            {   this.playmode = GameScreen.PLAYMODE_RECORD;
                 this.createMenuScreen(false);                
             }
         }
@@ -726,24 +728,14 @@ GameScreen.prototype.stopRecordingTimeMeasurement = function()
     {   var seconds = Math.floor((Game.currentTimeMillis() - this.time_at_record_start) / 1000);
         this.time_at_record_start = 0;
         if (seconds>0)
-        {   var solvegrade = this.game.getLevelSolvedGrade(level);
+        {   var solvegrade = this.game.getLevelSolvedGrade(this.level);
             if (solvegrade<0)
-            {   this.solvegrade += seconds;
-                if (this.solvegrade>0)
-                {   solvegrade=0;
-                }
+            {   solvegrade += seconds;
+                if (solvegrade>0) { solvegrade=0; }
                 this.game.setLevelSolvedGrade(this.level, solvegrade);
             }
         }
     }    
-};
-
-GameScreen.prototype.flushRecordingTimeMeasurement = function()
-{
-    if (this.time_at_record_start>0)
-    {   this.stopRecordingTimeMeasurement();
-        this.startRecordingTimeMeasurement();
-    }   
 };
     
 GameScreen.prototype.createMenuScreen = function(onlypopup)
@@ -765,10 +757,10 @@ GameScreen.prototype.createMenuScreen = function(onlypopup)
     // this only a small user-triggered menu for commands during game progress
     if(onlypopup)
     {   
-        if (this.playmode==GameScreen.PLAYMODE_RECORD || playmode==GameScreen.PLAYMODE_UNDO)
+        if (this.playmode==GameScreen.PLAYMODE_RECORD || this.playmode==GameScreen.PLAYMODE_UNDO)
         {   m.addPriorityAction(PauseMenu.MENUACTION_UNDO);
             m.addDefaultAction(PauseMenu.MENUACTION_CONTINUERECORDING);
-            m.addPriorityAction(startFromEditor ? PauseMenu.MENUACTION_EXITTOEDITOR : PauseMenu.MENUACTION_EXIT);
+            m.addPriorityAction(this.startFromEditor ? PauseMenu.MENUACTION_EXITTOEDITOR : PauseMenu.MENUACTION_EXIT);
             m.addAction(PauseMenu.MENUACTION_RESTART);              
             if (this.level.getDifficulty()>=5 || Game.DEVELOPERMODE)
             {   if (this.singlestep) 
@@ -790,7 +782,7 @@ GameScreen.prototype.createMenuScreen = function(onlypopup)
                     }                               
                 }
                 else  
-                {   m.addNonAction("Demo in "+buildTimeString(-solvegrade));
+                {   m.addNonAction("Demo in "+Game.buildTimeString(-solvegrade));
                 }
             }               
         }
@@ -808,11 +800,11 @@ GameScreen.prototype.createMenuScreen = function(onlypopup)
             {   m.addPriorityAction(PauseMenu.MENUACTION_FASTBACKWARD);
                 m.addDefaultAction(PauseMenu.MENUACTION_BACKWARD);
             }
-            m.addPriorityAction(this.playmode==PLAYMODE_DEMO ? PauseMenu.MENUACTION_LEAVEDEMO : PauseMenu.MENUACTION_LEAVEREPLAY);
-            m.addAction(startFromEditor ? PauseMenu.MENUACTION_EXITTOEDITOR : PauseMenu.MENUACTION_EXIT);
-            m.setMessage(this.playmode==PLAYMODE_DEMO ? "Viewing demo" : "Viewing replay");
+            m.addPriorityAction(this.playmode==GameScreen.PLAYMODE_DEMO ? PauseMenu.MENUACTION_LEAVEDEMO : PauseMenu.MENUACTION_LEAVEREPLAY);
+            m.addAction(this.startFromEditor ? PauseMenu.MENUACTION_EXITTOEDITOR : PauseMenu.MENUACTION_EXIT);
+            m.setMessage(this.playmode==GameScreen.PLAYMODE_DEMO ? "Viewing demo" : "Viewing replay");
         }
-        m.addAction(game.getMusicActive() ? PauseMenu.MENUACTION_MUSIC_OFF_POPUP : PauseMenu.MENUACTION_MUSIC_ON_POPUP);                    
+        m.addAction(this.game.getMusicActive() ? PauseMenu.MENUACTION_MUSIC_OFF_POPUP : PauseMenu.MENUACTION_MUSIC_ON_POPUP);                    
     }
     // this menu will be used before start of game or after the end (non-user triggered)
     else
@@ -825,7 +817,7 @@ GameScreen.prototype.createMenuScreen = function(onlypopup)
         if (this.logic.isKilled())
         {   m.addPriorityAction(PauseMenu.MENUACTION_RESTART);
             m.addDefaultAction(PauseMenu.MENUACTION_UNDO);              
-            m.addPriorityAction(startFromEditor ? PauseMenu.MENUACTION_EXITTOEDITOR : PauseMenu.MENUACTION_EXIT);               
+            m.addPriorityAction(this.startFromEditor ? PauseMenu.MENUACTION_EXITTOEDITOR : PauseMenu.MENUACTION_EXIT);               
             if (this.game.getLevelSolvedGrade(this.level)>=0 || Game.DEVELOPERMODE)
             {   if (this.level.numberOfDemos()>0)
                 {   m.addAction(PauseMenu.MENUACTION_SHOWDEMO);
@@ -843,10 +835,10 @@ GameScreen.prototype.createMenuScreen = function(onlypopup)
         {   if (this.canFindNextLevel)
             {   m.addDefaultAction(PauseMenu.MENUACTION_NEXTLEVEL);
             }
-            m.addPriorityAction(startFromEditor ? PauseMenu.MENUACTION_EXITTOEDITOR : PauseMenu.MENUACTION_EXIT);
+            m.addPriorityAction(this.startFromEditor ? PauseMenu.MENUACTION_EXITTOEDITOR : PauseMenu.MENUACTION_EXIT);
             m.addAction(PauseMenu.MENUACTION_RESTART);
             m.addAction(PauseMenu.MENUACTION_REPLAY);
-            if (startFromEditor)
+            if (this.startFromEditor)
             {   m.addAction(PauseMenu.MENUACTION_STOREWALK);
             }
 
@@ -862,7 +854,7 @@ GameScreen.prototype.createMenuScreen = function(onlypopup)
             else 
             {   var time = this.logic.totalTimeForSolution();
                 m.setMessage("Directly solved in "+getTurnTimeString(time)+"!");
-                game.setLevelSolvedGrade(level,2);
+                this.game.setLevelSolvedGrade(this.level,2);
             }
         }
         else if (this.step==0)
@@ -955,7 +947,7 @@ GameScreen.prototype.menuAction = function(id)
             this.playmode = GameScreen.PLAYMODE_REPLAY;
             this.playbackspeed = 1;
             this.slowmotion_counter = 0;
-            this.logic.gototurn(step);               
+            this.logic.gototurn(this.step);               
             break;
         }    
         case PauseMenu.MENUACTION_SHOWDEMO:
@@ -987,7 +979,7 @@ GameScreen.prototype.menuAction = function(id)
             break;
         }
         case PauseMenu.MENUACTION_UNDO:
-        {   this.playmode = PLAYMODE_UNDO;
+        {   this.playmode = GameScreen.PLAYMODE_UNDO;
             this.diduse_undo = true;
             break;
         }                   
@@ -1052,10 +1044,10 @@ GameScreen.prototype.onResize = function()
     this.layout();
 };
     
-GameScreen.onBackNavigation = function()
+GameScreen.prototype.onBackNavigation = function()
 {
     // when in the game screen, back navigation just calls up the ingame menu
-    createMenuScreen(true);    
+    this.createMenuScreen(true);    
 };
 
 GameScreen.prototype.onKeyDown = function(code)

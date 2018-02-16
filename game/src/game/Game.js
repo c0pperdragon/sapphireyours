@@ -1,6 +1,7 @@
 
 var Game = function()  
-{   this.gl = null;
+{   this.canvas = null;
+    this.gl = null;
     this.exitcall = null;
     
     this.screenwidth = 0;         // size of surface in pixel
@@ -24,10 +25,12 @@ var Game = function()
     this.usingKeyboardInput = false;
 
     this.levelpacks = null;
+    
+    this.solvegrades = null;
 };
 
 
-Game.DEVELOPERMODE = !true;
+Game.DEVELOPERMODE = true;
 Game.DEFAULTSOLVEDGRADE = -3*60;  // 3 minutes waiting time before level is considered "known"
 //  static SimpleProfiler profiler_onsound = new SimpleProfiler("Game.sound", 5);
 
@@ -36,16 +39,17 @@ Game.DEFAULTSOLVEDGRADE = -3*60;  // 3 minutes waiting time before level is cons
 Game.prototype.$ = function()
 {
     var that = this;
-
+    
     console.log("Starting up Sapphire Yours...");
-    this.gl = document.getElementById("canvas").getContext
+    
+    this.canvas = document.getElementById("canvas");
+    this.gl = this.canvas.getContext
     (   "webgl", 
         {   antialias: false,
             alpha: false,    
         }   
     );
-    this.screenwidth = 1000;
-    this.screenheight = 660;
+    
     this.screens = [];
     this.levelpacks = [];
         
@@ -62,6 +66,9 @@ Game.prototype.$ = function()
     // default to touch/mouse input unless otherwise directed 
     this.usingKeyboardInput = false;
 
+    // in-program memory about level solvings
+    this.solvegrades = new Map();
+    
     // clear the music player object - will be immediately filled 
     this.musicPlayer = null;
     this.startMusic("silence");
@@ -80,6 +87,18 @@ Game.prototype.$ = function()
     {   that.onKeyUp(KeyEvent.toNumericCode(event.code)); 
     });
     
+    // handle canvas size changes
+    setScreenAndCanvasSize();
+    window.addEventListener('resize', function(event){
+      var wbefore = that.screenwidth;
+      var hbefore = that.screenheight;
+      setScreenAndCanvasSize();
+      if (wbefore!=that.screenwidth || hbefore!=that.screenheight) {
+          that.notifyScreensAboutResize(); 
+          that.setDirty();
+      }
+    });      
+    
     // cause further loading to progress
     this.loadLevels(function() 
     {   //that.replaceTopScreen(new TestScreen().$(that));
@@ -92,10 +111,21 @@ Game.prototype.$ = function()
     {   that.tick();    // in case of exception stop the loop
         window.requestAnimationFrame(ftick);        
     };   
-
+        
+    // computation for best canvas size
+    function setScreenAndCanvasSize() {
+      var ratio = window.devicePixelRatio;
+      if (!ratio) ratio=1.0;
+      that.screenwidth = Math.round(window.innerWidth*ratio);
+      that.screenheight = Math.round(window.innerHeight*ratio);
+      that.canvas.width = that.screenwidth;
+      that.canvas.height = that.screenheight;
+//      console.log("Screen size:",that.screenwidth,that.screenheight,"(ratio=",ratio,")");
+    }      
+    
     return this;
 };
-    
+        
     
 /*    
     // persistent state handling
@@ -155,23 +185,20 @@ Game.prototype.$ = function()
         }
     }
 */        
-/*
+
     // ---------------- handling of global game information ---------
     
-    public void setLevelSolvedGrade(Level l, int solutiongrade)
-    {
-        String key = "state_"+l.getTitle();
-        if (solutiongrade > preferences.getInt(key,DEFAULTSOLVEDGRADE) )
-        {   SharedPreferences.Editor edit = preferences.edit();
-            edit.putInt(key, solutiongrade);
-            edit.apply();
-        }
-    }
-*/  
+Game.prototype.setLevelSolvedGrade = function(level, solvedgrade)
+{
+    var t = level.getTitle();
+    this.solvegrades.set(t,solvedgrade);
+}  
 
 Game.prototype.getLevelSolvedGrade = function(level)
 {
-    return Game.DEFAULTSOLVEDGRADE;
+    var t = level.getTitle();
+    if (!this.solvegrades.has(t)) { return Game.DEFAULTSOLVEDGRADE; }
+    return this.solvegrades.get(t);
 };
         
 Game.prototype.setMusicActive = function (active)
@@ -357,7 +384,14 @@ Game.prototype.draw = function()
     }
 
 };
-        
+
+Game.prototype.notifyScreensAboutResize = function()
+{
+    for (var i=0; i<this.screens.length; i++)
+    {   this.screens[i].onResize();        
+    }    
+};
+
 // -------------- handling of opening/closing screens and screens notifying changes -------
     
 Game.prototype.setDirty = function()    
@@ -397,6 +431,7 @@ Game.prototype.getTopScreen = function()
 {
     return this.screens.length>0 ? this.screens[this.screens.length-1] : null;
 };
+
         
 
 // --------- loading renderers (will be triggered by system or by user key ----
@@ -657,3 +692,21 @@ Game.currentTimeMillis = function()
     return Date.now();
 };
 
+// some toolbox methods to be used on various screens
+
+/** 
+ * 	Create string of the form m:ss of a given number of seconds. 
+ *  Only non-negative seconds work correctly.
+ */ 
+
+Game.buildTimeString = function(seconds)
+{
+    var s = seconds%60;
+    var m = (seconds - s)/60;
+    if (s>=10)
+    {   return m+":"+s;
+    }
+    else
+    {	return m+":0"+s;
+    }			
+};

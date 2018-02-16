@@ -77,7 +77,7 @@ public abstract class Screen
 	 */ 
 	public static String buildTimeString(int seconds)
 	{
-		int m = seconds/60;
+		int m = Math.floor(seconds/60);
 		int s = seconds%60;
         if (s>=10)
         {	return m+":"+s;

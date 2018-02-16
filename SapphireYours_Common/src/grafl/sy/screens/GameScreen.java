@@ -790,7 +790,7 @@ public class GameScreen extends Screen implements MenuListener
 						}								
 					}
 					else  
-					{	m.addNonAction("Demo in "+buildTimeString(-solvegrade));
+					{	m.addNonAction("Demo in "+this.buildTimeString(-solvegrade));
 					}
 				}				
 			}

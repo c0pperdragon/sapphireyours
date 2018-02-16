@@ -110,30 +110,30 @@ KeyboardToGamepadTranslator.prototype.sendGamePadStates = function()
             case KeyEvent.KEYCODE_SPACE:
                 dir0 = GamePadInputBuffer.DIRECTION_WAIT;
                 break;              
-            case KeyEvent.KEYCODE_R:    
+            case KeyEvent.KEYCODE_DPAD2_UP:    
                 dir1 = GamePadInputBuffer.DIRECTION_UP;
                 break;
-            case KeyEvent.KEYCODE_F:    
+            case KeyEvent.KEYCODE_DPAD2_DOWN:    
                 dir1 = GamePadInputBuffer.DIRECTION_DOWN;
                 break;
-            case KeyEvent.KEYCODE_D:    
+            case KeyEvent.KEYCODE_DPAD2_LEFT:    
                 dir1 = GamePadInputBuffer.DIRECTION_LEFT;
                 break;
-            case KeyEvent.KEYCODE_G:    
+            case KeyEvent.KEYCODE_DPAD2_RIGHT:    
                 dir1 = GamePadInputBuffer.DIRECTION_RIGHT;
                 break;
-            case 0x00000071:      // CTRL_LEFT
-            case 0x00000072:      // CTRL_RIGHT
+            case KeyEvent.KEYCODE_CTRL_LEFT:
+            case KeyEvent.KEYCODE_CTRL_RIGHT:
                 action1_0 = true;
                 break;
             case KeyEvent.KEYCODE_SHIFT_LEFT:
             case KeyEvent.KEYCODE_SHIFT_RIGHT:
                 action2_0 = true;
                 break;
-            case KeyEvent.KEYCODE_S:
+            case KeyEvent.KEYCODE_DPAD2_BUTTON1:
                 action2_1 = true;
                 break;
-            case KeyEvent.KEYCODE_A:
+            case KeyEvent.KEYCODE_DPAD2_BUTTON2:
                 action1_1 = true;
                 break;
         }
