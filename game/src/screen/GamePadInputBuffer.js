@@ -253,7 +253,7 @@ GamePadInputBuffer.prototype.nextMovement = function()
     {   var m = this.movebuffer[0];
         this.nummoves--;
         if (this.nummoves>0)
-        {   for (var i=0; i<this.nummoves-1; i++)
+        {   for (var i=0; i<this.nummoves; i++)
             {   this.movebuffer[i] = this.movebuffer[i+1];
             }
         }
