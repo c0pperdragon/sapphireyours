@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8"/>
+<head> 
+<title>Performance tests</title>
+
+
+</head>
+
+<body>
+
+<script>
+"use strict";
+var testarray = new Array(3000);
+var uint16array = new Uint16Array(15000);
+
+function onerun_no_alloc()
+{
+//    testarray.length = 0;
+    for (var i=0; i<4*3000; i++) 
+    {   testarray[i] = 0.532; // push(62,12.1,6,562.3);
+    }
+}
+function onerun_do_alloc()
+{
+    testarray.length = 0;
+    for (var i=0; i<3000; i++) 
+    {   testarray.push(62,12.1,6,562.3);
+    }
+}
+function onerun_with_typed_array()
+{
+    var l=0;
+    for (var i=0; i<3000; i++)
+    {   uint16array[l++] = 62;
+        uint16array[l++] = 123;
+        uint16array[l++] = 121;
+        uint16array[l++] = 551;
+    }
+}
+
+function benchmark()
+{   var maxduration = 0;
+    var start = Date.now();   
+    var onestart = start;
+    for (var i=0; i<10000; i++)
+    {   
+        // onerun_do_alloc();        
+        onerun_with_typed_array();
+        
+        var oneend = Date.now();
+        var duration = oneend - onestart;
+        onestart = oneend;
+        
+        if (duration>maxduration) maxduration = duration;
+    }
+    var end = Date.now();
+    return "Total: "+(end-start)+"ms"+" longest duration "+maxduration+"ms";
+}
+</script>
+
+<button onclick="document.getElementById('p').innerHTML = benchmark();">Benchmark</button>
+<p id ="p"></p>
+</body>
+</html>

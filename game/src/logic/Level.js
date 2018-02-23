@@ -93,10 +93,10 @@ Level.prototype.$ = function(json)
     this.title = json.title && json.title.constructor == String ? json.title : "";
     this.author = json.author && json.author.constructor == String ? json.author : "";
     this.hint = json.hint && json.author.constructor == String ? json.hint : "";
-    this.difficulty = Number.isInteger(json.difficulty) ? Number(json.difficulty) : 1;
-    this.category = Number.isInteger(json.category) ? Number(json.category) : 0;    
-    this.loot = Number.isInteger(json.loot) ? Number(json.loot) : 0;    
-    this.swamprate = Number.isInteger(json.swamprate) ? Number(json.swamprate) : DEFAULTSWAMPRATE;
+    this.difficulty = Game.isInteger(json.difficulty) ? Number(json.difficulty) : 1;
+    this.category = Game.isInteger(json.category) ? Number(json.category) : 0;    
+    this.loot = Game.isInteger(json.loot) ? Number(json.loot) : 0;    
+    this.swamprate = Game.isInteger(json.swamprate) ? Number(json.swamprate) : DEFAULTSWAMPRATE;
     
     this.demos = [];
     for (var i=0; Array.isArray(json.demos) && i<json.demos.length; i++) 

@@ -3,11 +3,6 @@ var Renderer = function()
 {   this.gl = null;
 };
 
-Renderer.tmpFloat32Array = new Float32Array(4096);
-Renderer.tmpUint8Array = new Uint8Array(4096);
-Renderer.tmpUint16Array = new Uint16Array(4096);
-
-
 Renderer.prototype.$ = function(gl) 
 {   this.gl = gl;
     return this;
@@ -91,39 +86,3 @@ Renderer.prototype.loadImageToTexture = function(resourcename, texture, onlyalph
    image.src = resourcename;
 };
 
-
-Renderer.prototype.copyToBufferAsFloat32 = function(target, offset,array)
-{
-    var tmp = Renderer.tmpFloat32Array;
-    var len = array.length;
-    while (tmp.length < len)
-    {   tmp = new Float32Array(tmp.length*2);
-        Renderer.tmpFloat32Array = tmp;
-    }    
-    tmp.set(array);
-    this.gl.bufferSubData(target,offset, tmp.subarray(0,len));        
-};
-
-Renderer.prototype.copyToBufferAsUint8 = function(target, offset, array)
-{
-    var tmp = Renderer.tmpUint8Array;
-    var len = array.length;
-    while (tmp.length < len)
-    {   tmp = new Uint8Array(tmp.length*2);
-        Renderer.tmpUint8Array = tmp;
-    }        
-    tmp.set(array);
-    this.gl.bufferSubData(target,offset, tmp.subarray(0,len));        
-};
-
-Renderer.prototype.copyToBufferAsUint16 = function(target, offset,array)
-{
-    var tmp = Renderer.tmpUint16Array;
-    var len = array.length;
-    while (tmp.length < len)
-    {   tmp = new Uint16Array(tmp.length*2);
-        Renderer.tmpUint16Array = tmp;
-    }        
-    tmp.set(array);
-    this.gl.bufferSubData(target,offset, tmp.subarray(0,len));        
-};

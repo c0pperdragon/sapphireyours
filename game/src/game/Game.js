@@ -41,16 +41,21 @@ Game.prototype.$ = function()
     var that = this;
     
     console.log("Starting up Sapphire Yours...");
-    
+    var options = 
+    {   alpha: false,    
+//            depth: false,
+            stencil: false,
+            antialias: false, 
+//            premultipliedAlpha: false,
+            preserveDrawingBuffer: false,
+            failIfMajorPerformanceCaveat: false
+    };           
+        
     this.canvas = document.getElementById("canvas");
-    this.gl = this.canvas.getContext
-    (   "webgl", 
-        {   antialias: false,
-            alpha: false,    
-            depth: false
-        }   
-    );
+    this.gl = this.canvas.getContext("webgl", options);
+    if (!this.gl) { this.gl = this.canvas.getContext("experimental-webgl", options ); }        
     console.log("canvas",this.canvas, "context",this.gl);
+    if (!this.gl) return;
     
     this.screens = [];
     this.levelpacks = [];
@@ -83,10 +88,10 @@ Game.prototype.$ = function()
         
     // install input handlers
     document.addEventListener('keydown', function(event)
-    {   that.onKeyDown(KeyEvent.toNumericCode(event.code)); 
+    {   that.onKeyDown(KeyEvent.toNumericCode(event.key)); 
     });
     document.addEventListener('keyup', function(event)
-    {   that.onKeyUp(KeyEvent.toNumericCode(event.code)); 
+    {   that.onKeyUp(KeyEvent.toNumericCode(event.key)); 
     });
     
     // handle canvas size changes
@@ -418,6 +423,7 @@ Game.prototype.removeScreen = function()
     {   var olds = this.screens.pop();
         var news = this.screens[this.screens.length-1];
         olds.discard();         
+        news.reactivate();
     }
 };
 
@@ -689,18 +695,31 @@ Game.arraycopy = function(from,fromstart,to,tostart,length)
     }    
 };
 
+Game.fillarray = function(a, value)
+{   
+    if (a.fill) 
+    {   a.fill(value); 
+    }
+    else
+    {   for (var i=0; i<a.length; i++) { a[i] = value; };
+    }
+};
+
 Game.currentTimeMillis = function()
 {
     return Date.now();
 };
 
-// some toolbox methods to be used on various screens
+Game.isInteger = function(value)
+{
+    if (typeof(value)!="number") { return false; }
+    return Math.round(value) === value;    
+};
 
 /** 
  * 	Create string of the form m:ss of a given number of seconds. 
  *  Only non-negative seconds work correctly.
  */ 
-
 Game.buildTimeString = function(seconds)
 {
     var s = seconds%60;

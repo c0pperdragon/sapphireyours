@@ -27,24 +27,36 @@ var KeyEvent = {
 
     toNumericCode: function(c)
     {   
-// console.log("toNumericCode",c);    
-        switch (c) 
-        {   case "Escape":          { return KeyEvent.KEYCODE_BACK; }
+        switch (c)         
+        {   case "Esc":
+            case "Escape":          { return KeyEvent.KEYCODE_BACK; }
+            case "Up":
             case "ArrowUp":         { return KeyEvent.KEYCODE_DPAD_UP; }
+            case "Down":
             case "ArrowDown":       { return KeyEvent.KEYCODE_DPAD_DOWN; }
+            case "Left":
             case "ArrowLeft":       { return KeyEvent.KEYCODE_DPAD_LEFT; }
+            case "Right":
             case "ArrowRight":      { return KeyEvent.KEYCODE_DPAD_RIGHT; }
             case "Space":           { return KeyEvent.KEYCODE_DPAD_CENTER; }
+            case "Shift":
             case "ShiftLeft":       { return KeyEvent.KEYCODE_SHIFT_LEFT; }
             case "ShiftRight":      { return KeyEvent.KEYCODE_SHIFT_RIGHT; }
+            case "Control":
             case "ControlLeft":     { return KeyEvent.KEYCODE_CTRL_LEFT; }
             case "ControlRight":    { return KeyEvent.KEYCODE_CTRL_RIGHT; }
             case "Enter":           { return KeyEvent.KEYCODE_ENTER; }
+            case "r":
             case "KeyR":            { return KeyEvent.KEYCODE_DPAD2_UP; }
+            case "f":
             case "KeyF":            { return KeyEvent.KEYCODE_DPAD2_DOWN; }
+            case "d":
             case "KeyD":            { return KeyEvent.KEYCODE_DPAD2_LEFT; }
+            case "g":
             case "KeyG":            { return KeyEvent.KEYCODE_DPAD2_RIGHT; }
+            case "a":
             case "KeyA":            { return KeyEvent.KEYCODE_DPAD2_BUTTON1; }
+            case "s":
             case "KeyS":            { return KeyEvent.KEYCODE_DPAD2_BUTTON2; }
             default:                
             {   console.log("keycode",c);

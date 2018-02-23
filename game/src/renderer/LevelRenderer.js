@@ -178,8 +178,7 @@ LevelRenderer.prototype.$ = function(gl)
     ]);
     this.doneLoading = false;
     this.tmp_disable_static_tile = new Array(MAPWIDTH*MAPHEIGHT);
-    this.tmp_disable_static_tile.fill(false);
-    
+    Game.fillarray(this.tmp_disable_static_tile, false);
     return this;
 };
 
@@ -189,8 +188,9 @@ LevelRenderer.prototype.isLoaded = function()
     if (!TileRenderer.prototype.isLoaded.call(this)) return false;
 
     // loading the default piece animations and some context specific piece animations
-    this.piecetiles = (new Array(256)).fill(null);
-
+    this.piecetiles = new Array(256);
+    Game.fillarray(this.piecetiles, null);
+    
     this.piecetiles[AIR] = [];
     this.piecetiles[MAN1] = this.getAnimation("1man");
     this.piecetiles[MAN1_LEFT] = this.getAnimation("1walklft");
@@ -589,7 +589,7 @@ LevelRenderer.prototype.draw = function
 
     // do first parse of dynamic info to determine which static tiles should be suppressed
     var tmp_disable_static_tile = this.tmp_disable_static_tile;
-    tmp_disable_static_tile.fill(false);    
+    Game.fillarray(tmp_disable_static_tile,false);    
     
     var animstart = 0;
     var animend = 0;
@@ -780,9 +780,6 @@ LevelRenderer.prototype.determineMoveAnimation = function(oldpiece, newpiece, x,
             else if (dx>0) { return this.anim_bomb_right; }
             else if (dy>=0) { return this.anim_bomb_fall; }       
             break;      
-        }
-        case DROP:
-        {   return anim_drop;   
         }
         case ELEVATOR:
         {   if (dy<0) { return this.anim_elevator; }
@@ -1068,8 +1065,8 @@ LevelRenderer.prototype.determineTileAt = function(logic, x, y)
                 else { return this.acidtiles_rightedge[n]; }
             }
             else
-            {   if (pr===ACID) { return acidtiles_leftedge[n]; }
-                else { return acidtiles_bothedges[n]; }               
+            {   if (pr===ACID) { return this.acidtiles_leftedge[n]; }
+                else { return this.acidtiles_bothedges[n]; }               
             }
         }
     }    

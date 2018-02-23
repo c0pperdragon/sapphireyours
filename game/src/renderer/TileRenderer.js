@@ -10,11 +10,12 @@ var TileRenderer = function()
     
     this.iboIndex = 0;       // buffer holding short
     this.vboCorner = 0;      // buffer holding byte[4][2] = {0,0},{1,0},{0,1},{1,1}  for each tile  
-    this.vboTile = 0;        // buffer holding short[4] - x,y,tile,modifier  for each tile corner,  dublicated 4 times 
+    this.vboTile = 0;        // buffer holding short[4] - x,y,tile,modifier  for each tile corner, 4 times each
     this.txTexture = 0;      // texture buffer
     
     // client-side buffers to prepare the data before moving it into their gl counterparts
-    this.bufferTile = null;   // holding x,y,tile       
+    this.numTiles = 0;
+    this.bufferTile = null;   // holding x,y,tile,modifier 
     this.matrix = null;       // projection matrix
     this.matrix2 = null;      // projection matrix for second player
     this.havematrix2 = false;        // is second matrix present?
@@ -140,7 +141,8 @@ TileRenderer.prototype.$ = function(gl,imagelist)
 
     // buffer for tiles info can not be pre-computed, but client-side and gl buffers are allocated
     this.vboTile = gl.createBuffer();
-    this.bufferTile = []; // ShortBuffer.allocate(MAXTILES*4);
+    this.numTiles = 0;
+    this.bufferTile = new Uint16Array(TileRenderer.MAXTILES*4);
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vboTile);
     gl.bufferData(gl.ARRAY_BUFFER, 2*(TileRenderer.MAXTILES*4*4), gl.DYNAMIC_DRAW);
         
@@ -245,7 +247,7 @@ TileRenderer.prototype.getImage = function(filename)
 TileRenderer.prototype.startDrawing = function(viewportwidth,viewportheight, screentilesize, offx0, offy0, offx1, offy1)
 {
     this.screentilesize = screentilesize;        
-    this.bufferTile.length = 0;
+    this.numTiles = 0;
 
     // when having same offsets, only one draw is necessary      
     if (offx0==offx1 && offy0==offy1)
@@ -257,25 +259,9 @@ TileRenderer.prototype.startDrawing = function(viewportwidth,viewportheight, scr
     }
     // must draw 2 screens with a terminator line so there is a piece of each players area visible
     else                        
-    {   
-//          // adjust offsets so both views are moved closer together
-//          if (offx0>offx+splitthreasholdx)        offx0 -= splitthreasholdx;
-//          else if (offx0<offx-splitthreasholdx)   offx0 += splitthreasholdx;
-//          else offx0 = offx;
-//          if (offy0>offy+splitthreasholdy)        offy0 -= splitthreasholdy;
-//          else if (offy0<offy-splitthreasholdy)   offy0 += splitthreasholdy;
-//          else offy0 = offy;
-//          if (offx1>offx+splitthreasholdx)        offx1 -= splitthreasholdx;
-//          else if (offx1<offx-splitthreasholdx)   offx1 += splitthreasholdx;
-//          else offx1 = offx;
-//          if (offy1>offy+splitthreasholdy)        offy1 -= splitthreasholdy;
-//          else if (offy1<offy-splitthreasholdy)   offy1 += splitthreasholdy;
-//          else offy1 = offy;
-            
-            // calculate the normal vector (2d) of the delimiter line  (clockwise, 0=right)
-//          float screenratio = (viewportwidth*1.0f) / viewportheight;
+    {       // calculate the normal vector (2d) of the delimiter line  (clockwise, 0=right)
             var screendiagonal = Math.sqrt(viewportwidth*viewportwidth+viewportheight*viewportheight);
-            var angle = Math.atan2(offx0-offx1, offy0-offy1); 
+            var angle = Math.atan2(offy1-offy0,offx0-offx1); 
 
             // start with normal matrix for first player
             Matrix.setIdentityM(this.matrix,0);
@@ -303,31 +289,36 @@ TileRenderer.prototype.startDrawing = function(viewportwidth,viewportheight, scr
             // move to desired view position 
             Matrix.translateM(this.matrix2,0,offx1,offy1, 0.0);
 
-            this. havematrix2 = true;
+            this.havematrix2 = true;
         }
 };
     
 TileRenderer.prototype.addTile = function(x, y, tile)
 {        
-    this.bufferTile.push(x,y,(tile&0x7fff),(tile>>16)&0x7fff);  
+    if (this.numTiles>=TileRenderer.MAXTILES) { this.flush(); }
+    
+    var b = this.bufferTile;
+    var target = 4*this.numTiles;
+    b[target+0] = x;
+    b[target+1] = y;
+    b[target+2] = (tile&0x7fff);
+    b[target+3] = (tile>>16)&0x7fff;
+    this.numTiles++;
 };
 
 TileRenderer.prototype.flush = function()   
 {
+        // fast termination if nothing to draw
+        if (this.numTiles<1) { return; }
+
         var gl = this.gl;
-//profiler_draw.done(10);   
-        // check how many tiles are currently visible  
-        var activetiles = this.bufferTile.length / 4;
-        if (activetiles==0)
-        {   return;
-        }
         
         // transfer tile info buffer into opengl (consists of 4 identical parts) 
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vboTile);
+        var subarr = this.bufferTile.subarray(0,4*this.numTiles);
         for (var i=0; i<4; i++)     
-        {   this.copyToBufferAsUint16(gl.ARRAY_BUFFER, i*2*4*TileRenderer.MAXTILES, this.bufferTile);
+        {   this.gl.bufferSubData(gl.ARRAY_BUFFER, i*2*4*TileRenderer.MAXTILES, subarr );
         }
-        this.bufferTile.length = 0;
         
         // set up gl for painting all quads
         gl.useProgram(this.program);
@@ -352,16 +343,18 @@ TileRenderer.prototype.flush = function()
         
         // draw the scene for one player
         gl.uniformMatrix4fv(this.uMVPMatrix, false, this.matrix);        
-        gl.drawElements(gl.TRIANGLES, activetiles*6, gl.UNSIGNED_SHORT, 0);
+        gl.drawElements(gl.TRIANGLES, this.numTiles*6, gl.UNSIGNED_SHORT, 0);
 
         // optionally draw the scene for the second player also
         if (this.havematrix2)
         {   gl.uniformMatrix4fv(this.uMVPMatrix, false, this.matrix2);        
-            gl.drawElements(gl.TRIANGLES, activetiles*6, gl.UNSIGNED_SHORT, 0);
+            gl.drawElements(gl.TRIANGLES, this.numTiles*6, gl.UNSIGNED_SHORT, 0);
         }
             
         // Disable vertex arrays
         gl.disableVertexAttribArray(this.aCorner);
         gl.disableVertexAttribArray(this.aTile);
+        
+        this.numTiles = 0;
 };
     

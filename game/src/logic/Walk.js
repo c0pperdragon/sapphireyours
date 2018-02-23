@@ -23,7 +23,7 @@ Walk.prototype.$ = function(json)
     this.buffer = [];
     this.randomseed = 0;
 
-    this.initialize(Number.isInteger(json.randomseed) ? json.randomseed : 0);
+    this.initialize(Game.isInteger(json.randomseed) ? json.randomseed : 0);
     
     var a = json.moves;
     if (!Array.isArray(a)) a = [a];

@@ -87,12 +87,13 @@ GfxRenderer.prototype.$ = function(gl)
     sb = null;
     
     // create buffers (gl and client) that hold 4 entries for every rectangle
-    this.bufferCorner = []; // new Float32Array(2*4*GfxRenderer.MAXRECTANGLES);
+    this.numRecangles = 0;
+    this.bufferCorner = new Float32Array(2*4*GfxRenderer.MAXRECTANGLES);
     this.vboCorner = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vboCorner);
     gl.bufferData(gl.ARRAY_BUFFER, 2*4*4*GfxRenderer.MAXRECTANGLES, gl.DYNAMIC_DRAW);
 
-    this.bufferTextureCoordinates = []; // new Uint16Array(2*4*GfxRenderer.MAXRECTANGLES);
+    this.bufferTextureCoordinates = new Uint16Array(2*4*GfxRenderer.MAXRECTANGLES);
     this.vboTextureCoordinates = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vboTextureCoordinates);
     gl.bufferData(gl.ARRAY_BUFFER, 2*4*2*GfxRenderer.MAXRECTANGLES, gl.DYNAMIC_DRAW);
@@ -163,8 +164,7 @@ GfxRenderer.prototype.loadGfx = function(freespace, name, pos_and_dim_storage)
     
 GfxRenderer.prototype.startDrawing = function(viewportwidth,viewportheight)
 {
-        this.bufferCorner.length = 0;
-        this.bufferTextureCoordinates.length = 0;
+        this.numRectangles = 0;
         
         // transfer coordinate system from the opengl-standard to a pixel system (0,0 is top left)
         Matrix.setIdentityM(this.matrix,0);     
@@ -174,84 +174,85 @@ GfxRenderer.prototype.startDrawing = function(viewportwidth,viewportheight)
     
 GfxRenderer.prototype.flush = function()
 {
-        var gl = this.gl;
-
-        var numrectangles = this.bufferCorner.length / 4;
-        if (numrectangles<=0)
-        {   return;
-        }
+    if (this.numRectangles<1) return;
         
-        // transfer buffers into opengl 
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.vboCorner);  
-        this.copyToBufferAsFloat32(gl.ARRAY_BUFFER, 0, this.bufferCorner);
+    var gl = this.gl;
+  
+    // transfer buffers into opengl 
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.vboCorner);  
+    gl.bufferSubData(gl.ARRAY_BUFFER, 0, 
+        this.bufferCorner.subarray(0,2*4*this.numRectangles) );
         
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.vboTextureCoordinates);       
-        this.copyToBufferAsUint16(gl.ARRAY_BUFFER, 0, this.bufferTextureCoordinates);  
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.vboTextureCoordinates);       
+    gl.bufferSubData(gl.ARRAY_BUFFER, 0, 
+        this.bufferTextureCoordinates.subarray(0,2*4*this.numRectangles) );  
         
-        this.bufferCorner.length = 0;
-        this.bufferTextureCoordinates.length = 0;
-
-        // set up gl for painting all triangles
-        gl.useProgram(this.program);
+    // set up gl for painting all triangles
+    gl.useProgram(this.program);
         
-        // set texture unit 0 to use the texture and tell shader to use texture unit 0
-        gl.activeTexture(gl.TEXTURE0);
-        gl.bindTexture(gl.TEXTURE_2D, this.txTexture);
-        gl.uniform1i(this.uTexture, 0);
+    // set texture unit 0 to use the texture and tell shader to use texture unit 0
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, this.txTexture);
+    gl.uniform1i(this.uTexture, 0);
         
-        // enable all vertex attribute arrays and set pointers
-        gl.enableVertexAttribArray(this.aCorner);
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.vboCorner);
-        gl.vertexAttribPointer(this.aCorner, 2, gl.FLOAT, false, 0, 0);
+    // enable all vertex attribute arrays and set pointers
+    gl.enableVertexAttribArray(this.aCorner);
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.vboCorner);
+    gl.vertexAttribPointer(this.aCorner, 2, gl.FLOAT, false, 0, 0);
 
-        gl.enableVertexAttribArray(this.aTextureCoordinates);
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.vboTextureCoordinates);
-        gl.vertexAttribPointer(this.aTextureCoordinates, 2, gl.SHORT, false, 0, 0);
+    gl.enableVertexAttribArray(this.aTextureCoordinates);
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.vboTextureCoordinates);
+    gl.vertexAttribPointer(this.aTextureCoordinates, 2, gl.SHORT, false, 0, 0);
 
-        // set uniform data 
-        gl.uniformMatrix4fv(this.uMVPMatrix, false, this.matrix);
-        gl.uniform2f (this.uTextureSize, GfxRenderer.ATLASWIDTH, GfxRenderer.ATLASHEIGHT);
+    // set uniform data 
+    gl.uniformMatrix4fv(this.uMVPMatrix, false, this.matrix);
+    gl.uniform2f (this.uTextureSize, GfxRenderer.ATLASWIDTH, GfxRenderer.ATLASHEIGHT);
 
-        // Draw all quads in one big call
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.iboIndex);
-        gl.drawElements(gl.TRIANGLES,numrectangles*6, gl.UNSIGNED_SHORT, 0);
+    // Draw all quads in one big call
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.iboIndex);
+    gl.drawElements(gl.TRIANGLES,this.numRectangles*6, gl.UNSIGNED_SHORT, 0);
 
-        // disable arrays
-        gl.disableVertexAttribArray(this.aCorner);
-        gl.disableVertexAttribArray(this.aTextureCoordinates);
+    // disable arrays
+    gl.disableVertexAttribArray(this.aCorner);
+    gl.disableVertexAttribArray(this.aTextureCoordinates);
+    
+    this.numRectangles = 0;
 }
     
 GfxRenderer.prototype.addGraphic = function(source, x1, y1, width, height)
-    {
-        // target coordinates        
-        var x2 = x1+width;
-        var y2 = y1+height;
+{
+    // target coordinates        
+    var x2 = x1+width;
+    var y2 = y1+height;
         
-        // source coordinates
-        var sx1 = source[0];
-        var sy1 = source[1];
-        var sx2 = sx1 + source[2];
-        var sy2 = sy1 + source[3];
-            
-        // top-left corner
-        this.bufferCorner.push(x1); 
-        this.bufferCorner.push(y1);       
-        this.bufferTextureCoordinates.push(sx1);   
-        this.bufferTextureCoordinates.push(sy1);
-        // top-right corner
-        this.bufferCorner.push(x2); 
-        this.bufferCorner.push(y1);       
-        this.bufferTextureCoordinates.push(sx2);   
-        this.bufferTextureCoordinates.push(sy1);
-        // bottom-left corner
-        this.bufferCorner.push(x1); 
-        this.bufferCorner.push(y2);       
-        this.bufferTextureCoordinates.push(sx1);   
-        this.bufferTextureCoordinates.push(sy2);
-        // bottom-right corner
-        this.bufferCorner.push(x2); 
-        this.bufferCorner.push(y2);       
-        this.bufferTextureCoordinates.push(sx2);   
-        this.bufferTextureCoordinates.push(sy2);
+    // source coordinates
+    var sx1 = source[0];
+    var sy1 = source[1];
+    var sx2 = sx1 + source[2];
+    var sy2 = sy1 + source[3];
+
+    var b = this.bufferCorner;
+    var pos = 2*4*this.numRectangles;
+    b[pos+0] = x1; 
+    b[pos+1] = y1;       
+    b[pos+2] = x2; 
+    b[pos+3] = y1;       
+    b[pos+4] = x1; 
+    b[pos+5] = y2;       
+    b[pos+6] = x2; 
+    b[pos+7] = y2;       
+    
+    b = this.bufferTextureCoordinates;
+    pos = 2*4*this.numRectangles;
+    b[pos+0] = sx1; 
+    b[pos+1] = sy1;       
+    b[pos+2] = sx2; 
+    b[pos+3] = sy1;       
+    b[pos+4] = sx1; 
+    b[pos+5] = sy2;       
+    b[pos+6] = sx2; 
+    b[pos+7] = sy2;       
+
+    this.numRectangles++;
 };
     

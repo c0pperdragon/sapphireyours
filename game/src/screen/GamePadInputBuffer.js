@@ -75,7 +75,7 @@ GamePadInputBuffer.prototype.reset = function()
     this.numaction1buttons = 0;  
     this.numaction2buttons = 0;
     this.nummoves = 0;   
-    this.actionmode = MODE_NORMAL;
+    this.actionmode = GamePadInputBuffer.MODE_NORMAL;
 };
         
     // ---------------- input from game pad devices ---------------
@@ -196,7 +196,7 @@ GamePadInputBuffer.prototype.setDirection = function(device, dir)
 //          if (prev!=DIRECTION_NONE && actionmode==MODE_GRAB && numaction1buttons==0)
 //          {   actionmode = MODE_NORMAL;
 //          }
-    }                   
+    } 
 };           
     
     /**

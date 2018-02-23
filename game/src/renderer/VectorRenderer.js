@@ -12,6 +12,7 @@ var VectorRenderer = function()
     this.vboColor = null;              // gl buffer holding int[1] - color to by applied to image (also for color area rendering)
     
     // client-side buffers to prepare the data before moving it into their gl counterparts
+    this.numCorners = 0;
     this.bufferCorner = null;
     this.bufferColor = null;
     // temporary data for appending corners to triangle strips 
@@ -82,12 +83,12 @@ VectorRenderer.prototype.$ = function(gl)
     this.aColor = gl.getAttribLocation(this.program, "aColor");
                 
     // create buffers (gl and client) for the vertices
-    this.bufferCorner = []; 
+    this.bufferCorner = new Float32Array(2*VectorRenderer.MAXCORNERS);
     this.vboCorner = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vboCorner);
     gl.bufferData(gl.ARRAY_BUFFER, 4*2*VectorRenderer.MAXCORNERS, gl.DYNAMIC_DRAW);
 
-    this.bufferColor = [];
+    this.bufferColor = new Uint8Array(4*VectorRenderer.MAXCORNERS);
     this.vboColor = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vboColor);
     gl.bufferData(gl.ARRAY_BUFFER, 4*VectorRenderer.MAXCORNERS, gl.DYNAMIC_DRAW);
@@ -101,8 +102,7 @@ VectorRenderer.prototype.$ = function(gl)
 VectorRenderer.prototype.startDrawing = function(viewportwidth, viewportheight)
 {
     // clear client-side buffer
-    this.bufferCorner.length = 0;
-    this.bufferColor.length = 0;
+    this.numCorners = 0;
     this.mustDublicateNextCorner = false;
   
     // transfer coordinate system from the opengl-standard to a pixel system (0,0 is top left)
@@ -112,29 +112,16 @@ VectorRenderer.prototype.startDrawing = function(viewportwidth, viewportheight)
 };
 
 VectorRenderer.prototype.flush = function()
-{   var gl = this.gl;
-
-    var numcorners = this.bufferCorner.length / 2;
-    if (numcorners <= 0) 
-    {   return;
-    }
+{   
+    if (this.numCorners<1) { return };    
+    var gl = this.gl;
 
     // transfer buffers into opengl 
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vboCorner);
-//    gl.bufferSubData(gl.ARRAY_BUFFER,0, this.bufferCorner.subarray(0,2*numcorners));    
-    this.copyToBufferAsFloat32(gl.ARRAY_BUFFER, 0, this.bufferCorner);
+    gl.bufferSubData(gl.ARRAY_BUFFER,0, this.bufferCorner.subarray(0,2*this.numCorners));    
     
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vboColor);
-    this.copyToBufferAsUint8(gl.ARRAY_BUFFER, 0, this.bufferColor);
-//    gl.bufferSubData(gl.ARRAY_BUFFER,0, this.bufferColor.subarray(0,4*numcorners)); 
-
-    this.bufferCorner.length = 0;
-    this.bufferColor.length = 0;
-
-    // Prepare buffers for future use
-    this.bufferCorner.length = 0;
-    this.bufferColor.length = 0;
-    this.mustDublicateNextCorner = false;
+    gl.bufferSubData(gl.ARRAY_BUFFER,0, this.bufferColor.subarray(0,4*this.numCorners)); 
 
     // set up gl for painting all triangles
     gl.useProgram(this.program);
@@ -152,28 +139,40 @@ VectorRenderer.prototype.flush = function()
     gl.uniformMatrix4fv(this.uMVPMatrix, false, this.matrix);
 
     // Draw all triangles
-    gl.drawArrays(gl.TRIANGLE_STRIP,0,numcorners);
+    gl.drawArrays(gl.TRIANGLE_STRIP,0,this.numCorners);
 
     // disable arrays
     gl.disableVertexAttribArray(this.aCorner);
     gl.disableVertexAttribArray(this.aColor);
+    
+    this.mustDublicateNextCorner = false;
+    this.numCorners = 0;    
 };
 
 
 VectorRenderer.prototype.addCorner = function(x,y,argb)
-{   this.bufferCorner.push(x,y);
-    this.bufferColor.push((argb>>16) & 0xff,((argb>>8) & 0xff),((argb>>0) & 0xff),((argb>>24) & 0xff));
+{   
+    var n = this.numCorners++;
+    this.bufferCorner[2*n+0] = x;
+    this.bufferCorner[2*n+1] = y;
+    this.bufferColor[4*n+0] = (argb>>16) & 0xff;
+    this.bufferColor[4*n+1] = (argb>>8) & 0xff;
+    this.bufferColor[4*n+2] = (argb>>0) & 0xff;
+    this.bufferColor[4*n+3] = (argb>>24) & 0xff;
 };
 
 VectorRenderer.prototype.startStrip = function()
 {
-    var numcorners = this.bufferCorner.length / 2;
-    if (numcorners>0)
-    {   this.bufferCorner.push(this.bufferCorner[2*numcorners-2], this.bufferCorner[2*numcorners-1]);
-        this.bufferColor.push(this.bufferColor[4*numcorners-4], 
-                              this.bufferColor[4*numcorners-3],
-                              this.bufferColor[4*numcorners-2],
-                              this.bufferColor[4*numcorners-1]);
+    if (this.numCorners>0)
+    {   var pos = 2*this.numCorners;
+        this.bufferCorner[pos+0] = this.bufferCorner[pos-2];
+        this.bufferCorner[pos+1] = this.bufferCorner[pos-1];
+        pos = 4*this.numCorners;
+        this.bufferColor[pos+0] = this.bufferColor[pos-4];
+        this.bufferColor[pos+1] = this.bufferColor[pos-3];
+        this.bufferColor[pos+2] = this.bufferColor[pos-2];
+        this.bufferColor[pos+3] = this.bufferColor[pos-1];
+        this.numCorners++;
         this.mustDublicateNextCorner = true;
     }
     this.rotsin = 0;
@@ -232,17 +231,15 @@ VectorRenderer.prototype.addFrame = function(x, y, w, h, border, argb)
 
 VectorRenderer.prototype.addCircle = function(x, y, radius, argb)
 {   this.startStrip();
-    this.addCorner (x,y, argb);
 
     for (var d=0; d<VectorRenderer.sinustable.length; d++)
     {   var nx = x + VectorRenderer.sinustable[(d+9)%36] * radius;
         var ny = y - VectorRenderer.sinustable[d] * radius;
-        this.addCorner(x,y,argb);
-        this.addCorner(nx,ny, argb);
+        this.addStripCorner(x,y,argb);
+        this.addStripCorner(nx,ny, argb);
     }
-    this.addCorner (x,y, argb);
-    this.addCorner (x+radius,y, argb);
-    this.mustDublicateNextCorner=true;          
+    this.addStripCorner (x,y, argb);
+    this.addStripCorner (x+radius,y, argb);
 };
 
 
@@ -283,13 +280,13 @@ VectorRenderer.prototype.addRoundedRect = function(x, y, width, height, radius, 
         var nx2 = x+width-radius + sinustable[(d+9)%36] * outerradius;
         var ny2 = y+radius - sinustable[d] * outerradius;
 
-        this.addCorner(xc,yc, argb);
-        this.addCorner(xc,yc, argb);
-        this.addCorner(x1,y1, argb);
-        this.addCorner(nx1,ny1, argb);
-        this.addCorner(x2,y2, argb2);
-        this.addCorner(nx2,ny2, argb2);
-        this.addCorner(nx2,ny2, argb2);
+        this.addStripCorner(xc,yc, argb);
+        this.addStripCorner(xc,yc, argb);
+        this.addStripCorner(x1,y1, argb);
+        this.addStripCorner(nx1,ny1, argb);
+        this.addStripCorner(x2,y2, argb2);
+        this.addStripCorner(nx2,ny2, argb2);
+        this.addStripCorner(nx2,ny2, argb2);
 
         x1=nx1;
         y1=ny1;
@@ -303,13 +300,13 @@ VectorRenderer.prototype.addRoundedRect = function(x, y, width, height, radius, 
         var nx2 = x+radius + sinustable[(d+9)%36] * outerradius;
         var ny2 = y+radius - sinustable[d] * outerradius;
 
-        this.addCorner(xc,yc, argb);
-        this.addCorner(xc,yc, argb);
-        this.addCorner(x1,y1, argb);
-        this.addCorner(nx1,ny1, argb);
-        this.addCorner(x2,y2, argb2);
-        this.addCorner(nx2,ny2, argb2);
-        this.addCorner(nx2,ny2, argb2);
+        this.addStripCorner(xc,yc, argb);
+        this.addStripCorner(xc,yc, argb);
+        this.addStripCorner(x1,y1, argb);
+        this.addStripCorner(nx1,ny1, argb);
+        this.addStripCorner(x2,y2, argb2);
+        this.addStripCorner(nx2,ny2, argb2);
+        this.addStripCorner(nx2,ny2, argb2);
 
         x1=nx1;
         y1=ny1;
@@ -323,13 +320,13 @@ VectorRenderer.prototype.addRoundedRect = function(x, y, width, height, radius, 
         var nx2 = x+radius + sinustable[(d+9)%36] * outerradius;
         var ny2 = y+height-radius - sinustable[d] * outerradius;
 
-        this.addCorner(xc,yc, argb);
-        this.addCorner(xc,yc, argb);
-        this.addCorner(x1,y1, argb);
-        this.addCorner(nx1,ny1, argb);
-        this.addCorner(x2,y2, argb2);
-        this.addCorner(nx2,ny2, argb2);
-        this.addCorner(nx2,ny2, argb2);
+        this.addStripCorner(xc,yc, argb);
+        this.addStripCorner(xc,yc, argb);
+        this.addStripCorner(x1,y1, argb);
+        this.addStripCorner(nx1,ny1, argb);
+        this.addStripCorner(x2,y2, argb2);
+        this.addStripCorner(nx2,ny2, argb2);
+        this.addStripCorner(nx2,ny2, argb2);
 
         x1=nx1;
         y1=ny1;
@@ -344,13 +341,13 @@ VectorRenderer.prototype.addRoundedRect = function(x, y, width, height, radius, 
         var nx2 = x+width-radius + sinustable[(d+9)%36] * outerradius;
         var ny2 = y+height-radius - sinustable[d] * outerradius;
 
-        this.addCorner(xc,yc, argb);
-        this.addCorner(xc,yc, argb);
-        this.addCorner(x1,y1, argb);
-        this.addCorner(nx1,ny1, argb);
-        this.addCorner(x2,y2, argb2);
-        this.addCorner(nx2,ny2, argb2);
-        this.addCorner(nx2,ny2, argb2);
+        this.addStripCorner(xc,yc, argb);
+        this.addStripCorner(xc,yc, argb);
+        this.addStripCorner(x1,y1, argb);
+        this.addStripCorner(nx1,ny1, argb);
+        this.addStripCorner(x2,y2, argb2);
+        this.addStripCorner(nx2,ny2, argb2);
+        this.addStripCorner(nx2,ny2, argb2);
 
         x1=nx1;
         y1=ny1;
@@ -362,13 +359,13 @@ VectorRenderer.prototype.addRoundedRect = function(x, y, width, height, radius, 
     var ny1=y+radius;
     var nx2=x+width-radius+outerradius;
     var ny2=ny1;
-    this.addCorner(xc,yc, argb);                    
-    this.addCorner(xc,yc, argb);                    
-    this.addCorner(x1,y1, argb);
-    this.addCorner(nx1,ny1, argb);
-    this.addCorner(x2,y2, argb2);
-    this.addCorner(nx2,ny2, argb2);
-    this.addCorner(nx2,ny2, argb2); 
+    this.addStripCorner(xc,yc, argb);                    
+    this.addStripCorner(xc,yc, argb);                    
+    this.addStripCorner(x1,y1, argb);
+    this.addStripCorner(nx1,ny1, argb);
+    this.addStripCorner(x2,y2, argb2);
+    this.addStripCorner(nx2,ny2, argb2);
+    this.addStripCorner(nx2,ny2, argb2); 
 };
 
 VectorRenderer.prototype.addPlayArrow = function(x, y, width, height, orientation, argb)

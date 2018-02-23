@@ -346,11 +346,10 @@ GameScreen.prototype.draw = function()
     }
 };
 
-/*
+
 GameScreen.prototype.reactivate = function()
 {
     Screen.prototype.reactivate.call(this);
-
     for (var i=0; i<this.gamePadMUX.length; i++)
     {   this.gamePadMUX[i].reset();
     }       
@@ -359,7 +358,7 @@ GameScreen.prototype.reactivate = function()
     {   this.inputGrid[i].reset();
     }                   
 };
-*/
+
         
 GameScreen.prototype.adjustScrolling = function(force)
 {
@@ -627,8 +626,8 @@ GameScreen.prototype.gameRecording = function()
                 {   this.inputGrid[1].reset();
                     this.inputmodeswitchtime = 0;
                 }
-            }                  
-            this.walk.recordMovement(m0,m1);
+            }    
+            this.walk.recordMovements(m0,m1);
         }
             
         this.logic.gototurn(this.step);

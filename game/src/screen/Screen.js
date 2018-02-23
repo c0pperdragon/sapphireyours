@@ -31,6 +31,10 @@ Screen.prototype.draw = function()
 {
 };
 
+Screen.prototype.reactivate = function()
+{
+};
+
 Screen.prototype.isOverlay = function()
 {   return false;
 };

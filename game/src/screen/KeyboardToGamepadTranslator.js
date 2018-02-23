@@ -146,7 +146,7 @@ KeyboardToGamepadTranslator.prototype.sendGamePadStates = function()
     {   l1 = this.listener2;
         l2 = this.listener1;
     }       
-    
+        
     // send collected state to both listeners (or to the same if only one player is present)
     l1.setAction1Button(0, action1_0);
     l1.setAction2Button(0, action2_0);
