@@ -1,4 +1,4 @@
-
+"use strict";
 var Screen = function() 
 {   this.game = null;   
 };

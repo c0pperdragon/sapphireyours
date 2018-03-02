@@ -1,4 +1,4 @@
-
+"use strict";
 var GamePadInputBuffer = function()
 {
     this.numdirections = 0

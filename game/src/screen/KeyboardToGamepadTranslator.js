@@ -1,4 +1,4 @@
-
+"use strict";
 var KeyboardToGamepadTranslator = function()
 {
     this.listener1 = null;

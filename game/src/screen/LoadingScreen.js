@@ -1,4 +1,4 @@
-
+"use strict";
 var LoadingScreen = function() 
 {
     Screen.call(this);

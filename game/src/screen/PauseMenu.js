@@ -1,4 +1,4 @@
-
+"use strict";
 var PauseMenu = function()
 {   Screen.call(this);
     
@@ -154,7 +154,7 @@ PauseMenu.prototype.layout = function()
     
 PauseMenu.prototype.drawOrLayout = function(draw)
 {
-    var scaling = this.game.detailScale;       
+    var scaling = 1;       
     var th = 27;
 
     var vr = this.game.vectorRenderer;                
@@ -486,7 +486,11 @@ PauseMenu.prototype.onKeyDown = function(code)
     
 PauseMenu.prototype.onPointerDown = function(x, y)
 {
-    this.selected = this.findAction(x,y);
+    var sel = this.findAction(x,y);
+    if (sel!==this.selected)
+    {   this.selected = sel;
+        this.setDirty();
+    }
 };
     
 PauseMenu.prototype.onPointerUp = function()

@@ -1,4 +1,4 @@
-
+"use strict";
 var TestScreen = function() 
 {
     Screen.call(this);

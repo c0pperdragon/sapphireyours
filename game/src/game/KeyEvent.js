@@ -1,4 +1,4 @@
-
+"use strict";
 var KeyEvent = {
     
     KEYCODE_BACK:        0x00000004,

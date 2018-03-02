@@ -1,3 +1,4 @@
+"use strict";
 var GameScreen = function()
 {   Screen.call(this);
 
@@ -80,9 +81,8 @@ GameScreen.prototype.$ = function (game, le, unfinishedwalk, canFindNextLevel, s
 
 GameScreen.prototype.layout = function()
 {
-    var scale = this.game.detailScale; 
-    var statusbarheight = this.scale*50;
-    var space = scale*5;
+    var statusbarheight = 50;
+    var space = 5;
         
     // (re)create menu button
     var that = this;
@@ -178,7 +178,7 @@ GameScreen.prototype.draw = function()
     lr.startDrawing(screenwidth,screenheight, this.statustilesize);     
     var tr = this.game.textRenderer;
     tr.startDrawing(screenwidth,screenheight);
-    vr = this.game.vectorRenderer;
+    var vr = this.game.vectorRenderer;
     vr.startDrawing(screenwidth, screenheight);
 
     // add a focus highlight
@@ -363,10 +363,7 @@ GameScreen.prototype.reactivate = function()
 GameScreen.prototype.adjustScrolling = function(force)
 {
     // determine chosen size of the screen tiles
-    this.screentilesize = Math.floor(60 * this.game.levelScale);
-    if (this.screentilesize<5) 
-    {   this.screentilesize=5;
-    }
+    this.screentilesize = 60;
 
     var screenwidth = this.game.screenwidth;
     var screenheight = this.game.screenheight;
@@ -429,15 +426,15 @@ GameScreen.prototype.adjustScrolling = function(force)
                                            
     // when input is switched to second player, move highlight there also 
     if (this.logic.getNumberOfPlayers()>1 && this.keyboardTranslator.hasSwitchedControls())
-    {   inputfocushighlightx = playerposx1;
-        inputfocushighlighty = playerposy1;
-        inputfocushighlightplayer = 1;
+    {   this.inputfocushighlightx = playerposx1;
+        this.inputfocushighlighty = playerposy1;
+        this.inputfocushighlightplayer = 1;
     }   
     // otherwise keep first player highlighted
     else 
-    {   inputfocushighlightx = playerposx0;
-        inputfocushighlighty = playerposy0;         
-        inputfocushighlightplayer = 0;
+    {   this.inputfocushighlightx = playerposx0;
+        this.inputfocushighlighty = playerposy0;         
+        this.inputfocushighlightplayer = 0;
     }
                     
     // when target was selected, use the arrow head as player position
@@ -632,9 +629,10 @@ GameScreen.prototype.gameRecording = function()
             
         this.logic.gototurn(this.step);
         this.frames_left = LevelRenderer.FRAMESPERSTEP-1;
-        if (this.game.soundPlayer && this.game.soundPlayer.playStep(this.logic))
+        if (this.game.soundPlayer.preparePlaying(this.logic))
         {   this.screenshaketime = 3;
         }
+        this.game.soundPlayer.playNow();
     }
 };
     
@@ -1102,7 +1100,7 @@ GameScreen.prototype.onPointerDown = function(x,y)
             {   return;
             }
         }
-        for (var i=0; i<inputGrid.length; i++)
+        for (var i=0; i<this.inputGrid.length; i++)
         {   if (this.inputGrid[i].onPointerDown(x,y, false))
             {   return;
             }

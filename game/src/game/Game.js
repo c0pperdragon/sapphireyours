@@ -1,4 +1,4 @@
-
+"use strict";
 var Game = function()  
 {   this.canvas = null;
     this.gl = null;
@@ -6,8 +6,6 @@ var Game = function()
     
     this.screenwidth = 0;         // size of surface in pixel
     this.screenheight = 0;  
-    this.detailScale = 0;
-    this.levelScale = 0;
     this.minButtonSize = 0;
 
     this.tileRenderer = null;
@@ -24,9 +22,12 @@ var Game = function()
     this.needRedraw = false;
     this.usingKeyboardInput = false;
 
-    this.levelpacks = null;
-    
+    this.levelpacks = null;    
     this.solvegrades = null;
+    
+    // input handling flags
+    this.isTouch = false;
+    this.isPointerDown = false;
 };
 
 
@@ -44,32 +45,27 @@ Game.prototype.$ = function()
     var options = 
     {   alpha: false,    
 //            depth: false,
-            stencil: false,
-            antialias: false, 
+        stencil: false,
+        antialias: false, 
 //            premultipliedAlpha: false,
-            preserveDrawingBuffer: false,
-            failIfMajorPerformanceCaveat: false
+        preserveDrawingBuffer: false,
+        failIfMajorPerformanceCaveat: false
     };           
         
     this.canvas = document.getElementById("canvas");
     this.gl = this.canvas.getContext("webgl", options);
     if (!this.gl) { this.gl = this.canvas.getContext("experimental-webgl", options ); }        
-    console.log("canvas",this.canvas, "context",this.gl);
-    if (!this.gl) return;
+    if (!this.gl) { return; }
     
     this.screens = [];
     this.levelpacks = [];
         
-    // set the detail scale level
-    this.levelScale = 1;
-    this.detailScale = 1;
-
     // calculate the minimum size needed for buttons in order for the user to hit them (8mm)
     this.minButtonSize = 30;
         
     // create the renderers and load data
     this.loadRenderers();
-        
+                
     // default to touch/mouse input unless otherwise directed 
     this.usingKeyboardInput = false;
 
@@ -80,126 +76,114 @@ Game.prototype.$ = function()
     this.musicPlayer = null;
     this.startMusic("silence");
 
-    // load sounds directly at startup (and do not release them)
-    this.soundPlayer = null; // new LevelSoundPlayer(context, asyncHandler);
-
     // show a loading screen at start
     this.addScreen(new LoadingScreen().$(this));
         
     // install input handlers
-    document.addEventListener('keydown', function(event)
-    {   that.onKeyDown(KeyEvent.toNumericCode(event.key)); 
-    });
-    document.addEventListener('keyup', function(event)
-    {   that.onKeyUp(KeyEvent.toNumericCode(event.key)); 
-    });
+    document.addEventListener
+    (   'keydown', function(event)
+        {   that.onKeyDown(KeyEvent.toNumericCode(event.key)); 
+        }
+    );
+    document.addEventListener
+    (   'keyup', function(event)
+        {   that.onKeyUp(KeyEvent.toNumericCode(event.key)); 
+        }
+    );    
+    this.canvas.addEventListener
+    (   'mousedown', function(event)
+        {   that.onMouseDown(event); 
+        }
+    );
+    this.canvas.addEventListener
+    (   'mouseup', function(event)
+        {   that.onMouseUp(event);
+        }
+    );
+    this.canvas.addEventListener
+    (   'mousemove', function(event)
+        {   that.onMouseMove(event);
+        }
+    );
+    this.canvas.addEventListener
+    (   'mouseleave', function(event)
+        {   that.onMouseLeave(event);
+        }
+    );    
+    this.canvas.addEventListener
+    (   'touchstart', function(event)
+        {   that.onTouchStart(event);
+        }
+    );
+    this.canvas.addEventListener
+    (   'touchend', function(event)
+        {   that.onTouchEnd(event);
+        }
+    );
+    this.canvas.addEventListener
+    (   'touchcancel', function(event)
+        {   that.onTouchCancel(event);
+        }
+    );
+    this.canvas.addEventListener
+    (   'touchmove', function(event)
+        {   that.onTouchMove(event);
+        }
+    );
     
     // handle canvas size changes
     setScreenAndCanvasSize();
-    window.addEventListener('resize', function(event){
-      var wbefore = that.screenwidth;
-      var hbefore = that.screenheight;
-      setScreenAndCanvasSize();
-      if (wbefore!=that.screenwidth || hbefore!=that.screenheight) {
-          that.notifyScreensAboutResize(); 
-          that.setDirty();
-      }
-    });      
+    window.addEventListener
+    (   'resize', function(event)
+        {   var wbefore = that.screenwidth;
+            var hbefore = that.screenheight;
+            setScreenAndCanvasSize();
+            if (wbefore!=that.screenwidth || hbefore!=that.screenheight) 
+            {   that.notifyScreensAboutResize(); 
+                that.setDirty();
+            }
+        }
+    );      
     
     // cause further loading to progress
-    this.loadLevels(function() 
-    {   //that.replaceTopScreen(new TestScreen().$(that));
-        that.replaceTopScreen(new MainMenuScreen().$(that));        
-    });
+    this.loadLevels
+    (   function() 
+        {   //that.replaceTopScreen(new TestScreen().$(that));
+            that.replaceTopScreen(new MainMenuScreen().$(that));  
+            
+            // trigger loading of sounds at the very end..
+            that.soundPlayer = (new LevelSoundPlayer()).$();
+        }
+    );
     
     // set up game loop
-    window.requestAnimationFrame (ftick);
+    window.requestAnimationFrame (ftick);    
+    return this;
+    
     function ftick() 
     {   that.tick();    // in case of exception stop the loop
         window.requestAnimationFrame(ftick);        
-    };   
+    }
         
     // computation for best canvas size
-    function setScreenAndCanvasSize() {
-      var ratio = window.devicePixelRatio;
-      if (!ratio) ratio=1.0;
-      that.screenwidth = Math.round(window.innerWidth*ratio);
-      that.screenheight = Math.round(window.innerHeight*ratio);
-      that.canvas.width = that.screenwidth;
-      that.canvas.height = that.screenheight;
-//      console.log("Screen size:",that.screenwidth,that.screenheight,"(ratio=",ratio,")");
-    }      
-    
-    return this;
+    function setScreenAndCanvasSize() 
+    {   var ratio = window.devicePixelRatio;
+        if (!ratio) { ratio=1.0; }
+        that.screenwidth = Math.round(window.innerWidth*ratio);
+        that.screenheight = Math.round(window.innerHeight*ratio);
+        that.canvas.width = that.screenwidth;
+        that.canvas.height = that.screenheight;
+    }          
 };
         
     
-/*    
-    // persistent state handling
-    private void storeGameState()
-    {       
-        // find an open game screen to check if there is some unfinished game running
-        GameScreen gamescreen = null;
-        for (int i=0; i<screens.size(); i++)
-        {   if (screens.elementAt(i) instanceof GameScreen)
-            {   gamescreen = (GameScreen) screens.elementAt(i);
-                break;
-            }
-        }
-        // when there is a game screen open, store data 
-        if (gamescreen!=null)
-        {   SharedPreferences.Editor edit = preferences.edit();
-            edit.putString("unfinished_title", gamescreen.getCurrentLevelTitle());
-            edit.putString("unfinished_walk", gamescreen.getCurrentWalkSerialized());
-            edit.apply();
-            gamescreen.flushRecordingTimeMeasurement();         
-        }
-        // otherwise clear previous data if still present
-        else
-        {   clearGameState();
-        }
-    }
-        
-    private void clearGameState()
-    {
-        if (preferences.contains("unfinished_title"))
-        {   SharedPreferences.Editor edit = preferences.edit();
-            edit.remove("unfinished_title");
-            edit.remove("unfinished_walk");
-            edit.apply();           
-        }    
-    }
-
-    private void loadGameState()
-    {
-        // when there is some persistent game state, try to re-create the game, but also clear the state as soon as possible
-        // (to prevent a faulty game state to completely ruin the installation)
-        if (preferences.contains("unfinished_title"))
-        {   String t = preferences.getString("unfinished_title", "");
-            String w = preferences.getString("unfinished_walk", "");            
-            clearGameState();
-            
-            Level l = findLevel(t);
-            if (l!=null)
-            {   try
-                {   Walk walk = new Walk(w);
-                    GameScreen gs = new GameScreen(this, l,walk, false,false);
-                    addScreen(gs);
-                    gs.afterScreenCreation();                   
-                }
-                catch (JSONException e) {}  
-            }           
-        }
-    }
-*/        
-
-    // ---------------- handling of global game information ---------
+// ---------------- handling of global game information ---------
     
 Game.prototype.setLevelSolvedGrade = function(level, solvedgrade)
 {
     var t = level.getTitle();
     this.solvegrades.set(t,solvedgrade);
-}  
+};  
 
 Game.prototype.getLevelSolvedGrade = function(level)
 {
@@ -208,7 +192,7 @@ Game.prototype.getLevelSolvedGrade = function(level)
     return this.solvegrades.get(t);
 };
         
-Game.prototype.setMusicActive = function (active)
+Game.prototype.setMusicActive = function(active)
 {
 };
 
@@ -243,21 +227,23 @@ Game.prototype.loadLevels = function(callback)
   
     function done()
     {   pending--;
-        if (pending===0) callback();
+        if (pending===0) { callback(); }
     }
 };
     
 Game.prototype.readIntegratedLevelPack = function(name, filename, sort, callback)
 {
     var levelpacks = this.levelpacks;
-    Game.getJSON("levels/"+filename+".sylev", function(data) 
-    {   if (data) 
-        {   levelpacks.push(new LevelPack().$(name, data, sort));
+    Game.getJSON
+    (   "levels/"+filename+".sylev", function(data) 
+        {   if (data) 
+            {   levelpacks.push(new LevelPack().$(name, data, sort));
+            }
+            callback();
         }
-        callback();
-    });
+    );
 };
-    
+
 /*
     public void readUserLevelPacks()
     {       
@@ -372,7 +358,8 @@ Game.prototype.draw = function()
     // paint current contents of all the screens begin from the bottom still visible screen
     var bottom = 0;
     for (var i=1; i<this.screens.length; i++)
-    {   if (!this.screens[i].isOverlay())
+    {   
+        if (!this.screens[i].isOverlay())
         {   bottom = i; 
         }
     }
@@ -486,37 +473,97 @@ Game.prototype.allRenderersLoaded = function()
 }
  
 
-    // ---- handling of user input events 
-/*    
-    public void handleTouchEvent(final MotionEvent event) 
-    {
-        usingKeyboardInput = false;
-        
-        if (screens.size()>0) 
-        {   motionEventSimplifier.handleTouchEvent(event, screens.lastElement());
-        }
-    }   
-*/
+// ---- handling of keyboard input events -----
 Game.prototype.onKeyDown = function(keycode) 
 {    
-        this.usingKeyboardInput = true;
+    this.usingKeyboardInput = true;
         
-        if (this.screens.length>0 && (keycode==KeyEvent.KEYCODE_BACK))
-        {   this.getTopScreen().onBackNavigation();
-        }
-        else if (this.screens.length>0)
-        {
-            this.getTopScreen().onKeyDown(keycode);
-        }
+    if (this.screens.length>0 && (keycode==KeyEvent.KEYCODE_BACK))
+    {   this.getTopScreen().onBackNavigation();
+    }
+    else if (this.screens.length>0)
+    {   this.getTopScreen().onKeyDown(keycode);
+    }
+};
+Game.prototype.onKeyUp = function(keycode) 
+{        
+    if (this.screens.length>0)
+    {
+        this.getTopScreen().onKeyUp(keycode);
+    }
 };
 
-Game.prototype.onKeyUp = function(keycode) {    
+// ---- handling of mouse events - translate to simplified "pointer" events ---
+Game.prototype.onMouseDown = function(e)
+{
+    if (!this.isTouch) 
+    {   var b = this.canvas.getBoundingClientRect();            
+        var cx = Math.round( ((e.clientX-b.left)/b.width) * this.screenwidth );
+        var cy = Math.round( ((e.clientY-b.top)/b.height) * this.screenheight ); 
         if (this.screens.length>0)
-        {
-            this.getTopScreen().onKeyUp(keycode);
+        {   if (this.isPointerDown)
+            {   //console.log("pointer move: ",cx,cy);
+                this.getTopScreen().onPointerMove(cx,cy);
+            }
+            else
+            {   //console.log("pointer down: ",cx,cy);
+                this.getTopScreen().onPointerDown(cx,cy);
+            }
         }
+        this.isPointerDown = true;             
+    }        
+};
+Game.prototype.onMouseUp = function(e)
+{
+    if (!this.isTouch) 
+    {   
+        if (this.screens.length>0 && this.isPointerDown)
+        {   //console.log("pointer up");
+            this.getTopScreen().onPointerUp();
+        }
+        this.isPointerDown = false;
+    }
+};
+Game.prototype.onMouseMove = function(e)
+{
+    if (!this.isTouch) 
+    {   var b = this.canvas.getBoundingClientRect();            
+        var cx = Math.round( ((e.clientX-b.left)/b.width) * this.screenwidth );
+        var cy = Math.round( ((e.clientY-b.top)/b.height) * this.screenheight );
+                
+        if (this.screens.length>0 && this.isPointerDown)
+        {   //console.log("pointer move: ",cx,cy);
+            this.getTopScreen().onPointerMove(cx,cy);
+        }
+    }
+};
+Game.prototype.onMouseLeave = function(e) 
+{ 
+    if (!this.isTouch) 
+    {   if (this.isPointerDown && this.screens.length>0)
+        {   //console.log("pointer up");
+            this.getTopScreen().onPointerUp();
+        } 
+        this.isPointerDown = false;
+    }
+};
+        
+// ----- handling of touch events - these are translated to pointer events --- 
+Game.prototype.onTouchStart = function(e) 
+{ 
+};
+Game.prototype.onTouchEnd = function(e)
+{         
+};
+Game.prototype.onTouchCancel = function(e)
+{
+};
+Game.prototype.onTouchMove = function(e)
+{
 };
 
+
+// -------------- handling music playback --------
 
 Game.prototype.startMusic = function(filename)
 {

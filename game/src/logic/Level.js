@@ -1,3 +1,4 @@
+"use strict";
 // constant values
 var MAPWIDTH  = 64;
 var MAPHEIGHT = 64; 

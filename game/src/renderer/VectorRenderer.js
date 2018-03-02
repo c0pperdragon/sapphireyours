@@ -1,4 +1,4 @@
-
+"use strict";
 // object allocator function
 var VectorRenderer = function()  
 {   Renderer.call(this);

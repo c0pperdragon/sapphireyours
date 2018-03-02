@@ -1,4 +1,4 @@
-
+"use strict";
 var TileRenderer = function() 
 {   Renderer.call(this);
     this.program = 0;

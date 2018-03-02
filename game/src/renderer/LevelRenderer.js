@@ -1,4 +1,4 @@
-
+"use strict";
 // Tile specifier: A single 16-bit number encodes the index in the global tile 
 // texture as well as rotation and shrinking effect. The opengl vertex shader will
 // do the proper transformation when provided with this tile specifier.

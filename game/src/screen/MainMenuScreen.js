@@ -1,4 +1,4 @@
-
+"use strict";
 var MainMenuScreen = function()
 {
     Screen.call(this);
@@ -397,14 +397,19 @@ MainMenuScreen.prototype.onKeyDown = function(keycode)
     // ---- pointer event handlers ----
 MainMenuScreen.prototype.onPointerDown = function(x, y)
 {
-        this.pointerx = x;
-        this.pointery = y;
-        this.pointerdownx = x;
-        this.pointerdowny = y;
-        this.pointeractive = true;
+    this.pointerx = x;
+    this.pointery = y;
+    this.pointerdownx = x;
+    this.pointerdowny = y;
+    this.pointeractive = true;
 
-        this.selectedcolumn = (this.pointerx-this.left) / this.colwidth;
-        this.selectedrow = (this.pointery-this.top) / this.rowheight;
+    var col = Math.round ( (this.pointerx-this.left) / this.colwidth );
+    var row = Math.round( (this.pointery-this.top) / this.rowheight );
+    if (col!==this.selectedcolum || row!==this.selectedrow)
+    {   this.selectedcolumn = col;
+        this.selectedrow = row;
+        this.setDirty();
+    }
 };
 
 MainMenuScreen.prototype.onPointerUp = function()

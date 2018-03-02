@@ -1,3 +1,4 @@
+"use strict";
 var Logic = function() 
 {
     this.map = null;                     // fixed-size buffer to hold current map   

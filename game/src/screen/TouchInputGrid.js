@@ -1,4 +1,4 @@
-
+"use strict";
 var TouchInputGrid = function()
 {
     this.game = null;
@@ -117,7 +117,7 @@ TouchInputGrid.prototype.draw = function(screenwidth, screenheight)
             }       
                         
             // draw the tail of the arrow
-            if (this.partsdrawn==0)
+            if (partsdrawn==0)
             {   vr.setStripCornerTransformation (this.positionx[i]-prevx,this.positiony[i]-prevy, 
                         this.screenscrollx+tsh+prevx*ts, this.screenscrolly+tsh+prevy*ts);
                 vr.addStripCorner(0,-thickh, color);
@@ -189,13 +189,12 @@ TouchInputGrid.prototype.draw = function(screenwidth, screenheight)
     }       
         
     // paint overlays for grab actions
-    var prevx=playerx;
-    var prevy=playery;
+    var prevx=this.playerx;
+    var prevy=this.playery;
     for (var i=0; i<this.positionscount; i++)
     {   switch (this.positiontype[i])
         {   case TouchInputGrid.TYPE_GRABAT:
-                vr.addShape(this.screenscrollx+tsh+this.positionx[i]*ts, this.screenscrolly+tsh+this.positiony[i]*ts,
-                             TouchInputGrid.shape_grabmarker, ts, color);
+                vr.addShape(this.screenscrollx+tsh+this.positionx[i]*ts, this.screenscrolly+tsh+this.   positiony[i]*ts, TouchInputGrid.shape_grabmarker, ts, color);
             break;
             case TouchInputGrid.TYPE_MOVETO:
                 prevx = this.positionx[i];
@@ -204,8 +203,8 @@ TouchInputGrid.prototype.draw = function(screenwidth, screenheight)
             case TouchInputGrid.TYPE_MOVETO_LEAVEBOMB:
                 vr.addShape(this.screenscrollx+tsh+prevx*ts, this.screenscrolly+tsh+prevy*ts, 
                             TouchInputGrid.shape_bombmarker, ts, color);           
-                prevx = positionx[i];
-                prevy = positiony[i];   
+                prevx = this.positionx[i];
+                prevy = this.positiony[i];   
                 break;
         }
     }
@@ -216,10 +215,9 @@ TouchInputGrid.prototype.draw = function(screenwidth, screenheight)
         
     // add shine below finger while dragging
     if (this.isDragging)
-    {   var r = 50*this.game.detailScale;
+    {   var r = 50;
         vr.addRoundedRect(this.screenscrollx+this.dragpointx-r, 
-                              this.screenscrolly+this.dragpointy-r, 2*r,2*r, r,r+1.0, 0x44ffffff);
-            // vr.addCircle(screenscrollx+dragpointx, screenscrolly+dragpointy, (int)(50*game.detailScale), 0x44ffffff);
+                          this.screenscrolly+this.dragpointy-r, 2*r,2*r, r,r+1.0, 0x44ffffff);
     }
         
     vr.flush();
@@ -253,7 +251,7 @@ TouchInputGrid.prototype.getDestinationY = function()
         {   return this.positiony[i];
         }
     }
-    return playery; 
+    return this.playery; 
 };
     
     
@@ -288,16 +286,16 @@ TouchInputGrid.prototype.nextMovement = function()
             var dropbomb = this.positiontype[0]==TouchInputGrid.TYPE_MOVETO_LEAVEBOMB;          
             this.removeFirstPosition();                  
             if (dx==0 && dy==-1)
-            {   return this.dropbomb ? Walk.BOMB_UP : Walk.MOVE_UP;
+            {   return dropbomb ? Walk.BOMB_UP : Walk.MOVE_UP;
             }
             else if (dx==0 && dy==1)
-            {   return this.dropbomb ? Walk.BOMB_DOWN : Walk.MOVE_DOWN;
+            {   return dropbomb ? Walk.BOMB_DOWN : Walk.MOVE_DOWN;
             }
             else if (dx==-1 && dy==0)
-            {   return this.dropbomb ? Walk.BOMB_LEFT : Walk.MOVE_LEFT;
+            {   return dropbomb ? Walk.BOMB_LEFT : Walk.MOVE_LEFT;
             }
             else if (dx==1 && dy==0)
-            {   return this.dropbomb ? Walk.BOMB_RIGHT : Walk.MOVE_RIGHT;
+            {   return dropbomb ? Walk.BOMB_RIGHT : Walk.MOVE_RIGHT;
             }               
         }       
     }                
@@ -322,10 +320,10 @@ TouchInputGrid.prototype.removeFirstPosition = function()
         this.playery = this.positiony[0];
     }
     this.positionscount--;
-    for (var i=0; i<this.positionscount-1; i++)
-    {   positionx[i] = positionx[i+1];
-        positiony[i] = positiony[i+1];
-        positiontype[i] = positiontype[i+1];
+    for (var i=0; i<this.positionscount; i++)
+    {   this.positionx[i] = this.positionx[i+1];
+        this.positiony[i] = this.positiony[i+1];
+        this.positiontype[i] = this.positiontype[i+1];
     }
 }
     
@@ -338,8 +336,8 @@ TouchInputGrid.prototype.onPointerDown = function(x, y, firstpass)
 
     this.dragpointx = (x - this.screenscrollx);
     this.dragpointy = (y - this.screenscrolly);
-    var targetx = Math.floor(dragpointx / screentilesize);
-    var targety = Math.floor(dragpointy / screentilesize);
+    var targetx = Math.floor(this.dragpointx / this.screentilesize);
+    var targety = Math.floor(this.dragpointy / this.screentilesize);
 
     // determine the end of the current position chain (ignoring the grabs)
     var endx = this.playerx;
@@ -421,8 +419,8 @@ TouchInputGrid.prototype.onPointerMove = function(x,y)
         
     this.dragpointx = (x - this.screenscrollx);
     this.dragpointy = (y - this.screenscrolly);
-    var targetx = Math.floor(dragpointx / screentilesize);
-    var targety = Math.floor(dragpointy / screentilesize);
+    var targetx = Math.floor(this.dragpointx / this.screentilesize);
+    var targety = Math.floor(this.dragpointy / this.screentilesize);
 
     // suppress drawing the path if still touching the grab action 
     if (this.current_drag_caused_grab && this.positionscount>0 

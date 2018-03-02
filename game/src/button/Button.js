@@ -34,7 +34,7 @@ Button.prototype.setPosition = function(x,y)
     // ------------------- handle touch input commands ------------
 Button.prototype.onPointerDown = function(x, y)
 {
-    if (x>=this.x && x<this.x+width && y>=this.y && y<this.y+height)
+    if (x>=this.x && x<this.x+this.width && y>=this.y && y<this.y+this.height)
     {   this.isPressed = true;
         return true;        
     }
@@ -54,5 +54,5 @@ Button.prototype.onPointerMove = function(x, y)
     if (!this.isPressed)
     {   return;
     }
-    this.isPressed = (x>=this.x && x<this.x+width && y>=this.y && y<this.y+height);
+    this.isPressed = (x>=this.x && x<this.x+this.width && y>=this.y && y<this.y+this.height);
 };

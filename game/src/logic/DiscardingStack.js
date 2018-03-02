@@ -1,4 +1,4 @@
-
+"use strict";
 /**
  * A stack for int values that normally needs a limited buffer size, but which accepts
  * unlimited number of elements. To do this, the user code can grant permission

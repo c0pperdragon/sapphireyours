@@ -1,4 +1,4 @@
-
+"use strict";
 var Renderer = function() 
 {   this.gl = null;
 };

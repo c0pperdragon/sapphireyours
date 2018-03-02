@@ -1,4 +1,4 @@
-
+"use strict";
 // object allocator function
 var TextRenderer = function()  
 {   Renderer.call(this);
