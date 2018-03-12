@@ -1,10 +1,10 @@
 "use strict";
 var Renderer = function() 
-{   this.gl = null;
+{   this.game = null;
 };
 
-Renderer.prototype.$ = function(gl) 
-{   this.gl = gl;
+Renderer.prototype.$ = function(game) 
+{   this.game = game;
     return this;
 };
 
@@ -24,7 +24,7 @@ Renderer.prototype.isLoaded = function()
      * @return - Returns an id for the shader.
      */
  Renderer.prototype.loadShader = function(type,shaderCode)
- {  var gl = this.gl;
+ {  var gl = this.game.gl;
     
     // create a vertex shader type (GLES20.GL_VERTEX_SHADER)
     // or a fragment shader type (GLES20.GL_FRAGMENT_SHADER)
@@ -44,7 +44,7 @@ Renderer.prototype.isLoaded = function()
 };
 
 Renderer.prototype.createProgram = function(vertexShaderCode, fragmentShaderCode)
-{   var gl = this.gl;
+{   var gl = this.game.gl;
 
     // prepare shaders and OpenGL program
     var vertexShader = this.loadShader(gl.VERTEX_SHADER, vertexShaderCode);
@@ -63,7 +63,7 @@ Renderer.prototype.createProgram = function(vertexShaderCode, fragmentShaderCode
 
 Renderer.prototype.loadImageToTexture = function(resourcename, texture, onlyalpha, callback)
 {   
-    var gl = this.gl;
+    var gl = this.game.gl;
     var image = new Image();
     image.addEventListener
     (   'load', function() 

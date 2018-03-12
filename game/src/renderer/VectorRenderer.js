@@ -71,10 +71,11 @@ VectorRenderer.sinustable =
 
 
 // constructor: set up opengl  and load textures
-VectorRenderer.prototype.$ = function(gl)
+VectorRenderer.prototype.$ = function(game)
 {
-    Renderer.prototype.$.call(this,gl);
-
+    Renderer.prototype.$.call(this,game);
+    var gl = game.gl;
+    
     // create shaders and link together
     this.program = this.createProgram(VectorRenderer.vertexShaderCode,VectorRenderer.fragmentShaderCode);
     // extract the bindings for the uniforms and attributes
@@ -114,7 +115,7 @@ VectorRenderer.prototype.startDrawing = function(viewportwidth, viewportheight)
 VectorRenderer.prototype.flush = function()
 {   
     if (this.numCorners<1) { return };    
-    var gl = this.gl;
+    var gl = this.game.gl;
 
     // transfer buffers into opengl 
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vboCorner);

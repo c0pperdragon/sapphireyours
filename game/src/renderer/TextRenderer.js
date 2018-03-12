@@ -78,10 +78,11 @@ TextRenderer.fragmentShaderCode =
 TextRenderer.MAXGLYPHS = 5000;  // number of glyphs that can be rendered in one call
 
 
-TextRenderer.prototype.$ = function(gl)
+TextRenderer.prototype.$ = function(game)
 {
-    Renderer.prototype.$.call(this,gl);
-
+    Renderer.prototype.$.call(this,game);
+    var gl = game.gl;
+    
         // create shaders and link together
         this.program = this.createProgram(TextRenderer.vertexShaderCode,TextRenderer.fragmentShaderCode);
         // extract the bindings for the uniforms and attributes
@@ -260,7 +261,7 @@ TextRenderer.prototype.flush = function()
 {
         if (this.numGlyphs<1) return;
         
-        var gl = this.gl;
+        var gl = this.game.gl;
         
         // transfer buffers into opengl 
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vboCorner);

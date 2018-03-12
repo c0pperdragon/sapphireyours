@@ -656,9 +656,10 @@ GameScreen.prototype.gamePlayback = function()
             this.logic.gototurn(this.step);
             this.frames_left += LevelRenderer.FRAMESPERSTEP;             
             if (this.playbackspeed==1) 
-            {   if (this.game.soundPlayer && this.game.soundPlayer.playStep(this.logic))
-                {   screenshaketime = 3;
+            {   if (this.game.soundPlayer.preparePlaying(this.logic))
+                {   this.screenshaketime = 3;
                 }
+                this.game.soundPlayer.playNow();
             }               
         }
         else

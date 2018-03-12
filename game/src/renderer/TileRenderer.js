@@ -30,12 +30,14 @@ var TileRenderer = function()
 TileRenderer.prototype = Object.create(Renderer.prototype);
     
     
-TileRenderer.TILEWIDTH = 60;
-TileRenderer.TILEHEIGHT = 60;
-TileRenderer.ATLASWIDTH = 2048;
-TileRenderer.ATLASHEIGHT = 2048; // 1024; 
-TileRenderer.TILESPERROW = Math.floor(TileRenderer.ATLASWIDTH/(TileRenderer.TILEWIDTH+4));
-TileRenderer.TILEROWS    = Math.floor(TileRenderer.ATLASHEIGHT/(TileRenderer.TILEHEIGHT+4));
+TileRenderer.TILEWIDTH = 120;
+TileRenderer.TILEHEIGHT = 120;
+TileRenderer.TILEOUTERWIDTH = 128;
+TileRenderer.TILEOUTERHEIGHT = 128;
+TileRenderer.ATLASWIDTH = 4096;
+TileRenderer.ATLASHEIGHT = 4096; 
+TileRenderer.TILESPERROW = Math.floor(TileRenderer.ATLASWIDTH/(TileRenderer.TILEOUTERWIDTH));
+TileRenderer.TILEROWS    = Math.floor(TileRenderer.ATLASHEIGHT/(TileRenderer.TILEOUTERHEIGHT));
 TileRenderer.ATLASTILES = TileRenderer.TILESPERROW*TileRenderer.TILEROWS;
 
 TileRenderer.MAXTILES = 64*64;
@@ -54,8 +56,8 @@ TileRenderer.vertexShaderCode =
             "  float tx = aTile[2]-ty*"+TileRenderer.TILESPERROW+".0;      "+     // x position (in tiles in atlas)
             "  float rotate = idiv(aTile[3],60.0);            "+     // rotation modifier
             "  float shrink = aTile[3]-rotate*60.0;           "+     // shrink modifier
-            "  vTextureCoordinates[0] = (tx*"+(TileRenderer.TILEWIDTH+4)+".0+2.0+aCorner[0]*"+TileRenderer.TILEWIDTH+".0)/"+TileRenderer.ATLASWIDTH+".0;  "+
-            "  vTextureCoordinates[1] = (ty*"+(TileRenderer.TILEHEIGHT+4)+".0+2.0+aCorner[1]*"+TileRenderer.TILEWIDTH+".0)/"+TileRenderer.ATLASHEIGHT+".0; "+
+            "  vTextureCoordinates[0] = (tx*"+(TileRenderer.TILEOUTERWIDTH)+".0+4.0+aCorner[0]*"+TileRenderer.TILEWIDTH+".0)/"+TileRenderer.ATLASWIDTH+".0;  "+
+            "  vTextureCoordinates[1] = (ty*"+(TileRenderer.TILEOUTERHEIGHT)+".0+4.0+aCorner[1]*"+TileRenderer.TILEWIDTH+".0)/"+TileRenderer.ATLASHEIGHT+".0; "+
             "  float px = aCorner[0]-0.5;                 "+    // bring center of tile to 0/0 
             "  float py = aCorner[1]-0.5;                 "+
             "  px = px*(1.0-shrink/60.0);                 "+    // apply shrink value
@@ -78,16 +80,16 @@ TileRenderer.fragmentShaderCode =
             "uniform sampler2D uTexture;                      "+  // uniform specifying the texture 
             "void main() {                                    "+
             "   gl_FragColor = texture2D(uTexture,vTextureCoordinates);  "+  
-//            "   gl_FragColor = vec4(0.7, 0.2, 0.8, 0.5);" +
             "}                                                "+
             "";
     
     
 // set up opengl  and load textures
-TileRenderer.prototype.$ = function(gl,imagelist)
+TileRenderer.prototype.$ = function(game,imagelist)
 {
-    Renderer.prototype.$.call(this,gl);
-        
+    Renderer.prototype.$.call(this,game);
+    var gl = game.gl;
+    
     // allocate memory for projection matrix
     this.matrix = new Array(16);
     this.matrix2 = new Array(16);
@@ -176,12 +178,12 @@ TileRenderer.prototype.startLoadImage = function(filename)
     var that = this;
     image.addEventListener
     (   'load', function() 
-        {   var gl = that.gl;
+        {   var gl = that.game.gl;
         
-            var w = image.naturalWidth;
             var h = image.naturalHeight;
-            var rows = Math.floor(h/TileRenderer.TILEHEIGHT);
-            var cols = Math.floor(w/TileRenderer.TILEWIDTH);
+            var w = h;
+            var rows = 1; 
+            var cols = Math.floor(image.naturalWidth/w);
             
             var tiles = [];
             
@@ -194,15 +196,15 @@ TileRenderer.prototype.startLoadImage = function(filename)
                     tiles.push(tn);
                     
                     cc.clearRect(0,0, TileRenderer.TILEWIDTH, TileRenderer.TILEHEIGHT);
-                    cc.drawImage(image, TileRenderer.TILEWIDTH*x, TileRenderer.TILEHEIGHT*y, 
-                                        TileRenderer.TILEWIDTH, TileRenderer.TILEHEIGHT, 
+                    cc.drawImage(image, w*x, h*y, 
+                                        w, h, 
                                         0,0,
                                         TileRenderer.TILEWIDTH, TileRenderer.TILEHEIGHT);                    
                     gl.texSubImage2D
                     (   gl.TEXTURE_2D, 
                         0, 
-                        (tn % (TileRenderer.TILESPERROW)) * (TileRenderer.TILEWIDTH+4) + 2,
-                        Math.floor(tn / (TileRenderer.TILESPERROW)) * (TileRenderer.TILEHEIGHT+4) + 2, 
+                        (tn % (TileRenderer.TILESPERROW)) * (TileRenderer.TILEOUTERWIDTH) + 4,
+                        Math.floor(tn / (TileRenderer.TILESPERROW)) * (TileRenderer.TILEOUTERHEIGHT) + 4, 
                         gl.RGBA, 
                         gl.UNSIGNED_BYTE,
                         that.tmpCanvas 
@@ -214,8 +216,11 @@ TileRenderer.prototype.startLoadImage = function(filename)
             that.imagesLoaded.set(filename, tiles);   
             
             if (that.imagesLoaded.size==that.imagesRequested.length)
-            {   console.log("Loaded "+that.imagesRequested.length
-                +" images into "+that.tilesLoaded+" tiles");
+            {   console.log
+                (   "Loaded "+that.imagesRequested.length
+                    +" images into "+that.tilesLoaded+" of " 
+                    +TileRenderer.ATLASTILES+" tiles"
+                );
             }
         }
     );
@@ -311,13 +316,13 @@ TileRenderer.prototype.flush = function()
         // fast termination if nothing to draw
         if (this.numTiles<1) { return; }
 
-        var gl = this.gl;
+        var gl = this.game.gl;
         
         // transfer tile info buffer into opengl (consists of 4 identical parts) 
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vboTile);
         var subarr = this.bufferTile.subarray(0,4*this.numTiles);
         for (var i=0; i<4; i++)     
-        {   this.gl.bufferSubData(gl.ARRAY_BUFFER, i*2*4*TileRenderer.MAXTILES, subarr );
+        {   gl.bufferSubData(gl.ARRAY_BUFFER, i*2*4*TileRenderer.MAXTILES, subarr );
         }
         
         // set up gl for painting all quads

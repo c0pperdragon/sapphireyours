@@ -8,7 +8,6 @@ var Game = function()
     this.screenheight = 0;  
     this.minButtonSize = 0;
 
-    this.tileRenderer = null;
     this.levelRenderer = null;
     this.textRenderer = null;
     this.vectorRenderer = null;
@@ -167,12 +166,15 @@ Game.prototype.$ = function()
         
     // computation for best canvas size
     function setScreenAndCanvasSize() 
-    {   var ratio = window.devicePixelRatio;
-        if (!ratio) { ratio=1.0; }
-        that.screenwidth = Math.round(window.innerWidth*ratio);
-        that.screenheight = Math.round(window.innerHeight*ratio);
-        that.canvas.width = that.screenwidth;
-        that.canvas.height = that.screenheight;
+    {   var ratio = window.devicePixelRatio || 1;
+    console.log(that.canvas.clientWidth,that.canvas.clientHeight,ratio);
+        var pixelw = Math.round(that.canvas.clientWidth*ratio);
+        var pixelh = Math.round(that.canvas.clientHeight*ratio);        
+        that.canvas.width = pixelw;
+        that.canvas.height = pixelh;        
+        that.screenwidth = pixelw;
+        that.screenheight = pixelh;        
+        console.log("w:",pixelw,"h:",pixelh);
     }          
 };
         
@@ -431,33 +433,27 @@ Game.prototype.getTopScreen = function()
 
 // --------- loading renderers (will be triggered by system or by user key ----
 Game.prototype.loadRenderers = function()
-{
-    var gl = this.gl;
-    
+{   
     // (re)initialize renderers  (create opengl state)
-    this.tileRenderer = null;
     this.levelRenderer = null;      
     this.textRenderer = null;
     this.vectorRenderer = null;
     this.gfxRenderer = null;
 
-    this.vectorRenderer = new VectorRenderer().$(gl);
+    this.vectorRenderer = new VectorRenderer().$(this);
     console.log("VectorRenderer created");
     
-    this.textRenderer = new TextRenderer().$(gl);
+    this.textRenderer = new TextRenderer().$(this);
     console.log("TextRenderer created");
 
-    this.levelRenderer = new LevelRenderer().$(gl);
+    this.levelRenderer = new LevelRenderer().$(this);
     console.log("LevelRenderer created");      
     
-    this.gfxRenderer = new GfxRenderer().$(gl);
+    this.gfxRenderer = new GfxRenderer().$(this);
     console.log("GfxRenderer created");      
-    
-    this.tileRenderer = new TileRenderer().$(gl, ["1man"]);
-    console.log("TileRenderer created");      
-
+       
     // check if any error has occured
-    var e = gl.getError();
+    var e = this.gl.getError();
     if (e) 
     {   console.log("WebGL error on creating renderers: "+e);
     }
@@ -468,7 +464,6 @@ Game.prototype.allRenderersLoaded = function()
     return this.vectorRenderer && this.vectorRenderer.isLoaded() 
         && this.textRenderer && this.textRenderer.isLoaded() 
         && this.gfxRenderer && this.gfxRenderer.isLoaded()
-        && this.tileRenderer && this.tileRenderer.isLoaded()
         && this.levelRenderer && this.levelRenderer.isLoaded();
 }
  

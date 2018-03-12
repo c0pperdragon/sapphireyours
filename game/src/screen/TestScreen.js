@@ -29,8 +29,6 @@ TestScreen.prototype.draw = function()
     tr.startDrawing (screenwidth, screenheight);    
     var gr = this.game.gfxRenderer;
     gr.startDrawing (screenwidth, screenheight);    
-    var tir = this.game.tileRenderer;
-    tir.startDrawing (screenwidth, screenheight, 60, 0,0,0,0);
     
     vr.addRoundedRect(10,10,100,100, 5,10, Game.getColorForDifficulty(3));   
     var s = 150;
@@ -44,10 +42,6 @@ TestScreen.prototype.draw = function()
            TextRenderer.WEIGHT_PLAIN);
            
     gr.addGraphic(gr.TITLEPICTURE, 200,11, 100,100);
-           
-    tir.addTile(300,300, 0);
-    tir.addTile(370,300, 1 + (Math.floor(this.t%60)<<16));
-    tir.addTile(440,300, 1 + (Math.floor((this.t%360)*60)<<16));
            
     gr.flush();
     vr.flush();

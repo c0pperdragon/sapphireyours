@@ -58,10 +58,11 @@ GfxRenderer.fragmentShaderCode =
 GfxRenderer.MAXRECTANGLES = 500;  // number of rectangles that can be rendered in one call
    
    
-GfxRenderer.prototype.$ = function(gl)
+GfxRenderer.prototype.$ = function(game)
 {
-    Renderer.prototype.$.call(this,gl);
-
+    Renderer.prototype.$.call(this,game);
+    var gl = game.gl;
+    
         // create shaders and link together
     this.program = this.createProgram(GfxRenderer.vertexShaderCode,GfxRenderer.fragmentShaderCode);
     // extract the bindings for the uniforms and attributes
@@ -140,13 +141,12 @@ GfxRenderer.prototype.isLoaded = function()
 GfxRenderer.prototype.loadGfx = function(freespace, name, pos_and_dim_storage) 
 {
     var that = this;
+    var gl = this.game.gl;
     
     var image = new Image();
     image.addEventListener
     (   'load', function() 
-        {   var gl = that.gl;
-        
-            var w = image.naturalWidth;
+        {   var w = image.naturalWidth;
             var h = image.naturalHeight;
             
             var pos_and_dim = freespace.allocateArea(w,h);
@@ -176,7 +176,7 @@ GfxRenderer.prototype.flush = function()
 {
     if (this.numRectangles<1) return;
         
-    var gl = this.gl;
+    var gl = this.game.gl;
   
     // transfer buffers into opengl 
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vboCorner);  
