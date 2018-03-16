@@ -514,13 +514,14 @@ LevelRenderer.prototype.createRotatingAnimation = function(a, start, end)
    
 // -------------- draw the whole scene as defined by the logic -----------
 LevelRenderer.prototype.draw = function
-(   displaywidth, displayheight, screentilesize,
-    logic, frames_until_endposition, 
+(   logic, frames_until_endposition, 
     offx0, offy0, offx1, offy1
 )
 {           
+    var screentilesize = 60;
+    
     // start up the rendering    
-    this.startDrawing(displaywidth, displayheight, screentilesize, offx0,offy0, offx1,offy1);
+    this.startDrawing(offx0,offy0, offx1,offy1);
 
     // determine which part of the logic area needs to be painted
     var populatedwidth = logic.level.datawidth;

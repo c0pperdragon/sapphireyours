@@ -156,7 +156,6 @@ PauseMenu.prototype.drawOrLayout = function(draw)
 {
     var scaling = 1;       
     var th = 27;
-
     var vr = this.game.vectorRenderer;                
     var tr = this.game.textRenderer;                
 
@@ -178,8 +177,8 @@ PauseMenu.prototype.drawOrLayout = function(draw)
     }
     // when in drawing mode, initialize renderers and create background
     else
-    {   vr.startDrawing (this.game.screenwidth, this.game.screenheight);
-        tr.startDrawing (this.game.screenwidth, this.game.screenheight);        
+    {   vr.startDrawing ();
+        tr.startDrawing ();        
         vr.addRectangle(this.menux,0,this.menuwidth,this.game.screenheight, bgcolor);           
     }
     
@@ -202,7 +201,7 @@ PauseMenu.prototype.drawOrLayout = function(draw)
     }
 
     var y = this.menuy + 40*scaling;  // inner border
-    var x = this.menux + 30*scaling;  // inner border      
+    var x = this.menux + 30*scaling;  // inner border          
         
     // level title
     var t = this.level.getTitle();
@@ -274,7 +273,7 @@ PauseMenu.prototype.drawOrLayout = function(draw)
         
     // non-priority actions (in bottom part of menu)
     this.lowactionwidth = this.iconwidth + this.actiondx*2;
-    this.lowactionheight = Math.max(this.game.minButtonSize, th*1.5);
+    this.lowactionheight = Math.max(30, th*1.5);
     this.lowaction0x = this.menuwidth/2 - this.lowactionwidth/2;
     this.lowaction0y = y-this.menuy;
     this.lowactiondy = this.lowactionheight+4.0*scaling;
@@ -304,7 +303,7 @@ PauseMenu.prototype.drawOrLayout = function(draw)
     // memorize menu size
     this.menuheight = y - this.menuy;
     this.menuy = (this.game.screenheight - this.menuheight)/2;
-        
+
     if (draw)
     {   vr.flush();
         tr.flush();

@@ -4,14 +4,15 @@ var Game = function()
     this.gl = null;
     this.exitcall = null;
     
-    this.screenwidth = 0;         // size of surface in pixel
+    this.screenwidth = 0;         // size of surface in css units
     this.screenheight = 0;  
-    this.minButtonSize = 0;
-
+    this.pixelwidth = 0;         // size in true pixels (renderer will scale)
+    this.pixelheight = 0;    
+    this.pixeltilesize = 100;    // edge size of one tile in pixels
+    
     this.levelRenderer = null;
     this.textRenderer = null;
     this.vectorRenderer = null;
-    this.gfxRenderer = null;
 
     this.soundPlayer = null;
     this.musicPlayer = null;
@@ -58,9 +59,6 @@ Game.prototype.$ = function()
     
     this.screens = [];
     this.levelpacks = [];
-        
-    // calculate the minimum size needed for buttons in order for the user to hit them (8mm)
-    this.minButtonSize = 30;
         
     // create the renderers and load data
     this.loadRenderers();
@@ -136,8 +134,13 @@ Game.prototype.$ = function()
     (   'resize', function(event)
         {   var wbefore = that.screenwidth;
             var hbefore = that.screenheight;
+            var pwbefore = that.pixelwidth;
+            var phbefore = that.pixelheight;
             setScreenAndCanvasSize();
-            if (wbefore!=that.screenwidth || hbefore!=that.screenheight) 
+            if 
+            (   wbefore!=that.screenwidth || hbefore!=that.screenheight
+                || pwbefore!=that.pixelwidth || phbefore!=that.pixelheight
+            ) 
             {   that.notifyScreensAboutResize(); 
                 that.setDirty();
             }
@@ -167,14 +170,19 @@ Game.prototype.$ = function()
     // computation for best canvas size
     function setScreenAndCanvasSize() 
     {   var ratio = window.devicePixelRatio || 1;
-    console.log(that.canvas.clientWidth,that.canvas.clientHeight,ratio);
-        var pixelw = Math.round(that.canvas.clientWidth*ratio);
-        var pixelh = Math.round(that.canvas.clientHeight*ratio);        
-        that.canvas.width = pixelw;
-        that.canvas.height = pixelh;        
-        that.screenwidth = pixelw;
-        that.screenheight = pixelh;        
-        console.log("w:",pixelw,"h:",pixelh);
+        var csswidth = Math.round(window.innerWidth);
+        var cssheight = Math.round(window.innerHeight);
+        var pixelwidth = Math.round(window.innerWidth*ratio);
+        var pixelheight = Math.round(window.innerHeight*ratio);        
+        that.screenwidth = csswidth;
+        that.screenheight = cssheight;    
+        that.pixelwidth = pixelwidth;
+        that.pixelheight = pixelheight;        
+        that.canvas.width = pixelwidth;
+        that.canvas.height = pixelheight;   
+        that.canvas.style["width"] = csswidth+"px";
+        that.canvas.style["height"] = cssheight+"px";
+        console.log("css-size:",csswidth,cssheight,"pixel-size:",pixelwidth,pixelheight);
     }          
 };
         
@@ -351,7 +359,7 @@ Game.prototype.tick = function()
 Game.prototype.draw = function()
 {
     var gl = this.gl;
-    gl.viewport(0,0,this.screenwidth,this.screenheight);
+    gl.viewport(0,0,this.pixelwidth,this.pixelheight);
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.enable(gl.BLEND);
@@ -449,8 +457,8 @@ Game.prototype.loadRenderers = function()
     this.levelRenderer = new LevelRenderer().$(this);
     console.log("LevelRenderer created");      
     
-    this.gfxRenderer = new GfxRenderer().$(this);
-    console.log("GfxRenderer created");      
+//    this.gfxRenderer = new GfxRenderer().$(this);
+//    console.log("GfxRenderer created");      
        
     // check if any error has occured
     var e = this.gl.getError();
@@ -463,7 +471,7 @@ Game.prototype.allRenderersLoaded = function()
 {
     return this.vectorRenderer && this.vectorRenderer.isLoaded() 
         && this.textRenderer && this.textRenderer.isLoaded() 
-        && this.gfxRenderer && this.gfxRenderer.isLoaded()
+//        && this.gfxRenderer && this.gfxRenderer.isLoaded()
         && this.levelRenderer && this.levelRenderer.isLoaded();
 }
  

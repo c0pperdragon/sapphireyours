@@ -152,7 +152,7 @@ GameScreen.prototype.draw = function()
 {           
     var screenwidth = this.game.screenwidth;
     var screenheight = this.game.screenheight;
-
+    
     // handle screen shaking feature
     var screenshake=0;
     if (this.screenshaketime>0)
@@ -163,29 +163,30 @@ GameScreen.prototype.draw = function()
     // paint the level tiles in a big action
     var lr = this.game.levelRenderer; 
     if (lr!=null && (this.logic!=null))
-    {   lr.draw(screenwidth, screenheight, 
-            this.screentilesize, this.logic, this.frames_left,
+    {   lr.draw
+        (   this.logic, this.frames_left,
             this.screenscrollx0, this.screenscrolly0+screenshake, 
-            this.screenscrollx1, this.screenscrolly1+screenshake); 
+            this.screenscrollx1, this.screenscrolly1+screenshake
+        ); 
     }
 
-    var statusbarheight = this.screentilesize*0.833;
+    var statusbarheight = 50;
     var statustextheight = this.statusbarheight*0.8;
     var statustilesize = this.statusbarheight*0.8;        
     var hspace = this.statusbarheight/10.0;
     
     // set up the renderers for decoration rendering
-    lr.startDrawing(screenwidth,screenheight, this.statustilesize);     
+    lr.startDrawing(this.statustilesize);     
     var tr = this.game.textRenderer;
-    tr.startDrawing(screenwidth,screenheight);
+    tr.startDrawing();
     var vr = this.game.vectorRenderer;
-    vr.startDrawing(screenwidth, screenheight);
+    vr.startDrawing();
 
     // add a focus highlight
     if (this.inputmodeswitchtime>0)
     {   this.inputmodeswitchtime--;
     }           
-    if (this.inputfocushighlightx>=0 && this.inputfocushighlighty>=0 && this.inputmodeswitchtime>0)
+/*    if (this.inputfocushighlightx>=0 && this.inputfocushighlighty>=0 && this.inputmodeswitchtime>0)
     {   
         vr.addInputFocusMarker (
           this.inputfocushighlightx+(this.inputfocushighlightplayer==0
@@ -196,10 +197,10 @@ GameScreen.prototype.draw = function()
            ((((this.inputmodeswitchtime%20)*255)/20)<<24) | 0x00ffffff
         );            
     }
-
+*/
     // paint the automatic play arrow very big over the top of the screen
     if (this.playmode!=GameScreen.PLAYMODE_RECORD && this.game.getTopScreen()==this)
-    {   var iconsize = this.screentilesize * 6.0;
+    {   var iconsize = 350;
         var color = 0x887799ff;
         var x = (screenwidth-iconsize)/2; 
         var y = (screenheight-iconsize)/2; 
@@ -362,12 +363,9 @@ GameScreen.prototype.reactivate = function()
         
 GameScreen.prototype.adjustScrolling = function(force)
 {
-    // determine chosen size of the screen tiles
-    this.screentilesize = 60;
-
-    var screenwidth = this.game.screenwidth;
-    var screenheight = this.game.screenheight;
-    var screentilesize = this.screentilesize;
+    var screenwidth = this.game.pixelwidth;
+    var screenheight = this.game.pixelheight;
+    var screentilesize = 60;
     var frames_left = this.frames_left;
 
     this.inputfocushighlightx = -1;

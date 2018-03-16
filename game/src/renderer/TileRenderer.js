@@ -249,22 +249,23 @@ TileRenderer.prototype.getImage = function(filename)
     return tiles;
 };    
     
-TileRenderer.prototype.startDrawing = function(viewportwidth,viewportheight, screentilesize, offx0, offy0, offx1, offy1)
-{
-    this.screentilesize = screentilesize;        
+TileRenderer.prototype.startDrawing = function(offx0, offy0, offx1, offy1)
+{  
     this.numTiles = 0;
 
     // when having same offsets, only one draw is necessary      
     if (offx0==offx1 && offy0==offy1)
     {   Matrix.setIdentityM(this.matrix,0);     
         Matrix.translateM(this.matrix,0, -1.0,1.0, 0);     
-        Matrix.scaleM(this.matrix,0, 2.0/viewportwidth, -2.0/viewportheight, 1.0);            
+        Matrix.scaleM(this.matrix,0, 2.0/this.game.screenwidth, -2.0/this.game.screenheight, 1.0);            
         Matrix.translateM(this.matrix,0, offx0, offy0, 0);
         this.havematrix2 = false;
     }
     // must draw 2 screens with a terminator line so there is a piece of each players area visible
     else                        
-    {       // calculate the normal vector (2d) of the delimiter line  (clockwise, 0=right)
+    {       var viewportwidth = this.game.pixelwidth;
+            var viewportheight = this.game.pixelheight;
+            // calculate the normal vector (2d) of the delimiter line  (clockwise, 0=right)
             var screendiagonal = Math.sqrt(viewportwidth*viewportwidth+viewportheight*viewportheight);
             var angle = Math.atan2(offy1-offy0,offx0-offx1); 
 
@@ -316,7 +317,8 @@ TileRenderer.prototype.flush = function()
         // fast termination if nothing to draw
         if (this.numTiles<1) { return; }
 
-        var gl = this.game.gl;
+        var g = this.game;
+        var gl = g.gl;
         
         // transfer tile info buffer into opengl (consists of 4 identical parts) 
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vboTile);
@@ -332,7 +334,7 @@ TileRenderer.prototype.flush = function()
         gl.activeTexture(gl.TEXTURE0);
         gl.bindTexture(gl.TEXTURE_2D, this.txTexture);
         gl.uniform1i(this.uTexture, 0);
-        gl.uniform1i(this.uScreenTileSize, this.screentilesize);
+        gl.uniform1i(this.uScreenTileSize,g.pixeltilesize);
         
         // enable all vertex attribute arrays and set pointers
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vboCorner);

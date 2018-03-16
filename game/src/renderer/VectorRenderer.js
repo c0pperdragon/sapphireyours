@@ -100,7 +100,7 @@ VectorRenderer.prototype.$ = function(game)
     return this;
 };
 
-VectorRenderer.prototype.startDrawing = function(viewportwidth, viewportheight)
+VectorRenderer.prototype.startDrawing = function()
 {
     // clear client-side buffer
     this.numCorners = 0;
@@ -109,7 +109,7 @@ VectorRenderer.prototype.startDrawing = function(viewportwidth, viewportheight)
     // transfer coordinate system from the opengl-standard to a pixel system (0,0 is top left)
     Matrix.setIdentityM(this.matrix,0);     
     Matrix.translateM(this.matrix,0, -1.0,1.0, 0);
-    Matrix.scaleM(this.matrix,0, 2.0/viewportwidth, -2.0/viewportheight, 1.0);
+    Matrix.scaleM(this.matrix,0, 2.0/this.game.screenwidth, -2.0/this.game.screenheight, 1.0);
 };
 
 VectorRenderer.prototype.flush = function()

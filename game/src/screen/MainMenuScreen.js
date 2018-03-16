@@ -72,7 +72,7 @@ MainMenuScreen.prototype.draw = function()
     var screenwidth = this.game.screenwidth;
     var screenheight = this.game.screenheight;
     
-    game.vectorRenderer.startDrawing (screenwidth, screenheight);
+    game.vectorRenderer.startDrawing ();
     
         // draw selection
         var selectedlevel = this.getSelectedLevel(); 
@@ -98,8 +98,8 @@ MainMenuScreen.prototype.draw = function()
         
     game.vectorRenderer.flush();
 
-    game.textRenderer.startDrawing (screenwidth, screenheight);
-    game.gfxRenderer.startDrawing (screenwidth, screenheight);
+    game.textRenderer.startDrawing ();
+//    game.gfxRenderer.startDrawing ();
 
         // draw all columns of the main menu
         var iconwidth = this.rowheight;
@@ -127,19 +127,19 @@ MainMenuScreen.prototype.draw = function()
                         selectedlevel==l ? background : Game.getColorForDifficulty(l.getDifficulty()),
                         TextRenderer.WEIGHT_PLAIN);
                         
-                    var icon = null;    
-                    switch (game.getLevelSolvedGrade(l))
-                    {   case 0: icon = game.gfxRenderer.FINISHEDMARKER_VISITED;
-                                break;
-                        case 1: icon = game.gfxRenderer.FINISHEDMARKER_SOLVED;
-                                break;
-                        case 2: icon = game.gfxRenderer.FINISHEDMARKER_PERFECT;
-                                break;
-                    }
-                    if (icon!=null)
-                    {
-                        game.gfxRenderer.addGraphic(icon, x,y+this.rowheight*0.1,this.rowheight*0.8,this.rowheight*0.8);
-                    }
+//                    var icon = null;    
+//                    switch (game.getLevelSolvedGrade(l))
+//                    {   case 0: icon = game.gfxRenderer.FINISHEDMARKER_VISITED;
+//                                break;
+//                        case 1: icon = game.gfxRenderer.FINISHEDMARKER_SOLVED;
+//                                break;
+//                        case 2: icon = game.gfxRenderer.FINISHEDMARKER_PERFECT;
+//                                break;
+//                    }
+//                    if (icon!=null)
+//                    {
+//                        game.gfxRenderer.addGraphic(icon, x,y+this.rowheight*0.1,this.rowheight*0.8,this.rowheight*0.8);
+//                    }
                 }
             }
             else if (col==this.menucolumn)
@@ -163,7 +163,7 @@ MainMenuScreen.prototype.draw = function()
         
         // flush everything to screen
         game.textRenderer.flush();
-        game.gfxRenderer.flush();
+//        game.gfxRenderer.flush();
 };
 
 

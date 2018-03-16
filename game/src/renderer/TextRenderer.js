@@ -168,14 +168,14 @@ TextRenderer.prototype.isLoaded = function()
     return this.textureSize!==null && this.glyph_coordinates!==null;
 };
 
-TextRenderer.prototype.startDrawing = function(viewportwidth, viewportheight)
+TextRenderer.prototype.startDrawing = function()
 {
     this.numGlyphs = 0;
         
-    // transfer coordinate system from the opengl-standard to a pixel system (0,0 is top left)
+    // transfer coordinate system from the opengl-standard to the css unit system (0,0 is top left)
     Matrix.setIdentityM(this.matrix,0);     
     Matrix.translateM(this.matrix,0, -1.0,1.0, 0);     
-    Matrix.scaleM(this.matrix,0, 2.0/viewportwidth, -2.0/viewportheight, 1.0);
+    Matrix.scaleM(this.matrix,0, 2.0/this.game.screenwidth, -2.0/this.game.screenheight, 1.0);
 };
 
 TextRenderer.prototype.addGlyph = function(code, x, y, height, rightaligned, argb, weight)
@@ -414,7 +414,7 @@ TextRenderer.prototype.wordWrap = function(string, height, pagewidth)
     
 TextRenderer.prototype.addString = function(string, x, y, height, rightaligned, argb, weight)
 {       
-// console.warn("addString",string,x,y,height,rightaligned,argb,weight);
+// console.log("addString",string,x,y,height,rightaligned,argb,weight);
         var x2 = x;
         if (rightaligned)
         {   for (var i=string.length-1; i>=0; i--)
