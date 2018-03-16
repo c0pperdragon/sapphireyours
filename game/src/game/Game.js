@@ -8,7 +8,7 @@ var Game = function()
     this.screenheight = 0;  
     this.pixelwidth = 0;         // size in true pixels (renderer will scale)
     this.pixelheight = 0;    
-    this.pixeltilesize = 100;    // edge size of one tile in pixels
+    this.pixeltilesize = 120;    // size of one tile in true pixels
     
     this.levelRenderer = null;
     this.textRenderer = null;

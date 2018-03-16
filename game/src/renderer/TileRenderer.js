@@ -26,54 +26,18 @@ var TileRenderer = function()
     this.imagesLoaded = null;     // Map: string -> array of tile indizes
     this.tilesLoaded = 0;
     this.tmpCanvas = null;
+    
+    // texture management
+    this.atlaswidth = 4096;
+    this.atlasheight = 4096;    
+    this.tilesize = 0;
+    this.tilesperrow = 0;
+    this.totalrows = 0;
 };    
 TileRenderer.prototype = Object.create(Renderer.prototype);
     
     
-TileRenderer.TILEWIDTH = 120;
-TileRenderer.TILEHEIGHT = 120;
-TileRenderer.TILEOUTERWIDTH = 128;
-TileRenderer.TILEOUTERHEIGHT = 128;
-TileRenderer.ATLASWIDTH = 4096;
-TileRenderer.ATLASHEIGHT = 4096; 
-TileRenderer.TILESPERROW = Math.floor(TileRenderer.ATLASWIDTH/(TileRenderer.TILEOUTERWIDTH));
-TileRenderer.TILEROWS    = Math.floor(TileRenderer.ATLASHEIGHT/(TileRenderer.TILEOUTERHEIGHT));
-TileRenderer.ATLASTILES = TileRenderer.TILESPERROW*TileRenderer.TILEROWS;
-
 TileRenderer.MAXTILES = 64*64;
-    
-TileRenderer.vertexShaderCode =
-            "uniform mat4 uMVPMatrix;                  "+
-            "uniform int uScreenTileSize;              "+    // pixel size of tile on screen
-            "attribute vec2 aCorner;                   "+    // one of 0,0  0,1  1,0,  1,1
-            "attribute vec4 aTile;                     "+    // input as x,y,tile,modifiers
-            "varying vec2 vTextureCoordinates;         "+    // output to fragment shader
-            "float idiv(float a, float b) {            "+    //  to work around bugs in integer arithmetic
-            "  return floor(a/b+0.00001);              "+    //  use only floats for calculations even if
-            "}                                         "+    //  we really meant to do integer division
-            "void main() {                             "+
-            "  float ty = idiv(aTile[2],"+TileRenderer.TILESPERROW+".0);   "+     // y position (in tiles in atlas)
-            "  float tx = aTile[2]-ty*"+TileRenderer.TILESPERROW+".0;      "+     // x position (in tiles in atlas)
-            "  float rotate = idiv(aTile[3],60.0);            "+     // rotation modifier
-            "  float shrink = aTile[3]-rotate*60.0;           "+     // shrink modifier
-            "  vTextureCoordinates[0] = (tx*"+(TileRenderer.TILEOUTERWIDTH)+".0+4.0+aCorner[0]*"+TileRenderer.TILEWIDTH+".0)/"+TileRenderer.ATLASWIDTH+".0;  "+
-            "  vTextureCoordinates[1] = (ty*"+(TileRenderer.TILEOUTERHEIGHT)+".0+4.0+aCorner[1]*"+TileRenderer.TILEWIDTH+".0)/"+TileRenderer.ATLASHEIGHT+".0; "+
-            "  float px = aCorner[0]-0.5;                 "+    // bring center of tile to 0/0 
-            "  float py = aCorner[1]-0.5;                 "+
-            "  px = px*(1.0-shrink/60.0);                 "+    // apply shrink value
-            "  py = py*(1.0-shrink/60.0);                 "+
-            "  float si = sin(rotate*0.017453292519943);  "+   // degrees -> rad 
-            "  float co = cos(rotate*0.017453292519943);  "+
-            "  float px2 = px*co + py*si;                 "+    // rotation value
-            "  py = (-px*si) + py*co;                     "+
-            "  px = px2;                                  "+
-            "  vec4 p;                                    "+
-            "  p[0] = aTile[0] + (px+0.5)*float(uScreenTileSize); "+
-            "  p[1] = aTile[1] + (py+0.5)*float(uScreenTileSize); "+
-            "  p[2] = 0.0;                               "+
-            "  p[3] = 1.0;                               "+
-            "  gl_Position = uMVPMatrix * p;             "+
-            "} ";
     
 TileRenderer.fragmentShaderCode =
             "varying mediump vec2 vTextureCoordinates;        "+  // input from vertex shader
@@ -90,12 +54,17 @@ TileRenderer.prototype.$ = function(game,imagelist)
     Renderer.prototype.$.call(this,game);
     var gl = game.gl;
     
+    // compute texture buffer sizes and alignments
+    this.tilesize = game.pixeltilesize;
+    this.tilesperrow = Math.floor(this.atlaswidth/(this.tilesize+2));
+    this.totalrows = Math.floor(this.atlasheight/(this.tilesize+2));
+    
     // allocate memory for projection matrix
     this.matrix = new Array(16);
     this.matrix2 = new Array(16);
                 
     // create shaders and link together
-    this.program = this.createProgram(TileRenderer.vertexShaderCode,TileRenderer.fragmentShaderCode);        
+    this.program = this.createProgram(this.makeVertexShader(),TileRenderer.fragmentShaderCode);        
     // extract the bindings for the uniforms and attributes
     this.uMVPMatrix = gl.getUniformLocation(this.program, "uMVPMatrix");
     this.uScreenTileSize = gl.getUniformLocation(this.program, "uScreenTileSize");
@@ -151,7 +120,7 @@ TileRenderer.prototype.$ = function(game,imagelist)
     // create the buffer for the texture atlas
     this.txTexture = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, this.txTexture);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, TileRenderer.ATLASWIDTH,TileRenderer.ATLASHEIGHT, 
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, this.atlaswidth,this.atlasheight,
         0, gl.RGBA, gl.UNSIGNED_BYTE, null);
 
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
@@ -162,14 +131,51 @@ TileRenderer.prototype.$ = function(game,imagelist)
     this.imagesLoaded = new Map();
     this.tilesLoaded = 0;
     this.tmpCanvas = document.createElement('canvas');
-    this.tmpCanvas.width = TileRenderer.TILEWIDTH;
-    this.tmpCanvas.height = TileRenderer.TILEHEIGHT;
+    this.tmpCanvas.width = this.tilesize;
+    this.tmpCanvas.height = this.tilesize;
     for (var i=0; i<imagelist.length; i++)
     {   this.startLoadImage(imagelist[i]);
     }
     
     return this;
 };
+
+TileRenderer.prototype.makeVertexShader = function()
+{
+    return  ""+
+            "uniform mat4 uMVPMatrix;                  "+
+            "uniform int uScreenTileSize;              "+    // pixel size of tile on screen
+            "attribute vec2 aCorner;                   "+    // one of 0,0  0,1  1,0,  1,1
+            "attribute vec4 aTile;                     "+    // input as x,y,tile,modifiers
+            "varying vec2 vTextureCoordinates;         "+    // output to fragment shader
+            "float idiv(float a, float b) {            "+    //  to work around bugs in integer arithmetic
+            "  return floor(a/b+0.00001);              "+    //  use only floats for calculations even if
+            "}                                         "+    //  we really meant to do integer division
+            "void main() {                             "+
+            "  float ty = idiv(aTile[2],"+this.tilesperrow+".0);   "+     // y position (in tiles in atlas)
+            "  float tx = aTile[2]-ty*"+this.tilesperrow+".0;      "+     // x position (in tiles in atlas)
+            "  float rotate = idiv(aTile[3],60.0);            "+     // rotation modifier
+            "  float shrink = aTile[3]-rotate*60.0;           "+     // shrink modifier
+            "  vTextureCoordinates[0] = (tx*"+(this.tilesize+2)+".0+1.0+aCorner[0]*"+this.tilesize+".0)/"+this.atlaswidth+".0;  "+
+            "  vTextureCoordinates[1] = (ty*"+(this.tilesize+2)+".0+1.0+aCorner[1]*"+this.tilesize+".0)/"+this.atlasheight+".0; "+
+            "  float px = aCorner[0]-0.5;                 "+    // bring center of tile to 0/0 
+            "  float py = aCorner[1]-0.5;                 "+
+            "  px = px*(1.0-shrink/60.0);                 "+    // apply shrink value
+            "  py = py*(1.0-shrink/60.0);                 "+
+            "  float si = sin(rotate*0.017453292519943);  "+   // degrees -> rad 
+            "  float co = cos(rotate*0.017453292519943);  "+
+            "  float px2 = px*co + py*si;                 "+    // rotation value
+            "  py = (-px*si) + py*co;                     "+
+            "  px = px2;                                  "+
+            "  vec4 p;                                    "+
+            "  p[0] = (aTile[0]/60.0+px+0.5)*float(uScreenTileSize); "+
+            "  p[1] = (aTile[1]/60.0+py+0.5)*float(uScreenTileSize); "+
+            "  p[2] = 0.0;                               "+
+            "  p[3] = 1.0;                               "+
+            "  gl_Position = uMVPMatrix * p;             "+
+            "} ";   
+};
+
 
 TileRenderer.prototype.startLoadImage = function(filename)
 {
@@ -195,16 +201,16 @@ TileRenderer.prototype.startLoadImage = function(filename)
                     var tn = that.tilesLoaded++;
                     tiles.push(tn);
                     
-                    cc.clearRect(0,0, TileRenderer.TILEWIDTH, TileRenderer.TILEHEIGHT);
+                    cc.clearRect(0,0, that.tilesize, that.tilesize);
                     cc.drawImage(image, w*x, h*y, 
                                         w, h, 
                                         0,0,
-                                        TileRenderer.TILEWIDTH, TileRenderer.TILEHEIGHT);                    
+                                        that.tilesize, that.tilesize);
                     gl.texSubImage2D
                     (   gl.TEXTURE_2D, 
                         0, 
-                        (tn % (TileRenderer.TILESPERROW)) * (TileRenderer.TILEOUTERWIDTH) + 4,
-                        Math.floor(tn / (TileRenderer.TILESPERROW)) * (TileRenderer.TILEOUTERHEIGHT) + 4, 
+                        (tn % (that.tilesperrow)) * (that.tilesize+2) + 1,
+                        Math.floor(tn / (that.tilesperrow)) * (that.tilesize+2) + 1, 
                         gl.RGBA, 
                         gl.UNSIGNED_BYTE,
                         that.tmpCanvas 
@@ -219,7 +225,7 @@ TileRenderer.prototype.startLoadImage = function(filename)
             {   console.log
                 (   "Loaded "+that.imagesRequested.length
                     +" images into "+that.tilesLoaded+" of " 
-                    +TileRenderer.ATLASTILES+" tiles"
+                    +that.tilesperrow * that.totalrows+" tiles"
                 );
             }
         }
@@ -252,20 +258,20 @@ TileRenderer.prototype.getImage = function(filename)
 TileRenderer.prototype.startDrawing = function(offx0, offy0, offx1, offy1)
 {  
     this.numTiles = 0;
-
+    var viewportwidth = this.game.pixelwidth;
+    var viewportheight = this.game.pixelheight;
+    
     // when having same offsets, only one draw is necessary      
     if (offx0==offx1 && offy0==offy1)
     {   Matrix.setIdentityM(this.matrix,0);     
         Matrix.translateM(this.matrix,0, -1.0,1.0, 0);     
-        Matrix.scaleM(this.matrix,0, 2.0/this.game.screenwidth, -2.0/this.game.screenheight, 1.0);            
+        Matrix.scaleM(this.matrix,0, 2.0/viewportwidth, -2.0/viewportheight, 1.0);            
         Matrix.translateM(this.matrix,0, offx0, offy0, 0);
         this.havematrix2 = false;
     }
     // must draw 2 screens with a terminator line so there is a piece of each players area visible
     else                        
-    {       var viewportwidth = this.game.pixelwidth;
-            var viewportheight = this.game.pixelheight;
-            // calculate the normal vector (2d) of the delimiter line  (clockwise, 0=right)
+    {       // calculate the normal vector (2d) of the delimiter line  (clockwise, 0=right)
             var screendiagonal = Math.sqrt(viewportwidth*viewportwidth+viewportheight*viewportheight);
             var angle = Math.atan2(offy1-offy0,offx0-offx1); 
 

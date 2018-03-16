@@ -365,7 +365,7 @@ GameScreen.prototype.adjustScrolling = function(force)
 {
     var screenwidth = this.game.pixelwidth;
     var screenheight = this.game.pixelheight;
-    var screentilesize = 60;
+    var screentilesize = this.game.pixeltilesize;
     var frames_left = this.frames_left;
 
     this.inputfocushighlightx = -1;
