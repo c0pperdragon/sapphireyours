@@ -8,7 +8,7 @@ var Game = function()
     this.screenheight = 0;  
     this.pixelwidth = 0;         // size in true pixels (renderer will scale)
     this.pixelheight = 0;    
-    this.pixeltilesize = 120;    // size of one tile in true pixels
+    this.pixeltilesize = 0;    // size of one tile in true pixels
     
     this.levelRenderer = null;
     this.textRenderer = null;
@@ -59,10 +59,13 @@ Game.prototype.$ = function()
     
     this.screens = [];
     this.levelpacks = [];
-        
+
+    // decide about initial sizes (also tile size in pixels)
+    setScreenAndCanvasSize();
+
     // create the renderers and load data
     this.loadRenderers();
-                
+                       
     // default to touch/mouse input unless otherwise directed 
     this.usingKeyboardInput = false;
 
@@ -129,7 +132,6 @@ Game.prototype.$ = function()
     );
     
     // handle canvas size changes
-    setScreenAndCanvasSize();
     window.addEventListener
     (   'resize', function(event)
         {   var wbefore = that.screenwidth;
@@ -182,7 +184,13 @@ Game.prototype.$ = function()
         that.canvas.height = pixelheight;   
         that.canvas.style["width"] = csswidth+"px";
         that.canvas.style["height"] = cssheight+"px";
-        console.log("css-size:",csswidth,cssheight,"pixel-size:",pixelwidth,pixelheight);
+        that.pixeltilesize = Math.floor(ratio*4) * 15;
+        
+        console.log
+        (   "css size:",csswidth,cssheight,
+            "pixel size:",pixelwidth,pixelheight,
+            "tile size:",that.pixeltilesize
+        );
     }          
 };
         
