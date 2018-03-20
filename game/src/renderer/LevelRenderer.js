@@ -115,14 +115,14 @@ LevelRenderer.prototype.$ = function(game)
         "2diglft", "2digrgt", "2digup", "2digdwn",
         "2pushlft", "2pushrgt", "Earth All","Wall All", "Wall Round All",
         "Earth Right", "Sand", "Glass", "Stone Wall", "Round Stone Wall",
-        "Wall Emerald", "Emerald", "Emerald Shine", "Citrine", "Citrine Shine",
-        "Sapphire", "Sapphire Shine", "Ruby", "Ruby Shine",
-        "Stone", "Stone Right", "Stone Left", "Stone Emerald", "Bag", "Bomb", "Bomb Push",
-        "Bomb Falling", "Exit Closed", "Exit", "Swamp", "Swamp Move", "Swamp Grow", 
+        "Wall Emerald", "Emerald", "Citrine", 
+        "Sapphire", "Sapphire Shine", "Ruby", 
+        "Stone", "Stone Right", "Stone Left", "Stone Emerald", "Bag", "Bomb", 
+        "Exit Closed", "Exit", "Swamp Move", "Swamp Grow", 
         "Drop Left", "Drop Right", "Drop Down", "Drop Hit", "Drop", "Converter",
         "Timebomb", "Tickbomb", "TNT", "Safe", "Pillow", "Elevator", "Elevator Left",
         "Elevator Right", "Elevator Left Throw", "Elevator Right Throw", "Gun", "Gun Fire",
-        "Acid", "Acid Edge Left", "Acid Edge Right", "Acid Edge Both",
+        "Acid", "Acid Left End", "Acid Right End", "Acid Both Ends",
         "Key Blue", "Key Red", "Key Green", "Key Yellow", 
         "Door Blue", "Door Red", "Door Green", "Door Yellow", "Door Onetime",
         "Door Onetime Closed", "Lorry", "Bug", 
@@ -159,7 +159,7 @@ LevelRenderer.prototype.isLoaded = function()
     this.piecetiles[ROUNDSTONEWALL] = this.getAnimation("Round Stone Wall");
     this.piecetiles[WALLEMERALD] = this.getAnimation("Wall Emerald");
     this.piecetiles[EMERALD] = this.getAnimation("Emerald");
-    this.piecetiles[CITRINE] = this.getAnimation("Citrine Shine");
+    this.piecetiles[CITRINE] = this.getAnimation("Citrine");
     this.piecetiles[SAPPHIRE] = this.getAnimation("Sapphire")
     this.piecetiles[RUBY] = this.getAnimation("Ruby");
     this.piecetiles[ROCK] = this.getAnimation("Stone");
@@ -188,14 +188,14 @@ LevelRenderer.prototype.isLoaded = function()
     this.piecetiles[DOORGREEN] = this.getAnimation("Door Green");
     this.piecetiles[DOORYELLOW] = this.getAnimation("Door Yellow");
     this.piecetiles[ONETIMEDOOR] = this.getAnimation("Door Onetime");
-    this.piecetiles[LORRYLEFT] = this.getAnimation("Lorry");
+    this.piecetiles[LORRYLEFT] = this.createRotatedAnimation(this.getAnimation("Lorry"),0);
     this.piecetiles[LORRYDOWN] = this.createRotatedAnimation(this.getAnimation("Lorry"),90);
     this.piecetiles[LORRYRIGHT] = this.createRotatedAnimation(this.getAnimation("Lorry"),180);
     this.piecetiles[LORRYUP] = this.createRotatedAnimation(this.getAnimation("Lorry"),270)
-    this.piecetiles[BUGRIGHT] = this.getAnimation("Bug");
-    this.piecetiles[BUGUP] = this.createRotatedAnimation(this.getAnimation("Bug"),90);
-    this.piecetiles[BUGLEFT] = this.createRotatedAnimation(this.getAnimation("Bug"),180);
-    this.piecetiles[BUGDOWN] = this.createRotatedAnimation(this.getAnimation("Bug"),270);
+    this.piecetiles[BUGRIGHT] = this.createRotatedAnimation(this.getAnimation("Bug"), -90);
+    this.piecetiles[BUGUP] = this.createRotatedAnimation(this.getAnimation("Bug"),0);
+    this.piecetiles[BUGLEFT] = this.createRotatedAnimation(this.getAnimation("Bug"),90);
+    this.piecetiles[BUGDOWN] = this.createRotatedAnimation(this.getAnimation("Bug"),180);
     this.piecetiles[YAMYAMLEFT] = this.getAnimation("YamYam Left");
     this.piecetiles[YAMYAMUP] = this.getAnimation("YamYam Up");
     this.piecetiles[YAMYAMRIGHT] = this.getAnimation("YamYam Right");
@@ -205,21 +205,21 @@ LevelRenderer.prototype.isLoaded = function()
     this.piecetiles[GUN1] = this.getAnimation("Gun");
     this.piecetiles[GUN2] = this.getAnimation("Gun");
     this.piecetiles[GUN3] = this.getAnimation("Gun"); 
-    this.piecetiles[ROCK_FALLING] = this.getAnimation("Stone");
+    this.piecetiles[ROCK_FALLING] = this.createStillAnimation(this.getAnimation("Stone"));
     this.piecetiles[EMERALD_FALLING] = this.getAnimation("Emerald");
-    this.piecetiles[BOMB_FALLING] = this.getAnimation("Bomb Falling");
+    this.piecetiles[BOMB_FALLING] = this.getAnimation("Bomb");
     this.piecetiles[BAG_FALLING] = this.getAnimation("Bag");
     this.piecetiles[DOOR_OPENED] = this.getAnimation("Exit");
     this.piecetiles[DOOR_CLOSING] = this.getAnimation("Exit");
     this.piecetiles[DOOR_CLOSED] = this.getAnimation("Exit Closed");    
-    this.piecetiles[LORRYLEFT_FIXED] = this.getAnimation("Lorry");
+    this.piecetiles[LORRYLEFT_FIXED] = this.createRotatedAnimation(this.getAnimation("Lorry"),0);
     this.piecetiles[LORRYDOWN_FIXED] = this.createRotatedAnimation(this.getAnimation("Lorry"),90);
     this.piecetiles[LORRYRIGHT_FIXED] = this.createRotatedAnimation(this.getAnimation("Lorry"),180);
     this.piecetiles[LORRYUP_FIXED] = this.createRotatedAnimation(this.getAnimation("Lorry"),270)
-    this.piecetiles[BUGRIGHT_FIXED] = this.getAnimation("Bug");
-    this.piecetiles[BUGUP_FIXED] = this.createRotatedAnimation(this.getAnimation("Bug"),90);
-    this.piecetiles[BUGLEFT_FIXED] = this.createRotatedAnimation(this.getAnimation("Bug"),180);
-    this.piecetiles[BUGDOWN_FIXED] = this.createRotatedAnimation(this.getAnimation("Bug"),270);
+    this.piecetiles[BUGRIGHT_FIXED] = this.createRotatedAnimation(this.getAnimation("Bug"),90);
+    this.piecetiles[BUGUP_FIXED] = this.createRotatedAnimation(this.getAnimation("Bug"),0);
+    this.piecetiles[BUGLEFT_FIXED] = this.createRotatedAnimation(this.getAnimation("Bug"),90);
+    this.piecetiles[BUGDOWN_FIXED] = this.createRotatedAnimation(this.getAnimation("Bug"),180);
     this.piecetiles[BOMB_EXPLODE] = this.getSubAnimation("Explosion", 0, 5);
     this.piecetiles[EXPLODE1_AIR] = this.getSubAnimation("Explosion", 1, 5);
     this.piecetiles[EXPLODE2_AIR] = this.getSubAnimation("Explosion", 2, 5);
@@ -243,7 +243,7 @@ LevelRenderer.prototype.isLoaded = function()
     this.piecetiles[ACTIVEBOMB4] = this.getAnimation("Timebomb");
     this.piecetiles[TIMEBOMB_EXPLODE] = this.getSubAnimation("Explosion", 0, 5);
     this.piecetiles[RUBY_FALLING] = this.getAnimation("Ruby");
-    this.piecetiles[SAPPHIRE_FALLING] = this.getAnimation("Emerald"); 
+    this.piecetiles[SAPPHIRE_FALLING] = this.getAnimation("Sapphire"); 
     this.piecetiles[BAG_OPENING] = this.getAnimation("Bag Open");
     this.piecetiles[SAPPHIRE_BREAKING] = this.getAnimation("Sapphire Break");
     this.piecetiles[EXPLODE1_BAG] = this.getSubAnimation("Explosion", 1, 5);
@@ -309,18 +309,15 @@ LevelRenderer.prototype.isLoaded = function()
     this.acidtiles_noedge = new Array(2);
     this.acidtiles_noedge[0] = this.getSubAnimation("Acid",0,2);
     this.acidtiles_noedge[1] = this.getSubAnimation("Acid",1,2)        
-    var acidedge = this.getAnimation("Acid Edge Left");
     this.acidtiles_leftedge = new Array(2);
-    this.acidtiles_leftedge[0] = this.createOverlayAnimation(this.acidtiles_noedge[0], acidedge);
-    this.acidtiles_leftedge[1] = this.createOverlayAnimation(this.acidtiles_noedge[1], acidedge);
-    acidedge = this.getImage("Acid Edge Right");
+    this.acidtiles_leftedge[0] = this.getSubAnimation("Acid Left End",0,2);
+    this.acidtiles_leftedge[1] = this.getSubAnimation("Acid Left End",1,2);
     this.acidtiles_rightedge = new Array(2);
-    this.acidtiles_rightedge[0] = this.createOverlayAnimation(this.acidtiles_noedge[0], acidedge);
-    this.acidtiles_rightedge[1] = this.createOverlayAnimation(this.acidtiles_noedge[1], acidedge);
-    acidedge = this.getImage("Acid Edge Both");
+    this.acidtiles_rightedge[0] = this.getSubAnimation("Acid Right End",0,2);
+    this.acidtiles_rightedge[1] = this.getSubAnimation("Acid Right End",1,2);
     this.acidtiles_bothedges = new Array(2);
-    this.acidtiles_bothedges[0] = this.createOverlayAnimation(this.acidtiles_noedge[0], acidedge);
-    this.acidtiles_bothedges[1] = this.createOverlayAnimation(this.acidtiles_noedge[1], acidedge);    
+    this.acidtiles_bothedges[0] = this.getSubAnimation("Acid Both Ends",0,2);
+    this.acidtiles_bothedges[1] = this.getSubAnimation("Acid Both Ends",1,2);
     this.piecetiles[ACID] = this.acidtiles_noedge;
     
        
@@ -353,8 +350,8 @@ LevelRenderer.prototype.isLoaded = function()
     this.anim_rock_left = this.createRevertedAnimation(this.anim_rock_right);
     this.anim_bag_right = this.createRotatingAnimation(this.getAnimation("Bag"), 0,360);
     this.anim_bag_left = this.createRevertedAnimation(this.anim_bag_right);
-    this.anim_bomb_left = this.getAnimation("Bomb Push");
-    this.anim_bomb_right = this.createRevertedAnimation(this.getAnimation("Bomb Push"));        
+    this.anim_bomb_left = this.getAnimation("Bomb");
+    this.anim_bomb_right = this.createRevertedAnimation(this.getAnimation("Bomb"));        
     this.anim_sapphire_break = this.getAnimation("Sapphire Break");
     this.anim_citrine_break = this.getAnimation("Citrine Break");
     this.anim_bag_opening = this.getAnimation("Bag Open");
@@ -379,14 +376,14 @@ LevelRenderer.prototype.isLoaded = function()
     this.anim_lorry_down_left = this.createRotatingAnimation(this.piecetiles[LORRYRIGHT], 270,180);
     this.anim_lorry_left_up = this.createRotatingAnimation(this.piecetiles[LORRYRIGHT], 180, 90);
     this.anim_lorry_up_right = this.createRotatingAnimation(this.piecetiles[LORRYRIGHT], 90, 0);
-    this.anim_bug_right_up = this.createRotatingAnimation(this.piecetiles[BUGRIGHT], 0,90);
-    this.anim_bug_up_left = this.createRotatingAnimation(this.piecetiles[BUGRIGHT], 90,180);
-    this.anim_bug_left_down = this.createRotatingAnimation(this.piecetiles[BUGRIGHT], 180,270);
-    this.anim_bug_down_right = this.createRotatingAnimation(this.piecetiles[BUGRIGHT], 270,360);
-    this.anim_bug_right_down = this.createRotatingAnimation(this.piecetiles[BUGRIGHT], 0,-90);
-    this.anim_bug_down_left = this.createRotatingAnimation(this.piecetiles[BUGRIGHT], 270,180);
-    this.anim_bug_left_up = this.createRotatingAnimation(this.piecetiles[BUGRIGHT], 180, 90);
-    this.anim_bug_up_right = this.createRotatingAnimation(this.piecetiles[BUGRIGHT], 90, 0);        
+    this.anim_bug_right_up = this.createRotatingAnimation(this.piecetiles[BUGUP], -90,0);
+    this.anim_bug_up_left = this.createRotatingAnimation(this.piecetiles[BUGUP], 0,90);
+    this.anim_bug_left_down = this.createRotatingAnimation(this.piecetiles[BUGUP], 90,180);
+    this.anim_bug_down_right = this.createRotatingAnimation(this.piecetiles[BUGUP], 180,270);
+    this.anim_bug_right_down = this.createRotatingAnimation(this.piecetiles[BUGUP], 270,180);
+    this.anim_bug_down_left = this.createRotatingAnimation(this.piecetiles[BUGUP], 180,90);
+    this.anim_bug_left_up = this.createRotatingAnimation(this.piecetiles[BUGUP], 90, 0);
+    this.anim_bug_up_right = this.createRotatingAnimation(this.piecetiles[BUGUP], 0, -90);        
     this.anim_yamyam = this.getAnimation ("YamYam");                  
     this.anim_sapphire_away = this.createShrinkAnimation(this.piecetiles[SAPPHIRE][0]);
     this.anim_emerald_away = this.createShrinkAnimation(this.piecetiles[EMERALD][0]); 
@@ -503,8 +500,7 @@ LevelRenderer.prototype.createRotatingAnimation = function(a, start, end)
         var s = ((a[i]>>16)&0xffff) % 60;
         var r = Math.floor(((a[i]>>16)&0xffff) / 60);
             
-        var frames_until_endposition = i%LevelRenderer.FRAMESPERSTEP;
-        var degree = end - Math.floor((frames_until_endposition*(end-start))/LevelRenderer.FRAMESPERSTEP);
+        var degree = start + Math.floor((i*(end-start))/LevelRenderer.FRAMESPERSTEP);
         r = (r + degree + 3600) % 360;
         b[i] = t | ((s+r*60)<<16);      
     }
