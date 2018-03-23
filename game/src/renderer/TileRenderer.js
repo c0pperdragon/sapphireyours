@@ -320,7 +320,7 @@ TileRenderer.prototype.startDrawing = function(offx0, offy0, offx1, offy1)
                 
             // transform to a coordinate system with the units as pixels, with 0,0 at top left corner and the z=0 goes to the near plane
             Matrix.translateM(this.matrix,0, -1.0,1.0, -1.0 - (2.0/screendiagonal));     
-            Matrix.scaleM(this.matrix,0, 2.0/viewportwidth, -2.0/viewportheight, 1.0);
+            Matrix.scaleM(this.matrix,0, 2.0*tilezoom/viewportwidth, -2.0*tilezoom/viewportheight, 1.0);
             
             // move to desired view position 
             Matrix.translateM(this.matrix,0,offx0,offy0, 0.0);                      
@@ -333,7 +333,7 @@ TileRenderer.prototype.startDrawing = function(offx0, offy0, offx1, offy1)
                 
             // transform to a coordinate system with the units as pixels, with 0,0 at top left corner and the z=0 goes to the near plane
             Matrix.translateM(this.matrix2,0, -1.0,1.0, -1.0 - (2.0/screendiagonal));        
-            Matrix.scaleM(this.matrix2,0, 2.0/viewportwidth, -2.0/viewportheight, -1.0);
+            Matrix.scaleM(this.matrix2,0, 2.0*tilezoom/viewportwidth, -2.0*tilezoom/viewportheight, -1.0);
             
             // move to desired view position 
             Matrix.translateM(this.matrix2,0,offx1,offy1, 0.0);
