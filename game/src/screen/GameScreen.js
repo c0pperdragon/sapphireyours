@@ -363,9 +363,10 @@ GameScreen.prototype.reactivate = function()
         
 GameScreen.prototype.adjustScrolling = function(force)
 {
-    var screenwidth = this.game.pixelwidth;
-    var screenheight = this.game.pixelheight;
-    var screentilesize = this.game.pixeltilesize;
+    // calculate screen width and height in one 60th of a tile
+    var screenwidth = this.game.pixelwidth * 60 / this.game.pixeltilesize;
+    var screenheight = this.game.pixelheight * 60 / this.game.pixeltilesize;
+    var screentilesize = 60; // this.game.pixeltilesize;
     var frames_left = this.frames_left;
 
     this.inputfocushighlightx = -1;

@@ -59,7 +59,7 @@ var KeyEvent = {
             case "s":
             case "KeyS":            { return KeyEvent.KEYCODE_DPAD2_BUTTON2; }
             default:                
-            {   console.log("keycode",c);
+            {   //console.log("keycode",c);
                 return KeyEvent.KeyCODE_SPACE;
             }
         }

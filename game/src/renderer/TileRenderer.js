@@ -4,10 +4,6 @@ var TileRenderer = function()
     this.program = 0;
     this.uMVPMatrix = 0;
     this.uTexture = 0;
-    this.uScreenTileSize = 0;
-    this.uTilesPerRow = 0;
-    this.uAtlasWidth = 0;
-    this.uAtlasHeight = 0;
     this.aCorner = 0;
     this.aTile = 0
     
@@ -22,32 +18,26 @@ var TileRenderer = function()
     this.matrix = null;       // projection matrix
     this.matrix2 = null;      // projection matrix for second player
     this.havematrix2 = false;        // is second matrix present?
-    this.screentilesize = 0;         // size of tiles on screen in pixels    
     
     // data for the loading process
-    this.imagesRequested = null;  // array of string
-    this.imagesLoaded = null;     // Map: string -> array of tile indizes
-    this.tilesLoaded = 0;
-    this.tmpCanvas = null;
+    this.imageList = null;        // Map: string -> array of tile indizes (array is created empty before first load)
+    this.imagesRequested = null;  // Map: string -> true: all images that have been requested but are not loaded yet
+    this.tilesAssigned = 0;       // number of tiles that have been assigned a spot in the texture atlas
     
-    // texture management
-    this.atlaswidth = 4096;
-    this.atlasheight = 4096;    
-    this.tilesize = 0;
-    this.tilesperrow = 0;
-    this.totalrows = 0;
+    this.loadedTileSize = 0;
+    this.tmpCanvas = null;
 };    
 TileRenderer.prototype = Object.create(Renderer.prototype);
     
     
 TileRenderer.MAXTILES = 64*64;
+
+TileRenderer.ATLASROWS = 32;
+TileRenderer.ATLASCOLUMNS = 32;
+
     
 TileRenderer.vertexShaderCode =
             "uniform mat4 uMVPMatrix;                  "+
-            "uniform int uScreenTileSize;              "+    // pixel size of tile on screen and in the texture
-            "uniform int uTilesPerRow;                 "+    // number of tiles in a row in the texture 
-            "uniform int uAtlasWidth;                  "+    // width of texture atlas in pixel
-            "uniform int uAtlasHeight;                 "+    // height of texture atlas in pixel
             "attribute vec2 aCorner;                   "+    // one of 0,0  0,1  1,0,  1,1
             "attribute vec4 aTile;                     "+    // input as x,y,tile,modifiers
             "varying vec2 vTextureCoordinates;         "+    // output to fragment shader
@@ -55,12 +45,12 @@ TileRenderer.vertexShaderCode =
             "  return floor(a/b+0.00001);              "+    //  use only floats for calculations even if
             "}                                         "+    //  we really meant to do integer division
             "void main() {                             "+
-            "  float ty = idiv(aTile[2],float(uTilesPerRow)); "+     // y position (in tiles in atlas)
-            "  float tx = aTile[2]-ty*float(uTilesPerRow);    "+     // x position (in tiles in atlas)
+            "  float ty = idiv(aTile[2],"+TileRenderer.ATLASCOLUMNS+".0); "+     // y position (in tiles in atlas)
+            "  float tx = aTile[2]-ty*"+TileRenderer.ATLASCOLUMNS+".0;    "+     // x position (in tiles in atlas)
             "  float rotate = idiv(aTile[3],60.0);        "+     // rotation modifier
             "  float shrink = aTile[3]-rotate*60.0;       "+     // shrink modifier
-            "  vTextureCoordinates[0] = (tx*(float(uScreenTileSize)+2.0)+1.0+aCorner[0]*float(uScreenTileSize))/float(uAtlasWidth);  "+
-            "  vTextureCoordinates[1] = (ty*(float(uScreenTileSize)+2.0)+1.0+aCorner[1]*float(uScreenTileSize))/float(uAtlasHeight); "+
+            "  vTextureCoordinates[0] = (tx+aCorner[0]*0.9375)/"+TileRenderer.ATLASCOLUMNS+".0;  "+
+            "  vTextureCoordinates[1] = (ty+aCorner[1]*0.9375)/"+TileRenderer.ATLASROWS+".0; "+
             "  float px = aCorner[0]-0.5;                 "+    // bring center of tile to 0/0 
             "  float py = aCorner[1]-0.5;                 "+
             "  px = px*(1.0-shrink/60.0);                 "+    // apply shrink value
@@ -71,8 +61,8 @@ TileRenderer.vertexShaderCode =
             "  py = (-px*si) + py*co;                     "+
             "  px = px2;                                  "+
             "  vec4 p;                                    "+
-            "  p[0] = (aTile[0]/60.0+px+0.5)*float(uScreenTileSize); "+
-            "  p[1] = (aTile[1]/60.0+py+0.5)*float(uScreenTileSize); "+
+            "  p[0] = aTile[0]+(px+0.5)*60.0; "+
+            "  p[1] = aTile[1]+(py+0.5)*60.0; "+
             "  p[2] = 0.0;                               "+
             "  p[3] = 1.0;                               "+
             "  gl_Position = uMVPMatrix * p;             "+
@@ -92,11 +82,6 @@ TileRenderer.prototype.$ = function(game,imagelist)
     Renderer.prototype.$.call(this,game);
     var gl = game.gl;
     
-    // compute texture buffer sizes and alignments
-    this.tilesize = game.pixeltilesize;
-    this.tilesperrow = Math.floor(this.atlaswidth/(this.tilesize+2));
-    this.totalrows = Math.floor(this.atlasheight/(this.tilesize+2));
-    
     // allocate memory for projection matrix
     this.matrix = new Array(16);
     this.matrix2 = new Array(16);
@@ -105,10 +90,6 @@ TileRenderer.prototype.$ = function(game,imagelist)
     this.program = this.createProgram(TileRenderer.vertexShaderCode,TileRenderer.fragmentShaderCode);        
     // extract the bindings for the uniforms and attributes
     this.uMVPMatrix = gl.getUniformLocation(this.program, "uMVPMatrix");
-    this.uScreenTileSize = gl.getUniformLocation(this.program, "uScreenTileSize");
-    this.uTilesPerRow = gl.getUniformLocation(this.program, "uTilesPerRow");
-    this.uAtlasWidth = gl.getUniformLocation(this.program, "uAtlasWidth");
-    this.uAtlasHeight = gl.getUniformLocation(this.program, "uAtlasHeight");
     this.uTexture = gl.getUniformLocation(this.program, "uTexture");
     this.aCorner = gl.getAttribLocation(this.program, "aCorner");
     this.aTile = gl.getAttribLocation(this.program, "aTile");
@@ -158,31 +139,71 @@ TileRenderer.prototype.$ = function(game,imagelist)
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vboTile);
     gl.bufferData(gl.ARRAY_BUFFER, 2*(TileRenderer.MAXTILES*4*4), gl.DYNAMIC_DRAW);
         
-    // create the buffer for the texture atlas
-    this.txTexture = gl.createTexture();
-    gl.bindTexture(gl.TEXTURE_2D, this.txTexture);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, this.atlaswidth,this.atlasheight,
-        0, gl.RGBA, gl.UNSIGNED_BYTE, null);
-
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR); // NEAREST);             
-    
-    // loading progress information
-    this.imagesRequested = imagelist;
-    this.imagesLoaded = new Map();
-    this.tilesLoaded = 0;
-    this.tmpCanvas = document.createElement('canvas');
-    this.tmpCanvas.width = this.tilesize;
-    this.tmpCanvas.height = this.tilesize;
+    // trigger loading textures
+    this.imageList = new Map();
     for (var i=0; i<imagelist.length; i++)
-    {   this.startLoadImage(imagelist[i]);
-    }
+    {   this.imageList.set(imagelist[i], new Array(0));
+    }    
+    this.imagesRequested = new Map();
+    this.numTilesAssigned = 0;
+    this.loadOrReloadAllImages();
     
     return this;
 };
 
+// handle the loading (or reloading after zoom level change) of tile textures
+TileRenderer.prototype.loadOrReloadAllImages = function()
+{
+    // only check if reload is necessary
+    if (this.loadedTileSize==this.game.pixeltilesize) { return; }
+    
+    var gl = this.game.gl;
+    
+    // if there is already an old texture atlas present, remove it
+    if (this.txTexture)
+    {   gl.deleteTexture(this.txTexture)
+        this.txTexture = 0;
+    }
+    
+    // memorize which size the loaded tiles are kept at
+    this.loadedTileSize = this.game.pixeltilesize;
+    var sizewithmargin = Math.round(this.loadedTileSize / 0.9375);  // (60->64) 
+
+    // create the buffer for the texture atlas
+    this.txTexture = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, this.txTexture);
+    gl.texImage2D
+    (   gl.TEXTURE_2D, 0, gl.RGBA, 
+        sizewithmargin*TileRenderer.ATLASCOLUMNS,
+        sizewithmargin*TileRenderer.ATLASROWS,
+        0, gl.RGBA, gl.UNSIGNED_BYTE, null
+    );
+
+//    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST); // LINEAR);
+//    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST); // LINEAR); // NEAREST);             
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    
+    // prepare temporary canvas for scaling
+    this.tmpCanvas = document.createElement('canvas');
+    this.tmpCanvas.width = this.loadedTileSize;
+    this.tmpCanvas.height = this.loadedTileSize;
+    
+    // trigger loading of all images that are not currently in process of being loaded already
+    this.imageList.forEach
+    (   function(value,key,map)
+        {   if (!this.imagesRequested.has(key))
+            {   this.startLoadImage(key);
+            }
+        },
+        this
+    );
+}
+
 TileRenderer.prototype.startLoadImage = function(filename)
 {
+    this.imagesRequested.set(filename,true);
     var image = new Image();
     
     var that = this;
@@ -192,45 +213,48 @@ TileRenderer.prototype.startLoadImage = function(filename)
         
             var h = image.naturalHeight;
             var w = h;
-            var rows = 1; 
-            var cols = Math.floor(image.naturalWidth/w);
+            var cols = Math.max(1,Math.floor(image.naturalWidth/w));
             
-            var tiles = [];
-            
-            gl.bindTexture(gl.TEXTURE_2D, that.txTexture);
-            var cc = that.tmpCanvas.getContext("2d");
-            for (var x=0; x<cols; x++) 
-            {   for (var y=0; y<rows; y++) 
-                {   
-                    var tn = that.tilesLoaded++;
-                    tiles.push(tn);
-                    
-                    cc.clearRect(0,0, that.tilesize, that.tilesize);
-                    cc.drawImage(image, w*x, h*y, 
-                                        w, h, 
-                                        0,0,
-                                        that.tilesize, that.tilesize);
-                    gl.texSubImage2D
-                    (   gl.TEXTURE_2D, 
-                        0, 
-                        (tn % (that.tilesperrow)) * (that.tilesize+2) + 1,
-                        Math.floor(tn / (that.tilesperrow)) * (that.tilesize+2) + 1, 
-                        gl.RGBA, 
-                        gl.UNSIGNED_BYTE,
-                        that.tmpCanvas 
-                    );
+            var tiles = that.imageList.get(filename);
+            if (tiles.length<1)
+            {   for (var i=0; i<cols; i++) 
+                {   tiles.push(that.numTilesAssigned++);
                 }
             }
-            
-            if (tiles.length<1) tiles=[0];  // have 0-tile as default (may clash with real 0-tile)
-            that.imagesLoaded.set(filename, tiles);   
-            
-            if (that.imagesLoaded.size==that.imagesRequested.length)
-            {   console.log
-                (   "Loaded "+that.imagesRequested.length
-                    +" images into "+that.tilesLoaded+" of " 
-                    +that.tilesperrow * that.totalrows+" tiles"
+            gl.bindTexture(gl.TEXTURE_2D, that.txTexture);
+            var cc = that.tmpCanvas.getContext("2d");
+
+            for (var i=0; i<cols; i++) 
+            {   var sizewithmargin = Math.round(that.loadedTileSize / 0.9375);  // (60->64) 
+
+                cc.clearRect(0,0, that.loadedTileSize, that.loadedTileSize);
+                cc.drawImage
+                (   image, w*i, 0, w, h, 
+                    0,0, that.loadedTileSize, that.loadedTileSize
                 );
+//                cc.fillStyle = "orange";
+//                cc.fillRect(10,10,40,40);
+                
+                gl.texSubImage2D
+                (   gl.TEXTURE_2D, 
+                    0, 
+                    (tiles[i] % TileRenderer.ATLASCOLUMNS) * sizewithmargin,
+                    Math.floor(tiles[i] / TileRenderer.ATLASCOLUMNS) * sizewithmargin, 
+                    gl.RGBA, 
+                    gl.UNSIGNED_BYTE,
+                    that.tmpCanvas 
+                );
+            }                        
+            
+            that.imagesRequested.delete(filename);
+            
+            if (that.imagesRequested.size==0)
+            {   console.log
+                (   "Loaded "+that.imageList.size
+                    +" images into "+that.numTilesAssigned+" of " 
+                    +TileRenderer.ATLASCOLUMNS * TileRenderer.ATLASROWS+" tiles"
+                );
+                that.game.setDirty();
             }
         }
     );
@@ -239,6 +263,7 @@ TileRenderer.prototype.startLoadImage = function(filename)
         {   console.log("Error loading image "+fullname);
         }
     );
+    
     var fullname = "art/" + filename + ".png";
     image.src = fullname;
 //   console.log("started loading",fullname);
@@ -246,13 +271,13 @@ TileRenderer.prototype.startLoadImage = function(filename)
 
 TileRenderer.prototype.isLoaded = function()
 {
-    return this.imagesLoaded.size >= this.imagesRequested.length;
+    return this.imagesRequested.size == 0;
 };
     
 TileRenderer.prototype.getImage = function(filename)
 {
-    var tiles = this.imagesLoaded.get(filename);
-    if (!tiles) 
+    var tiles = this.imageList.get(filename);
+    if ((!tiles) || tiles.length<1) 
     {   console.log("Referenced non-loaded image:",filename);
         return [];
     }
@@ -261,15 +286,23 @@ TileRenderer.prototype.getImage = function(filename)
     
 TileRenderer.prototype.startDrawing = function(offx0, offy0, offx1, offy1)
 {  
+    // initialize the drawing buffers
     this.numTiles = 0;
     var viewportwidth = this.game.pixelwidth;
     var viewportheight = this.game.pixelheight;
+    var tilezoom = this.loadedTileSize / 60.0;
+    
+    // snap offsets to to true pixels
+    offx0 = Math.round(offx0*tilezoom) / tilezoom;
+    offy0 = Math.round(offy0*tilezoom) / tilezoom;
+    offx1 = Math.round(offx1*tilezoom) / tilezoom;
+    offy1 = Math.round(offy1*tilezoom) / tilezoom;
     
     // when having same offsets, only one draw is necessary      
     if (offx0==offx1 && offy0==offy1)
     {   Matrix.setIdentityM(this.matrix,0);     
         Matrix.translateM(this.matrix,0, -1.0,1.0, 0);     
-        Matrix.scaleM(this.matrix,0, 2.0/viewportwidth, -2.0/viewportheight, 1.0);            
+        Matrix.scaleM(this.matrix,0, 2.0*tilezoom/viewportwidth, -2.0*tilezoom/viewportheight, 1.0);            
         Matrix.translateM(this.matrix,0, offx0, offy0, 0);
         this.havematrix2 = false;
     }
@@ -324,8 +357,8 @@ TileRenderer.prototype.addTile = function(x, y, tile)
 
 TileRenderer.prototype.flush = function()   
 {
-        // fast termination if nothing to draw
-        if (this.numTiles<1) { return; }
+    // fast termination if nothing to draw
+    if (this.numTiles<1) { return; }
 
         var g = this.game;
         var gl = g.gl;
@@ -344,10 +377,6 @@ TileRenderer.prototype.flush = function()
         gl.activeTexture(gl.TEXTURE0);
         gl.bindTexture(gl.TEXTURE_2D, this.txTexture);
         gl.uniform1i(this.uTexture, 0);
-        gl.uniform1i(this.uScreenTileSize,this.tilesize);
-        gl.uniform1i(this.uTilesPerRow,this.tilesperrow);
-        gl.uniform1i(this.uAtlasWidth,this.atlaswidth);
-        gl.uniform1i(this.uAtlasHeight,this.atlasheight);
         
         // enable all vertex attribute arrays and set pointers
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vboCorner);

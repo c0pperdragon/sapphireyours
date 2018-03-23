@@ -4,11 +4,11 @@ var Game = function()
     this.gl = null;
     this.exitcall = null;
     
-    this.screenwidth = 0;         // size of surface in css units
+    this.screenwidth = 0;        // size of surface in css units
     this.screenheight = 0;  
     this.pixelwidth = 0;         // size in true pixels (renderer will scale)
     this.pixelheight = 0;    
-    this.pixeltilesize = 0;    // size of one tile in true pixels
+    this.pixeltilesize = 0;      // size of one tile in true pixels
     
     this.levelRenderer = null;
     this.textRenderer = null;
@@ -143,7 +143,8 @@ Game.prototype.$ = function()
             (   wbefore!=that.screenwidth || hbefore!=that.screenheight
                 || pwbefore!=that.pixelwidth || phbefore!=that.pixelheight
             ) 
-            {   that.notifyScreensAboutResize(); 
+            {   if (that.levelRenderer) { that.levelRenderer.loadOrReloadAllImages(); }                
+                that.notifyScreensAboutResize(); 
                 that.setDirty();
             }
         }

@@ -514,8 +514,6 @@ LevelRenderer.prototype.draw = function
     offx0, offy0, offx1, offy1
 )
 {           
-    var screentilesize = 60;
-    
     // start up the rendering    
     this.startDrawing(offx0,offy0, offx1,offy1);
 
@@ -597,7 +595,7 @@ LevelRenderer.prototype.draw = function
         {   if (!tmp_disable_static_tile[x+y*MAPWIDTH])
             {   var anim = this.determineTileAt(logic,x,y); 
                 if (anim!=null)
-                {   this.addNonMoveAnimationToBuffers(screentilesize,0, anim, x,y);
+                {   this.addNonMoveAnimationToBuffers(0, anim, x,y);
                 }
             }
         }
@@ -614,46 +612,46 @@ LevelRenderer.prototype.draw = function
             {   case TRN_TRANSFORM:
                 {   var anim = this.determineTransformAnimation(oldpiece, newpiece, x,y, logic);
                     if (anim!=null)
-                    {   this.addNonMoveAnimationToBuffers(screentilesize,frameindex, anim, x,y);
+                    {   this.addNonMoveAnimationToBuffers(frameindex, anim, x,y);
                     }
                     break;
                 }   
                 case TRN_MOVEDOWN:
-                {   this.addMoveAnimationToBuffers(screentilesize,frameindex, oldpiece,newpiece, x,y, 0,1, logic);
+                {   this.addMoveAnimationToBuffers(frameindex, oldpiece,newpiece, x,y, 0,1, logic);
                     break;
                 }
                 case TRN_MOVEUP:
-                {   this.addMoveAnimationToBuffers(screentilesize,frameindex, oldpiece,newpiece, x,y, 0,-1, logic);
+                {   this.addMoveAnimationToBuffers(frameindex, oldpiece,newpiece, x,y, 0,-1, logic);
                     break;
                 }
                 case TRN_MOVELEFT:
-                {   this.addMoveAnimationToBuffers(screentilesize,frameindex, oldpiece,newpiece, x,y, -1,0, logic);
+                {   this.addMoveAnimationToBuffers(frameindex, oldpiece,newpiece, x,y, -1,0, logic);
                     break;
                 }
                 case TRN_MOVERIGHT:
-                {   this.addMoveAnimationToBuffers(screentilesize,frameindex, oldpiece,newpiece, x,y, 1,0, logic);
+                {   this.addMoveAnimationToBuffers(frameindex, oldpiece,newpiece, x,y, 1,0, logic);
                     break;
                 }
                 case TRN_MOVEDOWN2:
-                {   this.addMoveAnimationToBuffers(screentilesize,frameindex, oldpiece,newpiece, x,y, 0,2, logic);
+                {   this.addMoveAnimationToBuffers(frameindex, oldpiece,newpiece, x,y, 0,2, logic);
                     break;
                 }
                 case TRN_MOVEUP2:
-                {   this.addMoveAnimationToBuffers(screentilesize,frameindex, oldpiece,newpiece, x,y, 0,-2, logic);
+                {   this.addMoveAnimationToBuffers(frameindex, oldpiece,newpiece, x,y, 0,-2, logic);
                     break;
                 }
                 case TRN_MOVELEFT2:
-                {   this.addMoveAnimationToBuffers(screentilesize,frameindex, oldpiece,newpiece, x,y, -2,0, logic);
+                {   this.addMoveAnimationToBuffers(frameindex, oldpiece,newpiece, x,y, -2,0, logic);
                     break;
                 }
                 case TRN_MOVERIGHT2:
-                {   this.addMoveAnimationToBuffers(screentilesize,frameindex, oldpiece,newpiece, x,y, 2,0, logic);
+                {   this.addMoveAnimationToBuffers(frameindex, oldpiece,newpiece, x,y, 2,0, logic);
                     break;
                 }                   
                 case TRN_HIGHLIGHT:
                 {   var anim = this.determineHighlightAnimation(newpiece, x,y,logic);
                     if (anim!=null)
-                    {   this.addNonMoveAnimationToBuffers(screentilesize,frameindex, anim, x,y);
+                    {   this.addNonMoveAnimationToBuffers(frameindex, anim, x,y);
                     }           
                     break;
                 }                   
@@ -665,26 +663,26 @@ LevelRenderer.prototype.draw = function
 };
             
 LevelRenderer.prototype.addMoveAnimationToBuffers = function
-(   screentilesize, frameindex, oldpiece, newpiece, x1, y1, dx, dy, logic )
+(   frameindex, oldpiece, newpiece, x1, y1, dx, dy, logic )
 {    
     var anim = this.determineMoveAnimation(oldpiece,newpiece,x1,y1,dx,dy,logic);
     if (anim)
     {   // determine correct position
         var x2 = x1 + dx;
         var y2 = y1 + dy;
-        var d = screentilesize*frameindex/LevelRenderer.FRAMESPERSTEP;
-        var px = screentilesize*x1+d*(x2-x1);
-        var py = screentilesize*y1+d*(y2-y1);
+        var d = 60*frameindex/LevelRenderer.FRAMESPERSTEP;
+        var px = 60*x1+d*(x2-x1);
+        var py = 60*y1+d*(y2-y1);
         for (var i=frameindex; i<anim.length; i+=LevelRenderer.FRAMESPERSTEP)
         {   this.addTile(px,py,anim[i]);
         }
     }   
 };
 
-LevelRenderer.prototype.addNonMoveAnimationToBuffers = function(screentilesize, frameindex, anim, x1, y1)
+LevelRenderer.prototype.addNonMoveAnimationToBuffers = function(frameindex, anim, x1, y1)
 {
     for (var i=frameindex; i<anim.length; i+=LevelRenderer.FRAMESPERSTEP)
-    {   this.addTile(screentilesize*x1,screentilesize*y1,anim[i]);
+    {   this.addTile(60*x1,60*y1,anim[i]);
     }
 };
         
