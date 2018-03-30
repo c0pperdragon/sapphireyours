@@ -54,7 +54,6 @@ var LevelRenderer = function()
     this.anim_explodedeep_start = null;
     this.anim_door_opening = null;
     this.anim_door_closing = null;
-    this.anim_gunfire = null;
     this.anim_swamp_left = null;
     this.anim_swamp_right = null;
     this.anim_swamp_up = null;
@@ -109,19 +108,17 @@ LevelRenderer.prototype.$ = function(game)
 {   
     TileRenderer.prototype.$.call(this,game, 
     [   "1man", "2man", 
-        "1walklft", "1walkrgt", "1walkup", "1walkdwn", 
-        "1diglft", "1digrgt", "1digup", "1digdwn","1pushlft", "1pushrgt",
-        "2walklft", "2walkrgt", "2walkup", "2walkdwn",
-        "2diglft", "2digrgt", "2digup", "2digdwn",
-        "2pushlft", "2pushrgt", "Earth All","Wall All", "Wall Round All",
+        "1walklft", "1walkrgt", "1walkup", "1walkdwn", "1pushlft", "1pushrgt",
+        "2walklft", "2walkrgt", "2walkup", "2walkdwn", "2pushlft", "2pushrgt", 
+        "Earth All","Wall All", "Wall Round All",
         "Earth Right", "Sand", "Glass", "Stone Wall", "Round Stone Wall",
         "Wall Emerald", "Emerald", "Citrine", 
-        "Sapphire", "Sapphire Shine", "Ruby", 
-        "Stone", "Stone Right", "Stone Left", "Stone Emerald", "Bag", "Bomb", 
+        "Sapphire", "Ruby", 
+        "Stone Right", "Stone Emerald", "Bag", "Bomb", 
         "Exit Closed", "Exit", "Swamp Move", "Swamp Grow", 
         "Drop Left", "Drop Right", "Drop Down", "Drop Hit", "Drop", "Converter",
         "Timebomb", "Tickbomb", "TNT", "Safe", "Pillow", "Elevator", "Elevator Left",
-        "Elevator Right", "Elevator Left Throw", "Elevator Right Throw", "Gun", "Gun Fire",
+        "Elevator Right", "Elevator Left Throw", "Elevator Right Throw", "Gun", 
         "Acid", "Acid Left End", "Acid Right End", "Acid Both Ends",
         "Key Blue", "Key Red", "Key Green", "Key Yellow", 
         "Door Blue", "Door Red", "Door Green", "Door Yellow", "Door Onetime",
@@ -162,7 +159,7 @@ LevelRenderer.prototype.isLoaded = function()
     this.piecetiles[CITRINE] = this.getAnimation("Citrine");
     this.piecetiles[SAPPHIRE] = this.getAnimation("Sapphire")
     this.piecetiles[RUBY] = this.getAnimation("Ruby");
-    this.piecetiles[ROCK] = this.getAnimation("Stone");
+    this.piecetiles[ROCK] = this.getAnimation("Stone Right");
     this.piecetiles[ROCKEMERALD] = this.getAnimation("Stone Emerald");
     this.piecetiles[BAG] = this.getAnimation("Bag");
     this.piecetiles[BOMB] = this.getAnimation("Bomb");         
@@ -205,7 +202,7 @@ LevelRenderer.prototype.isLoaded = function()
     this.piecetiles[GUN1] = this.getAnimation("Gun");
     this.piecetiles[GUN2] = this.getAnimation("Gun");
     this.piecetiles[GUN3] = this.getAnimation("Gun"); 
-    this.piecetiles[ROCK_FALLING] = this.createStillAnimation(this.getAnimation("Stone"));
+    this.piecetiles[ROCK_FALLING] = this.createStillAnimation(this.getAnimation("Stone Right"));
     this.piecetiles[EMERALD_FALLING] = this.getAnimation("Emerald");
     this.piecetiles[BOMB_FALLING] = this.getAnimation("Bomb");
     this.piecetiles[BAG_FALLING] = this.getAnimation("Bag");
@@ -254,10 +251,10 @@ LevelRenderer.prototype.isLoaded = function()
     this.piecetiles[MAN1_RIGHT] = this.getAnimation("1walkrgt");
     this.piecetiles[MAN1_UP] = this.getAnimation("1walkup");
     this.piecetiles[MAN1_DOWN] = this.getAnimation("1walkdwn");
-    this.piecetiles[MAN1_DIGLEFT] = this.getAnimation("1diglft");
-    this.piecetiles[MAN1_DIGRIGHT] = this.getAnimation("1digrgt");
-    this.piecetiles[MAN1_DIGUP] = this.getAnimation("1digup");
-    this.piecetiles[MAN1_DIGDOWN] = this.getAnimation("1digdwn");
+    this.piecetiles[MAN1_DIGLEFT] = this.getAnimation("1walklft");
+    this.piecetiles[MAN1_DIGRIGHT] = this.getAnimation("1walkrgt");
+    this.piecetiles[MAN1_DIGUP] = this.getAnimation("1walkup");
+    this.piecetiles[MAN1_DIGDOWN] = this.getAnimation("1walkdwn");
     this.piecetiles[MAN1_PUSHLEFT] = this.getAnimation("1pushlft");
     this.piecetiles[MAN1_PUSHRIGHT] = this.getAnimation("1pushrgt");
     this.piecetiles[MAN1_PUSHUP] = this.getAnimation("1walkup");
@@ -266,10 +263,10 @@ LevelRenderer.prototype.isLoaded = function()
     this.piecetiles[MAN2_RIGHT] = this.getAnimation("2walkrgt");
     this.piecetiles[MAN2_UP] = this.getAnimation("2walkup");
     this.piecetiles[MAN2_DOWN] = this.getAnimation("2walkdwn");
-    this.piecetiles[MAN2_DIGLEFT] = this.getAnimation("2diglft");
-    this.piecetiles[MAN2_DIGRIGHT] = this.getAnimation("2digrgt");
-    this.piecetiles[MAN2_DIGUP] = this.getAnimation("2digup");
-    this.piecetiles[MAN2_DIGDOWN] = this.getAnimation("2digdwn");
+    this.piecetiles[MAN2_DIGLEFT] = this.getAnimation("2walklft");
+    this.piecetiles[MAN2_DIGRIGHT] = this.getAnimation("2walkrgt");
+    this.piecetiles[MAN2_DIGUP] = this.getAnimation("2walkup");
+    this.piecetiles[MAN2_DIGDOWN] = this.getAnimation("2walkdwn");
     this.piecetiles[MAN2_PUSHLEFT] = this.getAnimation("2pushlft");
     this.piecetiles[MAN2_PUSHRIGHT] = this.getAnimation("2pushrgt");
     this.piecetiles[MAN2_PUSHUP] = this.getAnimation("2walkup");
@@ -367,7 +364,6 @@ LevelRenderer.prototype.isLoaded = function()
     this.anim_drophit = this.getAnimation("Drop Hit");   
     this.anim_elevatorleft_throw = this.getAnimation("Elevator Left Throw");
     this.anim_elevatorright_throw = this.getAnimation("Elevator Right Throw");    
-    this.anim_gunfire = this.getAnimation("Gun Fire");
     this.anim_lorry_right_up = this.createRotatingAnimation(this.piecetiles[LORRYRIGHT], 0,90);
     this.anim_lorry_up_left = this.createRotatingAnimation(this.piecetiles[LORRYRIGHT], 90,180);
     this.anim_lorry_left_down = this.createRotatingAnimation(this.piecetiles[LORRYRIGHT], 180,270);

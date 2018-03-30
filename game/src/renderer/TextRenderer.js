@@ -36,9 +36,9 @@ var TextRenderer = function()
 TextRenderer.prototype = Object.create(Renderer.prototype);
 
 
-TextRenderer.WEIGHT_THIN = 135;
-TextRenderer.WEIGHT_PLAIN = 120;
-TextRenderer.WEIGHT_BOLD = 100;
+TextRenderer.WEIGHT_THIN  = 150; // 135;
+TextRenderer.WEIGHT_PLAIN = 135; // 120;
+TextRenderer.WEIGHT_BOLD  = 120; // 100;
     
 TextRenderer.vertexShaderCode =
             "uniform mat4 uMVPMatrix;      "+

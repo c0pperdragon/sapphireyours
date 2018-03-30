@@ -511,6 +511,15 @@ Logic.prototype.piecesmove = function()
                             }
                         }
                         break;
+                    }                    
+                    case WALLEMERALD:
+                    {
+                            this.visualrandomseed = this.nextrandomseed(this.visualrandomseed);
+                            if ((this.visualrandomseed & 31) == 0)
+                            {
+                                this.highlight(x,y,WALLEMERALD);
+                            }                               
+                        break;
                     }
                     case SAPPHIRE:
                     {   if (this.is(x,y+1,AIR))
