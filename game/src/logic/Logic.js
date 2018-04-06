@@ -24,14 +24,14 @@ var BAG_FALLING       = 131;
 var DOOR_OPENED       = 132;
 var DOOR_CLOSING      = 133;
 var DOOR_CLOSED       = 134;
-var LORRYLEFT_FIXED   = 135;
-var LORRYUP_FIXED     = 136;
-var LORRYRIGHT_FIXED  = 137;
-var LORRYDOWN_FIXED   = 138;
-var BUGLEFT_FIXED     = 139;
-var BUGUP_FIXED       = 140;
-var BUGRIGHT_FIXED    = 141;
-var BUGDOWN_FIXED     = 142;
+var BUGLEFT_FIXED   = 135;
+var BUGUP_FIXED     = 136;
+var BUGRIGHT_FIXED  = 137;
+var BUGDOWN_FIXED   = 138;
+var LORRYLEFT_FIXED     = 139;
+var LORRYUP_FIXED       = 140;
+var LORRYRIGHT_FIXED    = 141;
+var LORRYDOWN_FIXED     = 142;
 var BOMB_EXPLODE      = 143;
 var EXPLODE1_AIR      = 144;
 var EXPLODE2_AIR      = 145;
@@ -46,8 +46,8 @@ var EXPLODE2_SAPPHIRE = 153;
 var EXPLODE3_SAPPHIRE = 154;
 var EXPLODE4_SAPPHIRE = 156;
 var BIGBOMB_EXPLODE   = 157;
-var BUG_EXPLODE       = 158;
-var LORRY_EXPLODE     = 159;
+var LORRY_EXPLODE       = 158;
+var BUG_EXPLODE     = 159;
 var ACTIVEBOMB0       = 160;
 var ACTIVEBOMB1       = 161;
 var ACTIVEBOMB2       = 162;
@@ -847,81 +847,17 @@ Logic.prototype.piecesmove = function()
                         }
                         break;                      
                         
-                    case LORRYLEFT:
-                    case LORRYLEFT_FIXED:
-                    {   if (this.is_neardestruct_target(x,y) || this.is_player_piece_at(x-1,y))
-                        {   this.explode3x3(x,y, EXPLODE1_AIR, EXPLODE1_AIR);
-                        }                       
-                        else if (this.is(x,y+1,AIR) && this.is(x,y,LORRYLEFT)) 
-                        {   this.transform(x,y,LORRYDOWN_FIXED);
-                        }
-                        else if (!this.is(x-1,y,AIR)) 
-                        {   this.transform(x,y, LORRYUP);
-                        }
-                        else 
-                        {   this.move(x,y,-1,0,LORRYLEFT);
-                        }
-                        break;
-                    }
-                    case LORRYUP:
-                    case LORRYUP_FIXED:  
-                    {   if (this.is_neardestruct_target(x,y) || this.is_player_piece_at(x,y-1))
-                        {   this.explode3x3(x,y, EXPLODE1_AIR, EXPLODE1_AIR);
-                        }                       
-                        else if (this.is(x-1,y,AIR) && this.is(x,y,LORRYUP)) 
-                        {   this.transform(x,y,LORRYLEFT_FIXED);
-                        } 
-                        else if (!this.is(x,y-1,AIR)) 
-                        {   this.transform(x,y,LORRYRIGHT);
-                        }
-                        else
-                        {   this.move(x,y,0,-1, LORRYUP);
-                        }
-                        break;
-                    }
-                    case LORRYRIGHT:
-                    case LORRYRIGHT_FIXED:
-                    {   if (this.is_neardestruct_target(x,y) || this.is_player_piece_at(x+1,y))
-                        {   this.explode3x3(x,y, EXPLODE1_AIR, EXPLODE1_AIR);
-                        }                       
-                        else if (this.is(x,y-1,AIR) && this.is(x,y,LORRYRIGHT)) 
-                        {   this.transform(x,y,LORRYUP_FIXED);
-                        }
-                        else if (!this.is(x+1,y,AIR)) 
-                        {   this.transform(x,y, LORRYDOWN);
-                        }
-                        else 
-                        {   this.move(x,y, 1,0, LORRYRIGHT);
-                        }   
-                        break;
-                    }
-                    case LORRYDOWN:
-                    case LORRYDOWN_FIXED:
-                    {   if (this.is_neardestruct_target(x,y) || this.is_player_piece_at(x,y+1))
-                        {   this.explode3x3(x,y, EXPLODE1_AIR, EXPLODE1_AIR);
-                        }                       
-                        else if (this.is(x+1,y,AIR) && this.is(x,y,LORRYDOWN)) 
-                        {   this.transform(x,y, LORRYRIGHT_FIXED);
-                        }
-                        else if (!this.is(x,y+1,AIR)) 
-                        {   this.transform(x,y,LORRYLEFT);
-                        }
-                        else                        
-                        {   this.move(x,y, 0,1,LORRYDOWN);
-                        }
-                        break;
-                    }   
                     case BUGLEFT:
                     case BUGLEFT_FIXED:
                     {   if (this.is_neardestruct_target(x,y) || this.is_player_piece_at(x-1,y))
-                        {   this.explode3x3(x,y, EXPLODE1_SAPPHIRE, EXPLODE1_EMERALD);
+                        {   this.explode3x3(x,y, EXPLODE1_AIR, EXPLODE1_AIR);
                         }                       
-                        else if (this.is(x,y-1,AIR) && this.is(x,y,BUGLEFT)) 
-                        {   this.transform(x,y, BUGUP_FIXED);
-                        } 
+                        else if (this.is(x,y+1,AIR) && this.is(x,y,BUGLEFT)) 
+                        {   this.transform(x,y,BUGDOWN_FIXED);
+                        }
                         else if (!this.is(x-1,y,AIR)) 
-                        {   this.transform(x,y,BUGDOWN);
-                        } 
+                        {   this.transform(x,y, BUGUP);
+                        }
                         else 
                         {   this.move(x,y,-1,0,BUGLEFT);
                         }
@@ -930,48 +866,112 @@ Logic.prototype.piecesmove = function()
                     case BUGUP:
                     case BUGUP_FIXED:  
                     {   if (this.is_neardestruct_target(x,y) || this.is_player_piece_at(x,y-1))
-                        {   this.explode3x3(x,y, EXPLODE1_SAPPHIRE, EXPLODE1_EMERALD);
-                        }
-                        else if (this.is(x+1,y,AIR) && this.is(x,y,BUGUP)) 
-                        {   this.transform(x,y, BUGRIGHT_FIXED);
+                        {   this.explode3x3(x,y, EXPLODE1_AIR, EXPLODE1_AIR);
+                        }                       
+                        else if (this.is(x-1,y,AIR) && this.is(x,y,BUGUP)) 
+                        {   this.transform(x,y,BUGLEFT_FIXED);
                         } 
                         else if (!this.is(x,y-1,AIR)) 
-                        {   this.transform(x,y, BUGLEFT);
-                        } 
-                        else 
-                        {   this.move(x,y,0,-1,BUGUP);
+                        {   this.transform(x,y,BUGRIGHT);
+                        }
+                        else
+                        {   this.move(x,y,0,-1, BUGUP);
                         }
                         break;
                     }
                     case BUGRIGHT:
                     case BUGRIGHT_FIXED:
                     {   if (this.is_neardestruct_target(x,y) || this.is_player_piece_at(x+1,y))
-                        {   this.explode3x3(x,y, EXPLODE1_SAPPHIRE, EXPLODE1_EMERALD);
-                        }                                                   
-                        else if (this.is(x,y+1,AIR) && this.is(x,y,BUGRIGHT)) 
-                        {   this.transform(x,y, BUGDOWN_FIXED);
+                        {   this.explode3x3(x,y, EXPLODE1_AIR, EXPLODE1_AIR);
+                        }                       
+                        else if (this.is(x,y-1,AIR) && this.is(x,y,BUGRIGHT)) 
+                        {   this.transform(x,y,BUGUP_FIXED);
                         }
                         else if (!this.is(x+1,y,AIR)) 
-                        {   this.transform(x,y, BUGUP);
-                        } 
+                        {   this.transform(x,y, BUGDOWN);
+                        }
                         else 
                         {   this.move(x,y, 1,0, BUGRIGHT);
-                        }                       
+                        }   
                         break;
                     }
                     case BUGDOWN:
                     case BUGDOWN_FIXED:
                     {   if (this.is_neardestruct_target(x,y) || this.is_player_piece_at(x,y+1))
+                        {   this.explode3x3(x,y, EXPLODE1_AIR, EXPLODE1_AIR);
+                        }                       
+                        else if (this.is(x+1,y,AIR) && this.is(x,y,BUGDOWN)) 
+                        {   this.transform(x,y, BUGRIGHT_FIXED);
+                        }
+                        else if (!this.is(x,y+1,AIR)) 
+                        {   this.transform(x,y,BUGLEFT);
+                        }
+                        else                        
+                        {   this.move(x,y, 0,1,BUGDOWN);
+                        }
+                        break;
+                    }   
+                    case LORRYLEFT:
+                    case LORRYLEFT_FIXED:
+                    {   if (this.is_neardestruct_target(x,y) || this.is_player_piece_at(x-1,y))
+                        {   this.explode3x3(x,y, EXPLODE1_SAPPHIRE, EXPLODE1_EMERALD);
+                        }                       
+                        else if (this.is(x,y-1,AIR) && this.is(x,y,LORRYLEFT)) 
+                        {   this.transform(x,y, LORRYUP_FIXED);
+                        } 
+                        else if (!this.is(x-1,y,AIR)) 
+                        {   this.transform(x,y,LORRYDOWN);
+                        } 
+                        else 
+                        {   this.move(x,y,-1,0,LORRYLEFT);
+                        }
+                        break;
+                    }
+                    case LORRYUP:
+                    case LORRYUP_FIXED:  
+                    {   if (this.is_neardestruct_target(x,y) || this.is_player_piece_at(x,y-1))
+                        {   this.explode3x3(x,y, EXPLODE1_SAPPHIRE, EXPLODE1_EMERALD);
+                        }
+                        else if (this.is(x+1,y,AIR) && this.is(x,y,LORRYUP)) 
+                        {   this.transform(x,y, LORRYRIGHT_FIXED);
+                        } 
+                        else if (!this.is(x,y-1,AIR)) 
+                        {   this.transform(x,y, LORRYLEFT);
+                        } 
+                        else 
+                        {   this.move(x,y,0,-1,LORRYUP);
+                        }
+                        break;
+                    }
+                    case LORRYRIGHT:
+                    case LORRYRIGHT_FIXED:
+                    {   if (this.is_neardestruct_target(x,y) || this.is_player_piece_at(x+1,y))
                         {   this.explode3x3(x,y, EXPLODE1_SAPPHIRE, EXPLODE1_EMERALD);
                         }                                                   
-                        else if (this.is(x-1,y,AIR) && this.is(x,y,BUGDOWN)) {
-                            this.transform(x,y,BUGLEFT_FIXED);
+                        else if (this.is(x,y+1,AIR) && this.is(x,y,LORRYRIGHT)) 
+                        {   this.transform(x,y, LORRYDOWN_FIXED);
+                        }
+                        else if (!this.is(x+1,y,AIR)) 
+                        {   this.transform(x,y, LORRYUP);
+                        } 
+                        else 
+                        {   this.move(x,y, 1,0, LORRYRIGHT);
+                        }                       
+                        break;
+                    }
+                    case LORRYDOWN:
+                    case LORRYDOWN_FIXED:
+                    {   if (this.is_neardestruct_target(x,y) || this.is_player_piece_at(x,y+1))
+                        {   this.explode3x3(x,y, EXPLODE1_SAPPHIRE, EXPLODE1_EMERALD);
+                        }                                                   
+                        else if (this.is(x-1,y,AIR) && this.is(x,y,LORRYDOWN)) {
+                            this.transform(x,y,LORRYLEFT_FIXED);
                         } 
                         else if (!this.is(x,y+1,AIR)) {
-                            this.transform(x,y, BUGRIGHT);
+                            this.transform(x,y, LORRYRIGHT);
                         } 
                         else
-                        {   this.move(x,y, 0,1, BUGDOWN);
+                        {   this.move(x,y, 0,1, LORRYDOWN);
                         }
                         break;
                     }
@@ -1109,10 +1109,10 @@ Logic.prototype.piecesmove = function()
                     case TIMEBOMB_EXPLODE:
                         this.explode3x3(x,y, EXPLODE1_AIR, EXPLODE1_AIR);
                         break;
-                    case LORRY_EXPLODE:
+                    case BUG_EXPLODE:
                         this.explode3x3(x,y, EXPLODE1_AIR, EXPLODE1_AIR);
                         break;
-                    case BUG_EXPLODE:
+                    case LORRY_EXPLODE:
                         this.explode3x3(x,y, EXPLODE1_SAPPHIRE, EXPLODE1_EMERALD);
                         break;
                     case BIGBOMB_EXPLODE:
@@ -1283,8 +1283,8 @@ Logic.prototype.catch_in_explosion = function(x, y, debris, totalexplode, outwar
             case BOMB_EXPLODE:
             case BIGBOMB_EXPLODE:
 //          case YAMYAM_EXPLODE: 
-            case BUG_EXPLODE:
             case LORRY_EXPLODE:
+            case BUG_EXPLODE:
                 this.can_not_create_debris(debris);      
                 break;     // will explode anyway
             case BOMB:
@@ -1306,17 +1306,6 @@ Logic.prototype.catch_in_explosion = function(x, y, debris, totalexplode, outwar
                 this.can_not_create_debris(debris);
                 this.transform(x,y, BIGBOMB_EXPLODE);  // will explode in next turn
                 break;
-            case LORRYLEFT:
-            case LORRYLEFT_FIXED:
-            case LORRYRIGHT:
-            case LORRYRIGHT_FIXED:
-            case LORRYUP:
-            case LORRYUP_FIXED:
-            case LORRYDOWN:
-            case LORRYDOWN_FIXED:  
-                this.can_not_create_debris(debris);
-                this.transform(x,y, LORRY_EXPLODE);     // will explode in next turn
-                break;
             case BUGLEFT:
             case BUGLEFT_FIXED:
             case BUGRIGHT:
@@ -1324,9 +1313,20 @@ Logic.prototype.catch_in_explosion = function(x, y, debris, totalexplode, outwar
             case BUGUP:
             case BUGUP_FIXED:
             case BUGDOWN:
-            case BUGDOWN_FIXED:
+            case BUGDOWN_FIXED:  
                 this.can_not_create_debris(debris);
-                this.transform(x,y, BUG_EXPLODE);        // will explode in next turn
+                this.transform(x,y, BUG_EXPLODE);     // will explode in next turn
+                break;
+            case LORRYLEFT:
+            case LORRYLEFT_FIXED:
+            case LORRYRIGHT:
+            case LORRYRIGHT_FIXED:
+            case LORRYUP:
+            case LORRYUP_FIXED:
+            case LORRYDOWN:
+            case LORRYDOWN_FIXED:
+                this.can_not_create_debris(debris);
+                this.transform(x,y, LORRY_EXPLODE);        // will explode in next turn
                 break;
             case YAMYAMLEFT:
             case YAMYAMRIGHT:
@@ -1449,25 +1449,25 @@ Logic.prototype.can_not_create_debris = function(debris)
 Logic.prototype.is_hit_by_non_bomb = function(x, y, bywhat)
 {
         switch (this.piece(x,y))
-        {   case LORRYLEFT:
-            case LORRYLEFT_FIXED:
-            case LORRYRIGHT:
-            case LORRYRIGHT_FIXED:
-            case LORRYUP:
-            case LORRYUP_FIXED:
-            case LORRYDOWN:
-            case LORRYDOWN_FIXED:  
-                this.transform(x,y, LORRY_EXPLODE);
-                return false;
-            case BUGLEFT:
+        {   case BUGLEFT:
             case BUGLEFT_FIXED:
             case BUGRIGHT:
             case BUGRIGHT_FIXED:
             case BUGUP:
             case BUGUP_FIXED:
             case BUGDOWN:
-            case BUGDOWN_FIXED:
+            case BUGDOWN_FIXED:  
                 this.transform(x,y, BUG_EXPLODE);
+                return false;
+            case LORRYLEFT:
+            case LORRYLEFT_FIXED:
+            case LORRYRIGHT:
+            case LORRYRIGHT_FIXED:
+            case LORRYUP:
+            case LORRYUP_FIXED:
+            case LORRYDOWN:
+            case LORRYDOWN_FIXED:
+                this.transform(x,y, LORRY_EXPLODE);
                 return false;
             case YAMYAMLEFT:
             case YAMYAMRIGHT:
@@ -1486,7 +1486,8 @@ Logic.prototype.is_hit_by_non_bomb = function(x, y, bywhat)
                 {   if (this.hasmoved(x,y))
                     {   this.changestate(x,y, SAPPHIRE_BREAKING);
                         this.changestate(x,y-1, ROCK);  // decelerate rock 
-                    } else
+                    } 
+                    else
                     {   this.changestate(x,y, SAPPHIRE_BREAKING);
                         this.transform(x,y, AIR);        
                         this.move(x,y-1, 0,1, ROCK);  // decelerate rock, but move down anyway
@@ -1499,7 +1500,8 @@ Logic.prototype.is_hit_by_non_bomb = function(x, y, bywhat)
             case CITRINE_FALLING:
                 if (this.hasmoved(x,y))
                 {   this.changestate(x,y, CITRINE_BREAKING);
-                } else
+                } 
+                else
                 {   this.changestate(x,y, CITRINE_BREAKING);
                     this.transform(x,y, AIR);    
                 }
@@ -1732,8 +1734,8 @@ Logic.prototype.add_laser_beam = function(x, y, dx, dy)
             case BOMB_EXPLODE:
             case BIGBOMB_EXPLODE:
             case TIMEBOMB_EXPLODE:
-            case BUG_EXPLODE:
             case LORRY_EXPLODE:
+            case BUG_EXPLODE:
             case EXPLODE1_AIR: 
             case EXPLODE2_AIR: 
             case EXPLODE3_AIR: 
@@ -2204,15 +2206,7 @@ Logic.prototype.would_fall_in_next_step = function(piece, x, y)
 Logic.prototype.is_living = function(x, y)
 {
         switch (this.piece(x,y))
-        {   case LORRYLEFT:
-            case LORRYLEFT_FIXED:
-            case LORRYRIGHT:
-            case LORRYRIGHT_FIXED:
-            case LORRYUP:
-            case LORRYUP_FIXED:
-            case LORRYDOWN:
-            case LORRYDOWN_FIXED:
-            case BUGLEFT: 
+        {   case BUGLEFT:
             case BUGLEFT_FIXED:
             case BUGRIGHT:
             case BUGRIGHT_FIXED:
@@ -2220,6 +2214,14 @@ Logic.prototype.is_living = function(x, y)
             case BUGUP_FIXED:
             case BUGDOWN:
             case BUGDOWN_FIXED:
+            case LORRYLEFT: 
+            case LORRYLEFT_FIXED:
+            case LORRYRIGHT:
+            case LORRYRIGHT_FIXED:
+            case LORRYUP:
+            case LORRYUP_FIXED:
+            case LORRYDOWN:
+            case LORRYDOWN_FIXED:
             case YAMYAMLEFT:
             case YAMYAMRIGHT:   
             case YAMYAMUP:
