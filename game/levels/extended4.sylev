@@ -74,7 +74,7 @@
     ]
 }
 ,
-{   "title": "Bugs in a Box II",
+{   "title": "Lorries in a Box II",
     "author": "Alexander",
     "hint": "Time to sacrifice some gems.",
     "difficulty": 6,
@@ -475,7 +475,7 @@
     ]
 }
 ,
-{   "title": "Help the Lorry",
+{   "title": "Help the Bug",
     "author": "Alexander",
     "difficulty": 4,
     "category": 4,
@@ -502,7 +502,7 @@
     ]
 }
 ,
-{   "title": "Danger! Lorry Zone!",
+{   "title": "Danger! Bug Zone!",
     "author": "Alexander",
     "difficulty": 4,
     "category": 2,

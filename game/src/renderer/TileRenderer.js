@@ -292,7 +292,7 @@ TileRenderer.prototype.startDrawing = function(offx0, offy0, offx1, offy1)
     var viewportheight = this.game.pixelheight;
     var tilezoom = this.loadedTileSize / 60.0;
     
-    // snap offsets to to true pixels
+    // snap offsets to true pixels
     offx0 = Math.round(offx0*tilezoom) / tilezoom;
     offy0 = Math.round(offy0*tilezoom) / tilezoom;
     offx1 = Math.round(offx1*tilezoom) / tilezoom;
@@ -344,12 +344,36 @@ TileRenderer.prototype.startDrawing = function(offx0, offy0, offx1, offy1)
     
 TileRenderer.prototype.addTile = function(x, y, tile)
 {        
-    if (this.numTiles>=TileRenderer.MAXTILES) { this.flush(); }
-    
     var b = this.bufferTile;
     var target = 4*this.numTiles;
     b[target+0] = x;
     b[target+1] = y;
+    b[target+2] = (tile&0x7fff);
+    b[target+3] = (tile>>16)&0x7fff;
+    this.numTiles++;
+};
+
+TileRenderer.prototype.startDrawDecoration = function(tilesize)
+{  
+    // initialize the drawing buffers
+    this.numTiles = 0;
+    var viewportwidth = this.game.pixelwidth;
+    var viewportheight = this.game.pixelheight;
+    var tilezoom = this.loadedTileSize / 120;   // use half size for decoration
+
+    Matrix.setIdentityM(this.matrix,0);
+    Matrix.translateM(this.matrix,0, -1.0,1.0, 0);
+    Matrix.scaleM(this.matrix,0, 2.0*tilezoom/viewportwidth, -2.0*tilezoom/viewportheight, 1.0);
+    this.havematrix2 = false;
+};    
+    
+TileRenderer.prototype.addDecorationTile = function(pixelx, pixely, tile)
+{       
+    var zoomfactor = (this.game.pixelwidth / this.game.screenwidth) * 120 / this.loadedTileSize;
+    var b = this.bufferTile;
+    var target = 4*this.numTiles;
+    b[target+0] = Math.round(pixelx*zoomfactor) - 30;
+    b[target+1] = Math.round(pixely*zoomfactor) - 30;
     b[target+2] = (tile&0x7fff);
     b[target+3] = (tile>>16)&0x7fff;
     this.numTiles++;

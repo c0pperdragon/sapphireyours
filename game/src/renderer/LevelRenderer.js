@@ -1052,16 +1052,10 @@ LevelRenderer.prototype.earthJaggedConfiguration = function(logic, x, y)
    
 // --------------------------- direct piece tile rendering -----------------
 
-LevelRenderer.prototype.addSimplePieceToBuffer = function(x, y, piece)
+LevelRenderer.prototype.addDecorationPieceToBuffer = function(pixelx, pixely, piece)
 {       
-/*
-        int[] anim = piecetiles[piece&0xff];
-        if (anim!=null)
-        {   
-            addTile(x,y,anim[0]);
-            if (anim.length > FRAMESPERSTEP)
-            {   addTile(x,y, anim[FRAMESPERSTEP]);
-            }
+        var anim = this.piecetiles[piece];
+        if (anim)
+        {   this.addDecorationTile(pixelx,pixely,anim[0]);
         }
-*/        
 };

@@ -137,7 +137,7 @@ TextRenderer.prototype.$ = function(game)
         Game.getJSON
         (   "gfx/fontdesc.json", 
             function(json)
-            {   that.glyph_coordinates = new Array(256);
+            {   that.glyph_coordinates = new Array(400);
                 for (var i=0; i<json.glyphs.length; i++) 
                 {   var g = json.glyphs[i];            
                     var code = g.code;
@@ -178,7 +178,17 @@ TextRenderer.prototype.startDrawing = function()
     Matrix.scaleM(this.matrix,0, 2.0/this.game.screenwidth, -2.0/this.game.screenheight, 1.0);
 };
 
-TextRenderer.prototype.addGlyph = function(code, x, y, height, rightaligned, argb, weight)
+TextRenderer.prototype.addIconGlyph = function(code, x, y, height, argb)
+{
+    this.addGlyph(code,x,y,height,false,argb,120,false);
+}
+
+TextRenderer.prototype.addMirrorIconGlyph = function(code, x, y, height, argb)
+{
+    this.addGlyph(code,x,y,height,false,argb,120,true);
+}
+
+TextRenderer.prototype.addGlyph = function(code, x, y, height, rightaligned, argb, weight, mirror)
 {
     var coordinates = code<this.glyph_coordinates.length ? this.glyph_coordinates[code] : null;
     if (coordinates==null)
@@ -191,7 +201,11 @@ TextRenderer.prototype.addGlyph = function(code, x, y, height, rightaligned, arg
     var theight = coordinates[3];
     var tx2 = tx1+twidth;
     var ty2 = ty1+theight;
-            
+    if (mirror)
+    {   tx1 = tx2;
+        tx2 = coordinates[0];
+    }
+    
     var magnification = height / theight;
     var width = twidth * magnification;           
     var x1 = x - this.kerning*magnification;
@@ -418,12 +432,12 @@ TextRenderer.prototype.addString = function(string, x, y, height, rightaligned, 
         var x2 = x;
         if (rightaligned)
         {   for (var i=string.length-1; i>=0; i--)
-            {   x2 -= this.addGlyph(string.charCodeAt(i), x2,y,height, rightaligned, argb, weight);  
+            {   x2 -= this.addGlyph(string.charCodeAt(i), x2,y,height, rightaligned, argb, weight, false);  
             }       
         }
         else
         {   for (var i=0; i<string.length; i++)
-            {   x2 += this.addGlyph(string.charCodeAt(i), x2,y,height, rightaligned, argb, weight);  
+            {   x2 += this.addGlyph(string.charCodeAt(i), x2,y,height, rightaligned, argb, weight, false);  
             }
         }
         return x2;
@@ -440,16 +454,16 @@ TextRenderer.prototype.addNumber = function(number, x, y, height, rightaligned, 
         if (rightaligned)
         {   do
             {   var lastdigit = number % 10;
-                x2 -= this.addGlyph(48+lastdigit, x2,y,height, rightaligned, argb, weight);
+                x2 -= this.addGlyph(48+lastdigit, x2,y,height, rightaligned, argb, weight, false);
                 number = Math.floor(number/10);
             } while (number>0);
             if (minussign)
-            {   x2 -= this.addGlyph (45, x2,y,height, rightaligned, argb, weight);
+            {   x2 -= this.addGlyph (45, x2,y,height, rightaligned, argb, weight, false);
             }
         }
         else        
         {   if (minussign)
-            {   x2 += this.addGlyph (45, x2,y,height, rightaligned, argb, weight);
+            {   x2 += this.addGlyph (45, x2,y,height, rightaligned, argb, weight, false);
             }
             var highestdigit = 1;
             while (number>=highestdigit*10)
@@ -457,8 +471,8 @@ TextRenderer.prototype.addNumber = function(number, x, y, height, rightaligned, 
             } 
             while (highestdigit>0)
             {   
-                var digit = (number / highestdigit) % 10;
-                x2 += this.addGlyph(48 + digit, x2,y,height,rightaligned, argb, weight);
+                var digit = Math.floor(number / highestdigit) % 10;
+                x2 += this.addGlyph(48 + digit, x2,y,height,rightaligned, argb, weight, false);
                 highestdigit = Math.floor(highestdigit/10);
             }
         }

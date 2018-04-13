@@ -648,24 +648,23 @@ Game.prototype.startCategoryMusic = function (category)
 Game.getColorForDifficulty = function(difficulty)
 {
     switch(difficulty)
-    {   case 1:     // Simple
-            return Game.argb(170,120,255);
+    {   case 1:  // previously Simple
         case 2:     // Easy
-            return Game.argb(30,150,255);
+            return Game.argb(102,204,255);
         case 3:     // Moderate
-            return Game.argb(40,215,215);
+            return Game.argb(38,139,255);
         case 4:     // Normal
-            return Game.argb(50,255,0);
+            return Game.argb(51,204,20);
         case 5:     // Tricky
-            return Game.argb(240,240,0);
+            return Game.argb(74,255,38);
         case 6:     // Tough
-            return Game.argb(255,139,0);
+            return Game.argb(255,248,51);
         case 7:     // Difficult
-            return Game.argb(255,70,0);
+            return Game.argb(255,128,0);
         case 8:     // Hard
-            return Game.argb(255,40,40);
+            return Game.argb(255,36,20);
         case 9:     // M.A.D.
-            return Game.argb(255,0,100);
+            return Game.argb(204,15,8);
         default:
             return Game.argb(170,170,170);
     }
@@ -674,12 +673,11 @@ Game.getColorForDifficulty = function(difficulty)
 Game.getNameForDifficulty = function(difficulty)
 {
     switch(difficulty)
-    {   case 1:
-            return "Simple";
+    {   case 1:  // previously Simple
         case 2:
             return "Easy";
         case 3:
-            return "Straight";
+            return "Moderate";
         case 4:
             return "Normal";
         case 5:
@@ -705,19 +703,46 @@ Game.getNameForCategory = function(category)
         case 1:
             return "Travel";            
         case 2:
-            return "Action";
+            return "Speed";
         case 3:
-            return "Fight";
+            return "Fighting";
         case 4: 
             return "Puzzle";
         case 5: 
             return "Science";
         case 6:
             return "Work";
+        case 7:
+            return "Survival";
         default:
             return "unknown";
     }
 };
+
+Game.getIconForCategory = function(category)    
+{
+    switch (category)
+    {   case 0:  // Fun
+            return 1;
+        case 1:  // Travel
+            return 2;
+        case 2:  // Speed
+            return 3;
+        case 3:  // Fighting
+            return 5;
+        case 4:  // Puzzle
+            return 6;
+        case 5:  // Science
+            return 7;
+        case 6:  // Work
+            return 8;
+        case 7:  // Survival
+            return 4;
+        default:
+            return "unknown";
+    }
+};
+
     
 Game.argb = function(r, g, b)
 {

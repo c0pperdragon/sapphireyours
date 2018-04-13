@@ -91,7 +91,7 @@
 {   "title": "Beware of the Robot",
     "author": "Reinhard",
     "difficulty": 3,
-    "category": 3,
+    "category": 7,
     "loot": 0,
     "map":
     [   "###########",
@@ -111,7 +111,7 @@
     ]
 }
 ,
-{   "title": "Lorries Follow Walls",
+{   "title": "Bugs Follow Walls",
     "author": "Reinhard",
     "difficulty": 3,
     "category": 3,
@@ -389,7 +389,7 @@
     ]
 }
 ,
-{   "title": "Bugs Contain Gems",
+{   "title": "Lorries Contain Gems",
     "author": "Reinhard",
     "difficulty": 4,
     "category": 3,
@@ -677,7 +677,7 @@
     ]
 }
 ,
-{   "title": "Bugs in a Box",
+{   "title": "Lorries in a Box",
     "author": "Reinhard",
     "difficulty": 5,
     "category": 3,

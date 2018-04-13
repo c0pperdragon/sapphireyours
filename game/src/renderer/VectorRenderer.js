@@ -369,6 +369,11 @@ VectorRenderer.prototype.addRoundedRect = function(x, y, width, height, radius, 
     this.addStripCorner(nx2,ny2, argb2); 
 };
 
+
+
+
+
+
 VectorRenderer.prototype.addPlayArrow = function(x, y, width, height, orientation, argb)
 {
     this.startStrip();

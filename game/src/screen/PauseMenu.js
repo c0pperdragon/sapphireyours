@@ -16,6 +16,7 @@ var PauseMenu = function()
     this.selected = 0;
 
     // data for layout (computed before first rendering)
+    this.title = null;
     this.info = null;
     this.menux = 0.0;
     this.menuy = 0.0;
@@ -155,85 +156,80 @@ PauseMenu.prototype.layout = function()
 PauseMenu.prototype.drawOrLayout = function(draw)
 {
     var scaling = 1;       
-    var th = 27;
+    var th = 20;
+    var th2 = 35
     var vr = this.game.vectorRenderer;                
     var tr = this.game.textRenderer;                
 
     // layout depends on menu width which depends on the screen size                
     this.menuwidth = Math.min(400, this.game.screenwidth);                 
-    this.menux = (this.game.screenwidth-this.menuwidth)/2;
+    this.menux = 10; // (this.game.screenwidth-this.menuwidth)/2;
     var bgcolor = 0xcc000000; // darken(Game.getColorForDifficulty(level.getDifficulty()));
+    var col = Game.getColorForDifficulty(this.level.getDifficulty());
                 
     // at first call or after size change, create word wrapped string
     if (!draw)      
-    {   if (this.message!=null)
-        {   this.info = tr.wordWrap(this.message, th, this.menuwidth-60*scaling);
+    {   this.title = tr.wordWrap(this.level.getTitle(), th2, this.menuwidth-100);
+        if (this.message!=null)
+        {   this.info = tr.wordWrap(this.message, th, this.menuwidth-60);
         }
         else 
         {   this.info = (this.level.getHint()==null) 
                  ? []
-                 : tr.wordWrap(this.level.getHint(), th, this.menuwidth-60*scaling);
+                 : tr.wordWrap(this.level.getHint(), th, this.menuwidth-60);
         }      
     }
     // when in drawing mode, initialize renderers and create background
     else
     {   vr.startDrawing ();
         tr.startDrawing ();        
-        vr.addRectangle(this.menux,0,this.menuwidth,this.game.screenheight, bgcolor);           
+//        vr.addRectangle(this.menux,0,this.menuwidth,this.game.screenheight, bgcolor);           
+        vr.addRoundedRect(this.menux,this.menuy,this.menuwidth,this.menuheight, 3,4, bgcolor);
     }
     
     // add category/difficulty icon
     if (draw)
-    {   var centerx = this.menux + this.menuwidth - 65*scaling;
-        var centery = this.menuy + 65*scaling;
-        var is = 90*scaling;
-        var d = this.level.getDifficulty();
-        var c = this.level.getCategory();
-        this.drawCategoryIcon(vr, centerx-is/2, centery-is/2, is,is, c, Game.getColorForDifficulty(d));
-            
-        var col = this.contrastcolor(Game.getColorForDifficulty(d));         
-        var s = Game.getNameForDifficulty(d);
-        var sw = tr.determineStringWidth(s, th);
-        tr.addString (s, centerx-sw/2,centery-th, th, false, col, TextRenderer.WEIGHT_PLAIN);
-        s = Game.getNameForCategory(c);
-        sw = tr.determineStringWidth(s, th);
-        tr.addString (s, centerx-sw/2,centery, th, false, col, TextRenderer.WEIGHT_PLAIN);
+    {   var centerx = this.menux + this.menuwidth - 60;
+        var centery = this.menuy + 25;
+        var ico = Game.getIconForCategory(this.level.getCategory());
+        tr.addIconGlyph(ico, centerx,centery, 45, col);
     }
 
-    var y = this.menuy + 40*scaling;  // inner border
-    var x = this.menux + 30*scaling;  // inner border          
+    var y = this.menuy + 30;  // inner border
+    var x = this.menux + 30;  // inner border          
         
     // level title
-    var t = this.level.getTitle();
-    if (t!=null)
+    for (var i=0; this.title && i<this.title.length; i++)
     {   if (draw)
-        {   tr.addString(t, x,y, th, false, 0xffffffff, TextRenderer.WEIGHT_BOLD);
+        {   tr.addString(this.title[i], x,y, th2, false, 0xffaaaaaa, TextRenderer.WEIGHT_PLAIN);
         }
-        y += th;        
+        y += th2*0.8;        
     }
+    y += 12;
+    
     // author
-    t = this.level.getAuthor();
+    var t = this.level.getAuthor();
     if (t!=null && t.length>0)
     {   if (draw)
-        {   var x2 = tr.addString("by ", x,y, th, false, 0xffaaaaaa, TextRenderer.WEIGHT_PLAIN);
-            tr.addString(t, x2,y, th, false, 0xffaaaaaa, TextRenderer.WEIGHT_PLAIN);
+        {   // var x2 = tr.addString("by ", x,y, th, false, 0xffaaaaaa, TextRenderer.WEIGHT_PLAIN);
+            tr.addString("by "+t, x,y, th, false, 0xffffffff, TextRenderer.WEIGHT_BOLD);
         }
         y += th;        
     }
     // info         
-    y = this.menuy + 40*scaling + 3*th;
+    y += 2*th;
     if (this.info && this.info.length>0)
     {   for (var i=0; i<this.info.length; i++)
         {   if (draw)
             {   if (this.message!=null)  // info comes from an important message: display it centered
                 {   tr.addString(this.info[i], this.menux+this.menuwidth/2-tr.determineStringWidth(this.info[i],th)/2
-                        ,y, th, false, 0xffffffff, TextRenderer.WEIGHT_PLAIN);
+                        ,y, th, false, 0xffaaaaaa, TextRenderer.WEIGHT_BOLD);
                 }
                 else    
-                {   tr.addString(this.info[i], x,y, th, false, 0xffffffff, TextRenderer.WEIGHT_PLAIN);
+                {   tr.addString(this.info[i], x,y, th, false, 0xffaaaaaa, TextRenderer.WEIGHT_BOLD);
                 }
             }       
-            y += 30*scaling;                
+            y += th;                
         }
         y+=th;
     }
@@ -243,10 +239,10 @@ PauseMenu.prototype.drawOrLayout = function(draw)
     var cornerradius = 4.0;
     // the action icons
     // memorize this layout info for touch input handling
-    this.iconwidth = 90*scaling;
-    this.iconheight = 100*scaling;
-    this.actiondx = this.iconwidth+4*scaling; 
-    this.action0x = (this.menuwidth - ((this.numpriorityactions-1)*this.actiondx+this.iconwidth) )/ 2;
+    this.iconwidth = 70;
+    this.iconheight = 70;
+    this.actiondx = this.iconwidth+10; 
+    this.action0x = 30; // (this.menuwidth - ((this.numpriorityactions-1)*this.actiondx+this.iconwidth) )/ 2;
     this.action0y = y-this.menuy;
     // really draw
     if (draw)
@@ -263,20 +259,28 @@ PauseMenu.prototype.drawOrLayout = function(draw)
             vr.addRoundedRect(this.menux+this.action0x+this.actiondx*i, 
                 this.menuy+this.action0y, this.iconwidth,this.iconheight, 
                 cornerradius, cornerradius+1, bc);   
-            this.drawActionIcon (vr, action, this.menux+this.action0x+this.actiondx*i+this.iconwidth/6, 
-                this.menuy+this.action0y+this.iconwidth/12,  2*this.iconwidth/3,2*this.iconwidth/3, fc);
-            tr.addString (s,  this.menux+this.action0x+this.actiondx*i+(this.iconwidth-tr.determineStringWidth(s,th))/2, 
-                this.menuy+this.action0y+this.iconheight-th-th/4, th, false, fc, TextRenderer.WEIGHT_PLAIN);
+            this.drawActionIcon (tr, action, 
+                this.menux+this.action0x+this.actiondx*i+this.iconwidth/6, 
+                this.menuy+this.action0y+this.iconwidth/6,  
+                2*this.iconwidth/3,
+                2*this.iconwidth/3, 
+                fc);
+            if (this.selected==i)
+            {   tr.addString (s,  
+                    this.menux+this.action0x+this.actiondx*i+(this.iconwidth-tr.determineStringWidth(s,th))/2, 
+                    this.menuy+this.action0y+this.iconheight+8, 
+                    th, false, hicol, TextRenderer.WEIGHT_PLAIN);
+            }
         }
     }       
-    y+= this.iconheight + 30*scaling;
+    y+= this.iconheight + 50;
         
     // non-priority actions (in bottom part of menu)
-    this.lowactionwidth = this.iconwidth + this.actiondx*2;
-    this.lowactionheight = Math.max(30, th*1.5);
+    this.lowactionwidth = this.menuwidth - 60;
+    this.lowactionheight = 30;
     this.lowaction0x = this.menuwidth/2 - this.lowactionwidth/2;
     this.lowaction0y = y-this.menuy;
-    this.lowactiondy = this.lowactionheight+4.0*scaling;
+    this.lowactiondy = this.lowactionheight+4;
         
     for (var i=this.numpriorityactions; i<this.numactions; i++)
     {   var action = this.actions[i];
@@ -293,16 +297,38 @@ PauseMenu.prototype.drawOrLayout = function(draw)
                 this.lowactionheight, cornerradius, cornerradius+1, bc);                 
             var s = (action!=PauseMenu.MENUACTION_NONEACTION) ? PauseMenu.actionlabels[action] 
                                                               : this.none_action_label;
-            tr.addString(s, this.menux+(this.menuwidth-tr.determineStringWidth(s,th))/2,
-                             y+this.lowactiondy/2-th/2, th, false, 
-                    i==this.selected ? bgcolor : fc, TextRenderer.WEIGHT_PLAIN);
+            
+            var colonidx = s.indexOf(':');
+            if (colonidx>0)  
+            {   var tail = s.substring(colonidx+1);
+                s = s.substring(0,colonidx);
+                tr.addString
+                (   tail,  
+                    this.menux+this.lowaction0x+this.lowactionwidth-10,
+                    y+this.lowactiondy/2-th/2, 
+                    th, 
+                    true, 
+                    i==this.selected ? bgcolor : fc, 
+                    TextRenderer.WEIGHT_PLAIN
+                );            
+            }             
+            tr.addString
+            (   s,  
+                this.menux+this.lowaction0x+10,
+                y+this.lowactiondy/2-th/2, 
+                th, 
+                false, 
+                i==this.selected ? bgcolor : fc, 
+                TextRenderer.WEIGHT_PLAIN
+            );            
         }
         y+= this.lowactiondy;
     }
+    y += 6;
         
     // memorize menu size
     this.menuheight = y - this.menuy;
-    this.menuy = (this.game.screenheight - this.menuheight)/2;
+    this.menuy = this.game.screenheight - 10 - this.menuheight;
 
     if (draw)
     {   vr.flush();
@@ -310,65 +336,77 @@ PauseMenu.prototype.drawOrLayout = function(draw)
     }
 };    
     
-PauseMenu.prototype.drawActionIcon = function(vr, action, x, y, width, height, argb)
+PauseMenu.prototype.drawActionIcon = function(tr, action, x, y, width, height, argb)
 {
     switch (action)
     {   case PauseMenu.MENUACTION_START:
         case PauseMenu.MENUACTION_CONTINUERECORDING:
-            vr.addPlayArrow(x,y,width,height, 1, argb);
+            tr.addIconGlyph(313, x,y,height, argb);
+//            vr.addPlayArrow(x,y,width,height, 1, argb);
             break;
         case PauseMenu.MENUACTION_UNDO:
-            vr.addPlayArrow(x,y,width,height, -1, argb);
+            tr.addIconGlyph(315, x,y,height, argb);
+//            vr.addPlayArrow(x,y,width,height, -1, argb);
             break;
         case PauseMenu.MENUACTION_FORWARD:
-            vr.addForwardArrow(x,y,width,height, 1, argb);
+            tr.addIconGlyph(313, x,y,height, argb);
+//          vr.addForwardArrow(x,y,width,height, 1, argb);
             break;
         case PauseMenu.MENUACTION_BACKWARD:
-            vr.addForwardArrow(x,y,width,height, -1, argb);
+            tr.addMirrorIconGlyph(313, x,y,height, argb);
+//            vr.addForwardArrow(x,y,width,height, -1, argb);
             break;          
             
         case PauseMenu.MENUACTION_FASTFORWARD:
-            vr.addFastForwardArrow(x,y,width,height, 1,argb);
+            tr.addIconGlyph(311, x,y,height, argb);
+//            vr.addFastForwardArrow(x,y,width,height, 1,argb);
             break;
 
         case PauseMenu.MENUACTION_FASTBACKWARD:
-            vr.addFastForwardArrow(x,y,width,height, -1,argb);
+            tr.addMirrorIconGlyph(311, x,y,height, argb);
+//            vr.addFastForwardArrow(x,y,width,height, -1,argb);
             break;
 
         case PauseMenu.MENUACTION_EXIT:
         case PauseMenu.MENUACTION_EXITTOEDITOR:
         case PauseMenu.MENUACTION_EXITEDITOR:
-            vr.addCross(x,y,width,height, argb);
+            tr.addMirrorIconGlyph(301, x,y,height, argb);
+//            vr.addCross(x,y,width,height, argb);
             break;              
 
         case PauseMenu.MENUACTION_LEAVEDEMO:
         case PauseMenu.MENUACTION_LEAVEREPLAY:
-            vr.addSquare(x,y,width,height,argb);
+            tr.addIconGlyph(300, x,y,height, argb);
+//            vr.addSquare(x,y,width,height,argb);
             break;
 
         case PauseMenu.MENUACTION_NEXTLEVEL:
-            vr.addNextLevelArrow(x,y,width,height,argb);
+            tr.addMirrorIconGlyph(300, x,y,height, argb);
+//            vr.addNextLevelArrow(x,y,width,height,argb);
             break;
 
         case PauseMenu.MENUACTION_TESTLEVEL:
-            vr.addPlayArrow(x,y,width,height, 1, argb);
+            tr.addIconGlyph(313, x,y,height, argb);
+//            vr.addPlayArrow(x,y,width,height, 1, argb);
             break;              
                 
         case PauseMenu.MENUACTION_DISCARDCHANGES:
-            vr.addFastForwardArrow(x,y,width,height, -1,argb);
+            tr.addIconGlyph(302, x,y,height, argb);
+//            vr.addFastForwardArrow(x,y,width,height, -1,argb);
             break;
                                 
         case PauseMenu.MENUACTION_CONTINUEEDIT:
-            vr.addSquare(x,y,width,height, argb);
+            tr.addIconGlyph(303, x,y,height, argb);
+//            vr.addSquare(x,y,width,height, argb);
             break;              
 
-        default:
-        {   vr.startStrip();        
-            vr.addStripCorner(x+width/4,y+height/4,  argb);
-            vr.addStripCorner(x+width/4,y+(height*3)/4, argb);
-            vr.addStripCorner(x+(width*3)/4, y+height/2, argb);
-            break;
-        }
+//        default:
+//        {   vr.startStrip();        
+//            vr.addStripCorner(x+width/4,y+height/4,  argb);
+//            vr.addStripCorner(x+width/4,y+(height*3)/4, argb);
+//            vr.addStripCorner(x+(width*3)/4, y+height/2, argb);
+//            break;
+//        }
     }   
 };
     

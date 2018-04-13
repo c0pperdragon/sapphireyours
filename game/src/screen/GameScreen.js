@@ -24,13 +24,10 @@ var GameScreen = function()
     this.screenscrollx1 = 0;
     this.screenscrolly1 = 0;
     
-    this.statusbarx1 = 0;
-    this.statusbary1 = 0;
-
     this.gamePadMUX = null;
     this.keyboardTranslator = null;
     this.inputGrid = null;
-    this.menuButton = null;
+    this.menuButtonIsPressed = false;
     
     this.inputfocushighlightplayer = 0;
     this.inputfocushighlightx = 0;
@@ -73,28 +70,11 @@ GameScreen.prototype.$ = function (game, le, unfinishedwalk, canFindNextLevel, s
     this.gamePadMUX = [ new GamePadInputBuffer().$(), new GamePadInputBuffer().$() ];
     this.keyboardTranslator = new KeyboardToGamepadTranslator().$(this.gamePadMUX[0], this.gamePadMUX[1]);
     this.inputGrid = [ new TouchInputGrid().$(game, 0x998888ff), new TouchInputGrid().$(game, 0xaa77ff55) ];        
-    
-    this.layout();
-    
-    return this;
-}
-
-GameScreen.prototype.layout = function()
-{
-    var statusbarheight = 50;
-    var space = 5;
-        
-    // (re)create menu button
-    var that = this;
-    this.menuButton = new PauseButton(this.game, 
-        this.game.screenwidth-this.statusbarheight-space, 
-        this.game.screenheight-this.statusbarheight-space, 
-        this.statusbarheight,this.statusbarheight, 
-            function(){ that.createMenuScreen(true); } 
-    );
-        
-    // calculate the current scrolling position
+    this.menuButtonIsPressed = false;
+ 
     this.adjustScrolling(true);      
+
+    return this;
 }
 
 GameScreen.prototype.afterScreenCreation = function()
@@ -170,13 +150,12 @@ GameScreen.prototype.draw = function()
         ); 
     }
 
-    var statusbarheight = 50;
-    var statustextheight = this.statusbarheight*0.8;
-    var statustilesize = this.statusbarheight*0.8;        
-    var hspace = this.statusbarheight/10.0;
-    
     // set up the renderers for decoration rendering
-    lr.startDrawing(this.statustilesize);     
+    var statusbarheight = 50;
+    var statustextheight = statusbarheight*0.4;
+    var statustilesize = statusbarheight*0.75;        
+    
+    lr.startDrawDecoration(statustilesize);
     var tr = this.game.textRenderer;
     tr.startDrawing();
     var vr = this.game.vectorRenderer;
@@ -198,144 +177,88 @@ GameScreen.prototype.draw = function()
         );            
     }
 */
-    // paint the automatic play arrow very big over the top of the screen
-    if (this.playmode!=GameScreen.PLAYMODE_RECORD && this.game.getTopScreen()==this)
-    {   var iconsize = 350;
-        var color = 0x887799ff;
-        var x = (screenwidth-iconsize)/2; 
-        var y = (screenheight-iconsize)/2; 
-        if (this.playmode==GameScreen.PLAYMODE_UNDO)
-        {   vr.addPlayArrow(x,y, iconsize,iconsize, -1, color);
-        }
-        else if (this.playmode==GameScreen.PLAYMODE_REPLAY || this.playmode==GameScreen.PLAYMODE_DEMO)
-        {   if(this.playbackspeed>1)
-            {   vr.addFastForwardArrow(x,y,iconsize,iconsize, 1, color);
-            }
-            else if (this.playbackspeed>0)
-            {   vr.addForwardArrow(x,y,iconsize,iconsize, 1, color);
-            }
-            else if (this.playbackspeed<-1)
-            {   vr.addFastForwardArrow(x,y,iconsize,iconsize, -1, color);
-            }
-            else if (this.playbackspeed<0)
-            {   vr.addForwardArrow(x,y,iconsize,iconsize, -1, color);                   
-            }
-            else
-            {   vr.addSlowMotionArrow(x,y,iconsize,iconsize, 1,color);
-            }               
-        }
-    }               
-
-    // paint status display
-    var x2 = screenwidth-hspace - statusbarheight - 2*hspace;
-    var y2 = screenheight-hspace;
-    var y1 = this.y2-statusbarheight;
-    var x1 = x2 - hspace;
-    var ycenter = (y1+y2)/2;
-                        
-    // gem count-down
-    x1 -= hspace;
-    var needed = this.logic.getNumberOfEmeraldsStillNeeded();
-    x1 = tr.addNumber(needed<0 ? 0:needed,  x1,ycenter-statustextheight/2,statustextheight, 
-        true,  this.logic.canStillGetEnoughEmeralds() ? 0xffffffff : 0xffff3333, TextRenderer.WEIGHT_BOLD);
-    x1 -= hspace;
-    lr.addSimplePieceToBuffer (x1-statustilesize,ycenter-statustilesize/2,Logic.EMERALD);  
-    x1 = x1 - statustilesize - hspace;
-        
-    // add collected bombs and keys of first player
-    var keys = this.logic.getCollectedKeys(0);
-    var bombs = this.logic.getCollectedTimeBombs(0);
-    if (keys!=0)
-    {   if ((keys&0x01) != 0)
-        {   lr.addSimplePieceToBuffer (x1-statustilesize,ycenter-statustilesize/2,Logic.KEYRED);  
-            x1-=statustilesize;
-        }
-        if ((keys&0x02) != 0)
-        {   lr.addSimplePieceToBuffer (x1-statustilesize,ycenter-statustilesize/2,Logic.KEYGREEN);  
-            x1-=statustilesize;
-        }
-        if ((keys&0x04) != 0)
-        {   lr.addSimplePieceToBuffer (x1-statustilesize,ycenter-statustilesize/2,Logic.KEYBLUE);  
-            x1-=statustilesize;
-        }
-        if ((keys&0x08) != 0)
-        {   lr.addSimplePieceToBuffer (x1-statustilesize,ycenter-statustilesize/2,Logic.KEYYELLOW);  
-            x1-=statustilesize;
-        }
-        x1 -= hspace;
-    }
-    if (bombs>0)
-    {   x1 = tr.addNumber(bombs,  x1,ycenter-statustextheight/2,statustextheight, 
-             true,  0xffffffff, TextRenderer.WEIGHT_BOLD); 
-        x1 -= hspace;
-        lr.addSimplePieceToBuffer (x1-statustilesize,ycenter-statustilesize/2,Logic.TIMEBOMB);
-        x1 = x1 - statustilesize - hspace;  
-    }           
-               
-    // background area
-    x1 -= hspace;
-    vr.addRoundedRect(x1, y1, x2-x1,y2-y1, statusbarheight/2, statusbarheight/2+1.0, 0xdd000000);
-
-    // memorize the position of the status bar  (is clickable to allow bomb-dropping)
-    this.statusbarx1 = Math.floor(x1);
-    this.statusbary1 = Math.floor(y1);
-
-    // add left extension for status bar that holds the move counter (in seconds) and the player 2 status
-    {
-        x1 = hspace;
-        x2 = x1 + hspace;
-        var y = ycenter-statustextheight/2;
-            
-        var sec = Math.floor((this.logic.getTurnsDone() * LevelRenderer.FRAMESPERSTEP - this.frames_left) / 600);  // fix rate: 600 logic-frames / second
-        var min = Math.floor(sec/60);
-        sec = sec%60;
-            
-        x2 += hspace;
-        x2 = tr.addNumber(min, x2,y,statustextheight, false,  0xffffffff, TextRenderer.WEIGHT_PLAIN);
-        x2 = tr.addString(sec<10?":0":":", x2,y,statustextheight, false,  0xffffffff, TextRenderer.WEIGHT_PLAIN);
-        x2 = tr.addNumber(sec, x2,y,statustextheight, false,  0xffffffff, TextRenderer.WEIGHT_PLAIN);
-        x2 += hspace;
-            
-        // add collected bombs
-        keys = this.logic.getCollectedKeys(1);
-        bombs = this.logic.getCollectedTimeBombs(1);
-        if (keys!=0)
-        {   if ((keys&0x01) != 0)
-            {   lr.addSimplePieceToBuffer (x2,ycenter-statustilesize/2,Logic.KEYRED);  
-                x2+=statustilesize;
-            }
-            if ((keys&0x02) != 0)
-            {   lr.addSimplePieceToBuffer (x2,ycenter-statustilesize/2,Logic.KEYGREEN);  
-                x2+=statustilesize;
-            }
-            if ((keys&0x04) != 0)
-            {   lr.addSimplePieceToBuffer (x2,ycenter-statustilesize/2,Logic.KEYBLUE);  
-                x2+=statustilesize;
-            }
-            if ((keys&0x08) != 0)
-            {   lr.addSimplePieceToBuffer (x2,ycenter-statustilesize/2,Logic.KEYYELLOW);  
-                x2+=statustilesize;
-            }
-            x2 += hspace;
-        }
-        if (bombs>0)
-        {   x2 += hspace;
-            lr.addSimplePieceToBuffer (x2,ycenter-statustilesize/2,Logic.TIMEBOMB);
-            x2 = x2 + statustilesize + hspace;  
-            x2 = tr.addNumber(bombs,  x2,ycenter-statustextheight/2,statustextheight, 
-                 false,  0xffffffff, TextRenderer.WEIGHT_BOLD);    
-            x2 += hspace;
-        }           
-
-        vr.addRoundedRect(x1, y1, x2-x1,y2-y1, statusbarheight/2, statusbarheight/2+1.0, 0xdd000000);
-    }
-        
-
-    // paint the menu button (but only if no menu is already present)
+    
+    // paint status display  if not having pause menu open anyway
     if (this.game.getTopScreen()==this)
-    {   this.menuButton.draw(this.game.vectorRenderer);
+    {
+        var hspace = 5;    
+        var mbuttonwidth = 50;
+        var y1 = screenheight-statusbarheight-2*hspace;
+        var x1 = 2*hspace;
+        var ycenter = y1+statusbarheight/2;
+        var x = x1;
+        
+        // space for pause-button
+        x += mbuttonwidth;
+        
+        // timer
+        var y = ycenter-statustextheight/2;
+        var sec = Math.floor(this.logic.getTurnsDone()/4);  // fixed rate: 4 turns per second
+        var min = Math.floor(sec/60);
+        sec = sec%60;            
+        x += hspace;
+        x = tr.addNumber(min, x,y,statustextheight, false,  0xffffffff, TextRenderer.WEIGHT_BOLD);
+        x = tr.addString(sec<10?":0":":", x,y,statustextheight, false,  0xffffffff, TextRenderer.WEIGHT_BOLD);
+        x = tr.addNumber(sec, x,y,statustextheight, false,  0xffffffff, TextRenderer.WEIGHT_BOLD);
+        
+        // gem count-down
+        x += hspace;
+        lr.addDecorationPieceToBuffer (x+statustilesize/2,ycenter,EMERALD);  
+        x += statustilesize;
+        var needed = this.logic.getNumberOfEmeraldsStillNeeded();
+        x = tr.addNumber(needed<0 ? 0:needed,  x,y,statustextheight, 
+            false,  this.logic.canStillGetEnoughEmeralds() ? 0xffffffff : 0xffff3333, TextRenderer.WEIGHT_BOLD);
+        x += hspace;
+        
+        // draw collected bombs and keys of both players 
+        for (var p=0; p<2; p++) 
+        {   var bombs = this.logic.getCollectedTimeBombs(p);
+            var keys = this.logic.getCollectedKeys(p);
+            if (bombs>0)
+            {   x += hspace;
+                lr.addDecorationPieceToBuffer (x+statustilesize/2,ycenter,TIMEBOMB);
+                x += statustilesize;  
+                x = tr.addNumber(bombs,  x,y,statustextheight, 
+                    false,  0xffffffff, TextRenderer.WEIGHT_BOLD); 
+                x += hspace;
+            }           
+            if (keys!=0)
+            {   if ((keys&0x01) != 0)
+                {   lr.addDecorationPieceToBuffer (x+statustilesize/4,ycenter,KEYRED);  
+                    x+=statustilesize/2;
+                }
+                if ((keys&0x02) != 0)
+                {   lr.addDecorationPieceToBuffer (x+statustilesize/4,ycenter,KEYGREEN);  
+                    x+=statustilesize/2;
+                }
+                if ((keys&0x04) != 0)
+                {   lr.addDecorationPieceToBuffer (x+statustilesize/4,ycenter,KEYBLUE);  
+                    x+=statustilesize/2;
+                }
+                if ((keys&0x08) != 0)
+                {   lr.addDecorationPieceToBuffer (x+statustilesize/4,ycenter,KEYYELLOW);  
+                    x+=statustilesize/2;
+                }
+                x += hspace;
+            }
+        }
+        
+        // background area
+        x += hspace;
+        var radius = statusbarheight/10;
+        vr.addRoundedRect(x1, y1, x-x1,statusbarheight, radius, radius+1.0, 0xbb000000);
+        
+        // pause button
+        vr.addRoundedRect(x1,y1, mbuttonwidth,statusbarheight, radius, radius+1.0, 
+               this.menuButtonIsPressed ? 0xff666666 : 0xff333333);
+        var col = Game.getColorForDifficulty(this.level.getDifficulty());
+            
+        x = x1+mbuttonwidth/2-8;
+        var y = ycenter - statusbarheight/4;        
+        vr.addRectangle(x,y, 5,statusbarheight/2, col);
+        vr.addRectangle(x+10,y, 5,statusbarheight/2, col);
     }
-
+    
     // flush everything to the screen in correct order
     vr.flush();                     
     tr.flush();    // paint text on top of box         
@@ -347,6 +270,17 @@ GameScreen.prototype.draw = function()
     }
 };
 
+GameScreen.prototype.isMenuButtonHit = function(x,y)
+{
+    var statusbarheight = 50;
+    var mbuttonwidth = 50;
+    var hspace = 5;    
+    var y1 = this.game.screenheight-statusbarheight-2*hspace;
+    var x1 = 2*hspace;
+    
+    var hit = x>=x1 && x<x1+mbuttonwidth && y>=y1 && y<y1+statusbarheight;
+    return hit;
+};
 
 GameScreen.prototype.reactivate = function()
 {
@@ -1038,7 +972,7 @@ GameScreen.prototype.menuAction = function(id)
 
 GameScreen.prototype.onResize = function()
 {   
-    this.layout();
+    this.adjustScrolling(true);      
 };
     
 GameScreen.prototype.onBackNavigation = function()
@@ -1089,8 +1023,8 @@ GameScreen.prototype.onKeyUp = function(code)
     
 GameScreen.prototype.onPointerDown = function(x,y)
 {   
-    if (this.menuButton.onPointerDown(x,y))
-    {   return;
+    if (this.isMenuButtonHit(x,y))
+    {   this.menuButtonIsPressed = true;        
     }
 
     if (this.playmode==GameScreen.PLAYMODE_RECORD)
@@ -1112,8 +1046,11 @@ GameScreen.prototype.onPointerDown = function(x,y)
     
 GameScreen.prototype.onPointerUp = function()
 {
-    this.menuButton.onPointerUp();      
-
+    if (this.menuButtonIsPressed)
+    {   this.createMenuScreen(true); 
+        return;
+    }
+    
     // in record mode, all pointer up events call up the menu
     if (this.playmode!=GameScreen.PLAYMODE_RECORD)
     {   this.createMenuScreen(true);
@@ -1131,7 +1068,9 @@ GameScreen.prototype.onPointerUp = function()
     
 GameScreen.prototype.onPointerMove = function(x, y)
 {
-    this.menuButton.onPointerMove(x,y);      
+    if (!this.isMenuButtonHit(x,y))
+    {   this.menuButtonIsPressed = false;        
+    }
 
     if (this.playmode==GameScreen.PLAYMODE_RECORD)
     {   for (var i=0; i<this.inputGrid.length; i++)
