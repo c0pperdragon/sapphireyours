@@ -3,6 +3,7 @@
 var MAPWIDTH  = 64;
 var MAPHEIGHT = 64; 
 var DEFAULTSWAMPRATE = 30;
+var DEFAULTROBOTSPEED = 1;
     
 
 // pieces in static level definition
@@ -13,7 +14,7 @@ var AIR               = ' '.charCodeAt(0);
 var EARTH             = '.'.charCodeAt(0);
 var SAND              = 's'.charCodeAt(0);
 var SAND_FULL         = 'S'.charCodeAt(0);
-var SAND_FULLEMERALD  = '}'.charCodeAt(0);
+//var SAND_FULLEMERALD  = '}'.charCodeAt(0);
 var WALL              = '#'.charCodeAt(0);
 var ROUNDWALL         = 'A'.charCodeAt(0);
 var GLASSWALL         = ':'.charCodeAt(0);
@@ -25,7 +26,7 @@ var CITRINE           = ')'.charCodeAt(0);
 var SAPPHIRE          = '$'.charCodeAt(0);
 var RUBY              = '('.charCodeAt(0);    
 var ROCK              = '0'.charCodeAt(0);
-var ROCKEMERALD       = 'e'.charCodeAt(0);
+//var ROCKEMERALD       = 'e'.charCodeAt(0);
 var BAG               = '@'.charCodeAt(0);
 var BOMB              = 'Q'.charCodeAt(0);
 var DOOR              = 'E'.charCodeAt(0);
@@ -59,6 +60,7 @@ var BUGLEFT           = '5'.charCodeAt(0);
 var BUGUP             = '6'.charCodeAt(0);
 var BUGRIGHT          = '7'.charCodeAt(0);
 var BUGDOWN           = '8'.charCodeAt(0);
+var YAMYAM            = 'X'.charCodeAt(0);
 var YAMYAMLEFT        = '<'.charCodeAt(0);
 var YAMYAMUP          = '^'.charCodeAt(0);
 var YAMYAMRIGHT       = '>'.charCodeAt(0);
@@ -79,7 +81,9 @@ var Level = function()
     this.category = 0;
     this.players = 0;                // number of players
     this.loot = 0;                   // number of emeralds to collect
-    this.swamprate = 0;         // swamp spreading speed
+    this.swamprate = 0;              // swamp spreading speed
+    this.robotspeed = 0;             // probability for robot step 
+    this.yamyamremainders = null;  // default YamYam remainders
     
     this.datawidth = 0;
     this.dataheight = 0;
@@ -98,6 +102,9 @@ Level.prototype.$ = function(json)
     this.category = Game.isInteger(json.category) ? Number(json.category) : 0;    
     this.loot = Game.isInteger(json.loot) ? Number(json.loot) : 0;    
     this.swamprate = Game.isInteger(json.swamprate) ? Number(json.swamprate) : DEFAULTSWAMPRATE;
+    this.robotspeed = Game.isInteger(json.robotspeed) ? Number(json.robotspeed) : DEFAULTROBOTSPEED;
+    this.yamyamremainders = json.yamyamremainders  && json.yamyamremainders.constructor==String 
+                            ? json.yamyamremainders : "(((((((((";
     
     this.demos = [];
     for (var i=0; Array.isArray(json.demos) && i<json.demos.length; i++) 
@@ -252,10 +259,20 @@ Level.prototype.getSwampRate = function()
 {
     return this.swamprate;
 };
-    
+
 Level.prototype.setSwampRate = function(r)
 {
     this.swamprate = r;
+};
+
+Level.prototype.getRobotSpeed = function()
+{
+    return this.robotspeed;
+};
+    
+Level.prototype.setRobotSpeed = function(s)
+{
+    this.robotspeed = s;
 };
     
 Level.prototype.getLoot = function()
@@ -327,8 +344,8 @@ Level.prototype.calculateMaximumLoot = function(considerconverters)
                     break;
                 case WALLEMERALD:
                 case EMERALD:
-                case ROCKEMERALD:
-                case SAND_FULLEMERALD:
+//                case ROCKEMERALD:
+//                case SAND_FULLEMERALD:
                 case BAG:
                 case BOX:
                 case RUBY:
@@ -340,19 +357,28 @@ Level.prototype.calculateMaximumLoot = function(considerconverters)
                 case CITRINE:
                     count3++;
                     break;
-                case BUGLEFT:
-                case BUGRIGHT:
-                case BUGUP:
-                case BUGDOWN:
+                case LORRYLEFT:
+                case LORRYRIGHT:
+                case LORRYUP:
+                case LORRYDOWN:
                     count1+=8;
                     count2++;
                     break;
+                case YAMYAM:
                 case YAMYAMLEFT:
                 case YAMYAMUP:
                 case YAMYAMRIGHT:
                 case YAMYAMDOWN:
-                    count1+=1;
+                {   for (var j=0; j<this.yamyamremainders.length; j++)
+                    switch (this.yamyamremainders.charCodeAt(j))
+                    {   case BAG:
+                        case RUBY:
+                        case EMERALD: { count1++; break; }
+                        case SAPPHIRE: { count2++; break; }
+                        case CITRINE: { count3++; break; }                        
+                    }
                     break;
+                }
                 case CONVERTER:
                     haveconverter=true;
                     break;           

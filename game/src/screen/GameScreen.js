@@ -446,11 +446,12 @@ GameScreen.prototype.adjustScrolling = function(force)
     }
    
     // after computation send current scrolling information to the touch input handler(s)
+    var ratio = (this.game.pixeltilesize/60.0) * (this.game.screenwidth / this.game.pixelwidth);
     this.inputGrid[0].synchronizeWithGame(
-            this.screenscrollx0, this.screenscrolly0, screentilesize, playerx_at_end_0, playery_at_end_0);
+            this.screenscrollx0*ratio, this.screenscrolly0*ratio, 60*ratio, playerx_at_end_0, playery_at_end_0);
     if (this.inputGrid.length>1)
     {   this.inputGrid[1].synchronizeWithGame(
-            this.screenscrollx1, this.screenscrolly1, screentilesize, playerx_at_end_1, playery_at_end_1);
+            this.screenscrollx1*ratio, this.screenscrolly1*ratio, 60+ratio, playerx_at_end_1, playery_at_end_1);
     }
     
     function approach(value, target, step)
@@ -1026,7 +1027,6 @@ GameScreen.prototype.onPointerDown = function(x,y)
     if (this.isMenuButtonHit(x,y))
     {   this.menuButtonIsPressed = true;        
     }
-
     if (this.playmode==GameScreen.PLAYMODE_RECORD)
     {   
         for (var i=0; i<this.inputGrid.length; i++)

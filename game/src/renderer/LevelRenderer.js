@@ -43,8 +43,8 @@ var LevelRenderer = function()
     this.anim_ruby_away = null;   
     this.anim_rock_left = null;
     this.anim_rock_right = null;
-    this.anim_rockemerald_left = null;
-    this.anim_rockemerald_right = null;
+//    this.anim_rockemerald_left = null;
+//    this.anim_rockemerald_right = null;
     this.anim_bag_left = null;
     this.anim_bag_right = null;
     this.anim_bag_opening = null;
@@ -74,7 +74,6 @@ var LevelRenderer = function()
     this.anim_bug_right_up = null;
     this.anim_bug_down_left = null;
     this.anim_bug_down_right = null;
-    this.anim_yamyam = null;
     this.anim_timebomb_away = null;
     this.anim_timebomb_placement = null;
     this.anim_timebomb10_away = null;
@@ -111,9 +110,8 @@ LevelRenderer.prototype.$ = function(game)
         "2walklft", "2walkrgt", "2walkup", "2walkdwn", "2pushlft", "2pushrgt", 
         "Earth All","Wall All", "Wall Round All",
         "Earth Right", "Sand", "Glass", "Stone Wall", "Round Stone Wall",
-        "Wall Emerald", "Emerald", "Citrine", 
-        "Sapphire", "Ruby", 
-        "Stone Right", "Stone Emerald", "Bag", "Bomb", 
+        "Wall Emerald", "Emerald", "Citrine", "Sapphire", "Ruby", 
+        "Stone Right", "Bag", "Bomb", // "Stone Emerald",         
         "Exit Closed", "Exit", "Swamp Move", "Swamp Grow", 
         "Drop Left", "Drop Right", "Drop Down", "Drop", "Converter", "Converter Working",
         "Timebomb", "Tickbomb", "TNT", "Safe", "Pillow", "Elevator", "Elevator Left",
@@ -147,7 +145,7 @@ LevelRenderer.prototype.isLoaded = function()
     // this.piecetiles[EARTH]     // has context-depending tiles
     this.piecetiles[SAND] = this.getAnimation("Sand");
     this.piecetiles[SAND_FULL] = this.createOverlayAnimation(this.getAnimation("Stone Right"), this.getAnimation("Sand") );    
-    this.piecetiles[SAND_FULLEMERALD] = this.createOverlayAnimation(this.getAnimation("Stone Emerald"), this.getAnimation("Sand") );
+//    this.piecetiles[SAND_FULLEMERALD] = this.createOverlayAnimation(this.getAnimation("Stone Emerald"), this.getAnimation("Sand") );
     // this.piecetiles[WALL]       // has context-depending tiles
     // this.piecetiles[ROUNDWALL]  // has context-depending tiles
     this.piecetiles[GLASSWALL] = this.getAnimation("Glass");
@@ -159,7 +157,7 @@ LevelRenderer.prototype.isLoaded = function()
     this.piecetiles[SAPPHIRE] = this.getAnimation("Sapphire")
     this.piecetiles[RUBY] = this.getAnimation("Ruby");
     this.piecetiles[ROCK] = this.createStillAnimation(this.getAnimation("Stone Right"));
-    this.piecetiles[ROCKEMERALD] = this.getAnimation("Stone Emerald");
+//    this.piecetiles[ROCKEMERALD] = this.getAnimation("Stone Emerald");
     this.piecetiles[BAG] = this.getAnimation("Bag");
     this.piecetiles[BOMB] = this.getAnimation("Bomb");         
     this.piecetiles[DOOR] = this.getAnimation("Exit Closed");
@@ -196,6 +194,8 @@ LevelRenderer.prototype.isLoaded = function()
     this.piecetiles[YAMYAMUP] = this.getAnimation("YamYam Up");
     this.piecetiles[YAMYAMRIGHT] = this.getAnimation("YamYam Right");
     this.piecetiles[YAMYAMDOWN] = this.getAnimation("YamYam Down");    
+    this.piecetiles[YAMYAM] = this.getAnimation("YamYam");    
+    this.piecetiles[YAMYAM_EXPLODE] = this.createOverlayAnimation(this.getAnimation("YamYam"),this.getSubAnimationX("Explosion", 0, 5));    
     this.piecetiles[ROBOT] = this.getAnimation("Robot");
     this.piecetiles[GUN0] = this.getAnimation("Gun");
     this.piecetiles[GUN1] = this.getAnimation("Gun");
@@ -272,16 +272,36 @@ LevelRenderer.prototype.isLoaded = function()
     this.piecetiles[MAN2_PUSHDOWN] = this.getAnimation("2walkdwn");
     this.piecetiles[CITRINE_FALLING] = this.getAnimation("Citrine");
     this.piecetiles[CITRINE_BREAKING] = this.getAnimation("Citrine");
-    this.piecetiles[ROCKEMERALD_FALLING] = this.getAnimation("Stone Emerald");
+//    this.piecetiles[ROCKEMERALD_FALLING] = this.getAnimation("Stone Emerald");
     this.piecetiles[EXPLODE1_RUBY] = this.getSubAnimationX("Explosion", 1, 5);
     this.piecetiles[EXPLODE2_RUBY] = this.getSubAnimationX("Explosion", 2, 5);
     this.piecetiles[EXPLODE3_RUBY] = this.createOverlayAnimation(this.getAnimation("Ruby"),this.getSubAnimationX("Explosion", 3, 5));
     this.piecetiles[EXPLODE4_RUBY] = this.createOverlayAnimation(this.getAnimation("Ruby"),this.getSubAnimationX("Explosion", 4, 5));
+    this.piecetiles[EXPLODE1_CITRINE] = this.getSubAnimationX("Explosion", 1, 5);
+    this.piecetiles[EXPLODE2_CITRINE] = this.getSubAnimationX("Explosion", 2, 5);
+    this.piecetiles[EXPLODE3_CITRINE] = this.createOverlayAnimation(this.getAnimation("Citrine"),this.getSubAnimationX("Explosion", 3, 5));
+    this.piecetiles[EXPLODE4_CITRINE] = this.createOverlayAnimation(this.getAnimation("Citrine"),this.getSubAnimationX("Explosion", 4, 5));
     this.piecetiles[ONETIMEDOOR_CLOSED] = this.getAnimation("Door Onetime Closed");
     this.piecetiles[EXPLODE1_TNT] = this.getSubAnimationX("Explosion Deep", 1, 5);
     this.piecetiles[EXPLODE2_TNT] = this.getSubAnimationX("Explosion Deep", 2, 5);
     this.piecetiles[EXPLODE3_TNT] = this.getSubAnimationX("Explosion Deep", 3, 5);
     this.piecetiles[EXPLODE4_TNT] = this.getSubAnimationX("Explosion Deep", 4, 5);
+    this.piecetiles[EXPLODE1_KEYRED] = this.getSubAnimationX("Explosion", 1, 5);
+    this.piecetiles[EXPLODE2_KEYRED] = this.getSubAnimationX("Explosion", 2, 5);
+    this.piecetiles[EXPLODE3_KEYRED] = this.createOverlayAnimation(this.getAnimation("Key Red"),this.getSubAnimationX("Explosion", 3, 5));
+    this.piecetiles[EXPLODE4_KEYRED] = this.createOverlayAnimation(this.getAnimation("Key Red"),this.getSubAnimationX("Explosion", 4, 5));
+    this.piecetiles[EXPLODE1_KEYGREEN] = this.getSubAnimationX("Explosion", 1, 5);
+    this.piecetiles[EXPLODE2_KEYGREEN] = this.getSubAnimationX("Explosion", 2, 5);
+    this.piecetiles[EXPLODE3_KEYGREEN] = this.createOverlayAnimation(this.getAnimation("Key Green"),this.getSubAnimationX("Explosion", 3, 5));
+    this.piecetiles[EXPLODE4_KEYGREEN] = this.createOverlayAnimation(this.getAnimation("Key Green"),this.getSubAnimationX("Explosion", 4, 5));
+    this.piecetiles[EXPLODE1_KEYYELLOW] = this.getSubAnimationX("Explosion", 1, 5);
+    this.piecetiles[EXPLODE2_KEYYELLOW] = this.getSubAnimationX("Explosion", 2, 5);
+    this.piecetiles[EXPLODE3_KEYYELLOW] = this.createOverlayAnimation(this.getAnimation("Key Yellow"),this.getSubAnimationX("Explosion", 3, 5));
+    this.piecetiles[EXPLODE4_KEYYELLOW] = this.createOverlayAnimation(this.getAnimation("Key Yellow"),this.getSubAnimationX("Explosion", 4, 5));
+    this.piecetiles[EXPLODE1_KEYBLUE] = this.getSubAnimationX("Explosion", 1, 5);
+    this.piecetiles[EXPLODE2_KEYBLUE] = this.getSubAnimationX("Explosion", 2, 5);
+    this.piecetiles[EXPLODE3_KEYBLUE] = this.createOverlayAnimation(this.getAnimation("Key Blue"),this.getSubAnimationX("Explosion", 3, 5));
+    this.piecetiles[EXPLODE4_KEYBLUE] = this.createOverlayAnimation(this.getAnimation("Key Blue"),this.getSubAnimationX("Explosion", 4, 5));
 
     // ---- context depending tile animations ---
     this.earthtiles = new Array(16);
@@ -387,7 +407,6 @@ LevelRenderer.prototype.isLoaded = function()
     this.anim_bug_down_left = this.createRotatingAnimation(this.piecetiles[BUGUP], 180,90);
     this.anim_bug_left_up = this.createRotatingAnimation(this.piecetiles[BUGUP], 90, 0);
     this.anim_bug_up_right = this.createRotatingAnimation(this.piecetiles[BUGUP], 0, -90);        
-    this.anim_yamyam = this.getAnimation ("YamYam");                  
     this.anim_sapphire_away = this.createShrinkAnimation(this.piecetiles[SAPPHIRE][0]);
     this.anim_emerald_away = this.createShrinkAnimation(this.piecetiles[EMERALD][0]); 
     this.anim_citrine_away = this.createShrinkAnimation(this.piecetiles[CITRINE][0]);
@@ -700,12 +719,12 @@ LevelRenderer.prototype.determineMoveAnimation = function(oldpiece, newpiece, x,
             else if (dx>0) { return this.anim_rock_right; }
             break;
         }
-        case ROCKEMERALD:
-        case ROCKEMERALD_FALLING:
-        {   if (dx<0) { return this.anim_rockemerald_left; }
-            else if (dx>0) { return this.anim_rockemerald_right; }               
-            break;
-        }
+//        case ROCKEMERALD:
+//        case ROCKEMERALD_FALLING:
+//        {   if (dx<0) { return this.anim_rockemerald_left; }
+//            else if (dx>0) { return this.anim_rockemerald_right; }               
+//            break;
+//        }
         case BAG:
         case BAG_FALLING:
         case BAG_OPENING:
@@ -930,13 +949,6 @@ LevelRenderer.prototype.determineHighlightAnimation = function (highlightpiece, 
         case LASER_R: { return this.anim_laser_right; }
         case LASER_U: { return this.anim_laser_up; }
         case LASER_D: { return this.anim_laser_down; }
-        
-        case YAMYAMLEFT:          
-        case YAMYAMRIGHT:         
-        case YAMYAMUP:            
-        case YAMYAMDOWN:          
-        {   return this.anim_yamyam;
-        }
     }        
     
     return this.piecetiles[highlightpiece];

@@ -359,7 +359,7 @@ TouchInputGrid.prototype.onPointerDown = function(x, y, firstpass)
     }
     // 1. case: extend the existing path from the middle
     for (var i=this.positionscount-1; i>=0; i--)
-    {   if (targetx==this.positionx[i] && targety==this.positiony[i] && positiontype[i]!=TouchInputGrid.TYPE_GRABAT)
+    {   if (targetx==this.positionx[i] && targety==this.positiony[i] && this.positiontype[i]!=TouchInputGrid.TYPE_GRABAT)
         {   this.positionscount = i+1;
             this.isDragging = true;
             this.current_drag_caused_grab = false;

@@ -646,37 +646,6 @@
     ]
 }
 ,
-{   "title": "Crash Test",
-    "author": "Reinhard",
-    "difficulty": 5,
-    "category": 4,
-    "loot": 4,
-    "map":
-    [   "##############",
-        "#E........e..#",
-        "#1..e........#",
-        "#......e.....#",
-        "#............#",
-        "#..e.........#",
-        "#............#",
-        "#......7.....#",
-        "#............#",
-        "##############"
-    ],
-    "demos":
-    [   {   "title": "untitled",
-            "randomseed": 252024,
-            "moves":
-            [   "......bbbbbbrrrrrlllltt.r.bl.brrrr.tttr.",
-                ".b.tttlll.rrr...rbb...tttrrrbbbbbbbl.rrt",
-                "tttttrbbbbbbbll.tt..tt..bb.ttll.br...b..",
-                "......Lrr.......llbblllllllttttttt......",
-                "."
-            ]
-        }
-    ]
-}
-,
 {   "title": "Lorries in a Box",
     "author": "Reinhard",
     "difficulty": 5,

@@ -147,7 +147,7 @@ LevelSoundPlayer.prototype.preparePlaying = function(logic)
     for (var i=0; i<this.all.length; i++) { this.all[i].volume = 0; }
     
     // init the temporary counters
-    for (var i=0; i<this.tmp_counters; i++) { this.tmp_counters[i] = logic.counters[i]; }
+    for (var i=0; i<this.tmp_counters.length; i++) { this.tmp_counters[i] = logic.counters[i]; }
     
     // scan in reverse to make it possible to keep track of the counter values
     var animstart = logic.getFistAnimationOfTurn();
@@ -158,8 +158,7 @@ LevelSoundPlayer.prototype.preparePlaying = function(logic)
         var y = (trn>>16) & 0x03f;
         var vol = this.determineSoundEffectVolume(logic,x,y);
         switch (trn & OPCODE_MASK)
-        {   case TRN_TRANSFORM:
-            case TRN_TRANSFORM: 
+        {   case TRN_TRANSFORM: 
             {   var oldpiece = ((trn>>8)&0xff);
                 var newpiece = (trn & 0xff);
                 var sound = this.determineTransformSound(logic, oldpiece, newpiece);
@@ -173,47 +172,47 @@ LevelSoundPlayer.prototype.preparePlaying = function(logic)
             {   this.createSoundForMoveTransaction(trn, 0,1, vol);
                 break;
             }
-            case Logic.TRN_MOVEUP:
+            case TRN_MOVEUP:
             {   this.createSoundForMoveTransaction(trn, 0,-1, vol);
                 break;
             }
-            case Logic.TRN_MOVELEFT:
+            case TRN_MOVELEFT:
             {   this.createSoundForMoveTransaction(trn, -1,0, vol);
                 break;
             }
-            case Logic.TRN_MOVERIGHT:
+            case TRN_MOVERIGHT:
             {   this.createSoundForMoveTransaction(trn, 1,0, vol);
                 break;
             }
-            case Logic.TRN_MOVEDOWN2:
+            case TRN_MOVEDOWN2:
             {   this.createSoundForMoveTransaction(trn, 0,2, vol);
                 break;
             }
-            case Logic.TRN_MOVEUP2:
+            case TRN_MOVEUP2:
             {   this.createSoundForMoveTransaction(trn, 0,-2, vol);
                 break;
             }
-            case Logic.TRN_MOVELEFT2:
+            case TRN_MOVELEFT2:
             {   this.createSoundForMoveTransaction(trn, -2,0, vol);
                 break;
             }
-            case Logic.TRN_MOVERIGHT2:
+            case TRN_MOVERIGHT2:
             {   this.createSoundForMoveTransaction(trn, 2,0, vol);
                 break;
             }
-            case Logic.TRN_HIGHLIGHT:
+            case TRN_HIGHLIGHT:
             {   //int mapindex = (trn>>16) & 0x0fff;
                 var highlightpiece = trn&0xff;
                 var sound = this.determineHighlightSound(highlightpiece);
                 if (sound!=null) { sound.volume = Math.max(sound.volume, vol); }
                 break;
             }    
-            case Logic.TRN_COUNTER:
+            case TRN_COUNTER:
             {   var index = (trn>>20) & 0xff;
                 var increment = trn & 0xfffff;
                 if (increment >= 0x80000) increment-=0x100000;
                 this.tmp_counters[index] -= increment;
-                var sound = this.determineCounterSound(logic,index,increment,tmp_counters);
+                var sound = this.determineCounterSound(logic,index,increment,this.tmp_counters);
                 if (sound!=null) { sound.volume = 100; };
                 break;
             }           
@@ -228,7 +227,10 @@ LevelSoundPlayer.prototype.playNow = function()
     // play all sounds that have been decided need playing
     for (var i=0; i<this.all.length; i++) 
     {   var s = this.all[i];
-        if (s.volume>0) { s.howl.play(); }
+        if (s.volume>0) 
+        {   s.howl.volume(s.volume/100.0);
+            s.howl.play(); 
+        }
     }
 };
     
@@ -281,8 +283,8 @@ LevelSoundPlayer.prototype.determineTransformSound = function(logic, oldpiece, n
             break;
         }
         case ROCK_FALLING:
-        case ROCKEMERALD_FALLING:
-        {   if (newpiece==ROCK || newpiece==ROCKEMERALD)
+//        case ROCKEMERALD_FALLING:
+        {   if (newpiece==ROCK) // || newpiece==ROCKEMERALD)
             {   return this.sound_stnfall;
             }
             break;
@@ -427,16 +429,16 @@ LevelSoundPlayer.prototype.determineMoveSound = function(oldpiece, newpiece, dx,
             }
             break;
         }
-        case ROCKEMERALD:
-        case ROCKEMERALD_FALLING:
-        {   if (dx<0||dx>0)
-            {   return newpiece==ROCKEMERALD_FALLING ? this.sound_stnroll : this.sound_push;
-            }
-            else if (dy>=2)
-            {   return this.sound_rubyconv;  // use now for this type of conversion
-            }
-            break;              
-        }
+//        case ROCKEMERALD:
+//        case ROCKEMERALD_FALLING:
+//        {   if (dx<0||dx>0)
+//            {   return newpiece==ROCKEMERALD_FALLING ? this.sound_stnroll : this.sound_push;
+//            }
+//            else if (dy>=2)
+//            {   return this.sound_rubyconv;  // use now for this type of conversion
+//            }
+//            break;              
+//        }
         case BAG:
         case BAG_FALLING:
         {   if (dx<0||dx>0)
@@ -552,11 +554,15 @@ LevelSoundPlayer.prototype.determineHighlightSound = function(highlightpiece)
 LevelSoundPlayer.prototype.determineCounterSound = function(logic, index, increment, countersbefore)
 {
     var cb = countersbefore[index];
-        
     if (index==CTR_EXITED_PLAYER1 || index==CTR_EXITED_PLAYER2)
-    {   if (logic.timeSinceAllExited()==4)
-        {   return this.sound_win;
+    {   var since = 0;
+        if (logic.getNumberOfPlayers()<=1)
+        {   since = countersbefore[CTR_EXITED_PLAYER1];
         }
+        else
+        {   since = Math.min(countersbefore[CTR_EXITED_PLAYER1],countersbefore[CTR_EXITED_PLAYER2]);
+        }
+        if (since==3) { return this.sound_win; }
     }
         
     if (index==CTR_EMERALDSTOOMUCH && cb>=0 && cb+increment<0)

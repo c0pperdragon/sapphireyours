@@ -190,74 +190,6 @@
     ]
 }
 ,
-{   "title": "Rocks with Emeralds",
-    "author": "Reinhard",
-    "difficulty": 2,
-    "category": 6,
-    "loot": 4,
-    "time": 120,
-    "hint": "Some emerald are still inside a rock while the rock itself has already been broken out of the mine wall. Use some explosives to get hold of the gem.",
-    "map":
-    [   "###################",
-        "#................1#",
-        "#............e...!#",
-        "#.....e..........!#",
-        "#.........e......!#",
-        "#..e.............!#",
-        "#E................#",
-        "###################"
-    ],
-    "demos":
-    [   {   "title": "untitled",
-            "randomseed": 23452345,
-            "moves":
-            [   "...bbbb.tttlll.tl...mll.....rrrrrbblll..",
-                ".mll.........rrrbttllll...mll......bb..s",
-                "rrt........bblllll..b......"
-            ]
-        }       
-    ]
-}
-,
-{   "title": "Target Practice",
-    "author": "Reinhard",
-    "difficulty": 2,
-    "category": 0,
-    "loot": 9,
-    "time": 200,
-    "map":
-    [   "##########################",
-        "#E1....Q..Q..........Q...#",
-        "#........................#",
-        "#                        #",
-        "#                        #",
-        "#                        #",
-        "#                        #",
-        "#                        #",
-        "#                        #",
-        "#                        #",
-        "#                        #",
-        "#                        #",
-        "#                        #",
-        "#                        #",
-        "#                        #",
-        "#  eee      eee   eee    #",
-        "##########################"
-    ],
-    "demos":
-    [   {   "title": "untitled",
-            "randomseed": 23452345,
-            "moves":
-            [   "....rrrrrll...b...b.rrrrtt.lll...rrr..rl",
-                ".bb.brrrrr....tttllrrbblllllttrrrrr.r.bb",
-                "rrrrrr...tt.rl.bbrrrttll..l..bbbbbbbbb..",
-                ".rbbbbbllllllllllllllllllltttttttttttttt",
-                "......"
-            ]
-        }
-    ]
-}
-,
 {   "title": "London Bridge",
     "author": "Reinhard",
     "difficulty": 3,
@@ -484,49 +416,6 @@
                 "bl..r.....r..l.r...mlll..........rrrbbll",
                 "lll.brrrrr.blllll.brrrrr.blllll.brrrrr.t",
                 "ttttttrrrrrrbbbbbbbbbb....."
-            ]
-        }
-    ]
-}
-,
-{   "title": "Hard-won Money",
-    "author": "Reinhard",
-    "difficulty": 4,
-    "category": 6,
-    "loot": 26,
-    "time": 400,
-    "map":
-    [   "#################",
-        "#E1.....*..Q...$#",
-        "#...............#",
-        "#*..Q...........#",
-        "#.........e..e..#",
-        "#.........e..e..#",
-        "#..e............#",
-        "#.e..e.e .......#",
-        "#.............*.#",
-        "#...e....e....Q.#",
-        "#...............#",
-        "#.Q....*........#",
-        "#............e..#",
-        "#.....eee...e...#",
-        "#............ee.#",
-        "#$.....*........#",
-        "#################"
-    ],
-    "demos":
-    [   {   "title": "untitled",
-            "randomseed": 612481,
-            "moves":
-            [   "......bbl..bbbbbbrr...lt...r.tl..rr.trrb",
-                "l..tllttttrrbl..rrrrrrrr.l.rb..b......t.",
-                ".....t.......l.b.tllbrrr.lb.tllbr.trrttt",
-                "bbllllttrrrrrrrr...llbbb..blllrrrrbbbllb",
-                "bblbbbr.l.r.t...rrr...tllbr..tttttrrbl..",
-                ".....bbbbbblll...tt....t......blllltlb.t",
-                "tttttrr.bll..rbbbbbrrtttlllltlllllb...rr",
-                "rrbbllltllbrrrrrll...rrr.bbrrt.bbbllllll",
-                "ltttttttttttttt......."
             ]
         }
     ]

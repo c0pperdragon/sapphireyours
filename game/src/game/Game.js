@@ -222,10 +222,10 @@ Game.prototype.getMusicActive = function()
     
 Game.prototype.loadLevels = function(callback)
 {
+    var that = this;
     this.levelpacks = [];
     var pending=0;
     
-//      readUserLevelPacks();          
     pending++; this.readIntegratedLevelPack("Lesson 1: Mining", "tutorial1", false, done);
     pending++; this.readIntegratedLevelPack("Lesson 2: Explosives", "tutorial2", false, done);
     pending++; this.readIntegratedLevelPack("Lesson 3: Maze", "tutorial3", false, done);
@@ -243,10 +243,20 @@ Game.prototype.loadLevels = function(callback)
     pending++; this.readIntegratedLevelPack("Extended 6", "extended6", true, done);
     pending++; this.readIntegratedLevelPack("Extended 7", "extended7", true, done); 
     pending++; this.readIntegratedLevelPack("Mission Possible", "mission", false, done);
+    pending++; this.readIntegratedLevelPack("!Experimental", "experimental", false, done);
   
     function done()
     {   pending--;
-        if (pending===0) { callback(); }
+        if (pending===0) 
+        {   that.levelpacks.sort
+            (   function(l1,l2) 
+                {   if (l1.name < l2.name) return -1;
+                    if (l1.name > l2.name) return 1;
+                    return 0;
+                }
+            );
+            callback(); 
+        }
     }
 };
     
