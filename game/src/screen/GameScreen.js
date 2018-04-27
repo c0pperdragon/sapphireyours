@@ -18,7 +18,6 @@ var GameScreen = function()
     this.diduse_undo = false;
     this.diduse_singlestep = false;
 
-    this.screentilesize = 0;
     this.screenscrollx0 = 0;
     this.screenscrolly0 = 0;
     this.screenscrollx1 = 0;

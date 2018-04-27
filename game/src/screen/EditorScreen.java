@@ -141,16 +141,13 @@ public class EditorScreen extends Screen implements MenuListener
 //		  w*screentilesize+2.0f, h*screentilesize+2.0f, 0xff222222);
 //		vr.flush();
 		
-		// draw all tiles of the level
 		for (int y=0; y<h; y++)
 		{
 			for (int x=0; x<w; x++)
 			{
-				lr.addSimplePieceToBuffer(screencenterx-mapcenterx+(x*screentilesize), 
-					                      screencentery-mapcentery+(y*screentilesize), level.getPiece(x,y));					
+				lr.addRestingPieceToBuffer(x*60,y*60, level.getPiece(x,y));
 			}
 		}		
-		// flush level to screen
 		lr.flush();
 
 		lr.startDrawing (screenwidth, screenheight, tooltilesize);

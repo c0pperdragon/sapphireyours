@@ -314,6 +314,11 @@ Level.prototype.getPiece = function(x,y)
 {
     return this.mapdata[x+y*this.datawidth];  
 };
+
+Level.prototype.setPiece = function(x,y,p)
+{
+    this.mapdata[x+y*this.datawidth] = p;  
+};
     
 Level.prototype.determineLongestString = function(a)
 {

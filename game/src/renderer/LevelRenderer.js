@@ -195,7 +195,7 @@ LevelRenderer.prototype.isLoaded = function()
     this.piecetiles[YAMYAMRIGHT] = this.getAnimation("YamYam Right");
     this.piecetiles[YAMYAMDOWN] = this.getAnimation("YamYam Down");    
     this.piecetiles[YAMYAM] = this.getAnimation("YamYam");    
-    this.piecetiles[YAMYAM_EXPLODE] = this.createOverlayAnimation(this.getAnimation("YamYam"),this.getSubAnimationX("Explosion", 0, 5));    
+    this.piecetiles[YAMYAM_EXPLODE] = null; // this.getSubAnimationX("Explosion", 0, 5);
     this.piecetiles[ROBOT] = this.getAnimation("Robot");
     this.piecetiles[GUN0] = this.getAnimation("Gun");
     this.piecetiles[GUN1] = this.getAnimation("Gun");
@@ -230,8 +230,8 @@ LevelRenderer.prototype.isLoaded = function()
     this.piecetiles[EXPLODE3_SAPPHIRE] = this.createOverlayAnimation(this.getAnimation("Sapphire"),this.getSubAnimationX("Explosion", 3, 5));
     this.piecetiles[EXPLODE4_SAPPHIRE] = this.createOverlayAnimation(this.getAnimation("Sapphire"),this.getSubAnimationX("Explosion", 4, 5));
     this.piecetiles[BIGBOMB_EXPLODE] = this.createOverlayAnimation(this.getAnimation("TNT"),this.getSubAnimationX("Explosion Deep", 0, 5));
-    this.piecetiles[BUG_EXPLODE] = this.getSubAnimationX("Explosion", 0, 5);
-    this.piecetiles[LORRY_EXPLODE] = this.getSubAnimationX("Explosion", 0, 5);
+    this.piecetiles[BUG_EXPLODE] = null; // this.getSubAnimationX("Explosion", 0, 5);
+    this.piecetiles[LORRY_EXPLODE] = null; // this.getSubAnimationX("Explosion", 0, 5);
     this.piecetiles[ACTIVEBOMB0] = this.getAnimation("Timebomb");
     this.piecetiles[ACTIVEBOMB1] = this.getAnimation("Tickbomb");
     this.piecetiles[ACTIVEBOMB2] = this.getAnimation("Timebomb");
@@ -308,6 +308,7 @@ LevelRenderer.prototype.isLoaded = function()
     for (var i=0; i<16; i++) 
     {   this.earthtiles[i] = this.getSubAnimation("Earth All", 15-i, 16);
     }                   
+    this.piecetiles[EARTH] = this.earthtiles[0];
     this.walltiles =  new Array(9);
     this.walltiles[0] = this.getSubAnimation("Wall All", 5, 9);  // nothing - wall - nothing      
     this.walltiles[1] = this.getSubAnimation("Wall All", 6, 9);  // wall    - wall - nothing
@@ -318,10 +319,12 @@ LevelRenderer.prototype.isLoaded = function()
     this.walltiles[6] = this.getSubAnimation("Wall All", 3, 9);  // nothing - wall - rounded          
     this.walltiles[7] = this.getSubAnimation("Wall All", 1, 9);  // wall    - wall - rounded  ??          
     this.walltiles[8] = this.getSubAnimation("Wall All", 4, 9);  // rounded - wall - rounded          
+    this.piecetiles[WALL] = this.walltiles[0];
     this.roundwalltiles = new Array(4);
     for (var i=0; i<4; i++) 
     {   this.roundwalltiles[i] = this.getSubAnimation("Wall Round All", i, 4);
     }                   
+    this.piecetiles[ROUNDWALL] = this.roundwalltiles[0];
     this.acidtiles_noedge = new Array(2);
     this.acidtiles_noedge[0] = this.getSubAnimation("Acid",0,2);
     this.acidtiles_noedge[0].idling = true;
@@ -1069,5 +1072,13 @@ LevelRenderer.prototype.addDecorationPieceToBuffer = function(pixelx, pixely, pi
         var anim = this.piecetiles[piece];
         if (anim)
         {   this.addDecorationTile(pixelx,pixely,anim[0]);
+        }
+};
+
+LevelRenderer.prototype.addRestingPieceToBuffer = function(x, y, piece)
+{       
+        var anim = this.piecetiles[piece];
+        if (anim && anim.length>0)
+        {   this.addTile(x,y,anim[0]);
         }
 };

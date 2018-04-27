@@ -469,10 +469,10 @@ LevelSoundPlayer.prototype.determineMoveSound = function(oldpiece, newpiece, dx,
         case RUBY:
         case RUBY_FALLING:
         {   if (dx<0||dx>0)
-            {   return sound_rubyroll;
+            {   return this.sound_rubyroll;
             }
             else if (dy>=2)
-            {   return sound_rubyconv;
+            {   return this.sound_rubyconv;
             }
             break;
         }

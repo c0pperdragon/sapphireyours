@@ -245,20 +245,12 @@ MainMenuScreen.prototype.startSelectedLevel = function()
         if (l!=null)
         {
             var lp = this.getLevelPack(this.selectedcolumn);            
-            if (lp.isWriteable())
-            {
-//                EditorScreen es = new EditorScreen(game, l);
-//                game.addScreen(es);
-//                es.afterScreenCreation();
-            }
-            else
-            {
-                var gs = new GameScreen().$(this.game, l, null, 
+            var gs = new GameScreen().$(this.game, l, null, 
                     this.selectedcolumn<this.game.levelpacks.length 
                  || this.selectedrow<lp.levels.length-1, false);
                 this.game.addScreen(gs);
                 gs.afterScreenCreation();
-            }           
+                       
         }                   
 };
 
@@ -326,7 +318,7 @@ MainMenuScreen.prototype.onResize = function()
 
     // ---- key event handlers --
 MainMenuScreen.prototype.onKeyDown = function(keycode)
-{   
+{
         switch (keycode)
             {   
                 case KeyEvent.KEYCODE_DPAD_LEFT:
@@ -380,6 +372,7 @@ MainMenuScreen.prototype.onKeyDown = function(keycode)
                         this.setDirty();
                     }
                     break;
+                    
                 case KeyEvent.KEYCODE_ENTER:
                     if (this.selectedrow<0)
                     {   this.selectedrow=0;
@@ -389,6 +382,20 @@ MainMenuScreen.prototype.onKeyDown = function(keycode)
                         this.startSelectedLevel();
                     }
                     break;
+                    
+                case KeyEvent.EDIT:
+                    if (this.selectedrow<0)
+                    {   this.selectedrow=0;
+                    }
+                    else
+                    {   var l = this.getSelectedLevel();
+                        if (l!=null)
+                        {   var es = new EditorScreen().$(this.game, l);
+                            this.game.addScreen(es);
+                            es.afterScreenCreation();
+                        }
+                    }
+                    break;                    
             }           
         
         Screen.prototype.onKeyDown.call(this,keycode);
