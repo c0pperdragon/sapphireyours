@@ -905,7 +905,7 @@ GameScreen.prototype.menuAction = function(id)
             break;
         }
         case PauseMenu.MENUACTION_STOREWALK:
-        {   this.level.setDemo(walk);
+        {   this.level.setDemo(this.walk);
             this.game.removeScreen();
             break;
         }

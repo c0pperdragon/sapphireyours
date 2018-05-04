@@ -345,7 +345,7 @@ LevelRenderer.prototype.isLoaded = function()
     this.acidtiles_bothedges[0].idling = true;
     this.acidtiles_bothedges[1] = this.getSubAnimation("Acid Both Ends",1,2);
     this.acidtiles_bothedges[1].idling = true;
-    this.piecetiles[ACID] = this.acidtiles_noedge;
+    this.piecetiles[ACID] = this.acidtiles_noedge[0];
     
        
     // load animations that can not be directly attached to a piece as their default 
@@ -1078,7 +1078,9 @@ LevelRenderer.prototype.addDecorationPieceToBuffer = function(pixelx, pixely, pi
 LevelRenderer.prototype.addRestingPieceToBuffer = function(x, y, piece)
 {       
         var anim = this.piecetiles[piece];
-        if (anim && anim.length>0)
-        {   this.addTile(x,y,anim[0]);
+        if (anim)
+        {   for (var i=0; i<anim.length; i+=LevelRenderer.FRAMESPERSTEP)
+            {   this.addTile(x,y,anim[i]);
+            }
         }
 };

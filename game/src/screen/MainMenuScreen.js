@@ -383,11 +383,9 @@ MainMenuScreen.prototype.onKeyDown = function(keycode)
                     }
                     break;
                     
-                case KeyEvent.EDIT:
-                    if (this.selectedrow<0)
-                    {   this.selectedrow=0;
-                    }
-                    else
+                // special keys for development mode
+                case KeyEvent.KEYCODE_EDIT:
+                    if (Game.DEVELOPERMODE)
                     {   var l = this.getSelectedLevel();
                         if (l!=null)
                         {   var es = new EditorScreen().$(this.game, l);
@@ -396,6 +394,22 @@ MainMenuScreen.prototype.onKeyDown = function(keycode)
                         }
                     }
                     break;                    
+                    
+                case KeyEvent.KEYCODE_SAVE:
+                    if (Game.DEVELOPERMODE)
+                    {   var l = this.getSelectedLevel();
+                        if (l!=null)
+                        {   console.log(JSON.stringify(l.toJSON(),null,4));
+                        }
+                    }
+                    break;        
+                    
+                case KeyEvent.KEYCODE_TEST:
+                    if (Game.DEVELOPERMODE)
+                    {   this.game.testAllLevels();                        
+                    }
+                    break;                    
+
             }           
         
         Screen.prototype.onKeyDown.call(this,keycode);

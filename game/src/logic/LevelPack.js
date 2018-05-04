@@ -81,5 +81,5 @@ LevelPack.prototype.isWriteable = function()
     
 LevelPack.prototype.getName = function()
 {
-    return name;    
+    return this.name;    
 };

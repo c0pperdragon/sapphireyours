@@ -5,9 +5,10 @@ var EditorScreen = function()
     Screen.call(this);
 
     this.level = null;
+    this.backup = null;
     
 //    this.toolbarx = 0;
-//    this.toolbary = 0;
+    this.toolbary = 0;
 //    this.tooltilesize = 0;
 //    this.tooltilespacing = 0;
 //    this.toolselectionx = 0;
@@ -19,8 +20,6 @@ var EditorScreen = function()
     
     this.pointerprevx = 0;
     this.pointerprevy = 0;
-    this.pointerdownx = 0;
-    this.pointerdowny = 0;
 
 //    Button menuButton;
 }
@@ -31,7 +30,7 @@ EditorScreen.MODE_MOVESCREEN = -1;
 EditorScreen.MODE_ZOOMSCREEN = -2;
 
 EditorScreen.pieces = [
-    MAN1, MAN2, EARTH, DOOR,
+    MAN1, AIR, EARTH, DOOR,
     EMERALD, SAPPHIRE, RUBY, CITRINE,
     ROCK, BAG, BOMB, TIMEBOMB,
     WALL, WALLEMERALD, SAND, SAND_FULL, 
@@ -45,7 +44,7 @@ EditorScreen.pieces = [
     YAMYAMLEFT, YAMYAMUP, YAMYAMRIGHT, YAMYAMDOWN,
     GUN0, GUN1, GUN2, GUN3,
     SWAMP, DROP, ACID, ROBOT, 
-    AIR,
+    MAN2,
     ];
 
     
@@ -53,9 +52,12 @@ EditorScreen.prototype.$ = function(game,level)
 {       Screen.prototype.$.call(this,game);    
         
         this.level = level;
+        this.backup = level.toJSON();
         
+        this.toolbary = 0;
         this.selectedpiece = 17;
         
+        this.pointerisdown = false;
         this.pointerprevx = 0;
         this.pointerprevy = 0;
         
@@ -64,7 +66,7 @@ EditorScreen.prototype.$ = function(game,level)
     
 EditorScreen.prototype.afterScreenCreation = function()
 {
-//    this.createMenuScreen();
+    this.createMenuScreen();
 }
     
 // get tile size in css pixel (depending on current browser zoom level)    
@@ -121,10 +123,7 @@ EditorScreen.prototype.draw = function()
     lr.flush();
 
     
-    // -- draw the piece palette
-    
-    
-    // -- draw the decoration of the toolbar and selection box --
+    // -- draw the tool bar
     lr.startDrawing (0,0,0,0);
     vr.startDrawing();
     for (var i=0; i<EditorScreen.pieces.length; i++)
@@ -132,11 +131,11 @@ EditorScreen.prototype.draw = function()
         var y = Math.floor(i/4);
         lr.addRestingPieceToBuffer(
             this.css2map(3+csstilesize*x),
-            this.css2map(3+csstilesize*y),
+            this.css2map(3+csstilesize*y+this.toolbary),
             EditorScreen.pieces[i]);        
         
         if (i==this.selectedpiece)
-        {   vr.addFrame(csstilesize*x, csstilesize*y, csstilesize+6, csstilesize+6, 3.0, 0xffffff00);
+        {   vr.addFrame(csstilesize*x, csstilesize*y+this.toolbary, csstilesize+6, csstilesize+6, 3.0, 0xffffff00);
         }
     }
     lr.flush();
@@ -195,43 +194,69 @@ EditorScreen.prototype.draw = function()
 //        }
 //    }
 
+EditorScreen.prototype.onBackNavigation = function()
+{
+    this.createMenuScreen();    
+};
+
+EditorScreen.prototype.onResize = function()
+{
+    this.toolbary = 0;
+};
 
 EditorScreen.prototype.onPointerDown = function(x,y)
 {
     var csstilesize  = this.computeCSSTileSize();
     
     // check if selected a piece
-    var tx = Math.floor(x-3 / csstilesize);
-    var ty = Math.floor(y-3 / csstilesize);
-    if (tx>=0 && tx<4 && ty>0 && ty<15)
-    {   var s = ty*4 + tx;
-        if (s>=0 && s<EditorScreen.pieces.length)
-        {   this.selectedpiece = s;
-            this.setDirty();
-            return;
-        }        
+    tryhandle: {
+        var tx = Math.floor((x-3) / csstilesize);
+        var ty = Math.floor((y-this.toolbary-3) / csstilesize);
+        if (tx>=0 && tx<4 && ty>=0 && ty<15)
+        {   var s = ty*4 + tx;
+            if (s>=0 && s<EditorScreen.pieces.length)
+            {   this.selectedpiece = s;
+                this.setDirty();
+                break tryhandle;
+            }        
+        }
+    
+        // check if piece was placed in map
+        this.tryPlacePiece(x,y);
     }
     
-    // check if piece was placed in map
-    this.tryPlacePiece(x,y);
+    this.pointerprevx = x;
+    this.pointerprevy = y;
 };
     
-/*    
-    @Override
-    public void onPointerUp()
-    {
-        menuButton.onPointerUp();       
-
-        if (toolselectionopen)
-        {
-            toolselectionopen = false;
-        }
-    }
-*/
+//EditorScreen.prototype.onPointerUp = function()
+//{
+//    this.pointerisdown = false;
+//};
     
 EditorScreen.prototype.onPointerMove = function(x,y) 
-{
-    this.tryPlacePiece(x,y);
+{   
+    var csstilesize  = this.computeCSSTileSize();
+
+    tryhandle: {
+        if (x<3+4*csstilesize) 
+        {   if (y!=this.pointerprevy) 
+            {   var barheight = 15*csstilesize;
+                this.toolbary = Math.min
+                (   0, Math.max
+                    (   this.toolbary + (y-this.pointerprevy),
+                        this.game.screenheight - (barheight+6) 
+                    )
+                );
+                this.setDirty();
+                break tryhandle;
+            }            
+        }
+        this.tryPlacePiece(x,y);        
+    }
+    
+    this.pointerprevx = x;
+    this.pointerprevy = y;
 };
 
 EditorScreen.prototype.tryPlacePiece = function(x,y,piece)
@@ -254,81 +279,79 @@ EditorScreen.prototype.onKeyDown = function(keycode)
         
         Screen.prototype.onKeyDown.call(this,keycode);
 };
-/*    
-    public void createMenuScreen()
-    {
-        // do not open menu twice
-        if (game.getTopScreen() instanceof PauseMenu)
-        {   return;
-        }
+    
+EditorScreen.prototype.createMenuScreen = function()
+{
+    // do not open menu twice
+    if (this.game.getTopScreen() != this)
+    {   return;
+    }
                 
         // create the menu screen
-        PauseMenu m = new PauseMenu(game,this, level, PauseMenu.MENUACTION_EXITEDITOR);
-        m.addPriorityAction(PauseMenu.MENUACTION_DISCARDCHANGES);
-        m.addDefaultAction(PauseMenu.MENUACTION_CONTINUEEDIT);
-        m.addPriorityAction(PauseMenu.MENUACTION_TESTLEVEL);
-        m.addPriorityAction(PauseMenu.MENUACTION_EXITEDITOR);
-        m.addAction(PauseMenu.MENUACTION_EDITSETTINGS);
-        m.addAction(PauseMenu.MENUACTION_EDITNAME);
-        m.addAction(PauseMenu.MENUACTION_EDITAUTHOR);
-        m.addAction(PauseMenu.MENUACTION_EDITINFO);
-        game.addScreen(m);
-    }
+    var m = new PauseMenu().$(this.game,this, this.level, PauseMenu.MENUACTION_EXITEDITOR);
+    m.addPriorityAction(PauseMenu.MENUACTION_DISCARDCHANGES);
+    m.addDefaultAction(PauseMenu.MENUACTION_CONTINUEEDIT);
+    m.addPriorityAction(PauseMenu.MENUACTION_TESTLEVEL);
+    m.addPriorityAction(PauseMenu.MENUACTION_EXITEDITOR);
+    m.addAction(PauseMenu.MENUACTION_EDITSETTINGS);
+    m.addAction(PauseMenu.MENUACTION_EDITNAME);
+    m.addAction(PauseMenu.MENUACTION_EDITAUTHOR);
+    m.addAction(PauseMenu.MENUACTION_EDITINFO);
+    m.layout();
     
+    this.game.addScreen(m);
+};
     
-    // -------------------- actions from the ingame-menu ---------------
-    public void menuAction(int id)
-    {   
+EditorScreen.prototype.menuAction = function(id)
+{   
+    var game = this.game;
+    
         switch (id)
         {   
             case PauseMenu.MENUACTION_EXITEDITOR:
-                original.copyFrom(level);
-                game.writeUserLevel(original);              
                 game.removeScreen();
                 break;
                 
             case PauseMenu.MENUACTION_TESTLEVEL:
-                GameScreen gs = new GameScreen(game, level, null, false, true);
+                var gs = new GameScreen().$(game, this.level, null, false, true);
                 game.addScreen(gs);
                 gs.afterScreenCreation();                           
                 break;
                                 
             case PauseMenu.MENUACTION_DISCARDCHANGES:
-                level.copyFrom(original);
-                computeTileSize();
-                computeMapCenterPosition();
+                this.level.$(this.backup);
                 break;
                 
             case PauseMenu.MENUACTION_EDITSETTINGS:
-                createMenuScreen();
-                game.addScreen(new LevelSettingsDialog(game,level));
+                this.createMenuScreen();
+//                game.addScreen(new LevelSettingsDialog(game,level));
                 break;
 
             case PauseMenu.MENUACTION_EDITNAME:
-                createMenuScreen();             
-                game.addScreen(new TextInputDialog(game,"Name", level.getTitle(), 
-                    new TextInputDialog.Listener(){public void valueChanged(String v){level.setTitle(v);}}
-                ));
+                this.createMenuScreen();             
+//                game.addScreen(new TextInputDialog(game,"Name", level.getTitle(), 
+//                    new TextInputDialog.Listener(){public void valueChanged(String v){level.setTitle(v);}}
+//                ));
                 break;
 
             case PauseMenu.MENUACTION_EDITAUTHOR:
-                createMenuScreen();
-                game.addScreen(new TextInputDialog(game,"Author", level.getAuthor(), 
-                    new TextInputDialog.Listener(){public void valueChanged(String v){level.setAuthor(v);}}
-                ));
+                this.createMenuScreen();
+//                game.addScreen(new TextInputDialog(game,"Author", level.getAuthor(), 
+//                    new TextInputDialog.Listener(){public void valueChanged(String v){level.setAuthor(v);}}
+//                ));
                 break;
 
             case PauseMenu.MENUACTION_EDITINFO:
-                createMenuScreen();
-                game.addScreen(new TextInputDialog(game,"Info", level.getHint(), 
-                    new TextInputDialog.Listener(){public void valueChanged(String v){level.setHint(v);}}
-                ));
+                this.createMenuScreen();
+//                game.addScreen(new TextInputDialog(game,"Info", level.getHint(), 
+//                    new TextInputDialog.Listener(){public void valueChanged(String v){level.setHint(v);}}
+//                ));
                 break;
                 
             default:
                 break;
         }
-    }
-*/    
+};
+   
 
 

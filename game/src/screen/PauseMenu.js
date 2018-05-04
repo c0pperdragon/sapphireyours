@@ -342,71 +342,54 @@ PauseMenu.prototype.drawActionIcon = function(tr, action, x, y, width, height, a
     {   case PauseMenu.MENUACTION_START:
         case PauseMenu.MENUACTION_CONTINUERECORDING:
             tr.addIconGlyph(313, x,y,height, argb);
-//            vr.addPlayArrow(x,y,width,height, 1, argb);
+            break;
+        case PauseMenu.MENUACTION_RESTART:
+            tr.addIconGlyph(315, x,y,height, argb);
             break;
         case PauseMenu.MENUACTION_UNDO:
-            tr.addIconGlyph(315, x,y,height, argb);
-//            vr.addPlayArrow(x,y,width,height, -1, argb);
+            tr.addIconGlyph(300, x,y,height, argb);
             break;
         case PauseMenu.MENUACTION_FORWARD:
             tr.addIconGlyph(313, x,y,height, argb);
-//          vr.addForwardArrow(x,y,width,height, 1, argb);
             break;
         case PauseMenu.MENUACTION_BACKWARD:
             tr.addMirrorIconGlyph(313, x,y,height, argb);
-//            vr.addForwardArrow(x,y,width,height, -1, argb);
             break;          
             
         case PauseMenu.MENUACTION_FASTFORWARD:
             tr.addIconGlyph(311, x,y,height, argb);
-//            vr.addFastForwardArrow(x,y,width,height, 1,argb);
             break;
 
         case PauseMenu.MENUACTION_FASTBACKWARD:
             tr.addMirrorIconGlyph(311, x,y,height, argb);
-//            vr.addFastForwardArrow(x,y,width,height, -1,argb);
             break;
 
         case PauseMenu.MENUACTION_EXIT:
-        case PauseMenu.MENUACTION_EXITTOEDITOR:
         case PauseMenu.MENUACTION_EXITEDITOR:
             tr.addMirrorIconGlyph(301, x,y,height, argb);
-//            vr.addCross(x,y,width,height, argb);
             break;              
 
         case PauseMenu.MENUACTION_LEAVEDEMO:
         case PauseMenu.MENUACTION_LEAVEREPLAY:
             tr.addIconGlyph(300, x,y,height, argb);
-//            vr.addSquare(x,y,width,height,argb);
             break;
 
         case PauseMenu.MENUACTION_NEXTLEVEL:
             tr.addMirrorIconGlyph(300, x,y,height, argb);
-//            vr.addNextLevelArrow(x,y,width,height,argb);
             break;
 
         case PauseMenu.MENUACTION_TESTLEVEL:
             tr.addIconGlyph(313, x,y,height, argb);
-//            vr.addPlayArrow(x,y,width,height, 1, argb);
             break;              
                 
         case PauseMenu.MENUACTION_DISCARDCHANGES:
             tr.addIconGlyph(302, x,y,height, argb);
-//            vr.addFastForwardArrow(x,y,width,height, -1,argb);
             break;
                                 
+        case PauseMenu.MENUACTION_EXITTOEDITOR:
         case PauseMenu.MENUACTION_CONTINUEEDIT:
-            tr.addIconGlyph(303, x,y,height, argb);
-//            vr.addSquare(x,y,width,height, argb);
+            tr.addIconGlyph(305, x,y,height, argb);
             break;              
-
-//        default:
-//        {   vr.startStrip();        
-//            vr.addStripCorner(x+width/4,y+height/4,  argb);
-//            vr.addStripCorner(x+width/4,y+(height*3)/4, argb);
-//            vr.addStripCorner(x+(width*3)/4, y+height/2, argb);
-//            break;
-//        }
     }   
 };
     

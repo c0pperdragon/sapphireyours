@@ -187,11 +187,11 @@ Game.prototype.$ = function()
         that.canvas.style["height"] = cssheight+"px";
         that.pixeltilesize = Math.round(ratio*60);
         
-        console.log
-        (   "css size:",csswidth,cssheight,
-            "pixel size:",pixelwidth,pixelheight,
-            "tile size:",that.pixeltilesize
-        );
+//        console.log
+//        (   "css size:",csswidth,cssheight,
+//            "pixel size:",pixelwidth,pixelheight,
+//            "tile size:",that.pixeltilesize
+//        );
     }          
 };
         
@@ -652,6 +652,32 @@ Game.prototype.startCategoryMusic = function (category)
     }
 };
 
+// development test - check all levels if the demos work
+Game.prototype.testAllLevels = function()
+{
+    var logic = new Logic().$();
+    
+    for (var lpi=0; lpi<this.levelpacks.length; lpi++)
+    {   var lp = this.levelpacks[lpi];
+        console.log("Testing levels in",lp.getName());
+        for (var i=0; i<lp.numberOfLevels(); i++)
+        {   var l = lp.getLevel(i);
+            if (l.numberOfDemos()<1) 
+            {   console.warn("No demos defined for",l.getTitle());
+            }
+            else
+            {   for (var j=0; j<l.numberOfDemos(); j++) 
+                {   var d = l.getDemo(j);
+                    logic.attach(l, d);
+                    logic.gototurn(d.getTurns());
+                    if (!logic.isSolved()) 
+                    {   console.warn("Non-working demo for",l.getTitle());
+                    }
+                }
+            }
+        }
+    }   
+};
     
 // --------------------- static toolbox methods ------------------------------
 
@@ -825,3 +851,4 @@ Game.buildTimeString = function(seconds)
     {	return m+":0"+s;
     }			
 };
+

@@ -24,7 +24,9 @@ var KeyEvent = {
     KEYCODE_DPAD2_CENTER: 0x00000024,
     KEYCODE_DPAD2_BUTTON1: 0x00000025,
     KEYCODE_DPAD2_BUTTON2: 0x00000026, 
-    KEYCODE_EDIT:          0x00000027,
+    KEYCODE_EDIT:          0x00001000,
+    KEYCODE_TEST:          0x00001001,
+    KEYCODE_SAVE:          0x00001002,
 
     toNumericCode: function(c)
     {   switch (c)         
@@ -59,10 +61,12 @@ var KeyEvent = {
             case "KeyA":            { return KeyEvent.KEYCODE_DPAD2_BUTTON1; }
             case "s":
             case "KeyS":            { return KeyEvent.KEYCODE_DPAD2_BUTTON2; }
-            case "e":               { return KeyEvent.KEYCODE_EDIT;}
+            case "e":               { return KeyEvent.KEYCODE_EDIT; }
+            case "t":               { return KeyEvent.KEYCODE_TEST; }
+            case "w":               { return KeyEvent.KEYCODE_SAVE; }
             default:                
             {   console.log("unknown key ["+c+"]");
-                return KeyEvent.KeyCODE_SPACE;
+                return KeyEvent.KEYCODE_SPACE;
             }
         }
     }

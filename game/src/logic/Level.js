@@ -4,7 +4,7 @@ var MAPWIDTH  = 64;
 var MAPHEIGHT = 64; 
 var DEFAULTSWAMPRATE = 30;
 var DEFAULTROBOTSPEED = 1;
-    
+var DEFAULTYAMYAMREMAINDERS = "(((((((((";
 
 // pieces in static level definition
 var OUTSIDE           = 0;
@@ -83,7 +83,7 @@ var Level = function()
     this.loot = 0;                   // number of emeralds to collect
     this.swamprate = 0;              // swamp spreading speed
     this.robotspeed = 0;             // probability for robot step 
-    this.yamyamremainders = null;  // default YamYam remainders
+    this.yamyamremainders = null;    // YamYam remainders definition
     
     this.datawidth = 0;
     this.dataheight = 0;
@@ -104,7 +104,7 @@ Level.prototype.$ = function(json)
     this.swamprate = Game.isInteger(json.swamprate) ? Number(json.swamprate) : DEFAULTSWAMPRATE;
     this.robotspeed = Game.isInteger(json.robotspeed) ? Number(json.robotspeed) : DEFAULTROBOTSPEED;
     this.yamyamremainders = json.yamyamremainders  && json.yamyamremainders.constructor==String 
-                            ? json.yamyamremainders : "(((((((((";
+                            ? json.yamyamremainders : DEFAULTYAMYAMREMAINDERS;
     
     this.demos = [];
     for (var i=0; Array.isArray(json.demos) && i<json.demos.length; i++) 
@@ -166,7 +166,16 @@ Level.prototype.toJSON = function()
     {   o.hint = this.hint;
     }
     if (this.swamprate!=DEFAULTSWAMPRATE)
-    {   o.swaprate = this.swamprate;
+    {   o.swamprate = this.swamprate;
+    }
+    if (this.swamprate!=DEFAULTSWAMPRATE)
+    {   o.swamprate = this.swamprate;
+    }
+    if (this.robotspeed!=DEFAULTROBOTSPEED)
+    {   o.robotspeed = this.robotspeed;
+    }
+    if (this.yamyamremainders!=DEFAULTYAMYAMREMAINDERS)
+    {   o.yamyamremainders = this.yamyamremainders;
     }
     for (var y=0; y<this.dataheight; y++)
     {   var l = [];
@@ -297,7 +306,7 @@ Level.prototype.getDemo = function(index)
 
 Level.prototype.setDemo = function(walk)
 {
-    demos = [ new Walk().$2(walk) ];
+    this.demos = [ new Walk().$original(walk) ];
 };
 
 Level.prototype.getWidth = function()
