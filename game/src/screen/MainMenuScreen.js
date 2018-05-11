@@ -384,7 +384,7 @@ MainMenuScreen.prototype.onKeyDown = function(keycode)
                     break;
                     
                 // special keys for development mode
-                case KeyEvent.KEYCODE_EDIT:
+                case KeyEvent.EDIT:
                     if (Game.DEVELOPERMODE)
                     {   var l = this.getSelectedLevel();
                         if (l!=null)
@@ -395,7 +395,7 @@ MainMenuScreen.prototype.onKeyDown = function(keycode)
                     }
                     break;                    
                     
-                case KeyEvent.KEYCODE_SAVE:
+                case KeyEvent.SAVE:
                     if (Game.DEVELOPERMODE)
                     {   var l = this.getSelectedLevel();
                         if (l!=null)
@@ -404,7 +404,7 @@ MainMenuScreen.prototype.onKeyDown = function(keycode)
                     }
                     break;        
                     
-                case KeyEvent.KEYCODE_TEST:
+                case KeyEvent.TEST:
                     if (Game.DEVELOPERMODE)
                     {   this.game.testAllLevels();                        
                     }

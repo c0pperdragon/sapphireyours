@@ -62,9 +62,9 @@ var KeyEvent = {
             case "s":
             case "KeyS":            { return KeyEvent.B2; }
 
-            case "e":               { return KeyEvent.KEYCODE_EDIT; }
-            case "t":               { return KeyEvent.KEYCODE_TEST; }
-            case "w":               { return KeyEvent.KEYCODE_SAVE; }
+            case "e":               { return KeyEvent.EDIT; }
+            case "t":               { return KeyEvent.TEST; }
+            case "w":               { return KeyEvent.SAVE; }
             default:                
             {   console.log("unknown key ["+c+"]");
                 if (c>0 && c<256) return c;

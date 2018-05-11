@@ -29,6 +29,7 @@
 ,
 {   "title": "Three Choices",
     "author": "Reinhard",
+    "hint": "If you go left, you lose your horse. If you go right, you lose your soul. If you go straight, you die.",
     "difficulty": 5,
     "category": 3,
     "loot": 23,

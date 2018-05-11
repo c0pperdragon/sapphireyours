@@ -31,7 +31,7 @@ var Game = function()
 };
 
 
-Game.DEVELOPERMODE = true;
+Game.DEVELOPERMODE = false;
 Game.DEFAULTSOLVEDGRADE = -3*60;  // 3 minutes waiting time before level is considered "known"
 //  static SimpleProfiler profiler_onsound = new SimpleProfiler("Game.sound", 5);
 
