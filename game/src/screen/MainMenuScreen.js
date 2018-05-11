@@ -321,7 +321,7 @@ MainMenuScreen.prototype.onKeyDown = function(keycode)
 {
         switch (keycode)
             {   
-                case KeyEvent.KEYCODE_DPAD_LEFT:
+                case KeyEvent.LEFT:
                     if (this.selectedcolumn>0)
                     {   this.selectedcolumn--;
                         if (this.selectedrow<0)
@@ -334,7 +334,7 @@ MainMenuScreen.prototype.onKeyDown = function(keycode)
                         this.setDirty();
                     }
                     break;                  
-                case KeyEvent.KEYCODE_DPAD_RIGHT:
+                case KeyEvent.RIGHT:
                     if (this.selectedcolumn<this.numcolumns-1)
                     {   this.selectedcolumn++;
                         if (this.selectedrow<0)
@@ -348,7 +348,7 @@ MainMenuScreen.prototype.onKeyDown = function(keycode)
                     }
                     break;
             
-                case KeyEvent.KEYCODE_DPAD_UP:
+                case KeyEvent.UP:
                     if (this.selectedrow<0)
                     {   this.selectedrow=0;
                         this.bringSelectedInView();
@@ -360,7 +360,7 @@ MainMenuScreen.prototype.onKeyDown = function(keycode)
                         this.setDirty();
                     }
                     break;                  
-                case KeyEvent.KEYCODE_DPAD_DOWN:
+                case KeyEvent.DOWN:
                     if (this.selectedrow<0)
                     {   this.selectedrow=0;
                         this.bringSelectedInView();
@@ -373,7 +373,7 @@ MainMenuScreen.prototype.onKeyDown = function(keycode)
                     }
                     break;
                     
-                case KeyEvent.KEYCODE_ENTER:
+                case KeyEvent.A:
                     if (this.selectedrow<0)
                     {   this.selectedrow=0;
                     }

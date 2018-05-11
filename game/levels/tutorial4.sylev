@@ -618,13 +618,13 @@
     ]
 }
 ,
-{   "title": "Kill the Yam-Yam-Beast",
-    "author": "Reinhard",
+{
+    "title": "Kill the Yam-Yam-Beast",
     "difficulty": 5,
     "category": 3,
-    "loot": 7,
-    "map":
-    [   "##########",
+    "loot": 12,
+    "map": [
+        "##########",
         "#E1......#",
         "#........#",
         "#.**0.. .#",
@@ -635,15 +635,17 @@
         "#.$......#",
         "##########"
     ],
-    "demos":
-    [   {   
-            "randomseed": 673845,
-            "moves":
-            [   "..bbbbbbb.tttttrtrrbl..........l.rr.....",
-                "....lllbbbbbttttttt............l......."
+    "demos": [
+        {
+            "randomseed": 319153,
+            "moves": [
+                "....b.r.bl..b.bbbb.ttttttrrrbl..........",
+                "..............................l.........",
+                "..bbllbrrbllrbttttttt..l......."
             ]
         }
-    ]
+    ],
+    "author": "Reinhard"
 }
 ,
 {   "title": "Lorries in a Box",

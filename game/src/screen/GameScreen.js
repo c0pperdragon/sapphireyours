@@ -985,26 +985,13 @@ GameScreen.prototype.onKeyDown = function(code)
 {        
     // in record mode use up- and down-events               
     if (this.playmode==GameScreen.PLAYMODE_RECORD)
-    {   if ((code==KeyEvent.KEYCODE_ENTER || code==KeyEvent.KEYCODE_TAB) && this.logic.getNumberOfPlayers()>1)   
-        {   //if (twousermode)
-                    //{ twousermode = false;
-                    //}
-                    //else
-                    //{
-                        keyboardTranslator.switchControls(!keyboardTranslator.hasSwitchedControls());
-                    //}
+    {   if (code==KeyEvent.Y && this.logic.getNumberOfPlayers()>1)   
+        {   this.keyboardTranslator.switchControls(!this.keyboardTranslator.hasSwitchedControls());
             this.inputmodeswitchtime = 60;
             this.adjustScrolling(true);              
         }
         else
-        {   //if (keyboardTranslator.isKeyForSecondaryInput(code) && logic.getNumberOfPlayers()>1) 
-                    //{ // twousermode = true;
-                    //  if (keyboardTranslator.hasSwitchedControls())
-                    //  {   keyboardTranslator.switchControls(false);
-                    //      adjustScrolling(true);
-                    //  }               
-                    //}
-            this.keyboardTranslator.keyDown(code);           
+        {   this.keyboardTranslator.keyDown(code);           
         }
     }
     // outside record mode, any down-event calls up the menu

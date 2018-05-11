@@ -447,7 +447,7 @@ PauseMenu.prototype.onBackNavigation = function()
 PauseMenu.prototype.onKeyDown = function(code)
 {   
     switch (code)
-    {   case KeyEvent.KEYCODE_DPAD_UP:
+    {   case KeyEvent.UP:
         {   if (this.selected<0)
             {   this.selected=this.defaultaction;
             }
@@ -459,7 +459,7 @@ PauseMenu.prototype.onKeyDown = function(code)
             }
             break;                  
         }
-        case KeyEvent.KEYCODE_DPAD_DOWN:
+        case KeyEvent.DOWN:
         {   if (this.selected<0)
             {   this.selected=this.defaultaction;
             }
@@ -471,7 +471,7 @@ PauseMenu.prototype.onKeyDown = function(code)
             }
             break;
         }
-        case KeyEvent.KEYCODE_DPAD_LEFT:
+        case KeyEvent.LEFT:
         {   if (this.selected<0)
             {   this.selected=this.defaultaction;
             }
@@ -480,7 +480,7 @@ PauseMenu.prototype.onKeyDown = function(code)
             }
             break;
         }
-        case KeyEvent.KEYCODE_DPAD_RIGHT:
+        case KeyEvent.RIGHT:
         {   if (this.selected<0)
             {   this.selected=this.defaultaction;
             }
@@ -489,7 +489,7 @@ PauseMenu.prototype.onKeyDown = function(code)
             }
             break;
         }
-        case KeyEvent.KEYCODE_ENTER:
+        case KeyEvent.A:
         {   if (this.selected<0)
             {   this.selected=this.defaultaction;
             }

@@ -2,9 +2,6 @@
 // constant values
 var MAPWIDTH  = 64;
 var MAPHEIGHT = 64; 
-var DEFAULTSWAMPRATE = 30;
-var DEFAULTROBOTSPEED = 1;
-var DEFAULTYAMYAMREMAINDERS = "(((((((((";
 
 // pieces in static level definition
 var OUTSIDE           = 0;
@@ -71,6 +68,9 @@ var GUN1              = 'C'.charCodeAt(0);
 var GUN2              = 'D'.charCodeAt(0);
 var GUN3              = 'F'.charCodeAt(0);
 
+var DEFAULTSWAMPRATE = 30;
+var DEFAULTROBOTSPEED = 1;
+var DEFAULTYAMYAMREMAINDERS = [ RUBY,RUBY,RUBY, RUBY,RUBY,RUBY, RUBY,RUBY,RUBY];
 
 var Level = function()
 {
@@ -104,7 +104,7 @@ Level.prototype.$ = function(json)
     this.swamprate = Game.isInteger(json.swamprate) ? Number(json.swamprate) : DEFAULTSWAMPRATE;
     this.robotspeed = Game.isInteger(json.robotspeed) ? Number(json.robotspeed) : DEFAULTROBOTSPEED;
     this.yamyamremainders = json.yamyamremainders  && json.yamyamremainders.constructor==String 
-                            ? json.yamyamremainders : DEFAULTYAMYAMREMAINDERS;
+            ? parseremainders(json.yamyamremainders) : DEFAULTYAMYAMREMAINDERS;
     
     this.demos = [];
     for (var i=0; Array.isArray(json.demos) && i<json.demos.length; i++) 
@@ -145,9 +145,17 @@ Level.prototype.$ = function(json)
             }
         }
         this.players = (foundp2) ? 2 : 1;
-    }
-    
+    }    
     return this;
+    
+    function parseremainders(str)
+    {   var rem = [RUBY,RUBY,RUBY, RUBY,RUBY,RUBY, RUBY,RUBY,RUBY];
+        for (var i=0; i<9 && i<str.length; i++)
+        {   var c = str.charCodeAt(i);
+            if (c>=30 && c<128) rem[i]=c;
+        }
+        return rem;
+    }
 };
 
 Level.prototype.toJSON = function()
@@ -174,8 +182,11 @@ Level.prototype.toJSON = function()
     if (this.robotspeed!=DEFAULTROBOTSPEED)
     {   o.robotspeed = this.robotspeed;
     }
-    if (this.yamyamremainders!=DEFAULTYAMYAMREMAINDERS)
-    {   o.yamyamremainders = this.yamyamremainders;
+    if (this.yamyamremainders.join(" ")!=DEFAULTYAMYAMREMAINDERS.join(" "))
+    {   for (var i=0; i<this.yamyamremainders.length; i++)
+        {   r = r + String.fromCharCode(this.yamyamremainders[i]);
+        }
+        o.yamyamremainders = r;
     }
     for (var y=0; y<this.dataheight; y++)
     {   var l = [];
@@ -384,7 +395,7 @@ Level.prototype.calculateMaximumLoot = function(considerconverters)
                 case YAMYAMRIGHT:
                 case YAMYAMDOWN:
                 {   for (var j=0; j<this.yamyamremainders.length; j++)
-                    switch (this.yamyamremainders.charCodeAt(j))
+                    switch (this.yamyamremainders[j])
                     {   case BAG:
                         case RUBY:
                         case EMERALD: { count1++; break; }

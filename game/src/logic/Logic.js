@@ -15,7 +15,6 @@ var Logic = function()
     this.countersatbeginofturn = null;
 };
 
-    
     // pieces created during game   
 var ROCK_FALLING      = 128;
 var EMERALD_FALLING   = 129;
@@ -44,10 +43,11 @@ var EXPLODE4_EMERALD  = 151;
 var EXPLODE1_SAPPHIRE = 152;
 var EXPLODE2_SAPPHIRE = 153;
 var EXPLODE3_SAPPHIRE = 154;
-var EXPLODE4_SAPPHIRE = 156;
+var EXPLODE4_SAPPHIRE = 155;
+var ONETIMEDOOR_CLOSED= 156;
 var BIGBOMB_EXPLODE   = 157;
-var LORRY_EXPLODE       = 158;
-var BUG_EXPLODE     = 159;
+var LORRY_EXPLODE     = 158;
+var BUG_EXPLODE       = 159;
 var ACTIVEBOMB0       = 160;
 var ACTIVEBOMB1       = 161;
 var ACTIVEBOMB2       = 162;
@@ -88,58 +88,68 @@ var MAN1_DIGDOWN      = 196;
 var MAN2_DIGDOWN      = 197;
 var CITRINE_FALLING   = 198;
 var CITRINE_BREAKING  = 199;
-//var ROCKEMERALD_FALLING= 200;
-var EXPLODE1_RUBY     = 202;
-var EXPLODE2_RUBY     = 203;
-var EXPLODE3_RUBY     = 204;
-var EXPLODE4_RUBY     = 205;
-var ONETIMEDOOR_CLOSED= 206;
-var EXPLODE1_TNT     = 207;
-var EXPLODE2_TNT     = 208;
-var EXPLODE3_TNT     = 209;
-var EXPLODE4_TNT     = 210;
-var EXPLODE1_KEYRED  = 211;
-var EXPLODE2_KEYRED  = 212;
-var EXPLODE3_KEYRED  = 213;
-var EXPLODE4_KEYRED  = 214;
-var EXPLODE1_KEYGREEN = 215;
-var EXPLODE2_KEYGREEN = 216;
-var EXPLODE3_KEYGREEN = 217;
-var EXPLODE4_KEYGREEN = 218;
-var EXPLODE1_KEYYELLOW = 219;
-var EXPLODE2_KEYYELLOW = 220;
-var EXPLODE3_KEYYELLOW = 221;
-var EXPLODE4_KEYYELLOW = 222;
-var EXPLODE1_KEYBLUE = 223;
-var EXPLODE2_KEYBLUE = 224;
-var EXPLODE3_KEYBLUE = 225;
-var EXPLODE4_KEYBLUE = 226;
-var EXPLODE1_CITRINE = 227;
-var EXPLODE2_CITRINE = 228;
-var EXPLODE3_CITRINE = 229;
-var EXPLODE4_CITRINE = 230;
-var YAMYAM_EXPLODE   = 231;
+var EXPLODE1_TNT     = 200;
+var EXPLODE2_TNT     = 201;
+var EXPLODE3_TNT     = 202;
+var EXPLODE4_TNT     = 203;
+var YAMYAM_EXPLODE   = 204;
+var EXPLODE1_YAMYAM0 = 205;
+var EXPLODE2_YAMYAM0 = 206;
+var EXPLODE3_YAMYAM0 = 207;
+var EXPLODE4_YAMYAM0 = 208;
+var EXPLODE1_YAMYAM1 = 209;
+var EXPLODE2_YAMYAM1 = 210;
+var EXPLODE3_YAMYAM1 = 211;
+var EXPLODE4_YAMYAM1 = 212;
+var EXPLODE1_YAMYAM2 = 213;
+var EXPLODE2_YAMYAM2 = 214;
+var EXPLODE3_YAMYAM2 = 215;
+var EXPLODE4_YAMYAM2 = 216;
+var EXPLODE1_YAMYAM3 = 217;
+var EXPLODE2_YAMYAM3 = 218;
+var EXPLODE3_YAMYAM3 = 219;
+var EXPLODE4_YAMYAM3 = 220;
+var EXPLODE1_YAMYAM4 = 221;
+var EXPLODE2_YAMYAM4 = 222;
+var EXPLODE3_YAMYAM4 = 223;
+var EXPLODE4_YAMYAM4 = 224;
+var EXPLODE1_YAMYAM5 = 225;
+var EXPLODE2_YAMYAM5 = 226;
+var EXPLODE3_YAMYAM5 = 227;
+var EXPLODE4_YAMYAM5 = 228;
+var EXPLODE1_YAMYAM6 = 229;
+var EXPLODE2_YAMYAM6 = 230;
+var EXPLODE3_YAMYAM6 = 231;
+var EXPLODE4_YAMYAM6 = 232;
+var EXPLODE1_YAMYAM7 = 233;
+var EXPLODE2_YAMYAM7 = 234;
+var EXPLODE3_YAMYAM7 = 235;
+var EXPLODE4_YAMYAM7 = 236;
+var EXPLODE1_YAMYAM8 = 237;
+var EXPLODE2_YAMYAM8 = 238;
+var EXPLODE3_YAMYAM8 = 239;
+var EXPLODE4_YAMYAM8 = 240;
 
 // virtual pieces (exist only during animations)
-var CUSHION_BUMPING   = 235;
-var EARTH_UP          = 236;
-var EARTH_DOWN        = 237;
-var EARTH_LEFT        = 238;
-var EARTH_RIGHT       = 239;    
-var LASER_H           = 240;
-var LASER_V           = 241;
-var LASER_BL          = 242;
-var LASER_BR          = 243;
-var LASER_TL          = 244;
-var LASER_TR          = 245;
-var LASER_L           = 246;
-var LASER_R           = 248;
-var LASER_U           = 249;
-var LASER_D           = 250;
-var SWAMP_RIGHT       = 251;
-var SWAMP_LEFT        = 252;
-var SWAMP_UP          = 253;
-var SWAMP_DOWN        = 254;
+var CUSHION_BUMPING   = 1;
+var EARTH_UP          = 2;
+var EARTH_DOWN        = 3;
+var EARTH_LEFT        = 4;
+var EARTH_RIGHT       = 5;    
+var LASER_H           = 6;
+var LASER_V           = 7;
+var LASER_BL          = 8;
+var LASER_BR          = 9;
+var LASER_TL          = 10;
+var LASER_TR          = 11;
+var LASER_L           = 12;
+var LASER_R           = 13;
+var LASER_U           = 14;
+var LASER_D           = 15;
+var SWAMP_RIGHT       = 16;
+var SWAMP_LEFT        = 17;
+var SWAMP_UP          = 18;
+var SWAMP_DOWN        = 19;
 
     // the counters are references with this index
 //  public final static int CTR_NUMPLAYERS              = 0;
@@ -178,6 +188,19 @@ var TRN_MOVELEFT2   = 0x60000000 | 0;
 var TRN_MOVERIGHT2  = 0x70000000 | 0;
 
 var MAXTRANSACTIONS = 20000;
+
+Logic.DEBRIS_NOTHING = 
+[   EXPLODE1_AIR, EXPLODE1_AIR, EXPLODE1_AIR, 
+    EXPLODE1_AIR, EXPLODE1_AIR, EXPLODE1_AIR,
+    EXPLODE1_AIR, EXPLODE1_AIR, EXPLODE1_AIR ];
+Logic.DEBRIS_EMERALDS =
+[   EXPLODE1_EMERALD, EXPLODE1_EMERALD, EXPLODE1_EMERALD,
+    EXPLODE1_EMERALD, EXPLODE1_SAPPHIRE,EXPLODE1_EMERALD,
+    EXPLODE1_EMERALD, EXPLODE1_EMERALD, EXPLODE1_EMERALD ];
+Logic.DEBRIS_YAMYAM =
+[   EXPLODE1_YAMYAM0, EXPLODE1_YAMYAM1, EXPLODE1_YAMYAM2,
+    EXPLODE1_YAMYAM3, EXPLODE1_YAMYAM4, EXPLODE1_YAMYAM5,
+    EXPLODE1_YAMYAM6, EXPLODE1_YAMYAM7, EXPLODE1_YAMYAM8 ];
 
 Logic.prototype.$ = function()
 {
@@ -389,61 +412,6 @@ Logic.prototype.piecesmove = function()
                         }
                         break;
                     }
-//                    case ROCKEMERALD:
-//                    {   if (this.is(x,y+1,AIR))
-//                        {   this.move(x,y,0,1,ROCKEMERALD_FALLING);
-//                        }
-//                        else if (this.is(x,y+1,SAND))
-//                        {   this.move(x,y,0,1,ROCKEMERALD);
-//                            this.transform(x,y+1,SAND_FULLEMERALD);
-//                        }
-//                        else if (this.is(x,y+1,ACID))
-//                        {   this.move(x,y,0,1,ROCKEMERALD);
-//                            this.transform(x,y+1,ACID);  
-//                            this.changecounter(CTR_EMERALDSTOOMUCH,-1);                      
-//                        }
-//                        else if (this.is(x,y+1,CONVERTER) && this.is(x,y+2,AIR))
-//                        {   this.move (x,y,0,2,EMERALD_FALLING);
-//                            this.highlight (x,y+1, CONVERTER);                       
-//                        }
-//                        else if (this.may_roll_to_left(x,y+1, true))
-//                        {   this.move(x,y,-1,0,ROCKEMERALD_FALLING);
-//                        }
-//                        else if (this.may_roll_to_right(x,y+1, true))
-//                        {   this.move(x,y,1,0,ROCKEMERALD_FALLING);
-//                        }
-//                        break;
-//                    }
-//                    case ROCKEMERALD_FALLING:
-//                    {
-//                        if (!this.is_hit_by_non_bomb(x,y+1, ROCKEMERALD_FALLING))
-//                        {   if (this.is(x,y+1,AIR))
-//                            {   this.move(x,y,0,1,ROCKEMERALD_FALLING);
-//                            }
-//                            else if (this.is(x,y+1,SAND))
-//                            {   this.move(x,y,0,1,ROCKEMERALD);
-//                                this.transform(x,y+1,SAND_FULLEMERALD);
-//                            }
-//                            else if (this.is(x,y+1,ACID))
-//                            {   this.move(x,y,0,1,ROCKEMERALD);      
-//                                this.transform(x,y+1,ACID);  
-//                                this.changecounter(CTR_EMERALDSTOOMUCH,-1);                  
-//                            }
-//                            else if (this.is(x,y+1,CONVERTER) && this.is(x,y+2,AIR))
-//                            {   this.move (x,y,0,2,EMERALD_FALLING);
-//                                this.highlight (x,y+1, CONVERTER);                       
-//                            }
-//                            else if (this.is(x,y+1,CUSHION))
-//                            {   this.changestate(x,y,ROCKEMERALD);
-//                                this.transform(x,y+1, CUSHION_BUMPING);
-//                                this.transform(x,y+1, CUSHION);
-//                            }
-//                            else
-//                            {   this.changestate(x,y,ROCKEMERALD);
-//                            }
-//                        }
-//                        break;
-//                    }
                     case SAND_FULL:
                     {   if (this.is(x,y+1,AIR))
                         {   this.move(x,y,0,1,ROCK_FALLING);
@@ -461,23 +429,6 @@ Logic.prototype.piecesmove = function()
                         }
                         break;
                     }
-//                    case SAND_FULLEMERALD:
-//                    {   if (this.is(x,y+1,AIR))
-//                        {   this.move(x,y,0,1,ROCKEMERALD_FALLING);
-//                            this.transform(x,y, SAND);
-//                        }
-//                        else if (this.is(x,y+1,ACID))
-//                        {   this.move(x,y,0,1,ROCKEMERALD_FALLING);
-//                            this.transform(x,y, SAND);
-//                            this.transform(x,y+1, ACID);
-//                        }
-//                        else if (is(x,y+1,SAND))
-//                        {   this.move(x,y,0,1, ROCKEMERALD);
-//                            this.transform(x,y, SAND);
-//                            this.transform(x,y+1, SAND_FULLEMERALD);                     
-//                        }
-//                        break;
-//                    }
                     case EMERALD:
                     {   if (this.is(x,y+1,AIR))
                         {   this.move(x,y,0,1,EMERALD_FALLING);
@@ -790,7 +741,7 @@ Logic.prototype.piecesmove = function()
                             this.transform(x,y+1, CUSHION);
                         }
                         else if (this.is_living(x,y+1))
-                        {   this.explode3x3(x,y, "         ");
+                        {   this.explode3x3(x,y, Logic.DEBRIS_NOTHING);
                         }
                         else 
                         {   this.transform(x,y, BOMB_EXPLODE);
@@ -871,7 +822,7 @@ Logic.prototype.piecesmove = function()
                     case BUGLEFT:
                     case BUGLEFT_FIXED:
                     {   if (this.is_neardestruct_target(x,y) || this.is_player_piece_at(x-1,y))
-                        {   this.explode3x3(x,y, "         ");
+                        {   this.explode3x3(x,y, Logic.DEBRIS_NOTHING);
                         }                       
                         else if (this.is(x,y+1,AIR) && this.is(x,y,BUGLEFT)) 
                         {   this.transform(x,y,BUGDOWN_FIXED);
@@ -887,7 +838,7 @@ Logic.prototype.piecesmove = function()
                     case BUGUP:
                     case BUGUP_FIXED:  
                     {   if (this.is_neardestruct_target(x,y) || this.is_player_piece_at(x,y-1))
-                        {   this.explode3x3(x,y, "         ");
+                        {   this.explode3x3(x,y, Logic.DEBRIS_NOTHING);
                         }                       
                         else if (this.is(x-1,y,AIR) && this.is(x,y,BUGUP)) 
                         {   this.transform(x,y,BUGLEFT_FIXED);
@@ -903,7 +854,7 @@ Logic.prototype.piecesmove = function()
                     case BUGRIGHT:
                     case BUGRIGHT_FIXED:
                     {   if (this.is_neardestruct_target(x,y) || this.is_player_piece_at(x+1,y))
-                        {   this.explode3x3(x,y, "         ");
+                        {   this.explode3x3(x,y, Logic.DEBRIS_NOTHING);
                         }                       
                         else if (this.is(x,y-1,AIR) && this.is(x,y,BUGRIGHT)) 
                         {   this.transform(x,y,BUGUP_FIXED);
@@ -919,7 +870,7 @@ Logic.prototype.piecesmove = function()
                     case BUGDOWN:
                     case BUGDOWN_FIXED:
                     {   if (this.is_neardestruct_target(x,y) || this.is_player_piece_at(x,y+1))
-                        {   this.explode3x3(x,y, "         ");
+                        {   this.explode3x3(x,y, Logic.DEBRIS_NOTHING);
                         }                       
                         else if (this.is(x+1,y,AIR) && this.is(x,y,BUGDOWN)) 
                         {   this.transform(x,y, BUGRIGHT_FIXED);
@@ -935,7 +886,7 @@ Logic.prototype.piecesmove = function()
                     case LORRYLEFT:
                     case LORRYLEFT_FIXED:
                     {   if (this.is_neardestruct_target(x,y) || this.is_player_piece_at(x-1,y))
-                        {   this.explode3x3(x,y, "****$****");
+                        {   this.explode3x3(x,y, Logic.DEBRIS_EMERALDS);
                         }                       
                         else if (this.is(x,y-1,AIR) && this.is(x,y,LORRYLEFT)) 
                         {   this.transform(x,y, LORRYUP_FIXED);
@@ -951,7 +902,7 @@ Logic.prototype.piecesmove = function()
                     case LORRYUP:
                     case LORRYUP_FIXED:  
                     {   if (this.is_neardestruct_target(x,y) || this.is_player_piece_at(x,y-1))
-                        {   this.explode3x3(x,y, "****$****");
+                        {   this.explode3x3(x,y, Logic.DEBRIS_EMERALDS);
                         }
                         else if (this.is(x+1,y,AIR) && this.is(x,y,LORRYUP)) 
                         {   this.transform(x,y, LORRYRIGHT_FIXED);
@@ -967,7 +918,7 @@ Logic.prototype.piecesmove = function()
                     case LORRYRIGHT:
                     case LORRYRIGHT_FIXED:
                     {   if (this.is_neardestruct_target(x,y) || this.is_player_piece_at(x+1,y))
-                        {   this.explode3x3(x,y, "****$****");
+                        {   this.explode3x3(x,y, Logic.DEBRIS_EMERALDS);
                         }                                                   
                         else if (this.is(x,y+1,AIR) && this.is(x,y,LORRYRIGHT)) 
                         {   this.transform(x,y, LORRYDOWN_FIXED);
@@ -983,7 +934,7 @@ Logic.prototype.piecesmove = function()
                     case LORRYDOWN:
                     case LORRYDOWN_FIXED:
                     {   if (this.is_neardestruct_target(x,y) || this.is_player_piece_at(x,y+1))
-                        {   this.explode3x3(x,y, "****$****");
+                        {   this.explode3x3(x,y, Logic.DEBRIS_EMERALDS);
                         }                                                   
                         else if (this.is(x-1,y,AIR) && this.is(x,y,LORRYDOWN)) {
                             this.transform(x,y,LORRYLEFT_FIXED);
@@ -999,7 +950,7 @@ Logic.prototype.piecesmove = function()
 
                     case YAMYAM:
                     {   if (this.is_neardestruct_target(x,y)) 
-                        {   this.explode3x3(x,y, this.level.yamyamremainders);
+                        {   this.explode3x3(x,y, Logic.DEBRIS_YAMYAM);
                         }
                         else
                         {   randomseed = this.nextrandomseed(randomseed);
@@ -1033,7 +984,7 @@ Logic.prototype.piecesmove = function()
                         var dx = (ypiece==YAMYAMLEFT) ? -1 : (ypiece==YAMYAMRIGHT) ? 1 : 0;
                         var dy = (ypiece==YAMYAMUP) ? -1 : (ypiece==YAMYAMDOWN) ? 1 : 0;                        
                         if (this.is_neardestruct_target(x,y) || this.is_player_piece_at(x+dx,y+dy)) 
-                        {   this.explode3x3(x,y, this.level.yamyamremainders);
+                        {   this.explode3x3(x,y, Logic.DEBRIS_YAMYAM);
                         }
                         else if (this.is(x+dx,y+dy,AIR))
                         {   this.move(x,y, dx,dy, ypiece);
@@ -1155,19 +1106,19 @@ Logic.prototype.piecesmove = function()
                         break;
                         
                     case BOMB_EXPLODE:
-                        this.explode3x3(x,y, "         ");
+                        this.explode3x3(x,y, Logic.DEBRIS_NOTHING);
                         break;
                     case TIMEBOMB_EXPLODE:
-                        this.explode3x3(x,y, "         ");
+                        this.explode3x3(x,y, Logic.DEBRIS_NOTHING);
                         break;
                     case BUG_EXPLODE:
-                        this.explode3x3(x,y, "         ");
+                        this.explode3x3(x,y, Logic.DEBRIS_NOTHING);
                         break;
                     case LORRY_EXPLODE:
-                        this.explode3x3(x,y, "****$****");
+                        this.explode3x3(x,y, Logic.DEBRIS_EMERALDS);
                         break;
                     case YAMYAM_EXPLODE:
-                        this.explode3x3(x,y, this.level.yamyamremainders);
+                        this.explode3x3(x,y, Logic.DEBRIS_YAMYAM);
                         break;
                     case BIGBOMB_EXPLODE:
                         this.explode5x5(x,y, EXPLODE1_TNT, EXPLODE1_TNT, EXPLODE1_AIR);
@@ -1185,7 +1136,6 @@ Logic.prototype.piecesmove = function()
                     case EXPLODE4_AIR:
                         this.transform(x,y, AIR);
                         break;
-
                     case EXPLODE1_TNT:
                         this.transform(x,y, EXPLODE2_TNT);
                         break;
@@ -1197,8 +1147,7 @@ Logic.prototype.piecesmove = function()
                         break;
                     case EXPLODE4_TNT:
                         this.transform(x,y, AIR);
-                        break;
-                        
+                        break;                        
                     case EXPLODE1_EMERALD:
                         this.transform(x,y, EXPLODE2_EMERALD);
                         break;
@@ -1211,7 +1160,6 @@ Logic.prototype.piecesmove = function()
                     case EXPLODE4_EMERALD:
                         this.transform(x,y, EMERALD);
                         break;
-
                     case EXPLODE1_SAPPHIRE:
                         this.transform(x,y, EXPLODE2_SAPPHIRE);
                         break;
@@ -1224,33 +1172,6 @@ Logic.prototype.piecesmove = function()
                     case EXPLODE4_SAPPHIRE:
                         this.transform(x,y, SAPPHIRE);
                         break;
-
-                    case EXPLODE1_RUBY:
-                        this.transform(x,y, EXPLODE2_RUBY);
-                        break;
-                    case EXPLODE2_RUBY:
-                        this.transform(x,y, EXPLODE3_RUBY);
-                        break;
-                    case EXPLODE3_RUBY:
-                        this.transform(x,y, EXPLODE4_RUBY);
-                        break;
-                    case EXPLODE4_RUBY:
-                        this.transform(x,y, RUBY);
-                        break;
-                        
-                    case EXPLODE1_CITRINE:
-                        this.transform(x,y, EXPLODE2_CITRINE);
-                        break;
-                    case EXPLODE2_CITRINE:
-                        this.transform(x,y, EXPLODE3_CITRINE);
-                        break;
-                    case EXPLODE3_CITRINE:
-                        this.transform(x,y, EXPLODE4_CITRINE);
-                        break;
-                    case EXPLODE4_CITRINE:
-                        this.transform(x,y, CITRINE);
-                        break;
-
                     case EXPLODE1_BAG:
                         this.transform(x,y, EXPLODE2_BAG);
                         break;
@@ -1262,6 +1183,114 @@ Logic.prototype.piecesmove = function()
                         break;
                     case EXPLODE4_BAG:
                         this.transform(x,y, BAG);
+                        break;
+                    case EXPLODE1_YAMYAM0:
+                        this.transform(x,y, EXPLODE2_YAMYAM0);
+                        break;
+                    case EXPLODE2_YAMYAM0:
+                        this.transform(x,y, EXPLODE3_YAMYAM0);
+                        break;
+                    case EXPLODE3_YAMYAM0:
+                        this.transform(x,y, EXPLODE4_YAMYAM0);
+                        break;
+                    case EXPLODE4_YAMYAM0:
+                        this.transform(x,y, this.level.yamyamremainders[0]);
+                        break;
+                    case EXPLODE1_YAMYAM1:
+                        this.transform(x,y, EXPLODE2_YAMYAM1);
+                        break;
+                    case EXPLODE2_YAMYAM1:
+                        this.transform(x,y, EXPLODE3_YAMYAM1);
+                        break;
+                    case EXPLODE3_YAMYAM1:
+                        this.transform(x,y, EXPLODE4_YAMYAM1);
+                        break;
+                    case EXPLODE4_YAMYAM1:
+                        this.transform(x,y, this.level.yamyamremainders[1]);
+                        break;
+                    case EXPLODE1_YAMYAM2:
+                        this.transform(x,y, EXPLODE2_YAMYAM2);
+                        break;
+                    case EXPLODE2_YAMYAM2:
+                        this.transform(x,y, EXPLODE3_YAMYAM2);
+                        break;
+                    case EXPLODE3_YAMYAM2:
+                        this.transform(x,y, EXPLODE4_YAMYAM2);
+                        break;
+                    case EXPLODE4_YAMYAM2:
+                        this.transform(x,y, this.level.yamyamremainders[2]);
+                        break;
+                    case EXPLODE1_YAMYAM3:
+                        this.transform(x,y, EXPLODE2_YAMYAM3);
+                        break;
+                    case EXPLODE2_YAMYAM3:
+                        this.transform(x,y, EXPLODE3_YAMYAM3);
+                        break;
+                    case EXPLODE3_YAMYAM3:
+                        this.transform(x,y, EXPLODE4_YAMYAM3);
+                        break;
+                    case EXPLODE4_YAMYAM3:
+                        this.transform(x,y, this.level.yamyamremainders[3]);
+                        break;
+                    case EXPLODE1_YAMYAM4:
+                        this.transform(x,y, EXPLODE2_YAMYAM4);
+                        break;
+                    case EXPLODE2_YAMYAM4:
+                        this.transform(x,y, EXPLODE3_YAMYAM4);
+                        break;
+                    case EXPLODE3_YAMYAM4:
+                        this.transform(x,y, EXPLODE4_YAMYAM4);
+                        break;
+                    case EXPLODE4_YAMYAM4:
+                        this.transform(x,y, this.level.yamyamremainders[4]);
+                        break;
+                    case EXPLODE1_YAMYAM5:
+                        this.transform(x,y, EXPLODE2_YAMYAM5);
+                        break;
+                    case EXPLODE2_YAMYAM5:
+                        this.transform(x,y, EXPLODE3_YAMYAM5);
+                        break;
+                    case EXPLODE3_YAMYAM5:
+                        this.transform(x,y, EXPLODE4_YAMYAM5);
+                        break;
+                    case EXPLODE4_YAMYAM5:
+                        this.transform(x,y, this.level.yamyamremainders[5]);
+                        break;
+                    case EXPLODE1_YAMYAM6:
+                        this.transform(x,y, EXPLODE2_YAMYAM6);
+                        break;
+                    case EXPLODE2_YAMYAM6:
+                        this.transform(x,y, EXPLODE3_YAMYAM6);
+                        break;
+                    case EXPLODE3_YAMYAM6:
+                        this.transform(x,y, EXPLODE4_YAMYAM6);
+                        break;
+                    case EXPLODE4_YAMYAM6:
+                        this.transform(x,y, this.level.yamyamremainders[6]);
+                        break;
+                    case EXPLODE1_YAMYAM7:
+                        this.transform(x,y, EXPLODE2_YAMYAM7);
+                        break;
+                    case EXPLODE2_YAMYAM7:
+                        this.transform(x,y, EXPLODE3_YAMYAM7);
+                        break;
+                    case EXPLODE3_YAMYAM7:
+                        this.transform(x,y, EXPLODE4_YAMYAM7);
+                        break;
+                    case EXPLODE4_YAMYAM7:
+                        this.transform(x,y, this.level.yamyamremainders[7]);
+                        break;
+                    case EXPLODE1_YAMYAM8:
+                        this.transform(x,y, EXPLODE2_YAMYAM8);
+                        break;
+                    case EXPLODE2_YAMYAM8:
+                        this.transform(x,y, EXPLODE3_YAMYAM8);
+                        break;
+                    case EXPLODE3_YAMYAM8:
+                        this.transform(x,y, EXPLODE4_YAMYAM8);
+                        break;
+                    case EXPLODE4_YAMYAM8:
+                        this.transform(x,y, this.level.yamyamremainders[8]);
                         break;
 
                     case ACTIVEBOMB5:
@@ -1280,56 +1309,7 @@ Logic.prototype.piecesmove = function()
                         this.transform(x,y, ACTIVEBOMB0);
                         break;
                     case ACTIVEBOMB0:
-                        this.explode3x3(x,y, "         ");
-                        break;
-                        
-                    case EXPLODE1_KEYRED:
-                        this.transform(x,y, EXPLODE2_KEYRED);
-                        break;
-                    case EXPLODE2_KEYRED:
-                        this.transform(x,y, EXPLODE3_KEYRED);
-                        break;
-                    case EXPLODE3_KEYRED:
-                        this.transform(x,y, EXPLODE4_KEYRED);
-                        break;
-                    case EXPLODE4_KEYRED:
-                        this.transform(x,y, KEYRED);
-                        break;
-                    case EXPLODE1_KEYGREEN:
-                        this.transform(x,y, EXPLODE2_KEYGREEN);
-                        break;
-                    case EXPLODE2_KEYGREEN:
-                        this.transform(x,y, EXPLODE3_KEYGREEN);
-                        break;
-                    case EXPLODE3_KEYGREEN:
-                        this.transform(x,y, EXPLODE4_KEYGREEN);
-                        break;
-                    case EXPLODE4_KEYGREEN:
-                        this.transform(x,y, KEYGREEN);
-                        break;
-                    case EXPLODE1_KEYYELLOW:
-                        this.transform(x,y, EXPLODE2_KEYYELLOW);
-                        break;
-                    case EXPLODE2_KEYYELLOW:
-                        this.transform(x,y, EXPLODE3_KEYYELLOW);
-                        break;
-                    case EXPLODE3_KEYYELLOW:
-                        this.transform(x,y, EXPLODE4_KEYYELLOW);
-                        break;
-                    case EXPLODE4_KEYYELLOW:
-                        this.transform(x,y, KEYYELLOW);
-                        break;
-                    case EXPLODE1_KEYBLUE:
-                        this.transform(x,y, EXPLODE2_KEYBLUE);
-                        break;
-                    case EXPLODE2_KEYBLUE:
-                        this.transform(x,y, EXPLODE3_KEYBLUE);
-                        break;
-                    case EXPLODE3_KEYBLUE:
-                        this.transform(x,y, EXPLODE4_KEYBLUE);
-                        break;
-                    case EXPLODE4_KEYBLUE:
-                        this.transform(x,y, KEYBLUE);
+                        this.explode3x3(x,y, Logic.DEBRIS_NOTHING);
                         break;                        
                 }           
             }
@@ -1341,33 +1321,17 @@ Logic.prototype.piecesmove = function()
         }
 };
     
-Logic.prototype.explode3x3 = function(x, y, remainders)
+Logic.prototype.explode3x3 = function(x, y, debris)
 {    
-        this.transform(x,y, this.calculateDebris(remainders.charCodeAt(4)));
-        this.catch_in_explosion(x-1,y-1, this.calculateDebris(remainders.charCodeAt(0)), false, 0,0);
-        this.catch_in_explosion(x,y-1,   this.calculateDebris(remainders.charCodeAt(1)), false, 0,-1);
-        this.catch_in_explosion(x+1,y-1, this.calculateDebris(remainders.charCodeAt(2)), false, 0,0);
-        this.catch_in_explosion(x-1,y,   this.calculateDebris(remainders.charCodeAt(3)), false, -1,0);
-        this.catch_in_explosion(x+1,y,   this.calculateDebris(remainders.charCodeAt(5)), false, 1,0);
-        this.catch_in_explosion(x-1,y+1, this.calculateDebris(remainders.charCodeAt(6)), false, 0,0);
-        this.catch_in_explosion(x,y+1,   this.calculateDebris(remainders.charCodeAt(7)), false, 0,1);
-        this.catch_in_explosion(x+1,y+1, this.calculateDebris(remainders.charCodeAt(8)), false, 0,0);        
-};
-
-Logic.prototype.calculateDebris = function(remainder)
-{   
-    switch (remainder)
-    {   case EMERALD:  { return EXPLODE1_EMERALD; }
-        case RUBY:     { return EXPLODE1_RUBY; }
-        case SAPPHIRE: { return EXPLODE1_SAPPHIRE; }
-        case BAG:      { return EXPLODE1_BAG; }
-        case CITRINE:  { return EXPLODE1_CITRINE; }
-        case KEYRED:   { return EXPLODE1_KEYRED; }
-        case KEYGREEN: { return EXPLODE1_KEYGREEN; }
-        case KEYYELLOW:{ return EXPLODE1_KEYYELLOW; }
-        case KEYBLUE:  { return EXPLODE1_KEYBLUE; }
-        default:  { return EXPLODE1_AIR; }
-    }
+        this.transform(x,y, debris[4]);
+        this.catch_in_explosion(x-1,y-1, debris[0], false, 0,0);
+        this.catch_in_explosion(x,y-1,   debris[1], false, 0,-1);
+        this.catch_in_explosion(x+1,y-1, debris[2], false, 0,0);
+        this.catch_in_explosion(x-1,y,   debris[3], false, -1,0);
+        this.catch_in_explosion(x+1,y,   debris[5], false, 1,0);
+        this.catch_in_explosion(x-1,y+1, debris[6], false, 0,0);
+        this.catch_in_explosion(x,y+1,   debris[7], false, 0,1);
+        this.catch_in_explosion(x+1,y+1, debris[8], false, 0,0);        
 };
     
 Logic.prototype.explode5x5 = function(x, y, centerdebris, outerdebris, rimdebris)
@@ -1471,15 +1435,7 @@ Logic.prototype.catch_in_explosion = function(x, y, debris, totalexplode, outwar
             case WALLEMERALD:            
                 this.can_not_create_debris(debris);
                 this.transform(x,y, EXPLODE1_EMERALD);    // will turn into emerald after explosion
-                break;
-//            case ROCKEMERALD: 
-//                this.can_not_create_debris(debris);
-//                this.transform(x,y, EXPLODE1_EMERALD);  // will turn into emerald after explosion
-//                break;
-//            case SAND_FULLEMERALD:
-//                this.can_not_create_debris(debris);
-//                this.transform(x,y, EXPLODE1_EMERALD);    // will turn into emerald after explosion
-//                break;              
+                break;          
             case BOX: 
                 this.can_not_create_debris(debris);
                 this.transform(x,y, EXPLODE1_BAG);       // will turn into bag after explosion
@@ -1539,18 +1495,6 @@ Logic.prototype.catch_in_explosion = function(x, y, debris, totalexplode, outwar
                 this.transform(x,y, debris);
                 this.changecounter(CTR_EMERALDSTOOMUCH,-2);
                 break;
-            case EXPLODE1_RUBY:
-            case EXPLODE2_RUBY:
-            case EXPLODE3_RUBY:
-            case EXPLODE4_RUBY:
-                if (totalexplode)           // additionally will be destroyed by big explosion
-                {   this.transform(x,y, debris);
-                    this.changecounter(CTR_EMERALDSTOOMUCH,-1);
-                }
-                else
-                {   this.can_not_create_debris(debris);
-                }
-                break;
                 
             default:
                 this.transform(x,y, debris);
@@ -1566,9 +1510,6 @@ Logic.prototype.can_not_create_debris = function(debris)
                 break;  
             case EXPLODE1_SAPPHIRE:
                 this.changecounter(CTR_EMERALDSTOOMUCH, -2);
-                break;  
-            case EXPLODE1_RUBY:
-                this.changecounter(CTR_EMERALDSTOOMUCH, -1);
                 break;  
             case EXPLODE1_BAG:
                 this.changecounter(CTR_EMERALDSTOOMUCH, -1);
@@ -1885,14 +1826,46 @@ Logic.prototype.add_laser_beam = function(x, y, dx, dy)
             case EXPLODE2_SAPPHIRE: 
             case EXPLODE3_SAPPHIRE: 
             case EXPLODE4_SAPPHIRE: 
-            case EXPLODE1_RUBY: 
-            case EXPLODE2_RUBY: 
-            case EXPLODE3_RUBY: 
-            case EXPLODE4_RUBY: 
             case EXPLODE1_BAG: 
             case EXPLODE2_BAG: 
             case EXPLODE3_BAG: 
             case EXPLODE4_BAG: 
+            case EXPLODE1_YAMYAM0: 
+            case EXPLODE2_YAMYAM0: 
+            case EXPLODE3_YAMYAM0: 
+            case EXPLODE4_YAMYAM0: 
+            case EXPLODE1_YAMYAM1: 
+            case EXPLODE2_YAMYAM1: 
+            case EXPLODE3_YAMYAM1: 
+            case EXPLODE4_YAMYAM1: 
+            case EXPLODE1_YAMYAM2: 
+            case EXPLODE2_YAMYAM2: 
+            case EXPLODE3_YAMYAM2: 
+            case EXPLODE4_YAMYAM2: 
+            case EXPLODE1_YAMYAM3: 
+            case EXPLODE2_YAMYAM3: 
+            case EXPLODE3_YAMYAM3: 
+            case EXPLODE4_YAMYAM3: 
+            case EXPLODE1_YAMYAM4: 
+            case EXPLODE2_YAMYAM4: 
+            case EXPLODE3_YAMYAM4: 
+            case EXPLODE4_YAMYAM4: 
+            case EXPLODE1_YAMYAM5: 
+            case EXPLODE2_YAMYAM5: 
+            case EXPLODE3_YAMYAM5: 
+            case EXPLODE4_YAMYAM5: 
+            case EXPLODE1_YAMYAM6: 
+            case EXPLODE2_YAMYAM6: 
+            case EXPLODE3_YAMYAM6: 
+            case EXPLODE4_YAMYAM6: 
+            case EXPLODE1_YAMYAM7: 
+            case EXPLODE2_YAMYAM7: 
+            case EXPLODE3_YAMYAM7: 
+            case EXPLODE4_YAMYAM7: 
+            case EXPLODE1_YAMYAM8: 
+            case EXPLODE2_YAMYAM8: 
+            case EXPLODE3_YAMYAM8: 
+            case EXPLODE4_YAMYAM8: 
             case RUBY:
             case RUBY_FALLING:
             case GLASSWALL:

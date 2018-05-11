@@ -283,8 +283,7 @@ LevelSoundPlayer.prototype.determineTransformSound = function(logic, oldpiece, n
             break;
         }
         case ROCK_FALLING:
-//        case ROCKEMERALD_FALLING:
-        {   if (newpiece==ROCK) // || newpiece==ROCKEMERALD)
+        {   if (newpiece==ROCK)
             {   return this.sound_stnfall;
             }
             break;
@@ -402,8 +401,16 @@ LevelSoundPlayer.prototype.determineTransformSound = function(logic, oldpiece, n
         case EXPLODE1_AIR:
         case EXPLODE1_EMERALD:
         case EXPLODE1_SAPPHIRE:
-        case EXPLODE1_RUBY:
         case EXPLODE1_BAG:
+        case EXPLODE1_YAMYAM0:
+        case EXPLODE1_YAMYAM1:
+        case EXPLODE1_YAMYAM2:
+        case EXPLODE1_YAMYAM3:
+        case EXPLODE1_YAMYAM4:
+        case EXPLODE1_YAMYAM5:
+        case EXPLODE1_YAMYAM6:
+        case EXPLODE1_YAMYAM7:
+        case EXPLODE1_YAMYAM8:
         {   return this.sound_explode;
         }    
         case ACTIVEBOMB5:
@@ -429,16 +436,6 @@ LevelSoundPlayer.prototype.determineMoveSound = function(oldpiece, newpiece, dx,
             }
             break;
         }
-//        case ROCKEMERALD:
-//        case ROCKEMERALD_FALLING:
-//        {   if (dx<0||dx>0)
-//            {   return newpiece==ROCKEMERALD_FALLING ? this.sound_stnroll : this.sound_push;
-//            }
-//            else if (dy>=2)
-//            {   return this.sound_rubyconv;  // use now for this type of conversion
-//            }
-//            break;              
-//        }
         case BAG:
         case BAG_FALLING:
         {   if (dx<0||dx>0)

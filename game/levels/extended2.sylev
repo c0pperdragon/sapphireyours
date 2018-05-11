@@ -520,14 +520,13 @@
     ]
 }
 ,
-{   "title": "Great Dropping II",
-    "author": "Ronald",
+{
+    "title": "Great Dropping II",
     "difficulty": 7,
     "category": 2,
     "loot": 12,
-    "swamprate": 6,
-    "map":
-    [   "                ###                ",
+    "map": [
+        "                ###                ",
         "                #g#                ",
         "                # #                ",
         "#################Y#################",
@@ -560,40 +559,44 @@
         "#aa#aaaaaaaaaaaaaaaaaaaaaaaaaaaa#a#",
         "###################################"
     ],
-    "demos":
-    [   {   
-            "randomseed": 333577,
-            "moves":
-            [   ".tt.bbbbbbrrrrrrrrrrr...r...r...rrrr..r.",
-                "..rrrrrrrrrrrrrrttt.bbbbbbbbbbbbbbbbbbbl",
-                "llllllllllll...lllllll....llllllll..ttl.",
-                "llbllbl...lltttlrrbbbrrrrrrrrrrrrrrrrrr.",
-                ".rrrr......r...rrrrrrrrrrr..l.........rt",
-                "ttttr....ltttltttttttttttlltt.llllllllll",
-                "ll..llllll..llllllllblblllttttttttbbbbbb",
-                "bbrrrrrrr....rrrrrrrrrrr....rrrrrrrr..rr",
-                "rrr......rbbbbbbbbbbbbbbbbllllllllllllll",
-                "ll.....llllllll.r.......llllll......lllt",
-                "tlttttttlllttttrrrrrrttrrlllbbllllllbbbb",
-                "rrrbbbbbbrr.l...rr....rrrrrrrr......rrrr",
-                "rrrr........r......r...rrr....rrrrbbr...",
-                "rtrttttttttttl..rtttttlllllllll..ll.llll",
-                "ttttttttt.....lttt.bbbbbbbbbbrrrrrrrrrrr",
-                "rrrrrbrrbbbbbbbbbbbbbbbbl...lll....llll.",
-                "..llllllllllllllll.....lllllllttttttttll",
-                "lttttrrrrrrrrrrrr.t.lr.b.rr...mll.......",
-                ".rrrrrrrrrrrrrrrrrrrrr...llllrrrrlllll..",
-                ".ttll..b...lt.rb.r..rrr....ll.....lllllt",
-                "l.r.b....r....l......................tll",
-                "lllllrrrrrrrbrr...ll......bllllllllll..l",
-                "llllllllllbbbbrrrbbbbbbrrr....rrr.......",
-                ".rrrrbrrrrrrrr..l......rrrrrrrr...r..b..",
-                "rrrtttttttttttttbbl..........rtttttllltl",
-                ".....llll...ll.bl..ll..lllllllllllllllll",
-                "l.rr...mll.......rrrbbllll......."
-            ]        
+    "demos": [
+        {
+            "randomseed": 918214,
+            "moves": [
+                "...t.bbbbbbr..rrrrrrrrr..rrrrrrrrrrrrrrr",
+                "rrrrrrrrbbbbbbbbbbbrrlbbbbblllllllllllll",
+                "lllll...lll......lll....l....llllll.....",
+                "..llttttl.bl...rrbbbr....rr............r",
+                "rrrrll.......rr..rrrrrrr..l......rr...rr",
+                "rrr....l......rrrrrrrrrr.....rttr.l.....",
+                "........rttttttttttttt.blblbl..rtttttl..",
+                "lllllllll.....lllllllll...lll........l..",
+                "...llllllllltttttttt.bbbbbbbbrrrr.....rr",
+                "....rrrrrrrr...rr.....rr.....rr..r.....r",
+                "rrrrrrrrrbbbbbbbbbbbbbbbbl.....lllllllll",
+                "llllll...........ll.....lllllll........l",
+                "lllll......rttttttttlllttttrrrrrrttrrllb",
+                "bllllllbbbbrrrbbbbbbbb.r.......rr..rrr..",
+                ".rrrrrr...r..rrrr...rrrr......rrrrrrr...",
+                ".......rttttttttttttttttl..l..llllllllll",
+                "l...lttllltt.r.ttr..l.ttttt...bbbbbbbbbb",
+                "..r.b......rrrrrrrrrr.rrrrrrbbbbbbbbbbbb",
+                "bbbb.lll...ll....ll.tlllblllll....llllll",
+                "ll.....llllllttttttttlllttttrrrrrrrrrrrr",
+                "rrl..t.lrb.r............................",
+                "..ml.......rrrr.........llt.........brrr",
+                "rrrrrrrrrrrrrrrr..lllrrrrl..lllllllttlll",
+                "rrbrrb.t.l.rrt.......bblllttlllllllrrrrr",
+                "rrbblllllllllllllllllllllbbbbrr.r.bbbbbr",
+                "..rrrrrrbbbrr.rrrrrrrrrrrrrrrrrrrrrttttt",
+                "trbr....ltttttttttttlllltllblllll..llll.",
+                "...lll.r.....llllllll....lll...ml.......",
+                "...rrbbllll......."
+            ]
         }
-    ]
+    ],
+    "author": "Ronald",
+    "swamprate": 6
 }
 ,
 {   "title": "The Long Run",
@@ -920,6 +923,4 @@
         }
     ]
 }
-
-
 ]

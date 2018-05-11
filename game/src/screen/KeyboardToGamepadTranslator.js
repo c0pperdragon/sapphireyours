@@ -95,45 +95,40 @@ KeyboardToGamepadTranslator.prototype.sendGamePadStates = function()
     var action2_1 = false;      
     for (var i=0; i<this.numpressed; i++)
     {   switch (this.pressedkeys[i])
-        {   case KeyEvent.KEYCODE_DPAD_UP:
+        {   case KeyEvent.UP:
                 dir0 = GamePadInputBuffer.DIRECTION_UP;
                 break;
-            case KeyEvent.KEYCODE_DPAD_DOWN:    
+            case KeyEvent.DOWN:    
                 dir0 = GamePadInputBuffer.DIRECTION_DOWN;
                 break;
-            case KeyEvent.KEYCODE_DPAD_LEFT:    
+            case KeyEvent.LEFT:    
                 dir0 = GamePadInputBuffer.DIRECTION_LEFT;
                 break;
-            case KeyEvent.KEYCODE_DPAD_RIGHT:   
+            case KeyEvent.RIGHT:   
                 dir0 = GamePadInputBuffer.DIRECTION_RIGHT;
                 break;
-            case KeyEvent.KEYCODE_SPACE:
-                dir0 = GamePadInputBuffer.DIRECTION_WAIT;
-                break;              
-            case KeyEvent.KEYCODE_DPAD2_UP:    
+            case KeyEvent.UP2:    
                 dir1 = GamePadInputBuffer.DIRECTION_UP;
                 break;
-            case KeyEvent.KEYCODE_DPAD2_DOWN:    
+            case KeyEvent.DOWN2:    
                 dir1 = GamePadInputBuffer.DIRECTION_DOWN;
                 break;
-            case KeyEvent.KEYCODE_DPAD2_LEFT:    
+            case KeyEvent.LEFT2:    
                 dir1 = GamePadInputBuffer.DIRECTION_LEFT;
                 break;
-            case KeyEvent.KEYCODE_DPAD2_RIGHT:    
+            case KeyEvent.RIGHT2:    
                 dir1 = GamePadInputBuffer.DIRECTION_RIGHT;
                 break;
-            case KeyEvent.KEYCODE_CTRL_LEFT:
-            case KeyEvent.KEYCODE_CTRL_RIGHT:
+            case KeyEvent.A:
                 action1_0 = true;
                 break;
-            case KeyEvent.KEYCODE_SHIFT_LEFT:
-            case KeyEvent.KEYCODE_SHIFT_RIGHT:
+            case KeyEvent.B:
                 action2_0 = true;
                 break;
-            case KeyEvent.KEYCODE_DPAD2_BUTTON1:
+            case KeyEvent.A2:
                 action2_1 = true;
                 break;
-            case KeyEvent.KEYCODE_DPAD2_BUTTON2:
+            case KeyEvent.B2:
                 action1_1 = true;
                 break;
         }
@@ -155,19 +150,3 @@ KeyboardToGamepadTranslator.prototype.sendGamePadStates = function()
     l2.setAction2Button(1, action2_1);
     l2.setDirection(1, dir1);
 };   
-    
-/*    
-KeyboardToGamepadTranslator.prototype.isKeyForSecondaryInput = function(keycode)
-{
-    switch (keycode)
-    {   case KeyEvent.KEYCODE_R:    
-        case KeyEvent.KEYCODE_F:    
-        case KeyEvent.KEYCODE_D:    
-        case KeyEvent.KEYCODE_G:    
-        case KeyEvent.KEYCODE_S:
-        case KeyEvent.KEYCODE_A:
-            return true;
-    }
-    return false;
-};
-*/

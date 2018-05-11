@@ -500,7 +500,7 @@ Game.prototype.onKeyDown = function(keycode)
 {    
     this.usingKeyboardInput = true;
         
-    if (this.screens.length>0 && (keycode==KeyEvent.KEYCODE_BACK))
+    if (this.screens.length>0 && (keycode==KeyEvent.X))
     {   this.getTopScreen().onBackNavigation();
     }
     else if (this.screens.length>0)

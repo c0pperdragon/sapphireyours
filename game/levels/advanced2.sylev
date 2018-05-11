@@ -605,14 +605,13 @@
     ]
 }
 ,
-{   "title": "Round it Goes",
-    "author": "J\u00fcrgen",
+{
+    "title": "Round it Goes",
     "difficulty": 4,
     "category": 3,
     "loot": 3,
-    "time": 300,
-    "map":
-    [   "########E########",
+    "map": [
+        "########E########",
         "#5           5  #",
         "# r############ #",
         "# #   k       # #",
@@ -626,19 +625,20 @@
         "#  7         1 7#",
         "#################"
     ],
-    "demos":
-    [   {   
-            "randomseed": 980681,
-            "moves":
-            [   ".....rrtttttttttt..lllllllllllllblbbbb..",
-                "bbbbbrrrrrrr......tlll..lltttt.ttrrrr.rr",
-                "rrrr..bbbbblbllllll.llltt..tttt.rrrrrbb.",
-                "rrrblllrrttlllllbb.r.ttrrr.l..t...rrrrr.",
-                "bbbbb.blllll..b.rrrrrrrttttttttttlllllll",
-                "t......."
+    "demos": [
+        {
+            "randomseed": 773950,
+            "moves": [
+                "....rr.tttttttttt..lllllllllllllblbbbbbb",
+                "bbb.rrrrrrr......t...ll.lllttt.tttrrrrrr",
+                "rrrrbbb.bblbllll.ll.lllttt.tttrrrrr..rrr",
+                "rrbbb..bbbllllll..lllltt.ttttrrrrrbrrrbb",
+                ".t...blll.llltt.rrrt...rrrrrbbbb.bblllll",
+                "brrrrrrrttttttttttlllllllt......."
             ]
         }
-    ]
+    ],
+    "author": "Jürgen"
 }
 ,
 {   "title": "The Way Up",

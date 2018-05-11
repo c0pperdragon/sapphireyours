@@ -21,7 +21,6 @@ GamePadInputBuffer.DIRECTION_UP = 0;
 GamePadInputBuffer.DIRECTION_DOWN = 1;
 GamePadInputBuffer.DIRECTION_LEFT = 2;
 GamePadInputBuffer.DIRECTION_RIGHT = 3;
-GamePadInputBuffer.DIRECTION_WAIT = 4;
 
 GamePadInputBuffer.MODE_NORMAL = 0;
 GamePadInputBuffer.MODE_GRAB = 1;
@@ -88,7 +87,7 @@ GamePadInputBuffer.prototype.setAction1Button = function(device,pressed)
     // memorize previous state of the action key
     var prev = this.numaction1buttons>0; 
     
-    // insert press-info for device into array if not aready present
+    // insert press-info for device into array if not already present
     if (pressed)
     {   if (!GamePadInputBuffer.inArray(this.action1device,this.numaction1buttons,device))
         {   this.action1device[this.numaction1buttons++] = device;
