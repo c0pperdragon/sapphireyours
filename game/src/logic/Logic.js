@@ -354,11 +354,15 @@ Logic.prototype.piecesmove = function()
                 }
                 
                 // huge decision - tree what to do with each piece 
-                switch (this.piece(x,y))
+                var piece = this.piece(x,y);
+                switch (piece)
                 {   case DOOR:
                         if (this.counters[CTR_EMERALDSCOLLECTED]>=this.level.getLoot())
                         {   this.transform(x,y, DOOR_OPENED);
                         }
+                        break;
+                    case DOOR_OPENED:
+                        this.highlight(x,y, piece);
                         break;
                     case DOOR_CLOSING:
                         this.transform(x,y, DOOR_CLOSED);                        
@@ -710,7 +714,6 @@ Logic.prototype.piecesmove = function()
                         break;
                     }                               
                     
-
                     case BOMB:
                     {   if (this.is(x,y+1,AIR))
                         {   this.move(x,y,0,1,BOMB_FALLING);
@@ -980,23 +983,22 @@ Logic.prototype.piecesmove = function()
                     case YAMYAMRIGHT:
                     case YAMYAMUP:
                     case YAMYAMDOWN:
-                    {   var ypiece = this.piece(x,y); 
-                        var dx = (ypiece==YAMYAMLEFT) ? -1 : (ypiece==YAMYAMRIGHT) ? 1 : 0;
-                        var dy = (ypiece==YAMYAMUP) ? -1 : (ypiece==YAMYAMDOWN) ? 1 : 0;                        
+                    {   var dx = (piece==YAMYAMLEFT) ? -1 : (piece==YAMYAMRIGHT) ? 1 : 0;
+                        var dy = (piece==YAMYAMUP) ? -1 : (piece==YAMYAMDOWN) ? 1 : 0;                        
                         if (this.is_neardestruct_target(x,y) || this.is_player_piece_at(x+dx,y+dy)) 
                         {   this.explode3x3(x,y, Logic.DEBRIS_YAMYAM);
                         }
                         else if (this.is(x+dx,y+dy,AIR))
-                        {   this.move(x,y, dx,dy, ypiece);
+                        {   this.move(x,y, dx,dy, piece);
                         }
                         else if (this.is(x+dx,y+dy,SAPPHIRE))
                         {   this.transform (x+dx,y+dy, AIR);
-                            this.highlight(x,y, ypiece);
+                            this.highlight(x,y, piece);
                             this.changecounter(CTR_EMERALDSTOOMUCH, -2); 
                         }
                         else if (this.is(x+dx,y+dy,CITRINE))
                         {   this.transform (x+dx,y+dy, AIR);
-                            this.highlight(x,y, ypiece);
+                            this.highlight(x,y, piece);
                             this.changecounter(CTR_EMERALDSTOOMUCH, -3); 
                         }
                         else
@@ -1970,7 +1972,7 @@ Logic.prototype.playermove = function (player)
         // leave through exit
         else if (this.is(x+dx,y+dy,DOOR_OPENED))
         {
-            this.highlight(x+dx,y+dy, DOOR_OPENED);  
+            this.highlight(x+dx,y+dy, DOOR_OPENED);
             this.move (x,y, dx,dy, manpiece);
             this.transform(x+dx,y+dy, DOOR_CLOSING);
             

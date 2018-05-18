@@ -81,6 +81,9 @@ var LevelRenderer = function()
     this.anim_keyyellow_away = null;
     this.anim_elevatorleft_throw = null;
     this.anim_elevatorright_throw = null;    
+    this.anim_elevatorleft_move = null;
+    this.anim_elevatorright_move = null;    
+    this.anim_pillow_move = null;    
     this.anim_laser_h = null;
     this.anim_laser_v = null;
     this.anim_laser_bl = null;
@@ -109,12 +112,12 @@ LevelRenderer.prototype.$ = function(game)
         "Earth All","Wall All", "Wall Round All",
         "Earth Right", "Sand", "Glass", "Stone Wall", "Round Stone Wall",
         "Wall Emerald", "Emerald", "Citrine", "Sapphire", "Ruby", 
-        "Stone Right", "Bag", "Bomb", // "Stone Emerald",         
-        "Exit Closed", "Exit", "Swamp Move", "Swamp Grow", 
+        "Stone Right", "Bag", "Bomb", 
+        "Exit Open", "Exit", "Swamp Move", "Swamp Grow", 
         "Drop Left", "Drop Right", "Drop Down", "Drop", "Converter", "Converter Working",
-        "Timebomb", "Tickbomb", "TNT", "Safe", "Pillow", "Elevator", "Elevator Left",
-        "Elevator Right", "Elevator Left Throw", "Elevator Right Throw", "Gun", 
-        "Acid", "Acid Left End", "Acid Right End", "Acid Both Ends",
+        "Timebomb", "Tickbomb", "TNT", "Safe", "Pillow", "Pillow Move", 
+        "Elevator", "Elevator Left", "Elevator Right", "Elevator Left Throw", "Elevator Right Throw", 
+        "Gun", "Acid", "Acid Left End", "Acid Right End", "Acid Both Ends",
         "Key Blue", "Key Red", "Key Green", "Key Yellow", 
         "Door Blue", "Door Red", "Door Green", "Door Yellow", "Door Onetime",
         "Door Onetime Closed", "Lorry", "Bug", 
@@ -157,7 +160,7 @@ LevelRenderer.prototype.isLoaded = function()
 //    this.piecetiles[ROCKEMERALD] = this.getAnimation("Stone Emerald");
     this.piecetiles[BAG] = this.getAnimation("Bag");
     this.piecetiles[BOMB] = this.getAnimation("Bomb");         
-    this.piecetiles[DOOR] = this.getAnimation("Exit Closed");
+    this.piecetiles[DOOR] = this.getAnimation("Exit");
     this.piecetiles[SWAMP] = this.getAnimation("Swamp Move");    
     this.piecetiles[DROP] = this.getAnimation("Drop");
     this.piecetiles[TIMEBOMB] = this.getAnimation("Timebomb");    
@@ -167,8 +170,8 @@ LevelRenderer.prototype.isLoaded = function()
     this.piecetiles[BOX] = this.getAnimation("Safe");
     this.piecetiles[CUSHION] = this.getAnimation("Pillow");
     this.piecetiles[ELEVATOR] = this.getAnimation("Elevator");
-    this.piecetiles[ELEVATOR_TOLEFT] = this.getAnimation("Elevator Left");
-    this.piecetiles[ELEVATOR_TORIGHT] = this.getAnimation("Elevator Right");
+    this.piecetiles[ELEVATOR_TOLEFT] = this.createStillAnimation(this.getAnimation("Elevator Left"));
+    this.piecetiles[ELEVATOR_TORIGHT] = this.createStillAnimation(this.getAnimation("Elevator Right"));
     // this.piecetiles[ACID]     // has context-depending tiles
     this.piecetiles[KEYBLUE] = this.getAnimation("Key Blue");
     this.piecetiles[KEYRED] = this.getAnimation("Key Red");
@@ -202,9 +205,9 @@ LevelRenderer.prototype.isLoaded = function()
     this.piecetiles[EMERALD_FALLING] = this.getAnimation("Emerald");
     this.piecetiles[BOMB_FALLING] = this.getAnimation("Bomb");
     this.piecetiles[BAG_FALLING] = this.getAnimation("Bag");
-    this.piecetiles[DOOR_OPENED] = this.getAnimation("Exit");
-    this.piecetiles[DOOR_CLOSING] = this.createStillAnimation(this.getAnimation("Exit"));
-    this.piecetiles[DOOR_CLOSED] = this.getAnimation("Exit Closed");
+    this.piecetiles[DOOR_OPENED] = this.getAnimation("Exit Open");
+    this.piecetiles[DOOR_CLOSING] = this.getAnimation("Exit Open");
+    this.piecetiles[DOOR_CLOSED] = this.getAnimation("Exit");
     this.piecetiles[LORRYLEFT_FIXED] = this.createRotatedAnimation(this.getAnimation("Lorry"),0);
     this.piecetiles[LORRYDOWN_FIXED] = this.createRotatedAnimation(this.getAnimation("Lorry"),90);
     this.piecetiles[LORRYRIGHT_FIXED] = this.createRotatedAnimation(this.getAnimation("Lorry"),180);
@@ -402,6 +405,9 @@ LevelRenderer.prototype.isLoaded = function()
     this.anim_drophit = this.createOverlayAnimation(this.getAnimation("Drop"),this.getAnimation("Swamp Grow"));   
     this.anim_elevatorleft_throw = this.getAnimation("Elevator Left Throw");
     this.anim_elevatorright_throw = this.getAnimation("Elevator Right Throw");    
+    this.anim_elevatorleft_move = this.getAnimation("Elevator Left");
+    this.anim_elevatorright_move = this.getAnimation("Elevator Right");
+    this.anim_pillow_move = this.getAnimation("Pillow Move");
     this.anim_lorry_right_up = this.createRotatingAnimation(this.piecetiles[LORRYRIGHT], 0,90);
     this.anim_lorry_up_left = this.createRotatingAnimation(this.piecetiles[LORRYRIGHT], 90,180);
     this.anim_lorry_left_down = this.createRotatingAnimation(this.piecetiles[LORRYRIGHT], 180,270);
@@ -749,6 +755,17 @@ LevelRenderer.prototype.determineMoveAnimation = function(oldpiece, newpiece, x,
             else if (dx>0) { return this.anim_bomb_right; }
             break;      
         }
+        case ELEVATOR_TOLEFT:
+        {   if (dy<0) { return this.anim_elevatorleft_move; }   
+            break;
+        }
+        case ELEVATOR_TORIGHT:
+        {   if (dy<0) { return this.anim_elevatorright_move; }
+            break;
+        }
+        case CUSHION:
+        {   return this.anim_pillow_move;
+        }
     }
 
     // when doing "far" animations, there could be a change of visual in the middle of the action
@@ -910,8 +927,17 @@ LevelRenderer.prototype.determineTransformAnimation = function (oldpiece, newpie
         {   if (oldpiece==DROP) { return this.anim_drophit; }
             else                { return null;  }  // do not draw over direction-dependent animation
         }
-        case DOOR_CLOSED: { return this.anim_exit_closing };
-        case DOOR_CLOSING: { return null; } // prevent man being over-drawn by door
+        case DOOR_OPENED: 
+        {   if (oldpiece==DOOR) return this.piecetiles[DOOR]; 
+            break;
+        }
+        case DOOR_CLOSING: 
+        {   return null;  // prevent man being over-drawn by door
+        }
+        case DOOR_CLOSED: 
+        {   if (oldpiece==DOOR_CLOSING) { return this.anim_exit_closing; }
+            break;
+        }
         case ONETIMEDOOR_CLOSED: { return this.piecetiles[ONETIMEDOOR]; }
         case CUSHION: 
         {   if (oldpiece==CUSHION_BUMPING) { return null; }
@@ -946,8 +972,7 @@ LevelRenderer.prototype.determineTransformAnimation = function (oldpiece, newpie
 LevelRenderer.prototype.determineHighlightAnimation = function (highlightpiece, originatingx, originatingy, logic)
 {
     switch (highlightpiece)
-    {   case DOOR_OPENED: { return this.piecetiles[DOOR_CLOSING]; }
-        case EARTH:
+    {   case EARTH:
         {   return this.earthtiles[this.earthJaggedConfiguration(logic, originatingx, originatingy)];
         }
         case LASER_V: { return this.anim_laser_v; }
@@ -960,6 +985,8 @@ LevelRenderer.prototype.determineHighlightAnimation = function (highlightpiece, 
         case LASER_R: { return this.anim_laser_right; }
         case LASER_U: { return this.anim_laser_up; }
         case LASER_D: { return this.anim_laser_down; }
+        case ELEVATOR_TOLEFT: { return this.anim_elevatorleft_throw; }
+        case ELEVATOR_TORIGHT: { return this.anim_elevatorright_throw; }
     }        
     
     return this.piecetiles[highlightpiece];
