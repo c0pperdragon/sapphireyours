@@ -1963,6 +1963,13 @@ Logic.prototype.playermove = function (player)
         if (grab)
         {   if (this.is(x+dx,y+dy,EARTH))
             {   manpiece += (MAN1_DIGLEFT - MAN1_LEFT);   // need to show different image when digging
+                //// hint for display logic
+                //switch (dx+10*dy)
+                //{   case -10: { this.transform (x+dx,y+dy, EARTH_UP); break; }
+                //    case 10: { this.transform (x+dx,y+dy, EARTH_DOWN); break; }
+                //    case -1: { this.transform (x+dx,y+dy, EARTH_LEFT); break; }
+                //    case 1: { this.transform (x+dx,y+dy, EARTH_RIGHT); break; }
+                //}                
                 this.transform(x+dx,y+dy,AIR);       
             }
             else
@@ -2000,18 +2007,10 @@ Logic.prototype.playermove = function (player)
             {   case EARTH:
                     // hint for the display logic
                     switch (dx+10*dy)
-                    {   case -10:       
-                            this.transform (x+dx,y+dy, EARTH_UP);
-                            break;
-                        case 10:     
-                            this.transform (x+dx,y+dy, EARTH_DOWN);
-                            break;
-                        case -1:     
-                            this.transform (x+dx,y+dy, EARTH_LEFT);
-                            break;
-                        case 1:      
-                            this.transform (x+dx,y+dy, EARTH_RIGHT);
-                            break;
+                    {   case -10: { this.transform (x+dx,y+dy, EARTH_UP); break; }
+                        case 10: { this.transform (x+dx,y+dy, EARTH_DOWN); break; }
+                        case -1: { this.transform (x+dx,y+dy, EARTH_LEFT); break; }
+                        case 1: { this.transform (x+dx,y+dy, EARTH_RIGHT); break; }
                     }
                     // transform target to air
                     this.transform(x+dx,y+dy, AIR);
@@ -2244,19 +2243,14 @@ Logic.prototype.has_rounded_top = function(piece)
 {   
         switch (piece)
         {   case ROCK:
-//            case ROCKEMERALD:
             case BAG:
             case BOMB:
             case ROUNDWALL:
             case ROUNDSTONEWALL:
             case DOOR:
             case DOOR_OPENED:
-//          case DOOR_CLOSING:
+            case DOOR_CLOSING:
             case DOOR_CLOSED:
-//          case DOORBLUE:
-//          case DOORRED:
-//          case DOORGREEN:
-//          case DOORYELLOW:
             case EMERALD:
             case SAPPHIRE:
             case CITRINE:
@@ -2352,9 +2346,6 @@ Logic.prototype.isVisiblyEquivalent = function(p1, p2)
         if (p1==ROCK || p1==ROCK_FALLING)
         {   return p2==ROCK || p2==ROCK_FALLING;
         }
-//        if (p1==ROCKEMERALD || p1==ROCKEMERALD_FALLING)
-//        {   return p2==ROCKEMERALD || p2==ROCKEMERALD_FALLING;
-//        }
         if (p1==EMERALD || p1==EMERALD_FALLING)
         {   return p2==EMERALD || p2==EMERALD_FALLING;
         }

@@ -14,7 +14,7 @@ LevelSettingsDialog.prototype.$ = function(game, level)
 {   Screen.prototype.$.call(this,game); 
 
     this.level = level;
-    this.selected = -1;
+    this.selected = 0;
     return this;
 };
 

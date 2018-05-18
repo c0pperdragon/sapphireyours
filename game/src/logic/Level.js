@@ -103,8 +103,8 @@ Level.prototype.$ = function(json)
     this.loot = Game.isInteger(json.loot) ? Number(json.loot) : 0;    
     this.swamprate = Game.isInteger(json.swamprate) ? Number(json.swamprate) : DEFAULTSWAMPRATE;
     this.robotspeed = Game.isInteger(json.robotspeed) ? Number(json.robotspeed) : DEFAULTROBOTSPEED;
-    this.yamyamremainders = json.yamyamremainders  && json.yamyamremainders.constructor==String 
-            ? parseremainders(json.yamyamremainders) : DEFAULTYAMYAMREMAINDERS;
+    this.yamyamremainders = (json.yamyamremainders && json.yamyamremainders.constructor==String) 
+            ? parseremainders(json.yamyamremainders) : DEFAULTYAMYAMREMAINDERS.slice();
     
     this.demos = [];
     for (var i=0; Array.isArray(json.demos) && i<json.demos.length; i++) 
@@ -369,7 +369,7 @@ Level.prototype.shrink = function()
     }
     while (this.isMapColumnOnlyAir(this.getWidth()-1))
     {   for (var i=this.dataheight-1; i>=0; i--)
-        {   this.mapdata.splice((this.datawidth+1)*i-1,1);
+        {   this.mapdata.splice(this.datawidth*(i+1)-1,1);
         }
         this.datawidth--;
     }    

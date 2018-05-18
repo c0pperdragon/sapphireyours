@@ -1,6 +1,7 @@
 "use strict";
 var Game = function()  
 {   this.canvas = null;
+    this.overlay = null;
     this.gl = null;
     this.exitcall = null;
     
@@ -82,52 +83,52 @@ Game.prototype.$ = function()
     // install input handlers
     document.addEventListener
     (   'keydown', function(event)
-        {   that.onKeyDown(KeyEvent.toNumericCode(event.key)); 
+        {   if (!that.overlay) that.onKeyDown(KeyEvent.toNumericCode(event.key)); 
         }
     );
     document.addEventListener
     (   'keyup', function(event)
-        {   that.onKeyUp(KeyEvent.toNumericCode(event.key)); 
+        {   if (!that.overlay) that.onKeyUp(KeyEvent.toNumericCode(event.key)); 
         }
     );    
     this.canvas.addEventListener
     (   'mousedown', function(event)
-        {   that.onMouseDown(event); 
+        {   if (!that.overlay) that.onMouseDown(event); 
         }
     );
     this.canvas.addEventListener
     (   'mouseup', function(event)
-        {   that.onMouseUp(event);
+        {   if (!that.overlay) that.onMouseUp(event);
         }
     );
     this.canvas.addEventListener
     (   'mousemove', function(event)
-        {   that.onMouseMove(event);
+        {   if (!that.overlay) that.onMouseMove(event);
         }
     );
     this.canvas.addEventListener
     (   'mouseleave', function(event)
-        {   that.onMouseLeave(event);
+        {   if (!that.overlay) that.onMouseLeave(event);
         }
     );    
     this.canvas.addEventListener
     (   'touchstart', function(event)
-        {   that.onTouchStart(event);
+        {   if (!that.overlay) that.onTouchStart(event);
         }
     );
     this.canvas.addEventListener
     (   'touchend', function(event)
-        {   that.onTouchEnd(event);
+        {   if (!that.overlay) that.onTouchEnd(event);
         }
     );
     this.canvas.addEventListener
     (   'touchcancel', function(event)
-        {   that.onTouchCancel(event);
+        {   if (!that.overlay) that.onTouchCancel(event);
         }
     );
     this.canvas.addEventListener
     (   'touchmove', function(event)
-        {   that.onTouchMove(event);
+        {   if (!that.overlay) that.onTouchMove(event);
         }
     );
     
@@ -456,6 +457,43 @@ Game.prototype.getTopScreen = function()
     return this.screens.length>0 ? this.screens[this.screens.length-1] : null;
 };
 
+Game.prototype.openTextInputDialog = function(label,initvalue, callback)
+{
+    this.overlay = document.createElement("div");
+    this.overlay.style.position = "absolute";
+    this.overlay.style.left = "0";
+    this.overlay.style.top = "0";
+    this.overlay.style["background-color"] = "white";
+    
+    var input = document.createElement("input");
+    input.type = "text";
+    input.value = initvalue;
+    input.style["box-sizing"] = "border-box";
+    input.style["border"] = "0.05em solid #9ecaed";
+    input.style["border-radius"] = "0.1em";
+//    input.style["outline"] = "none";
+        
+    this.overlay.appendChild(document.createTextNode(label));
+    this.overlay.appendChild(document.createElement("br"));
+    this.overlay.appendChild(input);      
+    
+    var that = this;
+    input.addEventListener("keydown", function(event) {
+        if (event.key === "Enter") {
+            if (that.overlay)
+            {   var text = input.value;                
+                var o = that.overlay;
+                that.overlay = null;
+                o.remove();
+                callback(text);
+                event.stopPropagation();
+            }
+        }
+    });
+    
+    this.canvas.parentNode.appendChild(this.overlay);
+    input.focus();      
+};
         
 
 // --------- loading renderers (will be triggered by system or by user key ----

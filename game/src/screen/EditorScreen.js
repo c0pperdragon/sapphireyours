@@ -457,9 +457,10 @@ EditorScreen.prototype.createMenuScreen = function()
     {   return;
     }
 
+    // turn off panning just in case
     this.isPanning = false;
                
-        // create the menu screen
+    // create the menu screen
     var m = new PauseMenu().$(this.game,this, this.level, PauseMenu.MENUACTION_EXITEDITOR);
     m.addDefaultAction(PauseMenu.MENUACTION_CONTINUEEDIT);
     m.addPriorityAction(PauseMenu.MENUACTION_TESTLEVEL);
@@ -467,9 +468,9 @@ EditorScreen.prototype.createMenuScreen = function()
     m.addPriorityAction(PauseMenu.MENUACTION_EXITEDITOR);
     if 
     (   this.level.isMapRowOnlyAir(0) 
-        || this.level.isMapRowOnlyAir(this.level.getWidth()-1)
+        || this.level.isMapRowOnlyAir(this.level.getHeight()-1)
         || this.level.isMapColumnOnlyAir(0)
-        || this.level.isMapColumnOnlyAir(this.level.getHeight()-1) 
+        || this.level.isMapColumnOnlyAir(this.level.getWidth()-1) 
     )
     { m.addAction(PauseMenu.MENUACTION_SHRINKMAP); }    
     m.addAction(PauseMenu.MENUACTION_EDITYAMYAM);
@@ -485,6 +486,7 @@ EditorScreen.prototype.createMenuScreen = function()
 EditorScreen.prototype.menuAction = function(id)
 {   
     var game = this.game;
+    var that = this;
     
         switch (id)
         {   
@@ -514,6 +516,7 @@ EditorScreen.prototype.menuAction = function(id)
                                 
             case PauseMenu.MENUACTION_DISCARDCHANGES:
                 this.level.$(this.backup);
+                this.createMenuScreen();
                 break;
             
             case PauseMenu.MENUACTION_SHRINKMAP:
@@ -529,24 +532,24 @@ EditorScreen.prototype.menuAction = function(id)
                 break;
 
             case PauseMenu.MENUACTION_EDITNAME:
-                this.createMenuScreen();             
-//                game.addScreen(new TextInputDialog(game,"Name", level.getTitle(), 
-//                    new TextInputDialog.Listener(){public void valueChanged(String v){level.setTitle(v);}}
-//                ));
+                this.game.openTextInputDialog("Title", this.level.getTitle(), function(res)
+                {   that.level.setTitle(res);
+                    that.createMenuScreen();
+                });
                 break;
 
             case PauseMenu.MENUACTION_EDITAUTHOR:
-                this.createMenuScreen();
-//                game.addScreen(new TextInputDialog(game,"Author", level.getAuthor(), 
-//                    new TextInputDialog.Listener(){public void valueChanged(String v){level.setAuthor(v);}}
-//                ));
+                this.game.openTextInputDialog("Author", this.level.getAuthor(), function(res)
+                {   that.level.setAuthor(res);
+                    that.createMenuScreen();
+                });
                 break;
 
             case PauseMenu.MENUACTION_EDITINFO:
-                this.createMenuScreen();
-//                game.addScreen(new TextInputDialog(game,"Info", level.getHint(), 
-//                    new TextInputDialog.Listener(){public void valueChanged(String v){level.setHint(v);}}
-//                ));
+                this.game.openTextInputDialog("Info", this.level.getHint(), function(res)
+                {   that.level.setHint(res);
+                    that.createMenuScreen();
+                });
                 break;
                 
             default:
