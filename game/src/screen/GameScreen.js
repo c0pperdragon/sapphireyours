@@ -828,8 +828,12 @@ GameScreen.prototype.menuAction = function(id)
 {   
     switch (id)
     {   case PauseMenu.MENUACTION_EXIT:
+        {   this.game.removeScreen();
+            break;
+        }
         case PauseMenu.MENUACTION_EXITTOEDITOR:
         {   this.game.removeScreen();
+            this.game.getTopScreen().afterScreenCreation();
             break;
         }
         case PauseMenu.MENUACTION_START:    

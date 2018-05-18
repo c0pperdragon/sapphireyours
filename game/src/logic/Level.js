@@ -183,7 +183,8 @@ Level.prototype.toJSON = function()
     {   o.robotspeed = this.robotspeed;
     }
     if (this.yamyamremainders.join(" ")!=DEFAULTYAMYAMREMAINDERS.join(" "))
-    {   for (var i=0; i<this.yamyamremainders.length; i++)
+    {   var r = "";
+        for (var i=0; i<this.yamyamremainders.length; i++)
         {   r = r + String.fromCharCode(this.yamyamremainders[i]);
         }
         o.yamyamremainders = r;
@@ -317,6 +318,62 @@ Level.prototype.setPiece = function(x,y,p)
 {
     this.mapdata[x+y*this.datawidth] = p;  
 };
+    
+Level.prototype.insertMapColumn = function(x)
+{
+    for (var i=this.dataheight-1; i>=0; i--)
+    {   this.mapdata.splice(i*this.datawidth+x, 0, AIR);
+    }
+    this.datawidth++;
+};
+Level.prototype.insertMapRow = function(y)
+{
+    for (var i=0; i<this.datawidth; i++)
+    {   this.mapdata.splice(y*this.datawidth, 0, AIR);
+    }
+    this.dataheight++;
+};
+
+Level.prototype.isMapColumnOnlyAir = function(x)
+{
+    if (x<0 || x>=this.datawidth) return false;
+    for (var i=0; i<this.dataheight; i++)
+    {   if (this.mapdata[i*this.datawidth+x]!=AIR) { return false; }
+    }
+    return true;
+}
+Level.prototype.isMapRowOnlyAir = function(y)
+{
+    if (y<0 || y>=this.dataheight) return false;
+    for (var i=0; i<this.datawidth; i++)
+    {   if (this.mapdata[y*this.datawidth+i]!=AIR) { return false; }
+    }
+    return true;
+}
+
+Level.prototype.shrink = function()
+{
+    while (this.isMapRowOnlyAir(0))
+    {   this.mapdata.splice(0,this.datawidth);
+        this.dataheight--;
+    }
+    while (this.isMapRowOnlyAir(this.getHeight()-1))
+    {   this.mapdata.splice(this.datawidth*(this.dataheight-1),this.datawidth);
+        this.dataheight--;
+    }
+    while (this.isMapColumnOnlyAir(0))
+    {   for (var i=this.dataheight-1; i>=0; i--)
+        {   this.mapdata.splice(this.datawidth*i,1);
+        }
+        this.datawidth--;
+    }
+    while (this.isMapColumnOnlyAir(this.getWidth()-1))
+    {   for (var i=this.dataheight-1; i>=0; i--)
+        {   this.mapdata.splice((this.datawidth+1)*i-1,1);
+        }
+        this.datawidth--;
+    }    
+}
     
 Level.prototype.determineLongestString = function(a)
 {

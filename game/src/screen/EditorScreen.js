@@ -20,6 +20,7 @@ var EditorScreen = function()
     this.menuButtonIsPressed = false;
     this.panningButtonIsPressed = false;
     this.isPanning = false;
+    this.yamyammode = false;
 }
 EditorScreen.prototype = Object.create(Screen.prototype);
 
@@ -73,10 +74,11 @@ EditorScreen.prototype.centerMap = function()
 {
     var g = this.game;
     var csstilesize = this.computeCSSTileSize();
-    
+    var w = this.yamyammode ? 3 : this.level.getWidth();
+    var h = this.yamyammode ? 3 : this.level.getHeight();
     var mapspace = g.screenwidth - (4*csstilesize+6);
-    this.mapareax = (mapspace- this.level.datawidth*csstilesize)/2;
-    this.mapareay = (g.screenheight - this.level.dataheight*csstilesize)/2;
+    this.mapareax = (mapspace- w*csstilesize)/2;
+    this.mapareay = (g.screenheight - h*csstilesize)/2;
 }
     
 // get tile size in css pixel (depending on current browser zoom level)    
@@ -95,6 +97,13 @@ EditorScreen.prototype.getMapAreaLeftEdge = function()
 EditorScreen.prototype.getMapAreaTopEdge = function()
 {
     return this.mapareay;
+}
+
+EditorScreen.prototype.scrollMapAreaByTiles = function(dx,dy)
+{
+    var t = this.computeCSSTileSize();
+    this.mapareax += dx*t;
+    this.mapareay += dy*t;
 }
 
 EditorScreen.prototype.map2css = function(x)
@@ -128,26 +137,43 @@ EditorScreen.prototype.draw = function()
     var h = this.level.getHeight();
     var csstilesize  = this.computeCSSTileSize();
     
-//        int screencenterx = screenwidth/2;
-//        int screencentery = screenheight/2;
-        
-//      vr.addRectangle(screencenterx-mapcenterx-1.0f, screencentery-mapcentery-1.0f, 
-//        w*screentilesize+2.0f, h*screentilesize+2.0f, 0xff222222);
-//      vr.flush();
-        
-    // draw all tiles of the level
-    lr.startDrawing (0,0,0,0);
+    // fill background with color to show off-the-limits area 
+    // and the space inside the level itself with black
     var le = this.getMapAreaLeftEdge();
     var te = this.getMapAreaTopEdge();
-    for (var y=0; y<h; y++)
-    {   for (var x=0; x<w; x++)
-        {
-            lr.addRestingPieceToBuffer(
-                this.css2map(le+x*csstilesize),
-                this.css2map(te+y*csstilesize), 
-                this.level.getPiece(x,y));
+
+    vr.startDrawing (0,0,0,0);
+    vr.addRectangle(0,0, screenwidth,screenheight, 0xff333333);
+
+    // draw all tiles of the level or of the yamyam
+    lr.startDrawing (0,0,0,0);
+    if (this.yamyammode)
+    {   vr.addRectangle(le,te, csstilesize*3, csstilesize*3, 0xff000000);
+        for (var y=0; y<3; y++)
+        {   for (var x=0; x<3; x++)
+            {
+                lr.addRestingPieceToBuffer
+                (   this.css2map(le+x*csstilesize),
+                    this.css2map(te+y*csstilesize), 
+                    this.level.yamyamremainders[x+y*3]
+                );
+            }
+        }
+    }
+    else
+    {   vr.addRectangle(le,te, csstilesize*w, csstilesize*h, 0xff000000);
+        for (var y=0; y<h; y++)
+        {   for (var x=0; x<w; x++)
+            {
+                lr.addRestingPieceToBuffer
+                (   this.css2map(le+x*csstilesize),
+                    this.css2map(te+y*csstilesize), 
+                    this.level.getPiece(x,y)
+                );
+            }
         }
     }       
+    vr.flush();    
     lr.flush();
     
     // -- draw the tool bar
@@ -372,14 +398,44 @@ EditorScreen.prototype.tryPlacePiece = function(x,y,piece)
     var py = Math.floor(this.css2map(y-this.getMapAreaTopEdge()) / 60);
     
     var l = this.level;
-    // TODO extend map to the left
-    if (px==-1 && l.getWidth()<MAPWIDTH) 
-    {   
-    }
     
-    if (px>=0 && py>=0 && px<this.level.getWidth() && py<this.level.getHeight())
-    {   this.level.setPiece(px,py,EditorScreen.pieces[this.selectedpiece]);
-        this.setDirty();
+    if (this.yamyammode)
+    {
+        if (px>=0 && py>=0 && px<3 && py<3)
+        {   l.yamyamremainders[px+py*3] = EditorScreen.pieces[this.selectedpiece];
+            this.setDirty();
+        }
+    }
+    else
+    {   // extend map to the right
+        while (px>=l.getWidth() && l.getWidth()<MAPWIDTH)
+        {   l.insertMapColumn(l.getWidth());
+            this.setDirty();
+        }
+        // extend map to the left
+        while (px<0 && l.getWidth()<MAPWIDTH)
+        {   px++;
+            l.insertMapColumn(0);
+            this.scrollMapAreaByTiles(-1,0);
+            this.setDirty();
+        }
+        // extend map to the bottom
+        while (py>=l.getHeight() && l.getHeight()<MAPHEIGHT)
+        {   l.insertMapRow(l.getHeight());
+            this.setDirty();
+        }
+        // extend map to the top
+        while (py<0 && l.getHeight()<MAPHEIGHT)
+        {   py++;
+            l.insertMapRow(0);
+            this.scrollMapAreaByTiles(0,-1);
+            this.setDirty();
+        }
+    
+        if (px>=0 && py>=0 && px<l.getWidth() && py<l.getHeight())
+        {   l.setPiece(px,py,EditorScreen.pieces[this.selectedpiece]);
+            this.setDirty();
+        }
     }
 };    
     
@@ -400,17 +456,27 @@ EditorScreen.prototype.createMenuScreen = function()
     if (this.game.getTopScreen() != this)
     {   return;
     }
-                
+
+    this.isPanning = false;
+               
         // create the menu screen
     var m = new PauseMenu().$(this.game,this, this.level, PauseMenu.MENUACTION_EXITEDITOR);
-    m.addPriorityAction(PauseMenu.MENUACTION_DISCARDCHANGES);
     m.addDefaultAction(PauseMenu.MENUACTION_CONTINUEEDIT);
     m.addPriorityAction(PauseMenu.MENUACTION_TESTLEVEL);
+    m.addPriorityAction(PauseMenu.MENUACTION_EDITSETTINGS);
     m.addPriorityAction(PauseMenu.MENUACTION_EXITEDITOR);
-    m.addAction(PauseMenu.MENUACTION_EDITSETTINGS);
+    if 
+    (   this.level.isMapRowOnlyAir(0) 
+        || this.level.isMapRowOnlyAir(this.level.getWidth()-1)
+        || this.level.isMapColumnOnlyAir(0)
+        || this.level.isMapColumnOnlyAir(this.level.getHeight()-1) 
+    )
+    { m.addAction(PauseMenu.MENUACTION_SHRINKMAP); }    
+    m.addAction(PauseMenu.MENUACTION_EDITYAMYAM);
     m.addAction(PauseMenu.MENUACTION_EDITNAME);
     m.addAction(PauseMenu.MENUACTION_EDITAUTHOR);
     m.addAction(PauseMenu.MENUACTION_EDITINFO);
+    m.addAction(PauseMenu.MENUACTION_DISCARDCHANGES);
     m.layout();
     
     this.game.addScreen(m);
@@ -422,6 +488,20 @@ EditorScreen.prototype.menuAction = function(id)
     
         switch (id)
         {   
+            case PauseMenu.MENUACTION_CONTINUEEDIT:
+                if (this.yamyammode)
+                {   this.yamyammode = false;
+                    this.centerMap();
+                }
+                break;
+                
+            case PauseMenu.MENUACTION_EDITYAMYAM:
+                if (!this.yamyammode) 
+                {   this.yamyammode = true;
+                    this.centerMap();
+                }
+                break;
+
             case PauseMenu.MENUACTION_EXITEDITOR:
                 game.removeScreen();
                 break;
@@ -435,10 +515,17 @@ EditorScreen.prototype.menuAction = function(id)
             case PauseMenu.MENUACTION_DISCARDCHANGES:
                 this.level.$(this.backup);
                 break;
-                
-            case PauseMenu.MENUACTION_EDITSETTINGS:
+            
+            case PauseMenu.MENUACTION_SHRINKMAP:
+                this.level.shrink();
+                this.centerMap();
                 this.createMenuScreen();
-//                game.addScreen(new LevelSettingsDialog(game,level));
+                break;
+                
+            
+            case PauseMenu.MENUACTION_EDITSETTINGS:
+//                this.createMenuScreen();
+                game.addScreen(new LevelSettingsDialog().$(game,this.level));
                 break;
 
             case PauseMenu.MENUACTION_EDITNAME:

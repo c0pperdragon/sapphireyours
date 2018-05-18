@@ -64,21 +64,24 @@ PauseMenu.MENUACTION_EXITTOEDITOR = 24;
 PauseMenu.MENUACTION_EDITLEVEL = 25;
 PauseMenu.MENUACTION_CONTINUEEDIT = 26;
 PauseMenu.MENUACTION_EDITSETTINGS = 27;
-PauseMenu.MENUACTION_EDITNAME = 28;
-PauseMenu.MENUACTION_EDITAUTHOR = 29;
-PauseMenu.MENUACTION_EDITINFO = 30;
-PauseMenu.MENUACTION_MUSIC_ON = 31;
-PauseMenu.MENUACTION_MUSIC_OFF = 32;
-PauseMenu.MENUACTION_MUSIC_ON_POPUP = 33;
-PauseMenu.MENUACTION_MUSIC_OFF_POPUP = 34;
+PauseMenu.MENUACTION_SHRINKMAP = 28;
+PauseMenu.MENUACTION_EDITYAMYAM = 29;
+PauseMenu.MENUACTION_EDITNAME = 30;
+PauseMenu.MENUACTION_EDITAUTHOR = 31;
+PauseMenu.MENUACTION_EDITINFO = 32;
+PauseMenu.MENUACTION_MUSIC_ON = 33;
+PauseMenu.MENUACTION_MUSIC_OFF = 34;
+PauseMenu.MENUACTION_MUSIC_ON_POPUP = 35;
+PauseMenu.MENUACTION_MUSIC_OFF_POPUP = 36;
 
 PauseMenu.actionlabels =  [
         "", "Start", "Restart", "Replay solution", "Show demo", "Next",
         "Use as demo", "Undo", "Exit", "To Game", "Continue", "To Game", 
         "Single step: OFF", "Single step: ON", 
         "Forward", "Backward", "Fast", "Fast Backward", "Slow Motion",
-        "Show demo 2", "Show demo 3", "Test", "Discard", "Exit", "To Editor",
-        "Level Editor", "Edit", "Level Settings", "Name", "Author", "Info", 
+        "Show demo 2", "Show demo 3", "Test", "Discard Changes", "Exit", "To Editor",
+        "Level Editor", "Edit Map", "Settings", "Shrink to size", "Edit YamYam",
+        "Name", "Author", "Info", 
         "Music: OFF", "Music: ON", "Music: OFF", "Music: ON"    
     ];
     
@@ -162,7 +165,7 @@ PauseMenu.prototype.drawOrLayout = function(draw)
     var tr = this.game.textRenderer;                
 
     // layout depends on menu width which depends on the screen size                
-    this.menuwidth = Math.min(400, this.game.screenwidth);                 
+    this.menuwidth = Math.min(370, this.game.screenwidth);                 
     this.menux = 10; // (this.game.screenwidth-this.menuwidth)/2;
     var bgcolor = 0xcc000000; // darken(Game.getColorForDifficulty(level.getDifficulty()));
     var col = Game.getColorForDifficulty(this.level.getDifficulty());
@@ -195,8 +198,8 @@ PauseMenu.prototype.drawOrLayout = function(draw)
         tr.addIconGlyph(ico, centerx,centery, 45, col);
     }
 
-    var y = this.menuy + 30;  // inner border
-    var x = this.menux + 30;  // inner border          
+    var y = this.menuy + 20;  // inner border
+    var x = this.menux + 20;  // inner border          
         
     // level title
     for (var i=0; this.title && i<this.title.length; i++)
@@ -384,6 +387,10 @@ PauseMenu.prototype.drawActionIcon = function(tr, action, x, y, width, height, a
                 
         case PauseMenu.MENUACTION_DISCARDCHANGES:
             tr.addIconGlyph(302, x,y,height, argb);
+            break;
+            
+        case PauseMenu.MENUACTION_EDITSETTINGS:
+            tr.addIconGlyph(308, x,y,height, argb);
             break;
                                 
         case PauseMenu.MENUACTION_EXITTOEDITOR:
