@@ -959,19 +959,19 @@ Logic.prototype.piecesmove = function()
                         {   randomseed = this.nextrandomseed(randomseed);
                             switch (randomseed % 4)
                             {   case 0: 
-                                {   if (this.is(x-1,y,AIR)) { this.transform(x,y, YAMYAMLEFT); }
+                                {   if (this.is(x-1,y,AIR) || this.is(x-1,y,SAPPHIRE)) { this.transform(x,y, YAMYAMLEFT); }
                                     break;
                                 }
                                 case 1:
-                                {   if (this.is(x+1,y,AIR)) { this.transform(x,y, YAMYAMRIGHT); }
+                                {   if (this.is(x+1,y,AIR) || this.is(x+1,y,SAPPHIRE)) { this.transform(x,y, YAMYAMRIGHT); }
                                     break;
                                 }
                                 case 2:  
-                                {   if (this.is(x,y-1,AIR)) { this.transform(x,y, YAMYAMUP); }
+                                {   if (this.is(x,y-1,AIR) || this.is(x,y-1,SAPPHIRE)) { this.transform(x,y, YAMYAMUP); }
                                     break;
                                 }
                                 case 3:
-                                {   if (this.is(x,y+1,AIR)) { this.transform(x,y, YAMYAMDOWN); }
+                                {   if (this.is(x,y+1,AIR) || this.is(x,y+1,SAPPHIRE)) { this.transform(x,y, YAMYAMDOWN); }
                                     break;
                                 }
                             }

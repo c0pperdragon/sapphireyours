@@ -7,12 +7,14 @@ var EditorScreen = function()
     this.level = null;
     this.backup = null;
     
-    this.toolbary = 0;
-    
+    this.toolbary = 0;    
     this.mapareax = 0;
     this.mapareay = 0;
 
     this.selectedpiece = 0;
+    this.mapcursorx = 0;
+    this.mapcursory = 0;
+    this.cursorinmap = false;
     
     this.pointerprevx = 0;
     this.pointerprevy = 0;
@@ -79,6 +81,31 @@ EditorScreen.prototype.centerMap = function()
     var mapspace = g.screenwidth - (4*csstilesize+6);
     this.mapareax = (mapspace- w*csstilesize)/2;
     this.mapareay = (g.screenheight - h*csstilesize)/2;
+    
+    this.mapcursorx = Math.floor(w/2);
+    this.mapcursory = Math.floor(h/2);
+    this.makeCursorsVisible();
+}
+
+EditorScreen.prototype.makeCursorsVisible = function()
+{
+    var sw = this.game.screenwidth;
+    var sh = this.game.screenheight;
+    var csstilesize = this.computeCSSTileSize();
+    
+    var y = this.toolbary + Math.floor(this.selectedpiece / 4) * csstilesize; 
+    if (y<0) {   this.toolbary -= y; }
+    else if (y+6+csstilesize>sh) { this.toolbary -= (y+6+csstilesize-sh); }
+    
+    if (this.cursorinmap)
+    {   y = this.mapareay-3+csstilesize*this.mapcursory;
+        if (y<0) { this.mapareay -= y; }
+        else if (y+6+csstilesize>sh) { this.mapareay -= (y+6+csstilesize-sh); }
+        var mw = sw - csstilesize*4 - 6;
+        var x = this.mapareax-3+csstilesize*this.mapcursorx;
+        if (x<0) { this.mapareax -= x; }
+        else if (x+6+csstilesize>mw) { this.mapareax -= (x+6+csstilesize-mw); }
+    }
 }
     
 // get tile size in css pixel (depending on current browser zoom level)    
@@ -104,6 +131,8 @@ EditorScreen.prototype.scrollMapAreaByTiles = function(dx,dy)
     var t = this.computeCSSTileSize();
     this.mapareax += dx*t;
     this.mapareay += dy*t;
+    this.mapcursorx -= dx;
+    this.mapcursory -= dy;    
 }
 
 EditorScreen.prototype.map2css = function(x)
@@ -175,6 +204,14 @@ EditorScreen.prototype.draw = function()
     }       
     vr.flush();    
     lr.flush();
+    if (this.cursorinmap)
+    {   vr.startDrawing (0,0,0,0);
+        vr.addFrame(le-3+csstilesize*this.mapcursorx, 
+                    te-3+csstilesize*this.mapcursory,
+                    csstilesize+6, csstilesize+6, 3.0, 0xffffff00);
+        vr.flush();
+    }    
+    
     
     // -- draw the tool bar
     vr.startDrawing();
@@ -285,6 +322,11 @@ EditorScreen.prototype.onResize = function()
 
 EditorScreen.prototype.onPointerDown = function(x,y)
 {
+    if (this.cursorinmap)
+    {   this.cursorinmap = false;
+        this.setDirty();
+    }
+    
     if (this.isMenuButtonHit(x,y))
     {   this.menuButtonIsPressed = true; 
         this.setDirty();
@@ -392,11 +434,15 @@ EditorScreen.prototype.onPointerMove = function(x,y)
     this.pointerprevy = y;
 };
 
-EditorScreen.prototype.tryPlacePiece = function(x,y,piece)
+EditorScreen.prototype.tryPlacePiece = function(x,y)
 {    
     var px = Math.floor(this.css2map(x-this.getMapAreaLeftEdge()) / 60);
     var py = Math.floor(this.css2map(y-this.getMapAreaTopEdge()) / 60);
-    
+    this.tryPlacePieceInMap(px,py);
+}
+
+EditorScreen.prototype.tryPlacePieceInMap = function(px,py)
+{
     var l = this.level;
     
     if (this.yamyammode)
@@ -440,14 +486,103 @@ EditorScreen.prototype.tryPlacePiece = function(x,y,piece)
 };    
     
 EditorScreen.prototype.onKeyDown = function(keycode)
-{       switch (keycode)
-            {   
-                case KeyEvent.EDIT:
-                // TODO: write to console
-                    break;                    
-            }           
+{       
+    if (this.isPanning)
+    {   this.isPanning = false;
+        this.setDirty();
+    }
+
+        var yy = this.yamyammode;
+        switch (keycode)
+        {   
+            case KeyEvent.A:
+            {   if (!this.cursorinmap) 
+                {   this.cursorinmap = true;
+                    this.setDirty();
+                }
+                else
+                {   this.tryPlacePieceInMap (this.mapcursorx, this.mapcursory);                    
+                }
+                this.makeCursorsVisible();                
+                break;
+            }
         
-        Screen.prototype.onKeyDown.call(this,keycode);
+            case KeyEvent.Y:
+            {
+                this.cursorinmap = !this.cursorinmap;
+                this.setDirty();
+                this.makeCursorsVisible();                
+                break;
+            }
+        
+            case KeyEvent.UP:
+            {   if (!this.cursorinmap) 
+                {   if (this.selectedpiece>=4)
+                    {   this.selectedpiece-=4;
+                        this.setDirty();
+                    }
+                } 
+                else
+                {   if (this.mapcursory >= (yy?1:0))
+                    {   this.mapcursory--;
+                        this.setDirty();
+                    }
+                }
+                this.makeCursorsVisible();                
+                break;                    
+            }
+            case KeyEvent.DOWN:
+            {   if (!this.cursorinmap) 
+                {   if (this.selectedpiece+4<EditorScreen.pieces.length)
+                    {   this.selectedpiece+=4;
+                        this.setDirty();
+                    }
+                } 
+                else
+                {   if (this.mapcursory < (yy?2:this.level.getHeight()))
+                    {   this.mapcursory++;
+                        this.setDirty();
+                    }
+                }
+                this.makeCursorsVisible();                
+                break;  
+            }                
+            case KeyEvent.LEFT:
+            {   if (!this.cursorinmap) 
+                {   if (this.selectedpiece>0)
+                    {   this.selectedpiece--;
+                        this.setDirty();
+                    }
+                } 
+                else
+                {   if (this.mapcursorx >= (yy?1:0))
+                    {   this.mapcursorx--;
+                        this.setDirty();
+                    }                    
+                }
+                this.makeCursorsVisible();                
+                break;                    
+            }
+            case KeyEvent.RIGHT:
+            {   if (!this.cursorinmap) 
+                {   if (this.selectedpiece+1<EditorScreen.pieces.length)
+                    {   this.selectedpiece++;
+                        this.setDirty();
+                    }
+                } 
+                else
+                {   if (this.mapcursorx < (yy?2:this.level.getWidth()))
+                    {   this.mapcursorx++;
+                        this.setDirty();
+                    }          
+                }
+                this.makeCursorsVisible();                
+                break;                    
+            }
+            default:
+            {   Screen.prototype.onKeyDown.call(this,keycode);
+            }
+        }                   
 };
     
 EditorScreen.prototype.createMenuScreen = function()
@@ -493,6 +628,7 @@ EditorScreen.prototype.menuAction = function(id)
             case PauseMenu.MENUACTION_CONTINUEEDIT:
                 if (this.yamyammode)
                 {   this.yamyammode = false;
+                    this.cursorinmap = false;
                     this.centerMap();
                 }
                 break;
@@ -500,6 +636,9 @@ EditorScreen.prototype.menuAction = function(id)
             case PauseMenu.MENUACTION_EDITYAMYAM:
                 if (!this.yamyammode) 
                 {   this.yamyammode = true;
+                    this.cursorinmap = false;
+                    this.mapcursorx = 1;
+                    this.mapcursory = 1;
                     this.centerMap();
                 }
                 break;

@@ -8,7 +8,7 @@ var KeyEvent = {
     A:      0x00001004,  // confirmation (or main action)
     B:      0x00001005,  // auxiliary action
     X:      0x00001006,  // back/cancel
-    Y:      0x00001007,  // switch
+    Y:      0x00001007,  // switch modes
     
     UP2:    0x00001010,         
     DOWN2:  0x00001011,
@@ -33,6 +33,7 @@ var KeyEvent = {
             case "ArrowLeft":       { return KeyEvent.LEFT; }
             case "Right":
             case "ArrowRight":      { return KeyEvent.RIGHT; }
+            case " ":
             case "Enter":           
             case "Space":
             case "Control":
@@ -41,8 +42,7 @@ var KeyEvent = {
             case "ShiftLeft":       { return KeyEvent.B; }
             case "Esc":
             case "Escape":          { return KeyEvent.X; }
-            case "Backspace":       { return KeyEvent.Y; }
-
+            case "Tab":             { return KeyEvent.Y; }
             case "R":
             case "r":
             case "KeyR":            { return KeyEvent.UP2; }

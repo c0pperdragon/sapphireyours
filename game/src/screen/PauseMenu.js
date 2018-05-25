@@ -81,7 +81,7 @@ PauseMenu.actionlabels =  [
         "Forward", "Backward", "Fast", "Fast Backward", "Slow Motion",
         "Show demo 2", "Show demo 3", "Test", "Discard Changes", "Exit", "To Editor",
         "Level Editor", "Edit Map", "Settings", "Shrink to size", "Edit YamYam",
-        "Name", "Author", "Info", 
+        "Title", "Author", "Info", 
         "Music: OFF", "Music: ON", "Music: OFF", "Music: ON"    
     ];
     

@@ -28,14 +28,13 @@
     ]
 }
 ,
-{   "title": "Armageddon II",
-    "author": "Ronald",
+{
+    "title": "Armageddon II",
     "difficulty": 9,
     "category": 3,
     "loot": 0,
-    "swamprate": 1,
-    "map":
-    [   "##########################",
+    "map": [
+        "##########################",
         "#%%%%%%%%%%%%%%%%%%%%%%%%#",
         "# <  6 7  % # %  .^  %   #",
         "# % V  %  %  #  % V    % #",
@@ -46,20 +45,22 @@
         "# %  % #1] #   #..E# 8.  #",
         "# 7 8. ### #   #.###     #",
         "# #%# % .          8 5.% #",
-        "# #%# .    ^  .     %    #",
+        "# #%# .    <  .     %    #",
         "#%###5  V% . %  % 6   .% #",
         "#   % <%.  5   <   % V   #",
         "#              .       . #",
         "##########################"
     ],
-    "demos":
-    [   {   
-            "randomseed": 864413,
-            "moves":
-            [   "rrbbrrrrrrttrr......."
+    "demos": [
+        {
+            "randomseed": 914347,
+            "moves": [
+                "rrbrbbrbrrrrrttttrr......."
             ]
         }
-    ]
+    ],
+    "author": "Ronald",
+    "swamprate": 1
 }
 ,
 {   "title": "Hard Work in the Mine",
@@ -550,14 +551,13 @@
     ]
 }
 ,
-{   "title": "Bio Recycling",
-    "author": "Alexander",
-    "hint": "This is an Emerald Mine level sequel. No free gems.",
+{
+    "title": "Bio Recycling",
     "difficulty": 5,
     "category": 3,
     "loot": 20,
-    "map":
-    [   "##############################################################",
+    "map": [
+        "##############################################################",
         "#............................1 ..............................#",
         "#............................................................#",
         "#..........Q......Q.......Q.............Q....................#",
@@ -590,45 +590,52 @@
         "#                                                            #",
         "##############################################################"
     ],
-    "demos":
-    [   {   
-            "randomseed": 219299,
-            "moves":
-            [   "..rrrrrrrbbbbrrrrt....................ll",
-                "l....rrrrrbbbbbbbbbrr.brb..rrtlll....t..",
-                ".rrrrrtttrrtrrrrbb.rb.tllbr.bbrtllll...b",
-                "rrbbbbbbb.ttttlllllllllllllll...........",
-                "...t.b................ltlll..lblllll.ttl",
-                "llltllt..........ttttllll..b.trrbltlllbb",
-                "b....r..........rtlll..llllttttllllltllb",
-                "rr.b..rrr...lllllbbbbbbb.t.bllttt.rrr..b",
-                "bbbbbbbbrrrrrrrrrbbttt...............lll",
-                "..lllllllb..bbbbltt.bblttttr..b..bbbrrrr",
-                "rrrrrrrrtttttrrrbbbbbtttttttttllllllllll",
-                "lbbbbbbbbttttttttttt.rrrrrrrrrttttbbbbbb",
-                "bbbbrrrbbbbbbrrrrrtttttrrtttrrrrrr.tttt.",
-                "r.ttt.bbbbbbbbrbbbbbbbrrrtttttrrttbbbbbb",
-                "btttttttttttttrrrbbbbbbrrbbbbbbbrrttrrrb",
-                "blltrrrrrbrrrttttttrrttttttttlttbbbbbbbb",
-                "bbbbbbbbllllllttttllrr.bb...bbbbbrrrrrbb",
-                "bbblllllllllllllllllllllllllllllllllllll",
-                "llllllllllllllllrrrrrrrrrrrrrrrrrrrrrrrr",
-                "rrrrrrrrrrrrrrrrrrrrrrrrtttttttrrrrrrrrr",
-                "......."
+    "demos": [
+        {
+            "randomseed": 956396,
+            "moves": [
+                "..rrrrrrrrbbbbr..t.b.t...brrt...........",
+                "......................lll.......rrrrrrbb",
+                "bbbbbbbbbb..tlll.......lltlll.......bbbb",
+                "bbllllttttttlltl.llltltt......ll...ttl.t",
+                "llb.tr.b.rbl.b..l..........Blll..lllll.t",
+                "ttt.lllltllbrr..b......rrr........llllbb",
+                "bbbbbbb.....ttt..lll....B.t..t..........",
+                "..................................rrr...",
+                "....bbbbbbbb..rrrrrrr.bb..rr....Btt.....",
+                "........................................",
+                "......llll.....rrrrrrrrrrbbbbbllllllllll",
+                "llllllllttttrttttttbbbbbrrrrbbbb.ttttttt",
+                "tttt..r..bbbbbbrrrrrrrrrbbbbbrtttttttl.r",
+                "rrrbbbbbbbbrrrtttttltttt.rtt.rrttrr.bbbb",
+                "brbbbbbbbbrrrrrrrrtttttllt..ttrrrrrr..b.",
+                "rb.b....R.ttttttttttt...rr..............",
+                ".l.lttttrrrrrrbbbbllll..................",
+                "l.rr....ll.bblbbbbbb.rr...t.b....rrtlll.",
+                ".......rrrtttrrtrrtrrrrrb..tllbr.lbb..r.",
+                ".................rtlll.....rr.bbbbbbbbbb",
+                "bbrttttttllllllbbbbbblllttll...bbllttttl",
+                "llb...rb.bbrr.t.rtlll.....rrrbbbbbbbbbll",
+                "lllllllllllllllllllllllllllllllllllllllr",
+                "rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr",
+                "rrrrrrrrrrrrlllllllllllttttttttttttttttt",
+                "llllltttbbbbbbbbbbbbbrrrbbbbbbblllrrrrtt",
+                "tttttrrrrrrrrrrrrrrrr......."
             ]
         }
-    ]
+    ],
+    "author": "Alexander",
+    "hint": "This is an Emerald Mine level sequel. No free gems.",
+    "yamyamremainders": "    (    "
 }
 ,
-{   "title": "Dark Room",
-    "author": "Alexander",
-    "hint": "A lot of evasive action is necessary here.",
+{
+    "title": "Dark Room",
     "difficulty": 5,
     "category": 2,
     "loot": 17,
-    "swamprate": 0,
-    "map":
-    [   "##############",
+    "map": [
+        "##############",
         "#>          b#",
         "########y#####",
         "#           1#",
@@ -645,24 +652,26 @@
         "#* :    :!*:E#",
         "##############"
     ],
-    "demos":
-    [   {   
-            "randomseed": 705788,
-            "moves":
-            [   "....llll.Tbrrr.b.........ttlllllllrrrrrr",
-                "rb.....b...........tt.ll..b.r..lltttrrrr",
-                ".llllbbbrrrb.bbbbllbl.rttlrttlr.bbbbrbbb",
-                "bb..l.ttrt...rtt.t..llllllllbrrrrlbbrlbr",
-                "rbr.ll...................bbltt.rtt......",
-                ".....t...........ttll.......tt.bb.......",
-                "..........t.rrrrrrrrbbbbbblbblltlrr.tt..",
-                "ttt..rt....t..ll..r..lr......llll.l.llb.",
-                "rb........b...srttlll.........bbbrrrr...",
-                "......llblllbbbbr.tttttt.rtt....ttrrrrbr",
-                "rrrbbbbbrbbbb......."
+    "demos": [
+        {
+            "randomseed": 41316,
+            "moves": [
+                "...llll..T.rrrbbbbtt....................",
+                ".............................tt.b...l...",
+                "...................rb..............ttll.",
+                "..l..ttrrrrlllr...llbbblllllb.rrrrlbbrlb",
+                "br..ll..tt..bb...........bbltt.rtt..ttt.",
+                "llt.rrrrrrrrbblllrbblrbblrr.bbltlrrttttt",
+                "..rttllllllllb..r...bb....utl....bbbb.b.",
+                ".............bbrrrr..........lbllllbbbr.",
+                "..lb.rltttttrrtttttrrrrrbrrrbbbbrbbbb...",
+                "b......."
             ]
         }
-    ]
+    ],
+    "author": "Alexander",
+    "hint": "A lot of evasive action is necessary here.",
+    "swamprate": 0
 }
 ,
 {   "title": "Easy Maze",
@@ -787,14 +796,14 @@
     ]
 }
 ,
-{   "title": "Rooms and More Rooms",
-    "author": "Alexander",
-    "hint": "Complete the rooms and move on...but be sure to get all you need first.",
+{
+    "title": "Rooms and More Rooms",
     "difficulty": 4,
     "category": 1,
     "loot": 12,
-    "map":
-    [   "######################",
+    "yamyamremainders": "    (    ",
+    "map": [
+        "######################",
         "#                    #",
         "#1  Q       0     0  #",
         "######## #######_##.##",
@@ -811,22 +820,25 @@
         "#!      Y  &       E #",
         "######################"
     ],
-    "demos":
-    [   {   
-            "randomseed": 144328,
-            "moves":
-            [   "..rrtrrrrr..bbbtttrrrrrbllllrrrrtrrrrrrb",
-                "llllllllllllltllllbrrrrrrrrr.trrrrbb....",
-                "...btttllllbrrrrtrrrrbbbbrtllllrr.....ll",
-                "..lllllbll.r.lbbr..bll.rrrr..Rllll.ttlll",
-                "..t...................ltt.b...llll...rrr",
-                "bbbb..tt....lllbbl..bbbbrrrrrrrrrr.t....",
-                "......t....mbb..............rtrrrrrrrr.t",
-                ".rrtttt.blllt.b...rrrttll...r..rbbllbbll",
-                "lll...l...bbbblrrrrrrrr........."
+    "demos": [
+        {
+            "randomseed": 4493,
+            "moves": [
+                "...rtrrrrrrbbbtttrrrrblrrblllltlbrrrrtrr",
+                "rrrrrbllllllllllrrrrrrrbb.tttlllllllllll",
+                "llbrrrrrrrrrrrrrrrrrbbbrtllllrr.....llll",
+                ".......l......l..bll.r.lbbr....bllrrr...",
+                ".r..R.lll.t..tlllt............ltllll.rrr",
+                "r......tbblbblllbrrbltllbbbbrrrrrrrrtt..",
+                "......cbll......r..t...rrlbt.rr......rrr",
+                "rrrrt.rtttlllt.brrrtt.bb.llb..tbb.ttrrtt",
+                "llrrbbbbllllllllll.....bbbrrrrrrrr......",
+                "."
             ]
         }
-    ]
+    ],
+    "author": "Alexander",
+    "hint": "Complete the rooms and move on...but be sure to get all you need first."
 }
 ,
 {   "title": "Big Present III",

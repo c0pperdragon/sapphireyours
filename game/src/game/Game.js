@@ -83,12 +83,29 @@ Game.prototype.$ = function()
     // install input handlers
     document.addEventListener
     (   'keydown', function(event)
-        {   if (!that.overlay) that.onKeyDown(KeyEvent.toNumericCode(event.key)); 
+        {   if (!that.overlay) 
+            {   that.onKeyDown(KeyEvent.toNumericCode(event.key)); 
+            }
+            if (event.key=="Tab")
+            {   event.preventDefault();
+            }
         }
     );
     document.addEventListener
     (   'keyup', function(event)
-        {   if (!that.overlay) that.onKeyUp(KeyEvent.toNumericCode(event.key)); 
+        {   if (!that.overlay) 
+            {   that.onKeyUp(KeyEvent.toNumericCode(event.key)); 
+            }
+            if (event.key=="Tab") 
+            {   event.preventDefault();
+            }
+        }
+    );    
+    document.addEventListener
+    (   'keypress', function(event)
+        {   if (event.key=="Tab") 
+            {   event.preventDefault();
+            }
         }
     );    
     this.canvas.addEventListener
@@ -457,29 +474,40 @@ Game.prototype.getTopScreen = function()
     return this.screens.length>0 ? this.screens[this.screens.length-1] : null;
 };
 
-Game.prototype.openTextInputDialog = function(label,initvalue, callback)
+Game.prototype.openTextInputDialog = function(labeltext,initvalue, callback)
 {
     this.overlay = document.createElement("div");
     this.overlay.style.position = "absolute";
-    this.overlay.style.left = "0";
-    this.overlay.style.top = "0";
-    this.overlay.style["background-color"] = "white";
+    this.overlay.style.left = "0px";
+    this.overlay.style.top = "0px";
+    this.overlay.style.width = "100%";
+    this.overlay.style.height = "100%";
+    this.overlay.style["background-color"] = "black";
+    
+    var label = document.createElement("par");
+    label.style["color"] = "white";
+    label.style["font-family"] = "verdana";
+    label.style["font-size"] = "2em";
+    label.appendChild(document.createTextNode(labeltext));
+    this.overlay.appendChild(label);  
+   
+    this.overlay.appendChild(document.createElement("br"));
     
     var input = document.createElement("input");
     input.type = "text";
     input.value = initvalue;
+    input.style["color"] = "white";
+    input.style["background-color"] = "black";
+    input.style["font-family"] = "verdana";
+    input.style["font-size"] = "2em";
     input.style["box-sizing"] = "border-box";
     input.style["border"] = "0.05em solid #9ecaed";
     input.style["border-radius"] = "0.1em";
-//    input.style["outline"] = "none";
-        
-    this.overlay.appendChild(document.createTextNode(label));
-    this.overlay.appendChild(document.createElement("br"));
     this.overlay.appendChild(input);      
     
     var that = this;
     input.addEventListener("keydown", function(event) {
-        if (event.key === "Enter") {
+        if (event.key === "Enter" || event.key === "Escape") {
             if (that.overlay)
             {   var text = input.value;                
                 var o = that.overlay;
@@ -710,6 +738,9 @@ Game.prototype.testAllLevels = function()
                     logic.gototurn(d.getTurns());
                     if (!logic.isSolved()) 
                     {   console.warn("Non-working demo for",l.getTitle());
+                    }
+                    else if (logic.counters[CTR_EMERALDSCOLLECTED]>l.getLoot())
+                    {   console.warn("Collected more gems than needed",l.getTitle());
                     }
                 }
             }

@@ -622,7 +622,7 @@
     "title": "Kill the Yam-Yam-Beast",
     "difficulty": 5,
     "category": 3,
-    "loot": 12,
+    "loot": 15,
     "map": [
         "##########",
         "#E1......#",
