@@ -353,7 +353,29 @@ TileRenderer.prototype.addTile = function(x, y, tile)
     this.numTiles++;
 };
 
-TileRenderer.prototype.startDrawDecoration = function(tilesize)
+TileRenderer.prototype.startDrawingMini = function(leftborder,columns,rows)
+{  
+    // initialize the drawing buffers
+    this.numTiles = 0;
+    var viewportwidth = this.game.pixelwidth;
+    var viewportheight = this.game.pixelheight;
+    var pixelleft = (leftborder * this.game.pixelwidth)/this.game.screenwidth;
+    var tilesize = this.loadedTileSize; 
+    var tilezoom = tilesize / 120;     // use half size for decoration
+    
+    var offx0 = (viewportwidth/2+pixelleft/2)/tilezoom - columns*60/2;
+    var offy0 = viewportheight/2/tilezoom - rows*60/2;
+    var offx0 = Math.round(offx0*tilezoom) / tilezoom;
+    var offy0 = Math.round(offy0*tilezoom) / tilezoom;
+    
+    Matrix.setIdentityM(this.matrix,0);
+    Matrix.translateM(this.matrix,0, -1.0, 1.0, 0);
+    Matrix.scaleM(this.matrix,0, 2.0*tilezoom/viewportwidth, -2.0*tilezoom/viewportheight, 1.0); 
+    Matrix.translateM(this.matrix,0, offx0, offy0, 0);
+    this.havematrix2 = false;
+};
+
+TileRenderer.prototype.startDrawDecoration = function()
 {  
     // initialize the drawing buffers
     this.numTiles = 0;

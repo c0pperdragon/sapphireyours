@@ -172,7 +172,8 @@ Game.prototype.$ = function()
     this.loadLevels
     (   function() 
         {   //that.replaceTopScreen(new TestScreen().$(that));
-            that.replaceTopScreen(new MainMenuScreen().$(that));  
+            //that.replaceTopScreen(new MainMenuScreen().$(that));  
+            that.replaceTopScreen(new LevelSelectionScreen().$(that));  
             
             // trigger loading of sounds at the very end..
             that.soundPlayer = (new LevelSoundPlayer()).$();
@@ -449,9 +450,9 @@ Game.prototype.removeScreen = function()
 {
     this.setDirty();
     if (this.screens.length<=1)
-    {   //  clearGameState();   // when leaving game on purpose, do not keep stored game state
-        this.screens = [];
-        (this.exitcall)();      // after closing last remaining screen, try to exit program
+    {   // do not leave game completely
+        // this.screens = [];
+        // (this.exitcall)();      // after closing last remaining screen, try to exit program
     }
     else
     {   var olds = this.screens.pop();
@@ -847,6 +848,11 @@ Game.getIconForCategory = function(category)
             return "unknown";
     }
 };
+
+Game.getIconForDifficulty = function(difficulty)    
+{
+    return 9 + difficulty;
+}
 
     
 Game.argb = function(r, g, b)

@@ -550,14 +550,8 @@ LevelRenderer.prototype.createRotatingAnimation = function(a, start, end)
             
    
 // -------------- draw the whole scene as defined by the logic -----------
-LevelRenderer.prototype.draw = function
-(   logic, frames_until_endposition, 
-    offx0, offy0, offx1, offy1
-)
-{           
-    // start up the rendering    
-    this.startDrawing(offx0,offy0, offx1,offy1);
-
+LevelRenderer.prototype.draw = function(logic, frames_until_endposition)
+{               
     // determine which part of the logic area needs to be painted
     var populatedwidth = logic.level.datawidth;
     var populatedheight = logic.level.dataheight;
@@ -698,9 +692,6 @@ LevelRenderer.prototype.draw = function
                 }                   
             }               
     }
-                        
-    // send accumulated data to the screen
-    this.flush();        
 };
             
 LevelRenderer.prototype.addMoveAnimationToBuffers = function

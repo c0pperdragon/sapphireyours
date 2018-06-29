@@ -142,11 +142,12 @@ GameScreen.prototype.draw = function()
     // paint the level tiles in a big action
     var lr = this.game.levelRenderer; 
     if (lr!=null && (this.logic!=null))
-    {   lr.draw
-        (   this.logic, this.frames_left,
-            this.screenscrollx0, this.screenscrolly0+screenshake, 
+    {   lr.startDrawing
+        (   this.screenscrollx0,this.screenscrolly0+screenshake,
             this.screenscrollx1, this.screenscrolly1+screenshake
-        ); 
+        );
+        lr.draw(this.logic, this.frames_left); 
+        lr.flush();
     }
 
     // set up the renderers for decoration rendering
@@ -154,7 +155,7 @@ GameScreen.prototype.draw = function()
     var statustextheight = statusbarheight*0.4;
     var statustilesize = statusbarheight*0.75;        
     
-    lr.startDrawDecoration(statustilesize);
+    lr.startDrawDecoration();
     var tr = this.game.textRenderer;
     tr.startDrawing();
     var vr = this.game.vectorRenderer;

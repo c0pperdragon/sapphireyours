@@ -34,10 +34,10 @@ var KeyEvent = {
             case "Right":
             case "ArrowRight":      { return KeyEvent.RIGHT; }
             case " ":
+//            case "Control":
+//            case "ControlLeft":     
             case "Enter":           
-            case "Space":
-            case "Control":
-            case "ControlLeft":     { return KeyEvent.A; }
+            case "Space":           { return KeyEvent.A; }
             case "Shift":
             case "ShiftLeft":       { return KeyEvent.B; }
             case "Esc":
