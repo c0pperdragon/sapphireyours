@@ -1,7 +1,7 @@
 [
 {   "title": "Basic Mining",
     "author": "Reinhard",
-    "difficulty": 1,
+    "difficulty": 2,
     "category": 0,
     "loot": 13,
     "hint": "A simple mine to learn how to control the miner. Use the directional keys to move or draw the path on a touch display. Move over gems to collect them.",
@@ -31,7 +31,7 @@
 ,
 {   "title": "Cross",
     "author": "Ronald",
-    "difficulty": 1,
+    "difficulty": 2,
     "category": 0,
     "loot": 4,
     "map":

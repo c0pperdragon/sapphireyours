@@ -1,7 +1,7 @@
 [
 {
     "title": "Rock your way out",
-    "difficulty": 1,
+    "difficulty": 2,
     "category": 4,
     "loot": 6,
     "map": [
@@ -16,76 +16,6 @@
             "moves": [
                 "...b..r..l.t.rrr.b.r..rr..t..l..rrrb.r.r",
                 ".t..l..rrr.b.r.l..t.rrr.b.r.r......."
-            ]
-        }
-    ]
-}
-,
-{   "title": "YamYams",
-    "loot": 1,
-    "yamyamremainders": "*)$(brgy@",
-    "map":
-    [   "#################",
-        "#..............E#",
-        "#..<<....<.....1#",
-        "#<.............]#",
-        "#..............]#",
-        "#........>>>...]#",
-        "#...<..........]#",
-        "#################"
-    ]
-},
-{   "title": "Lorry Risk",
-    "loot": 1,
-    "map":
-    [   "#################",
-        "#..............E#",
-        "#..............1#",
-        "#..............*#",
-        "#.........h.....#",
-        "#...............#",
-        "#...............#",
-        "#################"
-    ]
-},
-{   "title": "Bee Hive",
-    "author": "Alexander",
-    "difficulty": 6,
-    "category": 4,
-    "loot": 11,
-    "robotspeed": 10,
-    "map":
-    [   "#################",
-        "#QQQQQQQQ QQQQQE#",
-        "#........ ......#",
-        "#         QQQQQQ#",
-        "#   Q     ......#",
-        "#||||1    QQQQQQ#",
-        "#000||Q   ......#",
-        "#..0.||Q  QQQQQQ#",
-        "#.....|   ......#",
-        "#.@@.||    00   #",
-        "#@@@.|    .$$.  #",
-        "#|||||   .7oo7. #",
-        "#QQQQQQ 0$oooo$0#",
-        "#...... 0$oooo$0#",
-        "#QQQQQQ ..7oo7..#",
-        "#......   .$$.  #",
-        "#################"
-    ],
-    "demos":
-    [   {   
-            "randomseed": 681758,
-            "moves":
-            [   "...r.rrbb.........lttll........blbbblll.",
-                ".tt..r.....l..trrr.ttrrrttlll...........",
-                "rrrr...l....b..lll..bll....trtrrrr...lll",
-                "l.l........rrrrrbbbbb..b..trrttttlllllll",
-                "bbbbbbbbl.tttttttttrrrr....bbbbbbllbbbbb",
-                "b.r.rbrrrrrrrr.tr.t.........trrtrr.tttll",
-                "llllll..r...b.l.tttllllbbbbbbbbrrbrrrr.t",
-                "ttttttt..t.....rrrrrrr..lltrrrtllllllltt",
-                "rrrrrrr.................t......."
             ]
         }
     ]

@@ -2,7 +2,7 @@
 {   "title": "Two Miners",
     "author": "Reinhard",
     "hint": "Use the 'enter' key or the third action key to switch between miners. Simultaneous movement is possible by using D,G,R,G keys or extra keypad.",
-    "difficulty": 1,
+    "difficulty": 2,
     "category": 1,
     "loot": 10,
     "map":

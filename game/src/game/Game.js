@@ -729,6 +729,12 @@ Game.prototype.testAllLevels = function()
         console.log("Testing levels in",lp.getName());
         for (var i=0; i<lp.numberOfLevels(); i++)
         {   var l = lp.getLevel(i);
+            if (!(l.getDifficulty()>=2 && l.getDifficulty()<=9))
+            {   console.warn("Unspecified difficulty for: "+l.getTitle());
+            }
+            if (!(l.getCategory()>=0 && l.getCategory()<=7))
+            {   console.warn("Unspecified category for: "+l.getTitle());
+            }
             if (l.numberOfDemos()<1) 
             {   console.warn("No demos defined for",l.getTitle());
             }

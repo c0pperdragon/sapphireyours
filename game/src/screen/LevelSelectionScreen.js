@@ -241,7 +241,11 @@ LevelSelectionScreen.prototype.filterAndSortLevels = function()
     
     this.filteredlevels.sort
     (   function(la, lb) 
-        {   var a = la.getTitle();
+        {   if (pos2category(pos)>=0) 
+            {   var dd = la.getDifficulty() - lb.getDifficulty();
+                if (dd!=0) return dd;
+            }
+            var a = la.getTitle();
             var b = lb.getTitle();
             return (a<b?-1:(a>b?1:0));  
         }
@@ -326,6 +330,34 @@ LevelSelectionScreen.prototype.onKeyDown = function(keycode)
             {   this.startSelectedLevel();
                 break;
             }
+
+            // special keys for development mode
+                case KeyEvent.EDIT:
+                    if (Game.DEVELOPERMODE)
+                    {   var l = this.getSelectedLevel();
+                        if (l!=null)
+                        {   var es = new EditorScreen().$(this.game, l);
+                            this.game.addScreen(es);
+                            es.afterScreenCreation();
+                        }
+                    }
+                    break;                    
+                    
+                case KeyEvent.SAVE:
+                    if (Game.DEVELOPERMODE)
+                    {   var l = this.getSelectedLevel();
+                        if (l!=null)
+                        {   console.log(JSON.stringify(l.toJSON(),null,4));
+                        }
+                    }
+                    break;        
+                    
+                case KeyEvent.TEST:
+                    if (Game.DEVELOPERMODE)
+                    {   this.game.testAllLevels();                        
+                    }
+                    break;                    
+            
         }        
     }
     
@@ -340,11 +372,19 @@ LevelSelectionScreen.prototype.onBackNavigation = function()
     }
 }
   
-LevelSelectionScreen.prototype.startSelectedLevel = function()
+LevelSelectionScreen.prototype.getSelectedLevel = function()
 {
     if (this.filteredlevels.length>this.selectedlevel)
-    {   var l = this.filteredlevels[this.selectedlevel];
-        var gs = new GameScreen().$
+    {   return this.filteredlevels[this.selectedlevel];
+    }
+    return null;
+}
+  
+LevelSelectionScreen.prototype.startSelectedLevel = function()
+{
+    var l = this.getSelectedLevel();
+    if (l!=null)
+    {   var gs = new GameScreen().$
         (   this.game, l, null, 
             this.selectedlevel+1<this.filteredlevels, false
         );

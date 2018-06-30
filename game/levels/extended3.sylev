@@ -642,7 +642,7 @@
 {   "title": "Rainbow II",
     "author": "J\u00fcrgen, Ronald",
     "hint": "Nearly the same level as 'Rainbow', but now waste not more than 6 sapphires.",
-    "difficulty": 1,
+    "difficulty": 6,
     "category": 1,
     "loot": 772,
     "swamprate": 30,
