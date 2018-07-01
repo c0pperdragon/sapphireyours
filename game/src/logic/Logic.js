@@ -670,6 +670,16 @@ Logic.prototype.piecesmove = function()
                         }
                         break;
                     }
+                    case KEYRED:
+                    case KEYBLUE:
+                    case KEYGREEN:
+                    case KEYYELLOW:
+                    {   this.visualrandomseed = this.nextrandomseed(this.visualrandomseed);
+                        if ((this.visualrandomseed & 31) == 0)
+                        {   this.highlight(x,y,piece);
+                        }                               
+                        break;
+                    }                    
                     case BAG:
                     {   if (this.is(x,y+1,AIR))
                         {   this.move(x,y,0,1,BAG_FALLING);
