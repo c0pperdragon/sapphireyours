@@ -461,18 +461,16 @@ LevelRenderer.prototype.getAnimation = function(filename)
     return this.getSubAnimation(filename,0,1);
 };
 
-//var needrevert = [ "Earth Right" ];
-
 LevelRenderer.prototype.getSubAnimation = function(filename, segment, totalsegments)
 {
     var tiles = this.getImage(filename);
     var numtiles = tiles.length;
     var a = new Array(LevelRenderer.FRAMESPERSTEP);
-    for (var i=0; i<a.length; i++)
-    {   var t = (segment + i/LevelRenderer.FRAMESPERSTEP) / totalsegments;        
-        a[i] = tiles[Math.floor(t*numtiles)];
+    for (var i=0; i<LevelRenderer.FRAMESPERSTEP; i++)
+    {   var t = LevelRenderer.FRAMESPERSTEP*segment + i;
+        a[i] = tiles[Math.floor(t*numtiles / (LevelRenderer.FRAMESPERSTEP*totalsegments))];
     }
-    return a;    
+    return a;
 }
 
 // use the last image in the sequence as 'still' image
@@ -628,9 +626,14 @@ LevelRenderer.prototype.draw = function(logic, frames_until_endposition)
     for (var y=0; y<populatedheight; y++)
     {   for (var x=0; x<populatedwidth; x++)
         {   if (!tmp_disable_static_tile[x+y*MAPWIDTH])
-            {   var anim = this.determineTileAt(logic,x,y); 
+            {   var anim = this.determineTileAt(logic,frameindex===0,x,y); 
                 if (anim!=null)  
-                {   this.addNonMoveAnimationToBuffers(anim.idling ? frameindex:0, anim, x,y);
+                {   if (anim.idling) 
+                    {   this.addNonMoveAnimationToBuffers(frameindex, anim, x,y);
+                    }
+                    else
+                    {   this.addNonMoveAnimationToBuffers(0, anim, x,y);
+                    }
                 }
             }
         }
@@ -983,7 +986,7 @@ LevelRenderer.prototype.determineHighlightAnimation = function (highlightpiece, 
     return this.piecetiles[highlightpiece];
 }; 
     
-LevelRenderer.prototype.determineTileAt = function(logic, x, y)
+LevelRenderer.prototype.determineTileAt = function(logic, iskeyframe, x, y)
 {   
     // various appearances of the earth piece
     var p = logic.piece(x,y);
@@ -1011,17 +1014,19 @@ LevelRenderer.prototype.determineTileAt = function(logic, x, y)
             return this.roundwalltiles[c];
         }
         case ACID:
-        {   var n = logic.getTurnsDone()&1;
+        {   var n = (iskeyframe?logic.getTurnsDone():logic.getTurnsDone()-1)&1;
             var pl = logic.piece(x-1,y);
             var pr = logic.piece(x+1,y);
+            var t;
             if (pl===ACID)
-            {   if (pr==ACID) { return this.acidtiles_noedge[n]; }
-                else { return this.acidtiles_rightedge[n]; }
+            {   if (pr==ACID) { t=this.acidtiles_noedge[n]; }
+                else { t=this.acidtiles_rightedge[n]; }
             }
             else
-            {   if (pr===ACID) { return this.acidtiles_leftedge[n]; }
-                else { return this.acidtiles_bothedges[n]; }               
+            {   if (pr===ACID) { t=this.acidtiles_leftedge[n]; }
+                else { t=this.acidtiles_bothedges[n]; }               
             }
+            return t;
         }
         case CONVERTER: { return this.idle_converter; }
     }    
