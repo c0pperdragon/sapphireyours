@@ -33,7 +33,7 @@ TileRenderer.prototype = Object.create(Renderer.prototype);
 TileRenderer.MAXTILES = 64*64;
 
 TileRenderer.ATLASROWS = 32;
-TileRenderer.ATLASCOLUMNS = 32;
+TileRenderer.ATLASCOLUMNS = 36;
 
     
 TileRenderer.vertexShaderCode =
@@ -251,7 +251,8 @@ TileRenderer.prototype.startLoadImage = function(filename)
             if (that.imagesRequested.size==0)
             {   console.log
                 (   "Loaded "+that.imageList.size
-                    +" images into "+that.numTilesAssigned+" of " 
+                    +" images ("+that.loadedTileSize+"x"+that.loadedTileSize+")"
+                    +" into "+that.numTilesAssigned+" of " 
                     +TileRenderer.ATLASCOLUMNS * TileRenderer.ATLASROWS+" tiles"
                 );
                 that.game.setDirty();

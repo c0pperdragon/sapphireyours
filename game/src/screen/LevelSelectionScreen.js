@@ -386,9 +386,17 @@ LevelSelectionScreen.prototype.startSelectedLevel = function()
     if (l!=null)
     {   var gs = new GameScreen().$
         (   this.game, l, null, 
-            this.selectedlevel+1<this.filteredlevels, false
+            this.selectedlevel+1<this.filteredlevels.length, false
         );
         this.game.addScreen(gs);
         gs.afterScreenCreation();                      
     }                   
+};
+
+LevelSelectionScreen.prototype.startSubsequentLevel = function()
+{
+    if (this.selectedlevel+1<this.filteredlevels.length)
+    {   this.selectedlevel++;
+        this.startSelectedLevel();
+    }
 };

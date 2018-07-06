@@ -204,7 +204,7 @@ Game.prototype.$ = function()
         that.canvas.height = pixelheight;   
         that.canvas.style["width"] = csswidth+"px";
         that.canvas.style["height"] = cssheight+"px";
-        that.pixeltilesize = Math.round(ratio*60);
+        that.pixeltilesize = Math.round(ratio*30)*2; // always use even number of pixel 
         
 //        console.log
 //        (   "css size:",csswidth,cssheight,

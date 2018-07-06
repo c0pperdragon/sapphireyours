@@ -766,8 +766,11 @@ GameScreen.prototype.createMenuScreen = function(onlypopup)
         else if (this.logic.isSolved()) 
         {   if (this.canFindNextLevel)
             {   m.addDefaultAction(PauseMenu.MENUACTION_NEXTLEVEL);
+                m.addPriorityAction(this.startFromEditor ? PauseMenu.MENUACTION_EXITTOEDITOR : PauseMenu.MENUACTION_EXIT);
             }
-            m.addPriorityAction(this.startFromEditor ? PauseMenu.MENUACTION_EXITTOEDITOR : PauseMenu.MENUACTION_EXIT);
+            else
+            {   m.addDefaultAction(this.startFromEditor ? PauseMenu.MENUACTION_EXITTOEDITOR : PauseMenu.MENUACTION_EXIT);
+            }
             m.addAction(PauseMenu.MENUACTION_RESTART);
             m.addAction(PauseMenu.MENUACTION_REPLAY);
             if (this.startFromEditor)
