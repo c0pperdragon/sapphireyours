@@ -247,6 +247,11 @@ LevelSelectionScreen.prototype.filterAndSortLevels = function()
             }
             var a = la.getTitle();
             var b = lb.getTitle();
+            // do hardcoded sort of a few introductory "easy" levels
+            if (pos2difficulty(pos)==2)
+            {   a = Game.getCustomLevelSort(a);
+                b = Game.getCustomLevelSort(b);
+            }
             return (a<b?-1:(a>b?1:0));  
         }
     );    

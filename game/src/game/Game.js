@@ -860,6 +860,16 @@ Game.getIconForDifficulty = function(difficulty)
     return 9 + difficulty;
 }
 
+Game.getCustomLevelSort = function(title)
+{
+    switch (title)
+    {   case "Welcome to the Game": return " 01";        
+        case "Twisted Tunnel": return " 02";        
+        case "Rock your way out": return " 03";
+        case "Basic Mining": return " 04";
+        default: return title;
+    }
+}
     
 Game.argb = function(r, g, b)
 {
