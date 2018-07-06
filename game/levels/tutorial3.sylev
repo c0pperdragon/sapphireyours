@@ -441,15 +441,14 @@
     ]
 }
 ,
-{   "title": "Chess",
-    "author": "Ronald",
+{
+    "title": "Chess",
     "difficulty": 4,
-    "category": 2,
-    "loot": 24,
-    "time": 250,
-    "map":
-    [   "############",
-        "# !Q*$1*Q! #",
+    "category": 0,
+    "loot": 30,
+    "map": [
+        "############",
+        "# !Q$)1$Q! #",
         "# **.***** #",
         "# #.#.#.#. #",
         "# .#*+.+.+ #",
@@ -457,20 +456,21 @@
         "# .#.+*#.# #",
         "# #.#.#.#. #",
         "# ****.*** #",
-        "# !Q*$E*Q! #",
+        "# !Q$)E$Q! #",
         "############"
     ],
-    "demos":
-    [   {   "title": "Demo 1",
+    "demos": [
+        {
             "randomseed": 4725,
-            "moves":
-            [   "......llrbrrt..brrtr....llllllblltl...bb",
+            "moves": [
+                "......llrbrrt..brrtr....llllllblltl...bb",
                 "bbbbbrBrrbrtrrBrrBrttttttlll..b..ut.....",
                 "....bbbl.sr.........llll.srr........lllb",
                 "b.ut.........bbrR.bbbr.........."
             ]
         }
-    ]
+    ],
+    "author": "Ronald"
 }
 ,
 {   "title": "Find the Way Out",

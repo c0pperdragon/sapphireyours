@@ -420,13 +420,13 @@
     ]
 }
 ,
-{   "title": "Stone Sequences",
-    "author": "Ronald",
+{
+    "title": "Stone Sequences",
     "difficulty": 8,
     "category": 3,
     "loot": 41,
-    "map":
-    [   "#################",
+    "map": [
+        "#################",
         "00.!!! #$+...00.#",
         "00.### ###.Q....#",
         "00.#  1  #.Q* ..#",
@@ -454,11 +454,12 @@
         "#$*....0*..@#...#",
         "#################"
     ],
-    "demos":
-    [   {   "title": "Demo 1",
+    "yamyamremainders": "         ",    
+    "demos": [
+        {
             "randomseed": 5380,
-            "moves":
-            [   ".ttllllb.urr.....lllllbbb.utl....bbbbbbb",
+            "moves": [
+                ".ttllllb.urr.....lllllbbb.utl....bbbbbbb",
                 "b.rbbuttlbb..bbbbbb.rbbLtttttttrrrrbbllb",
                 "rbrrtl..bbbbbbrbbllllllbbrrrrrrrbbllll..",
                 "...srbblsttllllll....lbbl.brttrrtrrbbbll",
@@ -466,13 +467,19 @@
                 "lbrr..r.T.rr.l.........r.lt.r..blt..l..r",
                 "..trr.r.R....trrbr.Bltllbrr.lbbrR.....ll",
                 "tt.blllt.Lb.Lrrrrrrttrrbbbrrtltrtlt.....",
-                "..rtllllllllllt..r..R.rblrrrttt.........",
-                "................tttttttrtltrlltttrmbb........",
-                "ttrrrrtttrllbltrrbbbllrtttlltllbrlbttrrr",
-                "blblrtt..lllLrrrrrrrbbbbbbbbLb....."
+                "..rtllllllllllt..r..R.rblrrr.tt..t......",
+                "........................................",
+                "ttttttt.bbbbbbbbrrlltttttttttrr....l....",
+                ".......l...t.r...l..bb.tttt..tr....mbbbb",
+                "bbbbbbbbbbttttttttttttttrrr............b",
+                ".....rrttllt.brr....................tt.b",
+                "..bbbbbbblrtttttt.....l..tl.ltllb.......",
+                "...r...r..ll.b.t..r........trrrbl....lbl",
+                "r...ttllllrrrrrrrbbbbbbbbb......."
             ]
         }
-    ]
+    ],
+    "author": "Ronald"
 }
 ,
 {   "title": "Help the Bug",
@@ -536,13 +543,13 @@
     ]
 }
 ,
-{   "title": "Lots of Walls",
-    "author": "Linda",
+{
+    "title": "Lots of Walls",
     "difficulty": 4,
     "category": 1,
     "loot": 47,
-    "map":
-    [   "#########################",
+    "map": [
+        "#########################",
         "#$*.00.#...:u   *$*    :#",
         "#*$.  .#..1.:   ...   :.#",
         "#..+..#......:       :..#",
@@ -568,31 +575,35 @@
         "#E.#..$...#.!!!#     <  #",
         "#########################"
     ],
-    "demos":
-    [   {   
-            "randomseed": 612684,
-            "moves":
-            [   "....bbbbbbrrbbbrtrttttrrbl.rtrrbbbtttllb",
-                "rrrrrb...ml.......rrrrrrrtllllbbbl.r.b.l",
-                "rttttlllllbbbbt.llbbbbbbbb..bblbrrrtlltt",
-                "ttt...tr...ml.........rrtrrrrrrtlllllbbl",
-                "lltlll...srr.......lllttrttlrbbblbbblbll",
-                "lbb....sr.........llbbbbrrrrrttttrtlbbbb",
-                "llllltttrr.trtrttt.l......tll..srr......",
-                "..lllll........srrr.........ll..lllllltr",
-                "rblr.rb.rllrrrrrrrrrrrbbrrbrrrrrrrrtt.tt",
-                "ttttllllttt......t......................",
-                "..........crrrr....................lllll",
-                "tttlltttrrrbbbbbbbblbrrblttttllllllbllll",
-                "l.t..l......l..........................l",
-                "lt.tt....r........l.tllltr..b....rr..bbb",
-                "rbrrrbrrrrbbbbbbbbbb.ttttttt..bbbbrrbbrb",
-                ".rb.tllbr.........r.........mlltt...bb..",
-                "t....bb...rrbbbbrrrtrrrrtttllllllllltttt",
-                "lltlllllllllbbllbbbbbb.........."
+    "demos": [
+        {
+            "randomseed": 602338,
+            "moves": [
+                "...bbbbbrrrbbbb.trttttrrbl.rtrrbbb.tttll",
+                "brrrrr..b....mll.......rrrrrrt.blllbbll.",
+                "rr.bllrrrrrbbbbbblllllllb.tllb........r.",
+                ".l..tttllbbbbllbrrrblll.....ttrtttt.l.t.",
+                "lll.........srr........lllbttrttlrbbblbb",
+                "blbllrrr.lb.ll....srr.......lll.bbbbrrrr",
+                "rtttttrbllbbllllttrrttrrtttrrrrttttrrbtl",
+                "llbbbbbrr...ml........rrrttrrrrrbblltlll",
+                "....lltttttt....llllllll.....rrbbb......",
+                "...cbbrrr......ttttlllllbbbttlllbrrrrrtt",
+                "ttrr.t..ll..............................",
+                "llttt...rlltt.lllbrrrbb...bb............",
+                ".tr..ml.......brrrrrrbrrrrrt.r....bb....",
+                "b.......tttrrrrr.t......................",
+                "..cbrrr.........................lllltttt",
+                "lltttrrrbbbbbbbblrrbll..r.brrbbbbbblllll",
+                "b.....l..r.....l.r.........urrrr........",
+                "..............lllbblbbbrrbrrrrrttttlllll",
+                "lllltrbbrbbbbttttttlltttllllllllblllllbb",
+                "bbbbb......."
             ]
         }
-    ]
+    ],
+    "author": "Linda",
+    "yamyamremainders": "         "
 }
 ,
 {   "title": "Ice Cube",

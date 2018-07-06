@@ -39,7 +39,7 @@ EditorScreen.pieces = [
     TIMEBOMB10, BOX, CUSHION, CONVERTER,
     KEYBLUE, KEYRED, KEYGREEN, KEYYELLOW,
     DOORBLUE, DOORRED, DOORGREEN, DOORYELLOW,   
-    ONETIMEDOOR, ELEVATOR, ELEVATOR_TOLEFT, ELEVATOR_TORIGHT, 
+    ONETIMEDOOR, ELEVATOR, CONVEYORLEFT, CONVEYORRIGHT, 
     LORRYLEFT, LORRYUP, LORRYRIGHT, LORRYDOWN,
     BUGLEFT, BUGUP, BUGRIGHT, BUGDOWN,
     YAMYAMLEFT, YAMYAMUP, YAMYAMRIGHT, YAMYAMDOWN,
@@ -648,7 +648,7 @@ EditorScreen.prototype.menuAction = function(id)
                 break;
                 
             case PauseMenu.MENUACTION_TESTLEVEL:
-                var gs = new GameScreen().$(game, this.level, null, false, true);
+                var gs = new GameScreen().$(game, this.level,this.level.demos[0], false, true);
                 game.addScreen(gs);
                 gs.afterScreenCreation();                           
                 break;

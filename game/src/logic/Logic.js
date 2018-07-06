@@ -368,7 +368,8 @@ Logic.prototype.piecesmove = function()
                         this.transform(x,y, DOOR_CLOSED);                        
                         break;
                     case ROCK:
-                    {   if (this.is(x,y+1,AIR))
+                    {   var dx;
+                        if (this.is(x,y+1,AIR))
                         {   this.move(x,y, 0,1, ROCK_FALLING);
                         }
                         else if (this.is(x,y+1,SAND))
@@ -383,11 +384,11 @@ Logic.prototype.piecesmove = function()
                         {   this.move (x,y,0,2,EMERALD_FALLING);
                             this.highlight (x,y+1, CONVERTER);                       
                         }
-                        else if (this.may_roll_to_left(x,y+1, true))
-                        {   this.move(x,y, -1,0,ROCK_FALLING);
-                        }
-                        else if (this.may_roll_to_right(x,y+1, true))
-                        {   this.move(x,y, 1,0,ROCK_FALLING);
+                        else if (dx=this.may_roll(x,y, true))
+                        {   this.move(x, y, dx, 0, ROCK_FALLING);
+                        } 
+                        else if (dx=this.may_be_transported(x,y))
+                        {   this.move(x, y, dx, 0, ROCK);                            
                         }
                         break;
                     }
@@ -434,7 +435,8 @@ Logic.prototype.piecesmove = function()
                         break;
                     }
                     case EMERALD:
-                    {   if (this.is(x,y+1,AIR))
+                    {   var dx;
+                        if (this.is(x,y+1,AIR))
                         {   this.move(x,y,0,1,EMERALD_FALLING);
                         }
                         else if (this.is(x,y+1,ACID))
@@ -446,11 +448,11 @@ Logic.prototype.piecesmove = function()
                         {   this.move (x,y,0,2,SAPPHIRE_FALLING);
                             this.highlight (x,y+1, CONVERTER);
                         }
-                        else if (this.may_roll_to_left(x,y+1, true))
-                        {   this.move(x,y,-1,0,EMERALD_FALLING);
+                        else if (dx=this.may_roll(x,y, true))
+                        {   this.move(x,y,dx,0,EMERALD_FALLING);
                         }
-                        else if (this.may_roll_to_right(x,y+1, true))
-                        {   this.move(x,y,1,0,EMERALD_FALLING);
+                        else if (dx=this.may_be_transported(x,y))
+                        {   this.move(x, y, dx, 0, EMERALD);                            
                         }
                         else 
                         {
@@ -498,7 +500,8 @@ Logic.prototype.piecesmove = function()
                         break;
                     }
                     case SAPPHIRE:
-                    {   if (this.is(x,y+1,AIR))
+                    {   var dx;
+                        if (this.is(x,y+1,AIR))
                         {   this.move(x,y,0,1,SAPPHIRE_FALLING);
                         }
                         else if (this.is(x,y+1,ACID))
@@ -510,11 +513,11 @@ Logic.prototype.piecesmove = function()
                         {   this.move (x,y,0,2,CITRINE_FALLING);
                             this.highlight (x,y+1, CONVERTER);                       
                         }
-                        else if (this.may_roll_to_left(x,y+1, true))
-                        {   this.move(x,y,-1,0,SAPPHIRE_FALLING);
+                        else if (dx=this.may_roll(x,y, true))
+                        {   this.move(x,y,dx,0,SAPPHIRE_FALLING);
                         }
-                        else if (this.may_roll_to_right(x,y+1, true))
-                        {   this.move(x,y,1,0,SAPPHIRE_FALLING);
+                        else if (dx=this.may_be_transported(x,y))
+                        {   this.move(x, y, dx, 0, SAPPHIRE); 
                         }
                         else 
                         {
@@ -556,7 +559,8 @@ Logic.prototype.piecesmove = function()
                         break;
                     }
                     case CITRINE:
-                    {   if (this.is(x,y+1,AIR))
+                    {   var dx=0;
+                        if (this.is(x,y+1,AIR))
                         {   this.move(x,y,0,1,CITRINE_FALLING);
                         }
                         else if (this.is(x,y+1,ACID))
@@ -568,12 +572,12 @@ Logic.prototype.piecesmove = function()
                         {   this.move (x,y, 0,2,CITRINE_FALLING);
                             this.highlight (x,y+1, CONVERTER);                       
                         }
-                        else if (this.may_roll_to_left(x,y+1, true))
-                        {   this.move(x,y,-1,0,CITRINE_FALLING);
+                        else if (dx=this.may_roll(x,y, true))
+                        {   this.move(x,y,dx,0,CITRINE_FALLING);
                         }
-                        else if (this.may_roll_to_right(x,y+1, true))
-                        {   this.move(x,y,1,0,CITRINE_FALLING);
-                        }
+                        else if (dx=this.may_be_transported(x,y))
+                        {   this.move(x, y, dx, 0, CITRINE);                            
+                        }                        
                         else 
                         {
                             this.visualrandomseed = this.nextrandomseed(this.visualrandomseed);
@@ -616,7 +620,8 @@ Logic.prototype.piecesmove = function()
                         break;
                     }
                     case RUBY:
-                    {   if (this.is(x,y+1,AIR))
+                    {   var dx;
+                        if (this.is(x,y+1,AIR))
                         {   this.move(x,y,0,1,RUBY_FALLING);
                         }
                         else if (this.is(x,y+1,ACID))
@@ -628,11 +633,11 @@ Logic.prototype.piecesmove = function()
                         {   this.move (x,y,0,2,SAPPHIRE_FALLING);
                             this.highlight (x,y+1,CONVERTER);                        
                         }
-                        else if (this.may_roll_to_left(x,y+1, true))
-                        {   this.move(x,y,-1,0,RUBY_FALLING);
+                        else if (dx=this.may_roll(x,y, true))
+                        {   this.move(x,y,dx,0,RUBY_FALLING);
                         }
-                        else if (this.may_roll_to_right(x,y+1, true))
-                        {   this.move(x,y,1,0,RUBY_FALLING);
+                        else if (dx=this.may_be_transported(x,y))
+                        {   this.move(x, y, dx, 0, RUBY);
                         }
                         else 
                         {
@@ -681,7 +686,8 @@ Logic.prototype.piecesmove = function()
                         break;
                     }                    
                     case BAG:
-                    {   if (this.is(x,y+1,AIR))
+                    {   var dx=0;
+                        if (this.is(x,y+1,AIR))
                         {   this.move(x,y,0,1,BAG_FALLING);
                         }
                         else if (this.is(x,y+1,ACID))
@@ -689,11 +695,11 @@ Logic.prototype.piecesmove = function()
                             this.transform(x,y+1,ACID);                          
                             this.changecounter(CTR_EMERALDSTOOMUCH,-1);
                         }
-                        else if (this.may_roll_to_left(x,y+1, false))
-                        {   this.move(x,y,-1,0,BAG_FALLING);
+                        else if (dx=this.may_roll(x,y, false))
+                        {   this.move(x,y,dx,0,BAG_FALLING);
                         }
-                        else if (this.may_roll_to_right(x,y+1, false))
-                        {   this.move(x,y,1,0,BAG_FALLING);
+                        else if (dx=this.may_be_transported(x,y))
+                        {   this.move(x, y, dx, 0, BAG); 
                         }
                         break;
                     }
@@ -725,18 +731,16 @@ Logic.prototype.piecesmove = function()
                     }                               
                     
                     case BOMB:
-                    {   if (this.is(x,y+1,AIR))
+                    {   var dx;
+                        if (this.is(x,y+1,AIR))
                         {   this.move(x,y,0,1,BOMB_FALLING);
                         }
                         else if (this.is(x,y+1,ACID))
                         {   this.move(x,y,0,1,BOMB);
                             this.transform(x,y+1,ACID);                          
                         }
-                        else if (this.may_roll_to_left(x,y+1, false))
-                        {   this.move(x,y,-1,0,BOMB_FALLING);
-                        }
-                        else if (this.may_roll_to_right(x,y+1, false))
-                        {   this.move(x,y,1,0,BOMB_FALLING);
+                        else if (dx=this.may_roll(x,y, false))
+                        {   this.move(x,y,dx,0,BOMB_FALLING);
                         }
                         break;
                     }
@@ -1063,27 +1067,28 @@ Logic.prototype.piecesmove = function()
                         break;
                     }   
                     case ELEVATOR:
-                    case ELEVATOR_TOLEFT:
-                    case ELEVATOR_TORIGHT:
-                        {   var lpiece = this.piece(x,y-1);
-                            if (lpiece==EMERALD || lpiece==SAPPHIRE || lpiece==CITRINE || lpiece==RUBY || lpiece==BAG || lpiece==ROCK 
-//                            || lpiece==ROCKEMERALD 
-                            || lpiece==BOMB)
-                            {   if (!this.hasmoved(x,y-1) && this.is(x,y-2,AIR) )
-                                {   this.move (x,y-1, 0,-1, lpiece);
-                                    this.move (x,y, 0,-1, this.piece(x,y));
-                                }
-                            }
-                            else if (lpiece==EMERALD_FALLING || lpiece==SAPPHIRE_FALLING || lpiece==CITRINE_FALLING || lpiece==RUBY_FALLING || lpiece==BAG_FALLING 
-//                            || lpiece==ROCKEMERALD_FALLING 
-                            || lpiece==BOMB_FALLING || lpiece==BAG_OPENING || lpiece==SAPPHIRE_BREAKING)
-                            {   // do not move down
-                            }
-                            else if (this.is(x,y+1,AIR))
-                            {   this.move (x,y, 0,1, this.piece(x,y));
+                    {   var lpiece = this.piece(x,y-1);
+                        if 
+                        (   lpiece==EMERALD || lpiece==SAPPHIRE || lpiece==CITRINE 
+                            || lpiece==RUBY || lpiece==BAG || lpiece==ROCK || lpiece==BOMB
+                        )
+                        {   if (!this.hasmoved(x,y-1) && this.is(x,y-2,AIR) )
+                            {   this.move (x,y-1, 0,-1, lpiece);
+                                this.move (x,y, 0,-1, this.piece(x,y));
                             }
                         }
+                        else if 
+                        (   lpiece==EMERALD_FALLING || lpiece==SAPPHIRE_FALLING || lpiece==CITRINE_FALLING 
+                            || lpiece==RUBY_FALLING || lpiece==BAG_FALLING || 
+                            lpiece==BOMB_FALLING || lpiece==BAG_OPENING || lpiece==SAPPHIRE_BREAKING
+                        )
+                        {   // do not move down
+                        }
+                        else if (this.is(x,y+1,AIR))
+                        {   this.move (x,y, 0,1, this.piece(x,y));
+                        }
                         break;
+                    }
                         
                     case DOOR_OPENED:
                         if (this.isSolved() && this.timeSinceAllExited()>1)
@@ -1733,92 +1738,93 @@ Logic.prototype.is_near_origin_position_of_player = function(x, y, playeridx)
     
 Logic.prototype.add_laser_beam = function(x, y, dx, dy)
 {
-        var startx = x;
-        var starty = y;
-        var startdx = dx;
-        var startdy = dy;
-        var length=1000;
-        
-        while (length>0) 
-        {   length--;
+    var startx = x;
+    var starty = y;
+    var startdx = dx;
+    var startdy = dy;
+    var length=1000;
+    
+    while (length>0) 
+    {   length--;
 
-            switch (this.piece(x,y)) 
-            {   case EMERALD:
-                case EMERALD_FALLING:
-                    switch (dx+10*dy)
-                    {   case -10:                   
-                            dx = -1;
-                            dy = 0; 
-                            this.highlight (x,y, LASER_BL);
-                            break;
-                        case 10:  
-                            dx = 1;
-                            dy = 0;
-                            this.highlight (x,y, LASER_TR);
-                            break;
-                        case -1:
-                            dx = 0;
-                            dy = 1;
-                            this.highlight (x,y, LASER_BR);
-                            break;
-                        case 1:
-                            dx = 0;
-                            dy = -1;
-                            this.highlight (x,y, LASER_TL);  
-                            break;              
-                    }
-                    break;
-
-                case SAPPHIRE:
-                case SAPPHIRE_FALLING:
-                    switch (dx+10*dy)
-                    {   case -10:                   
-                            dx = 1;
-                            dy = 0; 
-                            this.highlight (x,y, LASER_BR);
-                            break;
-                        case 10:  
-                            dx = -1;
-                            dy = 0;
-                            this.highlight (x,y, LASER_TL);
-                            break;
-                        case -1:
-                            dx = 0;
-                            dy = -1;
-                            this.highlight (x,y, LASER_TR);
-                            break;
-                        case 1:
-                            dx = 0;
-                            dy = 1;
-                            this.highlight (x,y, LASER_BL);
-                            break;                  
-                    }
-                    break;
-                
-                case CITRINE:
-                case CITRINE_FALLING:
-                    dx = -dx;
-                    dy = -dy;
-                    this.highlight (x,y, dx>0 ? LASER_R 
-                                         : dx<0 ? LASER_L
-                                                : dy<0 ? LASER_U : LASER_D);
-                    break;
-
+        switch (this.piece(x,y)) 
+        {   case EMERALD:
+            case EMERALD_FALLING:
+            {   switch (dx+10*dy)
+                {   case -10:                   
+                        dx = -1;
+                        dy = 0; 
+                        this.highlight (x,y, LASER_BL);
+                        break;
+                    case 10:  
+                        dx = 1;
+                        dy = 0;
+                        this.highlight (x,y, LASER_TR);
+                        break;
+                    case -1:
+                        dx = 0;
+                        dy = 1;
+                        this.highlight (x,y, LASER_BR);
+                        break;
+                    case 1:
+                        dx = 0;
+                        dy = -1;
+                        this.highlight (x,y, LASER_TL);  
+                        break;              
+                }
+                break;
+            }
+            case SAPPHIRE:
+            case SAPPHIRE_FALLING:
+            {   switch (dx+10*dy)
+                {   case -10:                   
+                        dx = 1;
+                        dy = 0; 
+                        this.highlight (x,y, LASER_BR);
+                        break;
+                    case 10:  
+                        dx = -1;
+                        dy = 0;
+                        this.highlight (x,y, LASER_TL);
+                        break;
+                    case -1:
+                        dx = 0;
+                        dy = -1;
+                        this.highlight (x,y, LASER_TR);
+                        break;
+                    case 1:
+                        dx = 0;
+                        dy = 1;
+                        this.highlight (x,y, LASER_BL);
+                        break;                  
+                }
+                break;
+            }
+            case CITRINE:
+            case CITRINE_FALLING:
+            {   dx = -dx;
+                dy = -dy;
+                this.highlight (x,y, dx>0 ? LASER_R 
+                                     : dx<0 ? LASER_L
+                                            : dy<0 ? LASER_U : LASER_D);
+                break;
+            }
             case GUN0:
             case GUN1:
             case GUN2:
             case GUN3:
-                    // lasers go through guns in upward direction (to be able to stack guns)
-                    if (dy==-1)                                 
-                    {   this.highlight(x,y, this.piece(x,y));
-                        this.highlight (x,y, LASER_V);
-                    }
-                    // guns are destroyed if hit in other directions
-                    else
-                    {   this.catch_in_explosion(x,y,EXPLODE1_AIR, false, 0,0);
-                        return;
-                    }
-                    break;
+            {   // lasers go through guns in upward direction (to be able to stack guns)
+                if (dy==-1)                                 
+                {   this.highlight(x,y, this.piece(x,y));
+                    this.highlight (x,y, LASER_V);
+                }
+                // guns are destroyed if hit in other directions
+                else
+                {   this.catch_in_explosion(x,y,EXPLODE1_AIR, false, 0,0);
+                    return;
+                }
+                break;
+            }
             case AIR:
             case BOMB_EXPLODE:
             case BIGBOMB_EXPLODE:
@@ -1881,26 +1887,28 @@ Logic.prototype.add_laser_beam = function(x, y, dx, dy)
             case RUBY:
             case RUBY_FALLING:
             case GLASSWALL:
-                this.highlight (x,y, dx==0 ? LASER_V : LASER_H);
+            {   this.highlight (x,y, dx==0 ? LASER_V : LASER_H);
                 break;
-
+            }
             default:
-                this.catch_in_explosion(x,y, EXPLODE1_AIR, false, 0,0);
-                this.highlight (x,y, dx>0 ? LASER_L 
-                                     : dx<0 ? LASER_R
-                                            : dy<0 ? LASER_D : LASER_U);
+            {   this.catch_in_explosion(x,y, EXPLODE1_AIR, false, 0,0);
+                //this.highlight (x,y, dx==0 ? LASER_V : LASER_H);
+                
+                // this.highlight (x,y, dx>0 ? LASER_L 
+                //    : dx<0 ? LASER_R
+                //    : dy<0 ? LASER_D : LASER_U);
                 return;
             }
-
-            // at last continues travel
-            x+=dx;
-            y+=dy;
-
-            if (x==startx && y==starty && dx==startdx && dy==startdy)
-            {   return;     // laser entered a cycle
-            }       
         }
- 
+
+        // at last continues travel
+        x+=dx;
+        y+=dy;
+
+        if (x==startx && y==starty && dx==startdx && dy==startdy)
+        {   return;     // laser entered a cycle
+        }       
+    } 
 };
     
     
@@ -1972,7 +1980,7 @@ Logic.prototype.playermove = function (player)
         // try to grab/dig an object without moving 
         if (grab)
         {   if (this.is(x+dx,y+dy,EARTH))
-            {   manpiece += (MAN1_DIGLEFT - MAN1_LEFT);   // need to show different image when digging
+            {   //manpiece += (MAN1_DIGLEFT - MAN1_LEFT);   // need to show different image when digging
                 //// hint for display logic
                 //switch (dx+10*dy)
                 //{   case -10: { this.transform (x+dx,y+dy, EARTH_UP); break; }
@@ -2210,44 +2218,43 @@ Logic.prototype.hasmoved = function(x,y)
         return this.movedflags[x+y*MAPWIDTH];
 };
     
-Logic.prototype.may_roll_to_left = function(x, y, isconvertible)
+Logic.prototype.may_roll = function(x,y,isconvertible)
 {
-        var p = this.piece(x,y);
-        if (!this.has_rounded_top(p) && p!=ELEVATOR_TOLEFT)
-        {   return false;
-        }
-        if (!this.is(x-1,y-1,AIR))
-        {   return false;
-        }
-        var pl = this.piece(x-1,y);
-        if (pl==AIR || pl==ACID || (isconvertible && pl==CONVERTER && this.is(x-1,y+1,AIR)))
-        {   if (p==ELEVATOR_TOLEFT) 
-            {   this.highlight(x,y, ELEVATOR_TOLEFT);
+    var ground = this.piece(x,y+1);
+    if (ground==ELEVATOR && this.piece(x,y-1)==CONVEYORRIGHT && this.is(x-1,y,AIR))
+    {   return -1;
+    }
+    if (ground==ELEVATOR && this.piece(x,y-1)==CONVEYORLEFT && this.is(x+1,y,AIR))
+    {   return 1;
+    }
+    if (this.has_rounded_top(ground))
+    {   if (this.is(x-1,y,AIR))
+        {   var pl = this.piece(x-1,y+1);
+            if (pl==AIR || pl==ACID || (isconvertible && pl==CONVERTER && this.is(x-1,y+2,AIR)))
+            {   return -1;
             }
-            return true;
         }
-        return false;       
-};
-    
-Logic.prototype.may_roll_to_right = function(x,y,isconvertible)
+        if (this.is(x+1,y,AIR))
+        {   var pl = this.piece(x+1,y+1);
+            if (pl==AIR || pl==ACID || (isconvertible && pl==CONVERTER && this.is(x+1,y+2,AIR)))
+            {   return 1;
+            }
+        }
+    }    
+    return 0;
+}
+
+Logic.prototype.may_be_transported = function(x,y)
 {
-        var p = this.piece(x,y);
-        if (!this.has_rounded_top(p) && p!=ELEVATOR_TORIGHT)
-        {   return false;
-        }
-        if (!this.is(x+1,y-1,AIR))
-        {   return false;
-        }
-        var pr = this.piece(x+1,y);
-        if (pr==AIR || pr==ACID || (isconvertible && pr==CONVERTER && this.is(x+1,y+1,AIR)))
-        {   
-            if (p==ELEVATOR_TORIGHT)
-            {   this.highlight(x,y, ELEVATOR_TORIGHT);
-            }
-            return true;
-        }
-        return false;
-};
+    var p = this.piece(x,y+1);
+    if (this.piece(x,y+1)==CONVEYORLEFT)
+    {   if (this.is(x-1,y,AIR)) { return -1; }
+    }
+    else if (this.piece(x,y+1)==CONVEYORRIGHT)
+    {   if (this.is(x+1,y,AIR)) { return 1; }
+    }
+    return 0;
+}
 
 Logic.prototype.has_rounded_top = function(piece)
 {   

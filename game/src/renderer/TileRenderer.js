@@ -251,10 +251,10 @@ TileRenderer.prototype.startLoadImage = function(filename)
             
             if (that.imagesRequested.size==0)
             {   console.log
-                (   "Loaded "+that.imageList.size
-                    +" images ("+that.loadedTileSize+"x"+that.loadedTileSize+")"
+                (   "Loaded "+that.imageList.size+" images"
                     +" into "+that.numTilesAssigned+" of " 
                     +TileRenderer.ATLASCOLUMNS * TileRenderer.ATLASROWS+" tiles"
+                    +" ("+that.loadedTileSize+"x"+that.loadedTileSize+")"
                 );
                 that.game.setDirty();
             }

@@ -80,10 +80,6 @@ var LevelRenderer = function()
     this.anim_keyblue_away = null;
     this.anim_keygreen_away = null;
     this.anim_keyyellow_away = null;
-    this.anim_elevatorleft_throw = null;
-    this.anim_elevatorright_throw = null;    
-    this.anim_elevatorleft_move = null;
-    this.anim_elevatorright_move = null;    
     this.anim_pillow_move = null;    
     this.anim_laser_h = null;
     this.anim_laser_v = null;
@@ -117,7 +113,7 @@ LevelRenderer.prototype.$ = function(game)
         "Exit Open", "Exit", "Swamp Move", "Swamp Grow", 
         "Drop Left", "Drop Right", "Drop Down", "Drop", "Converter", "Converter Working",
         "Timebomb", "Tickbomb", "TNT", "Safe", "Pillow", "Pillow Move", 
-        "Elevator", "Elevator Left", "Elevator Right", "Elevator Left Throw", "Elevator Right Throw", 
+        "Elevator", "Conveyor Left", "Conveyor Right", 
         "Gun", "Acid", "Acid Left End", "Acid Right End", "Acid Both Ends",
         "Key Blue", "Key Red", "Key Green", "Key Yellow", 
         "Door Blue", "Door Red", "Door Green", "Door Yellow", "Door Onetime",
@@ -172,8 +168,10 @@ LevelRenderer.prototype.isLoaded = function()
     this.piecetiles[BOX] = this.getAnimation("Safe");
     this.piecetiles[CUSHION] = this.getAnimation("Pillow");
     this.piecetiles[ELEVATOR] = this.getAnimation("Elevator");
-    this.piecetiles[ELEVATOR_TOLEFT] = this.createStillAnimation(this.getAnimation("Elevator Left"));
-    this.piecetiles[ELEVATOR_TORIGHT] = this.createStillAnimation(this.getAnimation("Elevator Right"));
+    this.piecetiles[CONVEYORLEFT] = this.getAnimation("Conveyor Left");
+    this.piecetiles[CONVEYORLEFT].idling = true;
+    this.piecetiles[CONVEYORRIGHT] = this.getAnimation("Conveyor Right");
+    this.piecetiles[CONVEYORRIGHT].idling = true;
     // this.piecetiles[ACID]     // has context-depending tiles
     this.piecetiles[KEYBLUE] = this.getAnimation("Key Blue");
     this.piecetiles[KEYRED] = this.getAnimation("Key Red");
@@ -199,6 +197,7 @@ LevelRenderer.prototype.isLoaded = function()
     this.piecetiles[YAMYAM] = this.getAnimation("YamYam");    
     this.piecetiles[YAMYAM_EXPLODE] = null; // this.getSubAnimation("Explosion", 0, 5);
     this.piecetiles[ROBOT] = this.getAnimation("Robot");
+    this.piecetiles[ROBOT].idling = true;
     this.piecetiles[GUN0] = this.getAnimation("Gun");
     this.piecetiles[GUN1] = this.getAnimation("Gun");
     this.piecetiles[GUN2] = this.getAnimation("Gun");
@@ -417,10 +416,6 @@ LevelRenderer.prototype.isLoaded = function()
     this.anim_drop_right = this.getAnimation("Drop Right");    
     this.anim_createdrop = this.getAnimation("Drop Down");    
     this.anim_drophit = this.createOverlayAnimation(this.getAnimation("Drop"),this.getAnimation("Swamp Grow"));   
-    this.anim_elevatorleft_throw = this.getAnimation("Elevator Left Throw");
-    this.anim_elevatorright_throw = this.getAnimation("Elevator Right Throw");    
-    this.anim_elevatorleft_move = this.getAnimation("Elevator Left");
-    this.anim_elevatorright_move = this.getAnimation("Elevator Right");
     this.anim_pillow_move = this.getAnimation("Pillow Move");
     this.anim_lorry_right_up = this.createRotatingAnimation(this.piecetiles[LORRYRIGHT], 0,90);
     this.anim_lorry_up_left = this.createRotatingAnimation(this.piecetiles[LORRYRIGHT], 90,180);
@@ -706,7 +701,7 @@ LevelRenderer.prototype.addMoveAnimationToBuffers = function
 {    
     var anim = this.determineMoveAnimation
     (   oldpiece,newpiece,x1,y1,dx,dy, 
-        frameindex>7, (logic.getTurnsDone()&1)==1
+        frameindex>7, logic
     );
     if (anim)
     {   // determine correct position
@@ -730,14 +725,16 @@ LevelRenderer.prototype.addNonMoveAnimationToBuffers = function(frameindex, anim
         
 LevelRenderer.prototype.determineMoveAnimation = function
 (   oldpiece, newpiece, x, y, dx, dy, 
-    secondhalf, eventurn,
+    secondhalf, logic,
 )
 {
     switch (oldpiece)
     {   case ROCK:
         case ROCK_FALLING:
-        {   if (dx<0) { return this.anim_rock_left; }
-            else if (dx>0) { return this.anim_rock_right; }
+        {   if (oldpiece!=newpiece || logic.is_player_piece_at(x,y)) 
+            {   if (dx<0) { return this.anim_rock_left; }
+                else if (dx>0) { return this.anim_rock_right; }
+            }
             break;
         }
 //        case ROCKEMERALD:
@@ -749,8 +746,10 @@ LevelRenderer.prototype.determineMoveAnimation = function
         case BAG:
         case BAG_FALLING:
         case BAG_OPENING:
-        {   if (dx<0) { return this.anim_bag_left; }
-            else if (dx>0) { return this.anim_bag_right; }                           
+        {   if (oldpiece!=newpiece || logic.is_player_piece_at(x,y))
+            {   if (dx<0) { return this.anim_bag_left; }
+                else if (dx>0) { return this.anim_bag_right; }                           
+            }
             break;
         }
         case BOMB:
@@ -759,19 +758,12 @@ LevelRenderer.prototype.determineMoveAnimation = function
             else if (dx>0) { return this.anim_bomb_right; }
             break;      
         }
-        case ELEVATOR_TOLEFT:
-        {   if (dy<0) { return this.anim_elevatorleft_move; }   
-            break;
-        }
-        case ELEVATOR_TORIGHT:
-        {   if (dy<0) { return this.anim_elevatorright_move; }
-            break;
-        }
         case CUSHION:
         {   return this.anim_pillow_move;
         }
     }
-
+    
+    var eventurn = (logic.getTurnsDone()&1)==1;
     var t1 = (eventurn && this.alternatepiecetiles[oldpiece]) || this.piecetiles[oldpiece];
     var t2 = (eventurn && this.alternatepiecetiles[newpiece]) || this.piecetiles[newpiece];
     
@@ -982,8 +974,6 @@ LevelRenderer.prototype.determineHighlightAnimation = function (highlightpiece, 
         case LASER_R: { return this.anim_laser_right; }
         case LASER_U: { return this.anim_laser_up; }
         case LASER_D: { return this.anim_laser_down; }
-        case ELEVATOR_TOLEFT: { return this.anim_elevatorleft_throw; }
-        case ELEVATOR_TORIGHT: { return this.anim_elevatorright_throw; }
     }        
     
     return this.piecetiles[highlightpiece];

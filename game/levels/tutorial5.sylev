@@ -332,31 +332,31 @@
     ]
 }
 ,
-{   "title": "Ripple Carry",
-    "author": "Reinhard",
+{
+    "title": "Ripple Carry",
     "difficulty": 3,
     "category": 5,
     "loot": 2,
-    "time": 150,
-    "map":
-    [   "#E##########&#",
-        "#(1..........#",
+    "map": [
+        "#33333333333&#",
+        "E(1..........#",
         "#............#",
         "#............#",
-        "#44444444444Q#",
+        "#{{{{{{{{{{{Q#",
         "##############"
     ],
-    "demos":
-    [   {   "title": "untitled",
-            "randomseed": 684057,
-            "moves":
-            [   "...rrrrrrrrrrblllllllllll.brrrrrrrrrrrll",
-                "lllll.tt.....r.lll..r...................",
-                "....................rrrrrrrrbbbltlllllll",
-                "lllttt......."
+    "demos": [
+        {
+            "randomseed": 937305,
+            "moves": [
+                "...bblrrrrrrrrrrrttlllllllllbrrrrrrrrlll",
+                "lllllll..rr.....r.t..llll....rr.........",
+                ".......rr.....r....r.....r..............",
+                "......rrrrbbbltlltltllllllll......."
             ]
         }
-    ]
+    ],
+    "author": "Reinhard"
 }
 ,
 {   "title": "Drain",
@@ -431,7 +431,7 @@
     "loot": 1,
     "time": 600,
     "map":
-    [   "###############",
+    [   "######4########",
         "#1............#",
         "#......0..0.0.#",
         "#.|  |....0...#",
@@ -442,7 +442,7 @@
         "#.+  +..0.0...#",
         "#.+  +0.....0.#",
         "#E+  +...0....#",
-        "######3########"
+        "######{########"
     ],
     "demos":
     [   {   "title": "untitled",
@@ -565,7 +565,7 @@
     "loot": 1,
     "time": 150,
     "map":
-    [   "#############",
+    [   "######4######",
         "#E1         #",
         "#        _  #",
         "#   _       #",
@@ -574,7 +574,7 @@
         "#           #",
         "#           #",
         "#&      Q   #",
-        "######3#####"
+        "######{#####"
     ],
     "demos":
     [   {   "title": "untitled",
@@ -584,34 +584,6 @@
                 "lllllrrrrrrttttl.bbbbrblllllllrrrrrbb.rb",
                 "ll.................ll.........lllltttttt",
                 "t......."
-            ]
-        }
-    ]
-}
-,
-{   "title": "Perpetuum Mobile",
-    "author": "Reinhard",
-    "difficulty": 5,
-    "category": 5,
-    "loot": 1,
-    "time": 100,
-    "map":
-    [   "#############",
-        "#         1E#",
-        "#          .#",
-        "#         ..#",
-        "#        ...#",
-        "#  0    ....#",
-        "#++43++.....#",
-        "#+++Q&+######",
-        "#############"
-    ],
-    "demos":
-    [   {   
-            "randomseed": 288358,
-            "moves":
-            [   "..llll.l.bb...l......ll....rrrbbbblrtttt",
-                "ttrrrrrr......."
             ]
         }
     ]

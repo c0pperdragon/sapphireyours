@@ -55,7 +55,7 @@ GameScreen.prototype.$ = function (game, le, unfinishedwalk, canFindNextLevel, s
     // re-start existing walk
     if (unfinishedwalk!=null)
     {   this.walk = unfinishedwalk;
-        this.step = walk.getTurns();
+        this.step = this.walk.getTurns();
     }
     // build new walk
     else 
