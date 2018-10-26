@@ -32,7 +32,7 @@ TileRenderer.prototype = Object.create(Renderer.prototype);
     
 TileRenderer.MAXTILES = 64*64;
 
-TileRenderer.ATLASROWS = 32;
+TileRenderer.ATLASROWS = 36;
 TileRenderer.ATLASCOLUMNS = 36;
 
     

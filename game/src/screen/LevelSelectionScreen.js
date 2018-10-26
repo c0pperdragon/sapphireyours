@@ -215,8 +215,8 @@ function pos2category(pos)
         case 14:  return 6;    // Work
         case 9:   return 5;    // Science
         case 11:  return 2;    // Speed
-        case 13:  return 7;    // Survival
-        case 15:  return 3;    // Fighting
+        case 13:  return 3;    // Fighting
+        case 15:  return 7;    // Team
         default: return -1;
     }    
 }

@@ -119,7 +119,7 @@ LevelRenderer.prototype.$ = function(game)
         "Door Blue", "Door Red", "Door Green", "Door Yellow", "Door Onetime",
         "Door Onetime Closed", "Lorry", "Bug", 
         "YamYam Left", "YamYam Up", "YamYam Right", "YamYam Down", "YamYam", "Robot",
-        "Explosion", "Explosion Deep", "Sapphire Break", "Citrine Break", "Bag Open",
+        "Explosion", "Explosion Deep", "Sapphire Break", "Citrine Break", 
         "Laser", "Laser Side", "Laser Reflect"
     ]);
     this.doneLoading = false;
@@ -156,7 +156,7 @@ LevelRenderer.prototype.isLoaded = function()
     this.piecetiles[RUBY] = this.getAnimation("Ruby");
     this.piecetiles[ROCK] = this.createStillAnimation(this.getAnimation("Stone Right"));
 //    this.piecetiles[ROCKEMERALD] = this.getAnimation("Stone Emerald");
-    this.piecetiles[BAG] = this.getAnimation("Bag");
+    this.piecetiles[BAG] = this.createStillAnimation(this.getAnimation("Bag"));
     this.piecetiles[BOMB] = this.getAnimation("Bomb");         
     this.piecetiles[DOOR] = this.getAnimation("Exit");
     this.piecetiles[SWAMP] = this.getAnimation("Swamp Move");    
@@ -205,7 +205,7 @@ LevelRenderer.prototype.isLoaded = function()
     this.piecetiles[ROCK_FALLING] = this.createStillAnimation(this.getAnimation("Stone Right"));
     this.piecetiles[EMERALD_FALLING] = this.getAnimation("Emerald");
     this.piecetiles[BOMB_FALLING] = this.getAnimation("Bomb");
-    this.piecetiles[BAG_FALLING] = this.getAnimation("Bag");
+    this.piecetiles[BAG_FALLING] = this.createStillAnimation(this.getAnimation("Bag"));
     this.piecetiles[DOOR_OPENED] = this.getAnimation("Exit Open");
     this.piecetiles[DOOR_CLOSING] = this.getAnimation("Exit Open");
     this.piecetiles[DOOR_CLOSED] = this.getAnimation("Exit");
@@ -241,12 +241,16 @@ LevelRenderer.prototype.isLoaded = function()
     this.piecetiles[TIMEBOMB_EXPLODE] = this.createOverlayAnimation(this.getAnimation("Tickbomb"),this.getSubAnimation("Explosion", 0, 5));
     this.piecetiles[RUBY_FALLING] = this.getAnimation("Ruby");
     this.piecetiles[SAPPHIRE_FALLING] = this.getAnimation("Sapphire"); 
-    this.piecetiles[BAG_OPENING] = this.getAnimation("Bag Open");
+    this.piecetiles[BAG_OPENING] = this.getAnimation("Bag");
     this.piecetiles[SAPPHIRE_BREAKING] = this.getAnimation("Sapphire Break");
     this.piecetiles[EXPLODE1_BAG] = this.getSubAnimation("Explosion", 1, 5);
     this.piecetiles[EXPLODE2_BAG] = this.getSubAnimation("Explosion", 2, 5);
-    this.piecetiles[EXPLODE3_BAG] = this.createOverlayAnimation(this.getAnimation("Bag"),this.getSubAnimation("Explosion", 3, 5));
-    this.piecetiles[EXPLODE4_BAG] = this.createOverlayAnimation(this.getAnimation("Bag"),this.getSubAnimation("Explosion", 4, 5));
+    this.piecetiles[EXPLODE3_BAG] = this.createOverlayAnimation(
+		this.createStillAnimation(this.getAnimation("Bag")),
+		this.getSubAnimation("Explosion", 3, 5));
+    this.piecetiles[EXPLODE4_BAG] = this.createOverlayAnimation(
+		this.createStillAnimation(this.getAnimation("Bag")),
+		this.getSubAnimation("Explosion", 4, 5));
     this.piecetiles[MAN1_LEFT] = this.getSubAnimation("1walklft", 0,2);
     this.piecetiles[MAN1_RIGHT] = this.getSubAnimation("1walkrgt", 0,2);
     this.piecetiles[MAN1_UP] = this.getAnimation("1walkup");
@@ -399,13 +403,13 @@ LevelRenderer.prototype.isLoaded = function()
     this.anim_man2_nonmoving = this.createStillAnimation(this.piecetiles[MAN2]);
     this.anim_rock_right = this.getAnimation("Stone Right");    
     this.anim_rock_left = this.createRevertedAnimation(this.anim_rock_right);
-    this.anim_bag_right = this.createRotatingAnimation(this.getAnimation("Bag"), 0,-360);
-    this.anim_bag_left = this.createRotatingAnimation(this.getAnimation("Bag"), 0,360);
+    this.anim_bag_right = this.createRotatingAnimation(this.createStillAnimation(this.getAnimation("Bag")), 0,-360);
+    this.anim_bag_left = this.createRotatingAnimation(this.createStillAnimation(this.getAnimation("Bag")), 0,360);
     this.anim_bomb_left = this.getAnimation("Bomb");
     this.anim_bomb_right = this.createRevertedAnimation(this.getAnimation("Bomb"));        
     this.anim_sapphire_break = this.getAnimation("Sapphire Break");
     this.anim_citrine_break = this.getAnimation("Citrine Break");
-    this.anim_bag_opening = this.getAnimation("Bag Open");
+    this.anim_bag_opening = this.getAnimation("Bag");
     this.anim_door_opening = this.getAnimation("Exit"); 
     this.anim_door_closing = this.createRevertedAnimation(this.getAnimation("Exit"));    
     this.anim_swamp_up = this.getAnimation("Swamp Grow");
@@ -710,6 +714,10 @@ LevelRenderer.prototype.addMoveAnimationToBuffers = function
         var d = 60*frameindex/LevelRenderer.FRAMESPERSTEP;
         var px = 60*x1+d*(x2-x1);
         var py = 60*y1+d*(y2-y1);
+		// special movement handling for the bag animations
+		if (anim===this.anim_bag_left || anim===this.anim_bag_right)
+		{	py -= 7 * (Math.cos(frameindex*2*Math.PI/LevelRenderer.FRAMESPERSTEP)-1);
+		}			
         for (var i=frameindex; i<anim.length; i+=LevelRenderer.FRAMESPERSTEP)
         {   this.addTile(px,py,anim[i]);
         }
@@ -731,22 +739,18 @@ LevelRenderer.prototype.determineMoveAnimation = function
     switch (oldpiece)
     {   case ROCK:
         case ROCK_FALLING:
-        {   if (oldpiece!=newpiece || logic.is_player_piece_at(x,y)) 
+        {   if (oldpiece!=newpiece || logic.is_player_piece_at(x,y)
+			  || (oldpiece===ROCK && newpiece==ROCK && logic.is(x,y+1,ELEVATOR))) 
             {   if (dx<0) { return this.anim_rock_left; }
                 else if (dx>0) { return this.anim_rock_right; }
             }
             break;
         }
-//        case ROCKEMERALD:
-//        case ROCKEMERALD_FALLING:
-//        {   if (dx<0) { return this.anim_rockemerald_left; }
-//            else if (dx>0) { return this.anim_rockemerald_right; }               
-//            break;
-//        }
         case BAG:
         case BAG_FALLING:
         case BAG_OPENING:
-        {   if (oldpiece!=newpiece || logic.is_player_piece_at(x,y))
+        {   if (oldpiece!=newpiece || logic.is_player_piece_at(x,y)
+			|| (oldpiece===BAG && newpiece==BAG && logic.is(x,y+1,ELEVATOR)))
             {   if (dx<0) { return this.anim_bag_left; }
                 else if (dx>0) { return this.anim_bag_right; }                           
             }

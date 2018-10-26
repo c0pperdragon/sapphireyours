@@ -246,7 +246,7 @@ Level.prototype.setDifficulty = function(d)
 
 Level.prototype.getCategory = function()
 {
-    return this.category;
+    return this.players>1 ? 7 : this.category;  // teamwork has precedence
 };
     
 Level.prototype.setCategory = function(c)

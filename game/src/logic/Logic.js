@@ -742,6 +742,9 @@ Logic.prototype.piecesmove = function()
                         else if (dx=this.may_roll(x,y, false))
                         {   this.move(x,y,dx,0,BOMB_FALLING);
                         }
+                        else if (dx=this.may_be_transported(x,y))
+                        {   this.move(x, y, dx, 0, BOMB); 
+                        }						
                         break;
                     }
                     case BOMB_FALLING:
@@ -2221,13 +2224,7 @@ Logic.prototype.hasmoved = function(x,y)
 Logic.prototype.may_roll = function(x,y,isconvertible)
 {
     var ground = this.piece(x,y+1);
-    if (ground==ELEVATOR && this.piece(x,y-1)==CONVEYORRIGHT && this.is(x-1,y,AIR))
-    {   return -1;
-    }
-    if (ground==ELEVATOR && this.piece(x,y-1)==CONVEYORLEFT && this.is(x+1,y,AIR))
-    {   return 1;
-    }
-    if (this.has_rounded_top(ground))
+	if (this.has_rounded_top(ground))
     {   if (this.is(x-1,y,AIR))
         {   var pl = this.piece(x-1,y+1);
             if (pl==AIR || pl==ACID || (isconvertible && pl==CONVERTER && this.is(x-1,y+2,AIR)))
@@ -2246,11 +2243,12 @@ Logic.prototype.may_roll = function(x,y,isconvertible)
 
 Logic.prototype.may_be_transported = function(x,y)
 {
-    var p = this.piece(x,y+1);
-    if (this.piece(x,y+1)==CONVEYORLEFT)
+    var below = this.piece(x,y+1);
+    var above = this.piece(x,y-1);
+    if (below===CONVEYORLEFT || (above===CONVEYORRIGHT && below===ELEVATOR))
     {   if (this.is(x-1,y,AIR)) { return -1; }
     }
-    else if (this.piece(x,y+1)==CONVEYORRIGHT)
+    else if (below===CONVEYORRIGHT || (above===CONVEYORLEFT && below===ELEVATOR))
     {   if (this.is(x+1,y,AIR)) { return 1; }
     }
     return 0;

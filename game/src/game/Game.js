@@ -263,6 +263,7 @@ Game.prototype.loadLevels = function(callback)
     pending++; this.readIntegratedLevelPack("Extended 7", "extended7", true, done); 
     pending++; this.readIntegratedLevelPack("Mission Possible", "mission", false, done);
     pending++; this.readIntegratedLevelPack("!Experimental", "experimental", false, done);
+    pending++; this.readIntegratedLevelPack("Amelie", "amelie", false, done);
   
     function done()
     {   pending--;
@@ -825,7 +826,7 @@ Game.getNameForCategory = function(category)
         case 6:
             return "Work";
         case 7:
-            return "Survival";
+            return "Team";
         default:
             return "unknown";
     }
@@ -848,7 +849,7 @@ Game.getIconForCategory = function(category)
             return 7;
         case 6:  // Work
             return 8;
-        case 7:  // Survival
+        case 7:  // Team
             return 4;
         default:
             return "unknown";

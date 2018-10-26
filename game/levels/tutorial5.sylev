@@ -347,12 +347,12 @@
     ],
     "demos": [
         {
-            "randomseed": 937305,
+            "randomseed": 262501,
             "moves": [
-                "...bblrrrrrrrrrrrttlllllllllbrrrrrrrrlll",
-                "lllllll..rr.....r.t..llll....rr.........",
-                ".......rr.....r....r.....r..............",
-                "......rrrrbbbltlltltllllllll......."
+                "...rrrrrrrrrr.b.llllllllllbl.t.rr.brrrrr",
+                "rrrrlllllt...t.l.......r..lll........ll.",
+                ".rrrrr.......................rrrrrbbbltt",
+                "tlllllllllll......."
             ]
         }
     ],
