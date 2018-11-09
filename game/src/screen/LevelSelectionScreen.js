@@ -356,26 +356,6 @@ LevelSelectionScreen.prototype.onKeyDown = function(keycode)
             }
 
             // special keys for development mode
-                case KeyEvent.EDIT:
-                    if (Game.DEVELOPERMODE)
-                    {   var l = this.getSelectedLevel();
-                        if (l!=null)
-                        {   var es = new EditorScreen().$(this.game, l);
-                            this.game.addScreen(es);
-                            es.afterScreenCreation();
-                        }
-                    }
-                    break;                    
-                    
-                case KeyEvent.SAVE:
-                    if (Game.DEVELOPERMODE)
-                    {   var l = this.getSelectedLevel();
-                        if (l!=null)
-                        {   this.game.writeLevelToLocalSystem(l);
-                        }
-                    }
-                    break;        
-                    
                 case KeyEvent.TEST:
                     if (Game.DEVELOPERMODE)
                     {   this.game.testAllLevels();                        
