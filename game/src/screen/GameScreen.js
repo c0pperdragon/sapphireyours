@@ -5,7 +5,6 @@ var GameScreen = function()
     this.level = null;
     this.logic = null;
     this.walk = null;
-    this.canFindNextLevel = false;
     this.startFromEditor = false;
     
     this.step = 0;
@@ -42,11 +41,10 @@ GameScreen.PLAYMODE_UNDO   = 2;
 GameScreen.PLAYMODE_REPLAY = 3;
 
 
-GameScreen.prototype.$ = function (game, le, unfinishedwalk, canFindNextLevel, startFromEditor)
+GameScreen.prototype.$ = function (game, le, unfinishedwalk, startFromEditor)
 {   Screen.prototype.$.call(this,game);        
 
     this.level = le;
-    this.canFindNextLevel = canFindNextLevel;
     this.startFromEditor = startFromEditor;
     this.logic = null;
     this.frames_left=0;
@@ -764,12 +762,12 @@ GameScreen.prototype.createMenuScreen = function(onlypopup)
             m.setMessage("Player was killed.");
         }
         else if (this.logic.isSolved()) 
-        {   if (this.canFindNextLevel)
-            {   m.addDefaultAction(PauseMenu.MENUACTION_NEXTLEVEL);
-                m.addPriorityAction(this.startFromEditor ? PauseMenu.MENUACTION_EXITTOEDITOR : PauseMenu.MENUACTION_EXIT);
+        {   if (this.startFromEditor)
+            {   m.addPriorityAction(PauseMenu.MENUACTION_EXITTOEDITOR);
             }
             else
-            {   m.addDefaultAction(this.startFromEditor ? PauseMenu.MENUACTION_EXITTOEDITOR : PauseMenu.MENUACTION_EXIT);
+            {   m.addDefaultAction(PauseMenu.MENUACTION_NEXTLEVEL);
+                m.addPriorityAction(PauseMenu.MENUACTION_EXIT);
             }
             m.addAction(PauseMenu.MENUACTION_RESTART);
             m.addAction(PauseMenu.MENUACTION_REPLAY);

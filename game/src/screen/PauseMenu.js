@@ -58,7 +58,6 @@ PauseMenu.MENUACTION_SLOWMOTION = 18;
 PauseMenu.MENUACTION_SHOWDEMO2 = 19;
 PauseMenu.MENUACTION_SHOWDEMO3 = 20;
 PauseMenu.MENUACTION_TESTLEVEL = 21;
-PauseMenu.MENUACTION_DISCARDCHANGES = 22;
 PauseMenu.MENUACTION_EXITEDITOR = 23;
 PauseMenu.MENUACTION_EXITTOEDITOR = 24;
 PauseMenu.MENUACTION_EDITLEVEL = 25;
@@ -73,16 +72,19 @@ PauseMenu.MENUACTION_MUSIC_ON = 33;
 PauseMenu.MENUACTION_MUSIC_OFF = 34;
 PauseMenu.MENUACTION_MUSIC_ON_POPUP = 35;
 PauseMenu.MENUACTION_MUSIC_OFF_POPUP = 36;
+PauseMenu.MENUACTION_LOAD = 37;
+PauseMenu.MENUACTION_SAVE = 38;
 
 PauseMenu.actionlabels =  [
         "", "Start", "Restart", "Replay solution", "Show demo", "Next",
         "Use as demo", "Undo", "Exit", "To Game", "Continue", "To Game", 
         "Single step: OFF", "Single step: ON", 
         "Forward", "Backward", "Fast", "Fast Backward", "Slow Motion",
-        "Show demo 2", "Show demo 3", "Test", "Discard Changes", "Exit", "To Editor",
+        "Show demo 2", "Show demo 3", "Test", "", "Exit", "To Editor",
         "Level Editor", "Edit Map", "Settings", "Shrink to size", "Edit YamYam",
         "Title", "Author", "Info", 
-        "Music: OFF", "Music: ON", "Music: OFF", "Music: ON"    
+        "Music: OFF", "Music: ON", "Music: OFF", "Music: ON", 
+        "Load", "Save"
     ];
     
 
@@ -385,7 +387,10 @@ PauseMenu.prototype.drawActionIcon = function(tr, action, x, y, width, height, a
             tr.addIconGlyph(313, x,y,height, argb);
             break;              
                 
-        case PauseMenu.MENUACTION_DISCARDCHANGES:
+        case PauseMenu.MENUACTION_LOAD:
+            tr.addIconGlyph(302, x,y,height, argb);
+            break;
+        case PauseMenu.MENUACTION_SAVE:
             tr.addIconGlyph(302, x,y,height, argb);
             break;
             

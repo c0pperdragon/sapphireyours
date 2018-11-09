@@ -733,7 +733,7 @@ LevelRenderer.prototype.addNonMoveAnimationToBuffers = function(frameindex, anim
         
 LevelRenderer.prototype.determineMoveAnimation = function
 (   oldpiece, newpiece, x, y, dx, dy, 
-    secondhalf, logic,
+    secondhalf, logic
 )
 {
     switch (oldpiece)

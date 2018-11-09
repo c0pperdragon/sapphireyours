@@ -23,8 +23,7 @@ var Game = function()
     this.needRedraw = false;
     this.usingKeyboardInput = false;
 
-    this.levelpacks = null;    
-    this.solvegrades = null;
+    this.levels = null;    
     
     // input handling flags
     this.isTouch = false;
@@ -59,7 +58,6 @@ Game.prototype.$ = function()
     if (!this.gl) { return; }
     
     this.screens = [];
-    this.levelpacks = [];
 
     // decide about initial sizes (also tile size in pixels)
     setScreenAndCanvasSize();
@@ -70,9 +68,6 @@ Game.prototype.$ = function()
     // default to touch/mouse input unless otherwise directed 
     this.usingKeyboardInput = false;
 
-    // in-program memory about level solvings
-    this.solvegrades = new Map();
-    
     // clear the music player object - will be immediately filled 
     this.musicPlayer = null;
     this.startMusic("silence");
@@ -169,8 +164,10 @@ Game.prototype.$ = function()
     );      
     
     // cause further loading to progress
-    this.loadLevels
-    (   function() 
+    this.levels = [];
+    this.loadIntegratedLevelPack
+    (   "all.json",
+        function() 
         {   //that.replaceTopScreen(new TestScreen().$(that));
             //that.replaceTopScreen(new MainMenuScreen().$(that));  
             that.replaceTopScreen(new LevelSelectionScreen().$(that));  
@@ -219,15 +216,23 @@ Game.prototype.$ = function()
     
 Game.prototype.setLevelSolvedGrade = function(level, solvedgrade)
 {
-    var t = level.getTitle();
-    this.solvegrades.set(t,solvedgrade);
+//    console.log("storing solve grade");
+   if (window.localStorage)
+   {    
+        window.localStorage[level.getHash()] = "" + solvedgrade;
+        console.log("stored",level.getHash(),""+solvedgrade);
+   }
 };  
 
 Game.prototype.getLevelSolvedGrade = function(level)
 {
-    var t = level.getTitle();
-    if (!this.solvegrades.has(t)) { return Game.DEFAULTSOLVEDGRADE; }
-    return this.solvegrades.get(t);
+    if (window.localStorage)
+    {   var s = window.localStorage[level.getHash()];
+        if (s)
+        {   return parseInt(s);
+        }
+    }    
+    return Game.DEFAULTSOLVEDGRADE;
 };
         
 Game.prototype.setMusicActive = function(active)
@@ -239,143 +244,65 @@ Game.prototype.getMusicActive = function()
     return false;
 };      
     
-Game.prototype.loadLevels = function(callback)
-{
-    var that = this;
-    this.levelpacks = [];
-    var pending=0;
     
-    pending++; this.readIntegratedLevelPack("Lesson 1: Mining", "tutorial1", false, done);
-    pending++; this.readIntegratedLevelPack("Lesson 2: Explosives", "tutorial2", false, done);
-    pending++; this.readIntegratedLevelPack("Lesson 3: Maze", "tutorial3", false, done);
-    pending++; this.readIntegratedLevelPack("Lesson 4: Enemies", "tutorial4", false, done);
-    pending++; this.readIntegratedLevelPack("Lesson 5: Machinery", "tutorial5", false, done);
-    pending++; this.readIntegratedLevelPack("Teamwork", "twoplayer", true, done);
-    pending++; this.readIntegratedLevelPack("Advanced 1", "advanced1", true, done);
-    pending++; this.readIntegratedLevelPack("Advanced 2", "advanced2", true, done);
-    pending++; this.readIntegratedLevelPack("Advanced 3", "advanced3", true, done);
-    pending++; this.readIntegratedLevelPack("Extended 1", "extended1", true, done); 
-    pending++; this.readIntegratedLevelPack("Extended 2", "extended2", true, done);
-    pending++; this.readIntegratedLevelPack("Extended 3", "extended3", true, done);
-    pending++; this.readIntegratedLevelPack("Extended 4", "extended4", true, done);
-    pending++; this.readIntegratedLevelPack("Extended 5", "extended5", true, done);
-    pending++; this.readIntegratedLevelPack("Extended 6", "extended6", true, done);
-    pending++; this.readIntegratedLevelPack("Extended 7", "extended7", true, done); 
-    pending++; this.readIntegratedLevelPack("Mission Possible", "mission", false, done);
-    pending++; this.readIntegratedLevelPack("!Experimental", "experimental", false, done);
-    pending++; this.readIntegratedLevelPack("Amelie", "amelie", false, done);
-  
-    function done()
-    {   pending--;
-        if (pending===0) 
-        {   that.levelpacks.sort
-            (   function(l1,l2) 
-                {   if (l1.name < l2.name) return -1;
-                    if (l1.name > l2.name) return 1;
-                    return 0;
-                }
-            );
-            callback(); 
-        }
-    }
-};
-    
-Game.prototype.readIntegratedLevelPack = function(name, filename, sort, callback)
+Game.prototype.loadIntegratedLevelPack = function(filename, callback)
 {
-    var levelpacks = this.levelpacks;
+    var levels = this.levels;
     Game.getJSON
-    (   "levels/"+filename+".sylev", function(data) 
-        {   if (data) 
-            {   levelpacks.push(new LevelPack().$(name, data, sort));
+    (   "levels/"+filename, function(data) 
+        {   if (data && data.length) 
+            {   for (var i=0; i<data.length; i++)
+                {   levels.push(new Level().$(null,data[i]));
+                }
             }
             callback();
         }
     );
 };
 
-/*
-    public void readUserLevelPacks()
-    {       
-        try 
-        {   for (String n: context.fileList())
-            {
-                if (n.toLowerCase().endsWith(".sylev"))
-                {
-                    InputStream is = context.openFileInput(n);
-                    try {
-                        levelpacks.addElement(new LevelPack(n.substring(0,n.length()-6), is, false, n));            
-                    }
-                    catch (Exception e)
-                    {   is.close();
-                        throw e;
-                    }
-                    is.close();             
-                }
-            }
-        } catch (Exception e)
-        {   e.printStackTrace();            
-        }               
-    }
-*/  
-    /** 
-     * Write the level pack that contains the level. The the level can not found (which means it is probably a new 
-     * level), place it into the "User Levels" pack. If this pack not yet exists, create this also.
-     */ 
-/*     
-    public void writeUserLevel(Level l)
-    {
-        // find the pack which contains the level
-        LevelPack pack = null;
-        LevelPack defaultpack = null;
-        for (LevelPack p:levelpacks)
-        {
-            if (p.isWriteable())
-            {   if (p.containsLevel(l))
-                {
-                    pack = p;           
-                }
-                else if (p.getName().equals("User Levels"))
-                {   defaultpack = p;
-                }
-            }
-        }   
-        // when the level belongs to a pack, just store the pack
-        if (pack!=null)
-        {
-            writeLevelPack(pack);                           
-        }
-        // when not found, need to add level to the default pack
-        else
-        {
-            // must create default pack if needed
-            if (defaultpack==null)
-            {
-                defaultpack = new LevelPack("User Levels", "User Levels.sylev");
-                levelpacks.insertElementAt(defaultpack,0);
-                pack = defaultpack;         
-            }                   
-            defaultpack.addLevel(l);
-            
-            writeLevelPack(defaultpack);
-        }
+/** 
+* Try to store a level into the local file system.
+*/ 
+     
+Game.prototype.writeLevelToLocalSystem = function(l)
+{
+    var fileContents=JSON.stringify(l.toJSON(), null, 2);
+    var fileName= l.filename === null ? "unnamed.sy" : l.filename;
+
+    var pp = document.createElement('a');
+    pp.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(fileContents));
+    pp.setAttribute('download', fileName);
+    pp.click();
+};              
+
+Game.prototype.loadLevelFromLocalSystem = function(callback)
+{
+//    console.log("try opening file picker");
+    var pp = document.createElement('input');
+    pp.setAttribute('type', 'file');
+    pp.setAttribute('accept', '.sy');
     
-    }
+    pp.addEventListener('change', function()
+        {   
+//        console.log("file picker change event: "+pp.files.length);
+            if (pp.files.length>0)
+            {   var fname = pp.files[0].name;
+//                console.log("picked",fname);
+        
+                var reader = new FileReader();
+                reader.addEventListener('loadend', function(e)
+                    {   
+//                       console.log("received file: "+reader.result);
+                        callback( (new Level()).$(fname,JSON.parse(reader.result)) );
+                    }
+                );   
+                reader.readAsText(pp.files[0]);
+            }                
+        }        
+    );
     
-    public void writeLevelPack(LevelPack p)
-    {
-        try {
-            OutputStream os = context.openFileOutput(p.filename, 0);
-            try {
-                PrintStream ps = new PrintStream(os, false, "utf-8");
-                p.print (ps);
-                ps.close();
-            }
-            catch (Exception e) {}
-            os.close();
-        } 
-        catch (Exception e) {}
-    }
-*/  
+    pp.click();
+};
 
 // constant game loop
 Game.prototype.tick = function()
@@ -533,7 +460,6 @@ Game.prototype.loadRenderers = function()
     this.levelRenderer = null;      
     this.textRenderer = null;
     this.vectorRenderer = null;
-    this.gfxRenderer = null;
 
     this.vectorRenderer = new VectorRenderer().$(this);
     console.log("VectorRenderer created");
@@ -544,9 +470,6 @@ Game.prototype.loadRenderers = function()
     this.levelRenderer = new LevelRenderer().$(this);
     console.log("LevelRenderer created");      
     
-//    this.gfxRenderer = new GfxRenderer().$(this);
-//    console.log("GfxRenderer created");      
-       
     // check if any error has occured
     var e = this.gl.getError();
     if (e) 
@@ -558,7 +481,6 @@ Game.prototype.allRenderersLoaded = function()
 {
     return this.vectorRenderer && this.vectorRenderer.isLoaded() 
         && this.textRenderer && this.textRenderer.isLoaded() 
-//        && this.gfxRenderer && this.gfxRenderer.isLoaded()
         && this.levelRenderer && this.levelRenderer.isLoaded();
 }
  
@@ -861,16 +783,16 @@ Game.getIconForDifficulty = function(difficulty)
     return 9 + difficulty;
 }
 
-Game.getCustomLevelSort = function(title)
-{
-    switch (title)
-    {   case "Welcome to the Game": return " 01";        
-        case "Twisted Tunnel": return " 02";        
-        case "Rock your way out": return " 03";
-        case "Basic Mining": return " 04";
-        default: return title;
-    }
-}
+//Game.getCustomLevelSort = function(title)
+//{
+//    switch (title)
+//    {   case "Welcome to the Game": return " 01";        
+//        case "Twisted Tunnel": return " 02";        
+//        case "Rock your way out": return " 03";
+//        case "Basic Mining": return " 04";
+//        default: return title;
+//    }
+//}
     
 Game.argb = function(r, g, b)
 {

@@ -23,9 +23,7 @@ LevelSelectionScreen.prototype.$ = function (game)
 
     this.selectingcriterium = true;
     this.selectedcriterium = 0;
-    this.selectedlevel = 0;
-
-    this.filterAndSortLevels();
+    this.selectedlevel = this.filterAndSortLevels();
     return this;
 };
 
@@ -179,6 +177,7 @@ LevelSelectionScreen.prototype.draw = function()
                     buttonnormal
                 );
             }
+            
             tr.addString
             (   " " 
                 + String.fromCharCode
@@ -192,6 +191,18 @@ LevelSelectionScreen.prototype.draw = function()
                 false,
                 sel ? 0xff000000 : color, TextRenderer.WEIGHT_BOLD
             );
+            
+            var solve = this.game.getLevelSolvedGrade(l);
+            if (solve>=0)
+            {   tr.addString
+                (   String.fromCharCode(301+solve),
+                    x + buttonwidth, 
+                    y + (buttonheight-smalltext)/2, 
+                    smalltext, 
+                    true,
+                    sel ? 0xff000000 : color, TextRenderer.WEIGHT_BOLD
+                );
+            }
             y += rowheight;
         }
     }
@@ -223,19 +234,17 @@ function pos2category(pos)
 
 LevelSelectionScreen.prototype.filterAndSortLevels = function()
 {
+    var prefered = 0;
     this.filteredlevels.length = 0;
 
     var pos = this.selectedcriterium;    
-    for (var i=0; i<this.game.levelpacks.length; i++)
-    {   var p = this.game.levelpacks[i];
-        for (var j=0; j<p.numberOfLevels(); j++)
-        {   var l = p.getLevel(j);
-            if 
-            (   pos2difficulty(pos) == l.getDifficulty() 
-                || pos2category(pos) == l.getCategory()
-            )
-            {   this.filteredlevels.push(l);
-            }
+    for (var i=0; i<this.game.levels.length; i++)
+    {   var l = this.game.levels[i];
+        if 
+        (   pos2difficulty(pos) == l.getDifficulty() 
+            || pos2category(pos) == l.getCategory()
+        )
+        {   this.filteredlevels.push(l);            
         }
     }
     
@@ -247,14 +256,19 @@ LevelSelectionScreen.prototype.filterAndSortLevels = function()
             }
             var a = la.getTitle();
             var b = lb.getTitle();
-            // do hardcoded sort of a few introductory "easy" levels
-            if (pos2difficulty(pos)==2)
-            {   a = Game.getCustomLevelSort(a);
-                b = Game.getCustomLevelSort(b);
-            }
             return (a<b?-1:(a>b?1:0));  
         }
     );    
+
+    // use different default level in certain cases
+    if (pos2difficulty(pos) == 2)
+    {   for (var i=0; i<this.filteredlevels.length; i++)
+        {   if (this.filteredlevels[i].getTitle()==="Welcome to the Game") 
+            {   prefered=i;
+            }
+        }
+    }
+    return prefered; // the default level for this sorting
 }
 
 LevelSelectionScreen.prototype.scrollToVisible = function()
@@ -275,37 +289,42 @@ LevelSelectionScreen.prototype.scrollToVisible = function()
 // ---- key event handlers --
 LevelSelectionScreen.prototype.onKeyDown = function(keycode)
 {    
+    // no proper UI - have a key shortcut
+    if (keycode==KeyEvent.Y)
+    {
+        var es = new EditorScreen().$(this.game, new Level(null,null).$(null));
+        this.game.addScreen(es);
+        es.afterScreenCreation();
+        return;
+    }    
+
     if (this.selectingcriterium)
     {   switch (keycode)
         {   case KeyEvent.LEFT:
             case KeyEvent.RIGHT:
-            {   this.selectedcriterium = this.selectedcriterium ^ 1;
-                this.filterAndSortLevels();
-                this.selectedlevel = 0;
+            {   this.selectedcriterium = this.selectedcriterium ^ 1;                
+                this.selectedlevel = this.filterAndSortLevels();
                 this.setDirty();
                 break;
             }
             case KeyEvent.UP:
             {   if (this.selectedcriterium-2>=0) 
-                {   this.selectedcriterium -= 2;
-                    this.filterAndSortLevels();
-                    this.selectedlevel = 0;
+                {   this.selectedcriterium -= 2;                    
+                    this.selectedlevel = this.filterAndSortLevels();
                     this.setDirty();
                 }
                 break;
             }
             case KeyEvent.DOWN:
             {   if (this.selectedcriterium+2<16) 
-                {   this.selectedcriterium += 2;
-                    this.filterAndSortLevels();
-                    this.selectedlevel = 0;
+                {   this.selectedcriterium += 2;                    
+                    this.selectedlevel = this.filterAndSortLevels();
                     this.setDirty();
                 }
                 break;
             }            
             case KeyEvent.A:
             {   this.selectingcriterium = false;                
-                this.selectedlevel = 0;
                 this.scrollToVisible();
                 this.setDirty();
                 break;
@@ -352,7 +371,7 @@ LevelSelectionScreen.prototype.onKeyDown = function(keycode)
                     if (Game.DEVELOPERMODE)
                     {   var l = this.getSelectedLevel();
                         if (l!=null)
-                        {   console.log(JSON.stringify(l.toJSON(),null,4));
+                        {   this.game.writeLevelToLocalSystem(l);
                         }
                     }
                     break;        
@@ -391,7 +410,7 @@ LevelSelectionScreen.prototype.startSelectedLevel = function()
     if (l!=null)
     {   var gs = new GameScreen().$
         (   this.game, l, null, 
-            this.selectedlevel+1<this.filteredlevels.length, false
+            false
         );
         this.game.addScreen(gs);
         gs.afterScreenCreation();                      
@@ -402,6 +421,10 @@ LevelSelectionScreen.prototype.startSubsequentLevel = function()
 {
     if (this.selectedlevel+1<this.filteredlevels.length)
     {   this.selectedlevel++;
+        this.startSelectedLevel();
+    }
+    else if (this.selectedlevel>0)
+    {   this.selectedlevel=0;
         this.startSelectedLevel();
     }
 };

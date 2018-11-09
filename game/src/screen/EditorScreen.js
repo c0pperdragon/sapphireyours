@@ -5,7 +5,6 @@ var EditorScreen = function()
     Screen.call(this);
 
     this.level = null;
-    this.backup = null;
     
     this.toolbary = 0;    
     this.mapareax = 0;
@@ -53,7 +52,6 @@ EditorScreen.prototype.$ = function(game,level)
 {       Screen.prototype.$.call(this,game);    
         
     this.level = level;
-    this.backup = level.toJSON();
         
     this.toolbary = 0;
     this.selectedpiece = 2;
@@ -438,17 +436,17 @@ EditorScreen.prototype.tryPlacePiece = function(x,y)
 {    
     var px = Math.floor(this.css2map(x-this.getMapAreaLeftEdge()) / 60);
     var py = Math.floor(this.css2map(y-this.getMapAreaTopEdge()) / 60);
-    this.tryPlacePieceInMap(px,py);
+    this.tryPlacePieceInMap(px,py,EditorScreen.pieces[this.selectedpiece]);
 }
 
-EditorScreen.prototype.tryPlacePieceInMap = function(px,py)
+EditorScreen.prototype.tryPlacePieceInMap = function(px,py,piece)
 {
     var l = this.level;
     
     if (this.yamyammode)
     {
         if (px>=0 && py>=0 && px<3 && py<3)
-        {   l.yamyamremainders[px+py*3] = EditorScreen.pieces[this.selectedpiece];
+        {   l.yamyamremainders[px+py*3] = piece;
             this.setDirty();
         }
     }
@@ -479,7 +477,7 @@ EditorScreen.prototype.tryPlacePieceInMap = function(px,py)
         }
     
         if (px>=0 && py>=0 && px<l.getWidth() && py<l.getHeight())
-        {   l.setPiece(px,py,EditorScreen.pieces[this.selectedpiece]);
+        {   l.setPiece(px,py,piece);
             this.setDirty();
         }
     }
@@ -501,7 +499,15 @@ EditorScreen.prototype.onKeyDown = function(keycode)
                     this.setDirty();
                 }
                 else
-                {   this.tryPlacePieceInMap (this.mapcursorx, this.mapcursory);                    
+                {   this.tryPlacePieceInMap 
+                    ( this.mapcursorx, this.mapcursory, EditorScreen.pieces[this.selectedpiece]); 
+                }
+                this.makeCursorsVisible();                
+                break;
+            }
+            case KeyEvent.B:
+            {   if (this.cursorinmap) 
+                {   this.tryPlacePieceInMap (this.mapcursorx, this.mapcursory, AIR);                    
                 }
                 this.makeCursorsVisible();                
                 break;
@@ -612,7 +618,8 @@ EditorScreen.prototype.createMenuScreen = function()
     m.addAction(PauseMenu.MENUACTION_EDITNAME);
     m.addAction(PauseMenu.MENUACTION_EDITAUTHOR);
     m.addAction(PauseMenu.MENUACTION_EDITINFO);
-    m.addAction(PauseMenu.MENUACTION_DISCARDCHANGES);
+    m.addAction(PauseMenu.MENUACTION_LOAD);
+    m.addAction(PauseMenu.MENUACTION_SAVE);
     m.layout();
     
     this.game.addScreen(m);
@@ -648,16 +655,11 @@ EditorScreen.prototype.menuAction = function(id)
                 break;
                 
             case PauseMenu.MENUACTION_TESTLEVEL:
-                var gs = new GameScreen().$(game, this.level,this.level.demos[0], false, true);
+                var gs = new GameScreen().$(game, this.level,this.level.demos[0], true);
                 game.addScreen(gs);
                 gs.afterScreenCreation();                           
                 break;
                                 
-            case PauseMenu.MENUACTION_DISCARDCHANGES:
-                this.level.$(this.backup);
-                this.createMenuScreen();
-                break;
-            
             case PauseMenu.MENUACTION_SHRINKMAP:
                 this.level.shrink();
                 this.centerMap();
@@ -689,6 +691,28 @@ EditorScreen.prototype.menuAction = function(id)
                 {   that.level.setHint(res);
                     that.createMenuScreen();
                 });
+                break;
+                
+            case PauseMenu.MENUACTION_SAVE:
+                this.game.writeLevelToLocalSystem(this.level);
+                break;
+                
+            case PauseMenu.MENUACTION_LOAD:
+                this.game.loadLevelFromLocalSystem
+                (   function(level) 
+                    {   
+//                        console.log("level load callback received");
+                        // check if still in situation where want to receive
+                        // the file
+//                        console.log(that.game.getTopScreen());
+                        if (that.game.getTopScreen()===that)
+                        {   
+//                     console.log("i am the chosen one!");
+                            that.$(that.game, level);   // re-initialize the editor
+                            that.setDirty();
+                        }
+                    }
+                );
                 break;
                 
             default:

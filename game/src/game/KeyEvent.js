@@ -21,7 +21,6 @@ var KeyEvent = {
     
     EDIT:        0x00002000,
     TEST:        0x00002001,
-    SAVE:        0x00002002,
 
     toNumericCode: function(c)
     {   switch (c)         
@@ -64,7 +63,7 @@ var KeyEvent = {
 
             case "e":               { return KeyEvent.EDIT; }
             case "t":               { return KeyEvent.TEST; }
-            case "w":               { return KeyEvent.SAVE; }
+
             default:                
             {   console.log("unknown key ["+c+"]");
                 if (c>0 && c<256) return c;

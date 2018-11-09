@@ -369,11 +369,6 @@ VectorRenderer.prototype.addRoundedRect = function(x, y, width, height, radius, 
     this.addStripCorner(nx2,ny2, argb2); 
 };
 
-
-
-
-
-
 VectorRenderer.prototype.addPlayArrow = function(x, y, width, height, orientation, argb)
 {
     this.startStrip();
@@ -571,6 +566,27 @@ VectorRenderer.prototype.addCheckMark = function(x, y, width, height, argb)
     this.addStripCorner(80,-20,argb);
 };
 
-
-
-
+VectorRenderer.prototype.addStar = function(x, y, width,height, argb) 
+{   
+    this.startStrip();      
+    this.setStripCornerTransformation(width/200.0,0, x+width/2,y+height/2);
+    this.addStripCorner(0,0,argb);
+    this.addStripCorner(0,100,argb);
+    this.addStripCorner(0,0,argb);
+    this.addStripCorner(-29,40,argb);
+    this.addStripCorner(0,0,argb);
+    this.addStripCorner(-95,30,argb);
+    this.addStripCorner(0,0,argb);
+    this.addStripCorner(-47,-15,argb);
+    this.addStripCorner(0,0,argb);
+    this.addStripCorner(-58,-80,argb);
+    this.addStripCorner(0,0,argb);
+    this.addStripCorner(0,-50,argb);
+    this.addStripCorner(0,0,argb);
+    this.addStripCorner(58,-80,argb);
+    this.addStripCorner(0,0,argb);
+    this.addStripCorner(47,-15,argb);
+    this.addStripCorner(0,0,argb);
+    this.addStripCorner(95,30,argb);
+    this.addStripCorner(0,0,argb);
+    this.addStripCorner(29,40,argb);};
