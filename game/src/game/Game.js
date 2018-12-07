@@ -33,8 +33,6 @@ var Game = function()
 
 Game.DEVELOPERMODE = false;
 Game.DEFAULTSOLVEDGRADE = -3*60;  // 3 minutes waiting time before level is considered "known"
-//  static SimpleProfiler profiler_onsound = new SimpleProfiler("Game.sound", 5);
-
 
 // construction of game object (handles loading of persistant state also)
 Game.prototype.$ = function()
@@ -44,10 +42,8 @@ Game.prototype.$ = function()
     console.log("Starting up Sapphire Yours...");
     var options = 
     {   alpha: false,    
-//            depth: false,
         stencil: false,
         antialias: false, 
-//            premultipliedAlpha: false,
         preserveDrawingBuffer: false,
         failIfMajorPerformanceCaveat: false
     };           
@@ -165,17 +161,23 @@ Game.prototype.$ = function()
     
     // cause further loading to progress
     this.levels = [];
-    this.loadIntegratedLevelPack
-    (   "all.json",
-        function() 
-        {   //that.replaceTopScreen(new TestScreen().$(that));
-            //that.replaceTopScreen(new MainMenuScreen().$(that));  
-            that.replaceTopScreen(new LevelSelectionScreen().$(that));  
-            
-            // trigger loading of sounds at the very end..
-            that.soundPlayer = (new LevelSoundPlayer()).$();
-        }
-    );
+    
+    // start in editor mode - no need to load integrated levels
+    if (Game.geturlparameter("editor",null) != null)
+    {   var l = new Level().$(null,null);
+        that.replaceTopScreen(new EditorScreen().$(that,l)); 
+        that.soundPlayer = (new LevelSoundPlayer()).$();
+    } 
+    // start game normally
+    else
+    {   this.loadIntegratedLevelPack
+        (   "all.json",
+            function() 
+            {   that.replaceTopScreen(new LevelSelectionScreen().$(that));  
+                that.soundPlayer = (new LevelSoundPlayer()).$();
+            }
+        );
+    }
     
     // set up game loop
     window.requestAnimationFrame (ftick);    
@@ -216,23 +218,25 @@ Game.prototype.$ = function()
     
 Game.prototype.setLevelSolvedGrade = function(level, solvedgrade)
 {
-//    console.log("storing solve grade");
+//   console.log("setLevelSolvedGrade to "+solvedgrade);
    if (window.localStorage)
    {    
         window.localStorage[level.getHash()] = "" + solvedgrade;
-        console.log("stored",level.getHash(),""+solvedgrade);
+//        console.log("stored",level.getHash(),""+solvedgrade);
    }
 };  
 
 Game.prototype.getLevelSolvedGrade = function(level)
 {
+    var sg = Game.DEFAULTSOLVEDGRADE;
     if (window.localStorage)
     {   var s = window.localStorage[level.getHash()];
         if (s)
-        {   return parseInt(s);
+        {   sg = parseInt(s);
         }
     }    
-    return Game.DEFAULTSOLVEDGRADE;
+// console.log("getLevelSolvedGrade="+sg);    
+    return sg;
 };
         
 Game.prototype.setMusicActive = function(active)
@@ -579,35 +583,7 @@ Game.prototype.onTouchMove = function(e)
 
 Game.prototype.startMusic = function(filename)
 {
-/*    
-    // keep already running music
-    if (musicPlayer!=null && musicName.equals(filename))
-    {
-            return;
-        }
-    
-        if (musicPlayer!=null)
-        {
-            musicPlayer.release();
-            musicPlayer=null;
-        }
-        if (filename!=null)
-        {
-        
-            try
-            {               
-                AssetFileDescriptor afd = context.getAssets().openFd("music/"+filename+".mp3");
-                musicPlayer = new MediaPlayer();
-                musicPlayer.setDataSource (afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
-                musicPlayer.prepare();
-                musicPlayer.setLooping(true);
-                musicPlayer.start();
-                musicName = filename;               
-            }
-            catch (IOException e) {}
-            
-        }
-*/        
+    // NOT YET IMPLEMENTED
 };
 
 Game.prototype.stopMusic = function()
@@ -642,41 +618,6 @@ Game.prototype.startCategoryMusic = function (category)
     }
 };
 
-// development test - check all levels if the demos work
-Game.prototype.testAllLevels = function()
-{
-    var logic = new Logic().$();
-    
-    for (var lpi=0; lpi<this.levelpacks.length; lpi++)
-    {   var lp = this.levelpacks[lpi];
-        console.log("Testing levels in",lp.getName());
-        for (var i=0; i<lp.numberOfLevels(); i++)
-        {   var l = lp.getLevel(i);
-            if (!(l.getDifficulty()>=2 && l.getDifficulty()<=9))
-            {   console.warn("Unspecified difficulty for: "+l.getTitle());
-            }
-            if (!(l.getCategory()>=0 && l.getCategory()<=7))
-            {   console.warn("Unspecified category for: "+l.getTitle());
-            }
-            if (l.numberOfDemos()<1) 
-            {   console.warn("No demos defined for",l.getTitle());
-            }
-            else
-            {   for (var j=0; j<l.numberOfDemos(); j++) 
-                {   var d = l.getDemo(j);
-                    logic.attach(l, d);
-                    logic.gototurn(d.getTurns());
-                    if (!logic.isSolved()) 
-                    {   console.warn("Non-working demo for",l.getTitle());
-                    }
-                    else if (logic.counters[CTR_EMERALDSCOLLECTED]>l.getLoot())
-                    {   console.warn("Collected more gems than needed",l.getTitle());
-                    }
-                }
-            }
-        }
-    }   
-};
     
 // --------------------- static toolbox methods ------------------------------
 
@@ -748,7 +689,7 @@ Game.getNameForCategory = function(category)
         case 6:
             return "Work";
         case 7:
-            return "Team";
+            return "Survival";
         default:
             return "unknown";
     }
@@ -771,7 +712,7 @@ Game.getIconForCategory = function(category)
             return 7;
         case 6:  // Work
             return 8;
-        case 7:  // Team
+        case 7:  // Survival
             return 4;
         default:
             return "unknown";
@@ -783,16 +724,6 @@ Game.getIconForDifficulty = function(difficulty)
     return 9 + difficulty;
 }
 
-//Game.getCustomLevelSort = function(title)
-//{
-//    switch (title)
-//    {   case "Welcome to the Game": return " 01";        
-//        case "Twisted Tunnel": return " 02";        
-//        case "Rock your way out": return " 03";
-//        case "Basic Mining": return " 04";
-//        default: return title;
-//    }
-//}
     
 Game.argb = function(r, g, b)
 {
@@ -844,11 +775,6 @@ Game.currentTimeMillis = function()
     return Date.now();
 };
 
-Game.isInteger = function(value)
-{
-    if (typeof(value)!="number") { return false; }
-    return Math.round(value) === value;    
-};
 
 /** 
  * 	Create string of the form m:ss of a given number of seconds. 
@@ -866,3 +792,20 @@ Game.buildTimeString = function(seconds)
     }			
 };
 
+// decode url parameters
+Game.geturlparameter = function(key, defaultvalue) 
+{   var urlparameters = {};
+    if (window.location.search) {
+      var chunks = window.location.search.replace("?","&").split("&");
+      for (var i=0; i<chunks.length; i++) {
+        var chunk = chunks[i];
+        var eqidx = chunk.indexOf("=")
+        if (eqidx>0) {
+          var k = chunk.substring(0,eqidx);
+          var v = decodeURIComponent(chunk.substring(eqidx+1)).trim();
+          if (k===key) { return v; }
+        }
+      }
+    }
+    return defaultvalue;
+}

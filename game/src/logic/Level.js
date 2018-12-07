@@ -121,11 +121,11 @@ Level.prototype.$ = function(filename,json)
     {   if (json.title && json.title.constructor == String) { this.title = json.title; }
         if (json.author && json.author.constructor == String) { this.author = json.author; }
         if (json.hint && json.author.constructor == String) { this.hint = json.hint; }
-        if (Game.isInteger(json.difficulty)) { this.difficulty = Number(json.difficulty); }
-        if (Game.isInteger(json.category)) { this.category = Number(json.category); }
-        if (Game.isInteger(json.loot)) { this.loot = Number(json.loot); }    
-        if (Game.isInteger(json.swamprate)) { this.swamprate = Number(json.swamprate); }
-        if (Game.isInteger(json.robotspeed)) { this.robotspeed = Number(json.robotspeed); }
+        if (isInteger(json.difficulty)) { this.difficulty = Number(json.difficulty); }
+        if (isInteger(json.category)) { this.category = Number(json.category); }
+        if (isInteger(json.loot)) { this.loot = Number(json.loot); }    
+        if (isInteger(json.swamprate)) { this.swamprate = Number(json.swamprate); }
+        if (isInteger(json.robotspeed)) { this.robotspeed = Number(json.robotspeed); }
         if (json.yamyamremainders && json.yamyamremainders.constructor==String) 
         { this.yamyamremainders = parseremainders(json.yamyamremainders); }
     
@@ -243,6 +243,10 @@ Level.prototype.toJSON = function()
     return o;
 };
     
+Level.prototype.getNumberOfPlayers = function()
+{
+    return this.players;
+};
     
 Level.prototype.getTitle = function()
 {
@@ -286,7 +290,7 @@ Level.prototype.setDifficulty = function(d)
 
 Level.prototype.getCategory = function()
 {
-    return this.players>1 ? 7 : this.category;  // teamwork has precedence
+    return this.category;
 };
     
 Level.prototype.setCategory = function(c)
@@ -492,7 +496,12 @@ Level.prototype.calculateMaximumLoot = function(considerconverters)
     }
 };
 
-
+// toolbox functions
+function isInteger(value)
+{
+    if (typeof(value)!="number") { return false; }
+    return Math.round(value) === value;    
+};
 
 // MD5 hash function
 function md5(str)

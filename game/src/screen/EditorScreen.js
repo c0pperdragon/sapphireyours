@@ -602,11 +602,10 @@ EditorScreen.prototype.createMenuScreen = function()
     this.isPanning = false;
                
     // create the menu screen
-    var m = new PauseMenu().$(this.game,this, this.level, PauseMenu.MENUACTION_EXITEDITOR);
+    var m = new PauseMenu().$(this.game,this, this.level, PauseMenu.MENUACTION_CONTINUEEDIT);
     m.addDefaultAction(PauseMenu.MENUACTION_CONTINUEEDIT);
     m.addPriorityAction(PauseMenu.MENUACTION_TESTLEVEL);
     m.addPriorityAction(PauseMenu.MENUACTION_EDITSETTINGS);
-    m.addPriorityAction(PauseMenu.MENUACTION_EXITEDITOR);
     if 
     (   this.level.isMapRowOnlyAir(0) 
         || this.level.isMapRowOnlyAir(this.level.getHeight()-1)

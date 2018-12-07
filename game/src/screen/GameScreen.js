@@ -734,7 +734,7 @@ GameScreen.prototype.createMenuScreen = function(onlypopup)
             m.addAction(this.startFromEditor ? PauseMenu.MENUACTION_EXITTOEDITOR : PauseMenu.MENUACTION_EXIT);
             m.setMessage(this.playmode==GameScreen.PLAYMODE_DEMO ? "Viewing demo" : "Viewing replay");
         }
-        m.addAction(this.game.getMusicActive() ? PauseMenu.MENUACTION_MUSIC_OFF_POPUP : PauseMenu.MENUACTION_MUSIC_ON_POPUP);                    
+//        m.addAction(this.game.getMusicActive() ? PauseMenu.MENUACTION_MUSIC_OFF_POPUP : PauseMenu.MENUACTION_MUSIC_ON_POPUP);                    
     }
     // this menu will be used before start of game or after the end (non-user triggered)
     else
@@ -808,7 +808,7 @@ GameScreen.prototype.createMenuScreen = function(onlypopup)
         else        // this should never be used...
         {   console.log("invalid state at menu creation!");
         }
-        m.addAction(this.game.getMusicActive() ? PauseMenu.MENUACTION_MUSIC_OFF : PauseMenu.MENUACTION_MUSIC_ON);                   
+//        m.addAction(this.game.getMusicActive() ? PauseMenu.MENUACTION_MUSIC_OFF : PauseMenu.MENUACTION_MUSIC_ON);                   
     }
 
     m.layout();

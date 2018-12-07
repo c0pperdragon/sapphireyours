@@ -3,15 +3,17 @@ var LevelSelectionScreen = function()
 {
     Screen.call(this);
     
-    this.selectingcriterium = false;    
+    this.selectednumberofplayers = 0;
+    this.selectingcriterium = false;
     this.selectedcriterium = 0;
     this.selectedlevel = 0;
     
     this.filteredlevels = [];    
-    this.listscrolly = 0;
+    this.listscrolly = 50;
     
     this.pointerdownx = 0;
     this.pointerdowny = 0;
+    this.pointerdowntime = 0;
     this.pointerx = 0;
     this.pointery = 0;
     this.pointeractive = false;    
@@ -21,6 +23,7 @@ LevelSelectionScreen.prototype = Object.create(Screen.prototype);
 LevelSelectionScreen.prototype.$ = function (game)
 {   Screen.prototype.$.call(this,game);
 
+    this.selectednumberofplayers = 1;
     this.selectingcriterium = true;
     this.selectedcriterium = 0;
     this.selectedlevel = this.filterAndSortLevels();
@@ -30,9 +33,7 @@ LevelSelectionScreen.prototype.$ = function (game)
     
 LevelSelectionScreen.prototype.draw = function()
 {
-    var screenwidth = this.game.screenwidth;
-    var screenheight = this.game.screenheight;    
-    var menuwidth = Math.min(300, screenwidth);                 
+    var menuwidth = Math.min(300, this.game.screenwidth);                 
     
     var background = 0xff000000;
     var buttonnormal = 0xff303030;
@@ -59,26 +60,43 @@ LevelSelectionScreen.prototype.draw = function()
     vr.startDrawing();
     tr.startDrawing();
     lr.startDrawDecoration();    
-    vr.addRoundedRect(0,0,menuwidth,screenheight, 3, 4, background);
+    vr.addRoundedRect(0,0,menuwidth,this.game.screenheight, 3, 4, background);
     var x = 10;
     var y = 5;
     
     // mode to select a category/difficulty
     if (this.selectingcriterium)
     {           
-        var buttonheight = rowheight-2;
-        var buttonwidth = menuwidth/2 - x - 2;
-
+        var titlecolor = 0xff2689fb;
         lr.addDecorationPieceToBuffer (x+17,y+19,SAPPHIRE);
         tr.addString
         (   "Sapphire", x+40, y, smalltext,
-            false, 0xff2689fb, TextRenderer.WEIGHT_BOLD
+            false, titlecolor, TextRenderer.WEIGHT_BOLD
         );
         tr.addString
         (   "Yours", x+40, y+18, smalltext,
-            false, 0xff2689fb, TextRenderer.WEIGHT_BOLD
+            false, titlecolor, TextRenderer.WEIGHT_BOLD
         );
+        
+        var numbuttonwidth = 32;
+        var numbuttonheight = 32;
+        x2 = menuwidth - 12 - numbuttonwidth;
+        var str = ""+(this.selectednumberofplayers);
+        vr.addRoundedRect(x2,y, numbuttonwidth, numbuttonheight, 3,4, 0xff222222);
+        tr.addString
+        (   str, 
+                x2 + numbuttonwidth/2 - tr.determineStringWidth(str,bigtext)/2, 
+                y + (numbuttonheight-bigtext)/2, 
+                bigtext, 
+                false, 
+                titlecolor,
+                TextRenderer.WEIGHT_BOLD
+        );
+        
         y+=60;
+
+        var buttonheight = rowheight-2;
+        var buttonwidth = menuwidth/2 - x - 2;
         
         tr.addString
         (   "Difficulty", x, y, bigtext,
@@ -139,26 +157,12 @@ LevelSelectionScreen.prototype.draw = function()
     // mode to select an individual level
     else
     {
-        y += this.listscrolly;
+        y = this.listscrolly;
+        var d = pos2difficulty(this.selectedcriterium);
+        var c = pos2category(this.selectedcriterium);
 
         var buttonheight = rowheight-2;
         var buttonwidth = menuwidth - 2*x - 2;
-
-        var d = pos2difficulty(this.selectedcriterium);
-        if (d>=0) 
-        {   tr.addString
-            (   Game.getNameForDifficulty(d), x, y, bigtext,
-                false, Game.getColorForDifficulty(d), TextRenderer.WEIGHT_PLAIN
-            );
-        } 
-        var c = pos2category(this.selectedcriterium);
-        if (c>=0) 
-        {   tr.addString
-            (   Game.getNameForCategory(c), x, y, bigtext,
-                false, textcolor, TextRenderer.WEIGHT_PLAIN
-            );
-        }
-        y += 1.5*rowheight;
 
         for (var i=0; i<this.filteredlevels.length; i++)
         {             
@@ -178,6 +182,11 @@ LevelSelectionScreen.prototype.draw = function()
                 );
             }
             
+            var solve = this.game.getLevelSolvedGrade(l);
+            if (solve>=1)
+            {   vr.addFrame(x+2,y+1,buttonheight-4,buttonheight-2, solve, sel ? 0xff000000 : color);
+            }
+
             tr.addString
             (   " " 
                 + String.fromCharCode
@@ -192,24 +201,75 @@ LevelSelectionScreen.prototype.draw = function()
                 sel ? 0xff000000 : color, TextRenderer.WEIGHT_BOLD
             );
             
-            var solve = this.game.getLevelSolvedGrade(l);
-            if (solve>=0)
+            y += rowheight;
+        }
+        
+        vr.flush();
+        tr.flush();
+
+        {   var color = textcolor;
+            
+            y = 5;
+            vr.addRectangle(0,0, menuwidth,50, 0xff000000);        
+            if (d>=0) 
+            {   color = Game.getColorForDifficulty(d);
+                tr.addString
+                (   Game.getNameForDifficulty(d), x, y, bigtext,
+                    false, color, TextRenderer.WEIGHT_PLAIN
+                );
+            } 
+            if (c>=0) 
             {   tr.addString
-                (   String.fromCharCode(301+solve),
-                    x + buttonwidth, 
-                    y + (buttonheight-smalltext)/2, 
-                    smalltext, 
-                    true,
-                    sel ? 0xff000000 : color, TextRenderer.WEIGHT_BOLD
+                (   Game.getNameForCategory(c), x, y, bigtext,
+                    false, textcolor, TextRenderer.WEIGHT_PLAIN
                 );
             }
-            y += rowheight;
+            
+            var exitbuttonwidth = 32;
+            var exitbuttonheight = 32;
+            var x2 = menuwidth-12 - exitbuttonwidth;
+            var isselected = this.pointeractive 
+            && this.isClickedExitButton(this.pointerdownx,this.pointerdowny);
+            vr.addRoundedRect(x2,y, exitbuttonwidth, exitbuttonheight, 3,4, isselected ? color : 0xff444444);
+            vr.addCross(x2,y, exitbuttonwidth, exitbuttonheight, isselected ? 0xff444444 : color);        
         }
     }
     
     vr.flush();
     tr.flush();
     lr.flush();
+};
+
+LevelSelectionScreen.prototype.computeClickedCriterium = function(x, y)
+{ 
+    var rowheight = 32;
+    var columnwidth = 150;    
+    var top = 96;
+    if (y>=top && x<2*columnwidth)
+    {   var row = Math.floor((y-top) / rowheight);
+        var column = Math.floor(x / columnwidth);
+        if (column<=1 && row<=3) { return row*2 + column; }
+    }
+    var top = 272;
+    if (y>=top && x<2*columnwidth)
+    {   var row = Math.floor((y-top) / rowheight);
+        var column = Math.floor(x / columnwidth);
+        if (column<=1 && row<=3) { return 8 + row*2 + column; }
+    }
+    
+    return -1;
+};
+
+LevelSelectionScreen.prototype.isClickedNumberOfPlayers = function(x, y)
+{
+    var menuwidth = Math.min(300, this.game.screenwidth);                 
+    return /*x >= menuwidth-12 - 40 &&*/ x<menuwidth && y<40;
+};
+
+LevelSelectionScreen.prototype.isClickedExitButton = function(x, y)
+{
+    var menuwidth = Math.min(300, this.game.screenwidth); 
+    return x >= menuwidth-12 - 40 && x<menuwidth && y<40;
 };
 
 function pos2difficulty(pos)
@@ -226,8 +286,8 @@ function pos2category(pos)
         case 14:  return 6;    // Work
         case 9:   return 5;    // Science
         case 11:  return 2;    // Speed
-        case 13:  return 3;    // Fighting
-        case 15:  return 7;    // Team
+        case 13:  return 7;    // Survival
+        case 15:  return 3;    // Fighting
         default: return -1;
     }    
 }
@@ -241,8 +301,10 @@ LevelSelectionScreen.prototype.filterAndSortLevels = function()
     for (var i=0; i<this.game.levels.length; i++)
     {   var l = this.game.levels[i];
         if 
-        (   pos2difficulty(pos) == l.getDifficulty() 
-            || pos2category(pos) == l.getCategory()
+        (   l.getNumberOfPlayers() === this.selectednumberofplayers
+        &&  (   pos2difficulty(pos) === l.getDifficulty() 
+                || pos2category(pos) === l.getCategory()
+            )
         )
         {   this.filteredlevels.push(l);            
         }
@@ -263,7 +325,8 @@ LevelSelectionScreen.prototype.filterAndSortLevels = function()
     // use different default level in certain cases
     if (pos2difficulty(pos) == 2)
     {   for (var i=0; i<this.filteredlevels.length; i++)
-        {   if (this.filteredlevels[i].getTitle()==="Welcome to the Game") 
+        {   var t = this.filteredlevels[i].getTitle();
+            if (t==="Basic Mining" || t=="Two Miners") 
             {   prefered=i;
             }
         }
@@ -275,34 +338,39 @@ LevelSelectionScreen.prototype.scrollToVisible = function()
 {
     if (this.selectingcriterium) { return; }
     
-    var top = 5 + 1.5*32;
-    var bottom = this.game.screenheight - 37; 
-    var cursory = 5 + this.listscrolly + 1.5*32 + 32*this.selectedlevel;
-    if (cursory<top)
-    {   this.listscrolly += (top-cursory);
+    var top = 50;    
+    var bottom = this.game.screenheight - 5;            
+    var lineheight = 32;
+    var h = this.filteredlevels.length * lineheight;    
+    if (top+h<=bottom) 
+    {   this.listscrolly=top; 
     }
-    else if (cursory>bottom)
-    {   this.listscrolly -= (cursory-bottom);
+    else
+    {   var cursory = this.listscrolly + lineheight*this.selectedlevel;    
+        if (this.listscrolly>top) { this.listscrolly=top; }
+        if (this.listscrolly+h<bottom) { this.listscrolly=bottom-h; }
+        if (cursory<top)
+        {   this.listscrolly += (top-cursory);
+        }
+        else if (cursory>bottom-lineheight)
+        {   this.listscrolly -= (cursory-(bottom-lineheight));
+        }
     }
 }
 
 // ---- key event handlers --
 LevelSelectionScreen.prototype.onKeyDown = function(keycode)
 {    
-    // no proper UI - have a key shortcut
-    if (keycode==KeyEvent.Y)
-    {
-        var es = new EditorScreen().$(this.game, new Level(null,null).$(null));
-        this.game.addScreen(es);
-        es.afterScreenCreation();
-        return;
-    }    
-
     if (this.selectingcriterium)
     {   switch (keycode)
         {   case KeyEvent.LEFT:
+            {   this.selectedcriterium = this.selectedcriterium & ~1;                
+                this.selectedlevel = this.filterAndSortLevels();
+                this.setDirty();
+                break;
+            }
             case KeyEvent.RIGHT:
-            {   this.selectedcriterium = this.selectedcriterium ^ 1;                
+            {   this.selectedcriterium = this.selectedcriterium | 1;                
                 this.selectedlevel = this.filterAndSortLevels();
                 this.setDirty();
                 break;
@@ -329,6 +397,11 @@ LevelSelectionScreen.prototype.onKeyDown = function(keycode)
                 this.setDirty();
                 break;
             }
+            case KeyEvent.Y:
+            {   this.selectednumberofplayers = (this.selectednumberofplayers===1) ? 2:1;
+                this.selectedlevel = this.filterAndSortLevels();
+                this.setDirty();     
+            }
         }
     }    
     // selecting individual level
@@ -354,18 +427,103 @@ LevelSelectionScreen.prototype.onKeyDown = function(keycode)
             {   this.startSelectedLevel();
                 break;
             }
-
-            // special keys for development mode
-                case KeyEvent.TEST:
-                    if (Game.DEVELOPERMODE)
-                    {   this.game.testAllLevels();                        
-                    }
-                    break;                    
-            
         }        
     }
     
     Screen.prototype.onKeyDown.call(this,keycode);
+};
+
+LevelSelectionScreen.prototype.onPointerDown = function(x, y)
+{
+    var menuwidth = Math.min(300, this.game.screenwidth);                 
+    var rowheight = 32;
+    
+    this.pointerdownx = x;
+    this.pointerdowny = y;
+    this.pointerx = x;
+    this.pointery = y;
+    this.pointeractive = true;    
+    this.pointerdowntime = Game.currentTimeMillis();
+    
+    if (this.selectingcriterium)
+    {   var c = this.computeClickedCriterium(x,y);
+        if (c>=0)
+        {   this.selectedcriterium = c;
+            this.selectedlevel = this.filterAndSortLevels();
+        }
+        else if (this.isClickedNumberOfPlayers(x,y))
+        {   this.selectednumberofplayers = (this.selectednumberofplayers===1) ? 2:1;
+            this.selectedlevel = this.filterAndSortLevels();
+        }
+    }
+    else
+    {   if (x<menuwidth && y>=5+rowheight && y>=this.listscrolly)
+        {   var row = Math.floor((y - this.listscrolly) / rowheight);
+            if (row>=0 && row<this.filteredlevels.length)
+            {   this.selectedlevel = row;
+            }
+        }       
+    }
+    this.setDirty();
+};
+
+LevelSelectionScreen.prototype.onPointerMove = function(x,y)
+{
+    var menuwidth = Math.min(300, this.game.screenwidth);                 
+    var dy = y - this.pointery;
+    this.pointerdowntime -= Math.abs(dy*10);
+    
+    this.pointerx = x;
+    this.pointery = y;
+    this.pointeractive = true;    
+    
+    if (!this.selectingcriterium && x<menuwidth && this.pointerdownx<menuwidth && y>40 && dy!=0)
+    {   this.listscrolly += dy;
+        this.scrollToVisible();
+        this.setDirty();
+    }
+};
+
+LevelSelectionScreen.prototype.onPointerUp = function()
+{
+    var x = this.pointerx;
+    var y = this.pointery;
+    this.pointeractive = false;
+    var shortclick = Game.currentTimeMillis() < this.pointerdowntime + 500;
+    
+    if (this.selectingcriterium)
+    {   if (shortclick)
+        {   var c = this.selectedcriterium;
+            this.computeClickedCriterium(this.pointerx,this.pointery);
+            if (c>=0 
+            && c==this.computeClickedCriterium(x,y)
+            && c==this.computeClickedCriterium(this.pointerdownx,this.pointerdowny)
+            )
+            {   this.selectingcriterium = false;                
+                this.scrollToVisible();      
+            }
+        }
+    }
+    else if 
+    (   this.isClickedExitButton(this.pointerdownx,this.pointerdowny)
+        && this.isClickedExitButton(x,y)
+    )
+    {   this.selectingcriterium = true;                
+    }       
+    else    
+    {   if (shortclick)
+        {   var menuwidth = Math.min(300, this.game.screenwidth);                 
+            var rowheight = 32;
+            if (x<menuwidth && y>=5+rowheight && y>=this.listscrolly)
+            {   var row = Math.floor((y - this.listscrolly) / rowheight);
+                if (row>=0 && row<this.filteredlevels.length && this.selectedlevel==row)
+                {   this.startSelectedLevel();
+                }
+            }       
+        }
+    }
+    
+    this.setDirty();
 };
   
 LevelSelectionScreen.prototype.onBackNavigation = function()

@@ -6,21 +6,30 @@
     <script type="text/javascript" src="src/logic/DiscardingStack.js"></script>    
     <script type="text/javascript" src="src/logic/Walk.js"></script>    
     <script type="text/javascript" src="src/logic/Level.js"></script>
-    <script type="text/javascript" src="src/logic/LevelPack.js"></script>
     <script type="text/javascript" src="src/logic/Logic.js"></script>
     
     <script type="text/javascript">
-    function testlevelpack(levelpackname)
+    function testlevelpack(filename)
     {
         var xmlhttp = new XMLHttpRequest();
+        xmlhttp.overrideMimeType("text/plain");
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-               var logic = new Logic().$();
+                var logic = new Logic().$();
                 var data = JSON.parse(this.responseText);
-                var lp = new LevelPack().$("tutorial1", data);
-                for (var i=0; i<lp.numberOfLevels(); i++)
-                {   
-                    var l = lp.getLevel(i);
+                for (var i=0; i<data.length; i++)
+                {   var l = new Level().$(null,data[i])
+                
+                    if (!(l.getDifficulty()>=2 && l.getDifficulty()<=9))
+                    {   console.warn("Unspecified difficulty for: "+l.getTitle());
+                    }
+                    if (!(l.getCategory()>=0 && l.getCategory()<=7))
+                    {   console.warn("Unspecified category for: "+l.getTitle());
+                    }
+                    if (l.numberOfDemos()<1) 
+                    {   console.warn("No demos defined for",l.getTitle());
+                    }                                
+                
                     var singlestep = false; 
                     for (var j=0; j<l.numberOfDemos(); j++) {                        
                         var d = l.getDemo(j);
@@ -38,11 +47,15 @@
                         }
                         if (logic.isSolved()) 
                         {   
+                            if (logic.counters[CTR_EMERALDSCOLLECTED]>l.getLoot())
+                            {   console.warn("Collected more gems than needed",l.getTitle());
+                            }
+                        
                             // test rewinding the logic in single steps
                             for (var turn=d.getTurns(); turn>=0; turn--) 
                             {   logic.gototurn(turn);
                                 if (! (allsteps[turn] === logic.toString()) ) 
-                                {   console.log("Mismatching turn history and logic after undo: "+l.getTitle(),j);
+                                {   console.warn("Mismatching turn history and logic after undo: "+l.getTitle(),j);
                                     console.log(allsteps[turn]);
                                     console.log(logic.toString());
                                     return;
@@ -53,7 +66,7 @@
                         }
                         else
                         {
-                            console.log("Unsuccessfull: "+l.getTitle(),j);
+                            console.warn("Unsuccessfull: "+l.getTitle(),j);
 
                             logic.reset();
                             for (var turn=0; turn<d.getTurns(); turn++) 
@@ -67,29 +80,12 @@
                 }
             }
         };
-        xmlhttp.open("GET", "levels/" + levelpackname + ".sylev", true);
+        xmlhttp.open("GET", filename, true);
         xmlhttp.send();
     }
     function testlogic() 
     {       
-        testlevelpack("advanced1");        
-        testlevelpack("advanced2");
-        testlevelpack("advanced3");
-        testlevelpack("extended1");
-        testlevelpack("extended2");
-        testlevelpack("extended3");
-        testlevelpack("extended4");
-        testlevelpack("extended5");
-        testlevelpack("extended6");
-        testlevelpack("extended7");        
-        testlevelpack("legacy");
-        testlevelpack("mission");
-        testlevelpack("tutorial1");
-        testlevelpack("tutorial2");
-        testlevelpack("tutorial3");      
-        testlevelpack("tutorial4");
-        testlevelpack("tutorial5");
-        testlevelpack("twoplayer");        
+        testlevelpack("levels/all.json");        
     }
     </script>    
 </head>

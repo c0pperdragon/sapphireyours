@@ -270,11 +270,15 @@ PauseMenu.prototype.drawOrLayout = function(draw)
                 2*this.iconwidth/3,
                 2*this.iconwidth/3, 
                 fc);
-            if (this.selected==i)
-            {   tr.addString (s,  
+            if (i==this.selected)
+            {   tr.addString 
+                (   s,  
                     this.menux+this.action0x+this.actiondx*i+(this.iconwidth-tr.determineStringWidth(s,th))/2, 
                     this.menuy+this.action0y+this.iconheight+8, 
-                    th, false, hicol, TextRenderer.WEIGHT_PLAIN);
+                    th, false, 
+                    hicol,
+                    TextRenderer.WEIGHT_PLAIN
+                );            
             }
         }
     }       
@@ -300,23 +304,25 @@ PauseMenu.prototype.drawOrLayout = function(draw)
             }
             vr.addRoundedRect(this.menux+this.lowaction0x, y, this.lowactionwidth,
                 this.lowactionheight, cornerradius, cornerradius+1, bc);                 
-            var s = (action!=PauseMenu.MENUACTION_NONEACTION) ? PauseMenu.actionlabels[action] 
-                                                              : this.none_action_label;
+            var s = (action!=PauseMenu.MENUACTION_NONEACTION) 
+            ? PauseMenu.actionlabels[action] 
+            : this.none_action_label;
             
-            var colonidx = s.indexOf(':');
-            if (colonidx>0)  
-            {   var tail = s.substring(colonidx+1);
-                s = s.substring(0,colonidx);
-                tr.addString
-                (   tail,  
-                    this.menux+this.lowaction0x+this.lowactionwidth-10,
-                    y+this.lowactiondy/2-th/2, 
-                    th, 
-                    true, 
-                    i==this.selected ? bgcolor : fc, 
-                    TextRenderer.WEIGHT_PLAIN
-                );            
-            }             
+//            var colonidx = s.indexOf(':');
+//            if (colonidx>0)  
+//            {   var tail = s.substring(colonidx+1);
+//                s = s.substring(0,colonidx);
+//                tr.addString
+//                (   tail,  
+//                    this.menux+this.lowaction0x+this.lowactionwidth-10,
+//                    y+this.lowactiondy/2-th/2, 
+//                    th, 
+//                    true, 
+//                    i==this.selected ? bgcolor : fc, 
+//                    TextRenderer.WEIGHT_PLAIN
+//                );            
+//            }             
+        
             tr.addString
             (   s,  
                 this.menux+this.lowaction0x+10,
@@ -527,9 +533,15 @@ PauseMenu.prototype.onPointerDown = function(x, y)
     
 PauseMenu.prototype.onPointerUp = function()
 {
-    if (this.selected>=0 && this.actions[this.selected]!=PauseMenu.MENUACTION_NONEACTION)
-    {   this.game.removeScreen();
-        this.listener.menuAction(this.actions[this.selected]);
+    if (this.selected>=0)
+    {   if (this.actions[this.selected]!=PauseMenu.MENUACTION_NONEACTION)
+        {   this.game.removeScreen();
+            this.listener.menuAction(this.actions[this.selected]);
+        }
+        else
+        {   this.selected=-1;
+            this.setDirty();
+        }
     }
 };
     
