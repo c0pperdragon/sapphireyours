@@ -18,9 +18,6 @@ var KeyEvent = {
     B2:     0x00001015,
     X2:     0x00001016,
     Y2:     0x00001017,
-    
-    EDIT:        0x00002000,
-    TEST:        0x00002001,
 
     toNumericCode: function(c)
     {   switch (c)         
@@ -32,9 +29,7 @@ var KeyEvent = {
             case "ArrowLeft":       { return KeyEvent.LEFT; }
             case "Right":
             case "ArrowRight":      { return KeyEvent.RIGHT; }
-            case " ":
-//            case "Control":
-//            case "ControlLeft":     
+            case " ":    
             case "Enter":           
             case "Space":           { return KeyEvent.A; }
             case "Shift":
@@ -42,27 +37,24 @@ var KeyEvent = {
             case "Esc":
             case "Escape":          { return KeyEvent.X; }
             case "Tab":             { return KeyEvent.Y; }
-            case "R":
-            case "r":
-            case "KeyR":            { return KeyEvent.UP2; }
-            case "F":
-            case "f":
-            case "KeyF":            { return KeyEvent.DOWN2; }
-            case "D":
-            case "d":
-            case "KeyD":            { return KeyEvent.LEFT2; }
-            case "G":
-            case "g":
-            case "KeyG":            { return KeyEvent.RIGHT2; }
-            case "A":
-            case "a":
-            case "KeyA":            { return KeyEvent.A2; }
+            case "W":
+            case "w":
+            case "KeyW":            { return KeyEvent.UP2; }
             case "S":
             case "s":
-            case "KeyS":            { return KeyEvent.B2; }
-
-            case "e":               { return KeyEvent.EDIT; }
-            case "t":               { return KeyEvent.TEST; }
+            case "KeyS":            { return KeyEvent.DOWN2; }
+            case "A":
+            case "a":
+            case "KeyA":            { return KeyEvent.LEFT2; }
+            case "D":
+            case "d":
+            case "KeyD":            { return KeyEvent.RIGHT2; }
+            case "Q":
+            case "q":
+            case "KeyQ":            { return KeyEvent.A2; }
+            case "E":
+            case "e":
+            case "KeyE":            { return KeyEvent.B2; }
 
             default:                
             {   console.log("unknown key ["+c+"]");

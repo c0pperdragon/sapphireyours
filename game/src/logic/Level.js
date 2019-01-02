@@ -120,7 +120,7 @@ Level.prototype.$ = function(filename,json)
     if (json)
     {   if (json.title && json.title.constructor == String) { this.title = json.title; }
         if (json.author && json.author.constructor == String) { this.author = json.author; }
-        if (json.hint && json.author.constructor == String) { this.hint = json.hint; }
+        if (json.hint && json.hint.constructor == String) { this.hint = json.hint; }
         if (isInteger(json.difficulty)) { this.difficulty = Number(json.difficulty); }
         if (isInteger(json.category)) { this.category = Number(json.category); }
         if (isInteger(json.loot)) { this.loot = Number(json.loot); }    

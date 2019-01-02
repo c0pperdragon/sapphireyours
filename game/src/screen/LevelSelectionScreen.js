@@ -33,7 +33,7 @@ LevelSelectionScreen.prototype.$ = function (game)
     
 LevelSelectionScreen.prototype.draw = function()
 {
-    var menuwidth = Math.min(300, this.game.screenwidth);                 
+    var menuwidth = Math.min(320, this.game.screenwidth);                 
     
     var background = 0xff000000;
     var buttonnormal = 0xff303030;
@@ -42,7 +42,6 @@ LevelSelectionScreen.prototype.draw = function()
     var bigtext = 30;
     var smalltext = 21;
 
-    
     var vr = this.game.vectorRenderer;
     var tr = this.game.textRenderer;
     var lr = this.game.levelRenderer;
@@ -184,7 +183,7 @@ LevelSelectionScreen.prototype.draw = function()
             
             var solve = this.game.getLevelSolvedGrade(l);
             if (solve>=1)
-            {   vr.addFrame(x+2,y+1,buttonheight-4,buttonheight-2, solve, sel ? 0xff000000 : color);
+            {   vr.addFrame(x+1,y+1,buttonheight-6,buttonheight-2, solve, sel ? 0xff000000 : color);
             }
 
             tr.addString
@@ -243,7 +242,7 @@ LevelSelectionScreen.prototype.draw = function()
 LevelSelectionScreen.prototype.computeClickedCriterium = function(x, y)
 { 
     var rowheight = 32;
-    var columnwidth = 150;    
+    var columnwidth = 160;    
     var top = 96;
     if (y>=top && x<2*columnwidth)
     {   var row = Math.floor((y-top) / rowheight);
@@ -262,13 +261,13 @@ LevelSelectionScreen.prototype.computeClickedCriterium = function(x, y)
 
 LevelSelectionScreen.prototype.isClickedNumberOfPlayers = function(x, y)
 {
-    var menuwidth = Math.min(300, this.game.screenwidth);                 
+    var menuwidth = Math.min(320, this.game.screenwidth);                 
     return /*x >= menuwidth-12 - 40 &&*/ x<menuwidth && y<40;
 };
 
 LevelSelectionScreen.prototype.isClickedExitButton = function(x, y)
 {
-    var menuwidth = Math.min(300, this.game.screenwidth); 
+    var menuwidth = Math.min(320, this.game.screenwidth); 
     return x >= menuwidth-12 - 40 && x<menuwidth && y<40;
 };
 
@@ -322,32 +321,30 @@ LevelSelectionScreen.prototype.filterAndSortLevels = function()
         }
     );    
 
-    // use different default level in certain cases
-    if (pos2difficulty(pos) == 2)
-    {   for (var i=0; i<this.filteredlevels.length; i++)
-        {   var t = this.filteredlevels[i].getTitle();
-            if (t==="Basic Mining" || t=="Two Miners") 
-            {   prefered=i;
-            }
-        }
-    }
+//    // use different default level in certain cases
+//    if (pos2difficulty(pos) == 2)
+//    {   for (var i=0; i<this.filteredlevels.length; i++)
+//        {   var t = this.filteredlevels[i].getTitle();
+//            if (t==="Basic Mining" || t=="Two Miners") 
+//            {   prefered=i;
+//            }
+//        }
+//    }
     return prefered; // the default level for this sorting
 }
 
 LevelSelectionScreen.prototype.scrollToVisible = function()
 {
     if (this.selectingcriterium) { return; }
-    
     var top = 50;    
     var bottom = this.game.screenheight - 5;            
     var lineheight = 32;
-    var h = this.filteredlevels.length * lineheight;    
-    if (top+h<=bottom) 
+    var h = this.filteredlevels.length * lineheight;   
+	if (top+h<=bottom) 
     {   this.listscrolly=top; 
     }
     else
-    {   var cursory = this.listscrolly + lineheight*this.selectedlevel;    
-        if (this.listscrolly>top) { this.listscrolly=top; }
+    {   var cursory = this.listscrolly + lineheight*this.selectedlevel;
         if (this.listscrolly+h<bottom) { this.listscrolly=bottom-h; }
         if (cursory<top)
         {   this.listscrolly += (top-cursory);
@@ -355,6 +352,7 @@ LevelSelectionScreen.prototype.scrollToVisible = function()
         else if (cursory>bottom-lineheight)
         {   this.listscrolly -= (cursory-(bottom-lineheight));
         }
+        if (this.listscrolly>top) { this.listscrolly=top; }
     }
 }
 
@@ -400,7 +398,8 @@ LevelSelectionScreen.prototype.onKeyDown = function(keycode)
             case KeyEvent.Y:
             {   this.selectednumberofplayers = (this.selectednumberofplayers===1) ? 2:1;
                 this.selectedlevel = this.filterAndSortLevels();
-                this.setDirty();     
+                this.setDirty(); 
+				break;
             }
         }
     }    
@@ -435,7 +434,7 @@ LevelSelectionScreen.prototype.onKeyDown = function(keycode)
 
 LevelSelectionScreen.prototype.onPointerDown = function(x, y)
 {
-    var menuwidth = Math.min(300, this.game.screenwidth);                 
+    var menuwidth = Math.min(320, this.game.screenwidth);                 
     var rowheight = 32;
     
     this.pointerdownx = x;

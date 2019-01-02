@@ -21,4 +21,4 @@ function collect(path, arr)
 
 var arr = [];
 collect("../game/levels", arr);
-fs.writeFileSync("all.json", JSON.stringify(arr, null, 2));
+fs.writeFileSync("../game/levels/all.json", JSON.stringify(arr, null, 2));

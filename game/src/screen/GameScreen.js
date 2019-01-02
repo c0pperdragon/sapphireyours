@@ -76,7 +76,8 @@ GameScreen.prototype.$ = function (game, le, unfinishedwalk, startFromEditor)
 
 GameScreen.prototype.afterScreenCreation = function()
 {
-    if (!this.startFromEditor)
+	var t = this.level.getTitle();	
+    if (!this.startFromEditor && t.charCodeAt(1)==46)
     {   this.createMenuScreen(this.step!=0);
     }       
     if (this.game.getMusicActive()) 
@@ -196,16 +197,22 @@ GameScreen.prototype.draw = function()
         sec = sec%60;            
         x += hspace;
         x = tr.addNumber(min, x,y,statustextheight, false,  0xffffffff, TextRenderer.WEIGHT_BOLD);
+		var secpos = x;
         x = tr.addString(sec<10?":0":":", x,y,statustextheight, false,  0xffffffff, TextRenderer.WEIGHT_BOLD);
         x = tr.addNumber(sec, x,y,statustextheight, false,  0xffffffff, TextRenderer.WEIGHT_BOLD);
-        
+		
         // gem count-down
-        x += hspace;
+        x = secpos + 25 + hspace;
         lr.addDecorationPieceToBuffer (x+statustilesize/2,ycenter,EMERALD);  
         x += statustilesize;
         var needed = this.logic.getNumberOfEmeraldsStillNeeded();
-        x = tr.addNumber(needed<0 ? 0:needed,  x,y,statustextheight, 
-            false,  this.logic.canStillGetEnoughEmeralds() ? 0xffffffff : 0xffff3333, TextRenderer.WEIGHT_BOLD);
+        x = tr.addNumber
+		(	needed<0 ? 0:needed,  
+			x,y,statustextheight, 
+            false,  
+			this.logic.canStillGetEnoughEmeralds() || (sec%2==0) ? 0xffffffff : 0xffff3333, 
+			TextRenderer.WEIGHT_BOLD
+		);
         x += hspace;
         
         // draw collected bombs and keys of both players 

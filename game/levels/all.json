@@ -1,43 +1,6 @@
 [
   {
-    "difficulty": 2,
-    "demos": [
-      {
-        "randomseed": 700958,
-        "players": 2,
-        "moves": [
-          "........rr.rr.r.b.brrrrrrrrrrrrrrr.r...t",
-          ".l.lmllllll.l.......r.r.r.r.........r.r.",
-          "t.t.l.l.l......brb......lr.rbr.rrrbrb.b.",
-          "b.l.l.b.b.r.r.l.l......l....r...tb.r.ll.",
-          "rbrbrbt.t.tttttllllllllblbblllllllllllll",
-          ".............."
-        ]
-      }
-    ],
-    "swamprate": 24,
-    "author": "Amelie",
-    "loot": 6,
-    "title": "3 rocks, 6 emeralds",
-    "category": 5,
-    "map": [
-      "                  ",
-      "  ############### ",
-      "  #..........000# ",
-      "  #.1...........# ",
-      "  #.............# ",
-      "  #E...!........# ",
-      "  ###########+++# ",
-      "  #.............# ",
-      "  #.2...........# ",
-      "  #..........@@@# ",
-      "  #E.........@@@# ",
-      "  ############### "
-    ],
-    "robotspeed": 0
-  },
-  {
-    "difficulty": 2,
+    "difficulty": 3,
     "demos": [
       {
         "randomseed": 23452345,
@@ -302,7 +265,7 @@
     ]
   },
   {
-    "difficulty": 4,
+    "difficulty": 6,
     "demos": [
       {
         "randomseed": 127458,
@@ -587,9 +550,9 @@
       }
     ],
     "author": "Reinhard",
-    "hint": "A simple mine to learn how to control the miner. Use the directional keys to move or draw the path on a touch display. Move over gems to collect them.",
+    "hint": "A simple mine to learn how to control the miner. Use the directional keys for movement or draw the path on a touch display. Move over gems to collect them.",
     "loot": 13,
-    "title": "Basic Mining",
+    "title": "1. Basic Mining",
     "category": 0,
     "map": [
       " ++++++++    ++++",
@@ -825,7 +788,7 @@
     ]
   },
   {
-    "difficulty": 3,
+    "difficulty": 9,
     "demos": [
       {
         "randomseed": 24041,
@@ -858,7 +821,7 @@
     ]
   },
   {
-    "difficulty": 3,
+    "difficulty": 9,
     "demos": [
       {
         "randomseed": 571616,
@@ -2085,9 +2048,9 @@
       }
     ],
     "author": "Reinhard",
-    "hint": "To collect a nearby object without actually moving there, press the Ctrl/Action key before or while using a directional key. On touch displays simply tap on the object.",
+    "hint": "To collect a nearby object without actually moving there, press the Space/Action key before or while using a directional key. On touch displays simply tap on the object.",
     "loot": 1,
-    "title": "Collect by Grabbing",
+    "title": "3. Collect by Grabbing",
     "category": 5,
     "map": [
       "+++++++++++",
@@ -3088,10 +3051,10 @@
       }
     ],
     "author": "Reinhard",
-    "hint": "Packs of dynamite can be collected and placed at a different position. Press the Shift/Action2 key where you want to plant an explosion or tap the dynamite symbol in the status bar on a touch display.",
+    "hint": "Packs of dynamite can be collected and placed at a different position. Press the Shift/Action2 key where you want to plant an explosion or tap the miner on a touch display.",
     "loot": 2,
     "time": 70,
-    "title": "Dynamite",
+    "title": "6. Dynamite",
     "category": 4,
     "map": [
       "###########",
@@ -5203,7 +5166,7 @@
     "hint": "Handle explosives with caution. Dropping bombs or dropping anything on them will blast anything in a 3x3 area.",
     "loot": 1,
     "time": 100,
-    "title": "How Bombs Work",
+    "title": "5. How Bombs Work",
     "category": 5,
     "map": [
       "###########",
@@ -5481,7 +5444,7 @@
     ]
   },
   {
-    "difficulty": 2,
+    "difficulty": 3,
     "demos": [
       {
         "players": 2,
@@ -9486,8 +9449,9 @@
       }
     ],
     "loot": 6,
-    "title": "Rock your way out",
+    "title": "4. Rock your way out",
     "category": 4,
+    "hint": "This is a short tactical training to show that rocks are not dangerous if handled with care.",
     "map": [
       "####################",
       "#10..00.0  *0 0$. 0#",
@@ -10414,7 +10378,7 @@
     ]
   },
   {
-    "difficulty": 2,
+    "difficulty": 3,
     "demos": [
       {
         "randomseed": 719850,
@@ -12015,6 +11979,43 @@
     ]
   },
   {
+    "difficulty": 2,
+    "demos": [
+      {
+        "randomseed": 700958,
+        "players": 2,
+        "moves": [
+          "........rr.rr.r.b.brrrrrrrrrrrrrrr.r...t",
+          ".l.lmllllll.l.......r.r.r.r.........r.r.",
+          "t.t.l.l.l......brb......lr.rbr.rrrbrb.b.",
+          "b.l.l.b.b.r.r.l.l......l....r...tb.r.ll.",
+          "rbrbrbt.t.tttttllllllllblbblllllllllllll",
+          ".............."
+        ]
+      }
+    ],
+    "swamprate": 24,
+    "author": "Amelie",
+    "loot": 6,
+    "title": "Three rocks, six emeralds",
+    "category": 5,
+    "map": [
+      "                  ",
+      "  ############### ",
+      "  #..........000# ",
+      "  #.1...........# ",
+      "  #.............# ",
+      "  #E...!........# ",
+      "  ###########+++# ",
+      "  #.............# ",
+      "  #.2...........# ",
+      "  #..........@@@# ",
+      "  #E.........@@@# ",
+      "  ############### "
+    ],
+    "robotspeed": 0
+  },
+  {
     "difficulty": 4,
     "demos": [
       {
@@ -12330,7 +12331,7 @@
     ]
   },
   {
-    "difficulty": 2,
+    "difficulty": 3,
     "demos": [
       {
         "players": 2,
@@ -12809,7 +12810,7 @@
     "author": "Reinhard",
     "hint": "As you may have noticed, many objects tend to fall down when not properly supported. Be careful to not get smashed.",
     "loot": 8,
-    "title": "Welcome to the Game",
+    "title": "2. Welcome to the Game",
     "category": 6,
     "map": [
       "#############",

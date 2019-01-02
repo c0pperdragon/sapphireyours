@@ -120,6 +120,18 @@ Game.prototype.$ = function()
         }
     );    
     this.canvas.addEventListener
+    (   'mousewheel', function(event)
+        {   if (event.wheelDelta>0) 
+			{	that.onKeyDown(KeyEvent.UP);
+				that.onKeyUp(KeyEvent.UP);
+			}
+			else
+			{	that.onKeyDown(KeyEvent.DOWN);
+				that.onKeyUp(KeyEvent.DOWN);
+			}
+        }
+    );    
+    this.canvas.addEventListener
     (   'touchstart', function(event)
         {   if (!that.overlay) that.onTouchStart(event);
         }
