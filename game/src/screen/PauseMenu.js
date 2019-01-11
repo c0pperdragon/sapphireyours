@@ -508,6 +508,8 @@ PauseMenu.prototype.onKeyDown = function(code)
             break;
         }
         case KeyEvent.A:
+        case KeyEvent.B:
+        case KeyEvent.FORWARD:
         {   if (this.selected<0)
             {   this.selected=this.defaultaction;
             }

@@ -1,14 +1,15 @@
 "use strict";
 var KeyEvent = {
     
+    BACK:   0x00001006,  // back/cancel
+    FORWARD:0x00001007,  // start or contect dependent
+
     UP:     0x00001000,         
     DOWN:   0x00001001,
     LEFT:   0x00001002,
     RIGHT:  0x00001003,
     A:      0x00001004,  // confirmation (or main action)
     B:      0x00001005,  // auxiliary action
-    X:      0x00001006,  // back/cancel
-    Y:      0x00001007,  // switch modes
     
     UP2:    0x00001010,         
     DOWN2:  0x00001011,
@@ -16,8 +17,6 @@ var KeyEvent = {
     RIGHT2: 0x00001013,
     A2:     0x00001014,
     B2:     0x00001015,
-    X2:     0x00001016,
-    Y2:     0x00001017,
 
     toNumericCode: function(c)
     {   switch (c)         
@@ -30,13 +29,12 @@ var KeyEvent = {
             case "Right":
             case "ArrowRight":      { return KeyEvent.RIGHT; }
             case " ":    
-            case "Enter":           
+            case "Enter":           { return KeyEvent.FORWARD; }
             case "Space":           { return KeyEvent.A; }
             case "Shift":
             case "ShiftLeft":       { return KeyEvent.B; }
             case "Esc":
-            case "Escape":          { return KeyEvent.X; }
-            case "Tab":             { return KeyEvent.Y; }
+            case "Escape":          { return KeyEvent.BACK; }
             case "W":
             case "w":
             case "KeyW":            { return KeyEvent.UP2; }

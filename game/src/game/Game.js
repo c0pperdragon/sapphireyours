@@ -28,6 +28,8 @@ var Game = function()
     // input handling flags
     this.isTouch = false;
     this.isPointerDown = false;
+	
+	this.connectedControllers = [];
 };
 
 
@@ -169,7 +171,22 @@ Game.prototype.$ = function()
                 that.setDirty();
             }
         }
-    );      
+    );   
+
+	// handle game controllers connect and disconnect events
+	window.addEventListener
+	(	"gamepadconnected", function(e) 
+		{	
+			console.log("connected: "+e.gamepad,e.gamepad.index,e.gamepad.id);
+			that.connectedControllers[e.gamepad.index] = [ 0, false, false, false, false, false, false, false, false ];
+		}
+	)
+	window.addEventListener
+	(	"gamepaddisconnected", function(e) 
+		{	console.log("disconnected: "+e.gamepad,e.gamepad.index,e.gamepad.id);
+			that.connectedControllers[e.gamepad.index] = null;
+		}
+	)
     
     // cause further loading to progress
     this.levels = [];
@@ -323,6 +340,12 @@ Game.prototype.loadLevelFromLocalSystem = function(callback)
 // constant game loop
 Game.prototype.tick = function()
 {
+	// query all connected controllers
+	var gp = navigator.getGamepads();
+	for (var i=0; i<this.connectedControllers.length; i++)
+	{	if (this.connectedControllers[i]) { this.processControllerInput(i,this.connectedControllers[i], gp[i]); }	
+	}
+	
     // topmost screen always gets the tick action (other screens do not animate)
     if (this.screens.length>0)
     {   this.getTopScreen().tick();
@@ -506,7 +529,7 @@ Game.prototype.onKeyDown = function(keycode)
 {    
     this.usingKeyboardInput = true;
         
-    if (this.screens.length>0 && (keycode==KeyEvent.X))
+    if (this.screens.length>0 && (keycode==KeyEvent.BACK))
     {   this.getTopScreen().onBackNavigation();
     }
     else if (this.screens.length>0)
@@ -590,7 +613,67 @@ Game.prototype.onTouchMove = function(e)
 {
 };
 
-
+// ---- handling of controller states - these are translated to key presses ---
+Game.prototype.processControllerInput = function(idx,states, gp)
+{
+	// query current state of controller
+	var isleft = false;
+	var isright = false;
+	var isup = false;
+	var isdown = false;
+	var isa = false;
+	var isb = false;
+	var isback  = false;
+	var isforward  = false;
+	if (gp.axes && gp.axes.length>=2)
+	{	if (gp.axes[1]<-0.9) { isup=true; }
+		if (gp.axes[1]>0.9) { isdown=true; }
+		if (gp.axes[0]<-0.9) { isleft=true; isup=false; isdown=false; }
+		if (gp.axes[0]>0.9) { isright=true; isup=false; isdown=false; }
+	}
+	if (gp.buttons.length>0 && gp.buttons[0].pressed) { isa = true; }
+	if (gp.buttons.length>1 && gp.buttons[1].pressed) { isb = true; }
+	if (gp.buttons.length>2 && gp.buttons[2].pressed) { isback = true; }
+	if (gp.buttons.length>3 && gp.buttons[3].pressed) { isforward = true; }
+	if (gp.buttons.length>8 && gp.buttons[8].pressed) { isback = true; }
+	if (gp.buttons.length>9 && gp.buttons[9].pressed) { isforward = true; }
+		
+//console.log("controller buttons",gp.buttons);	
+//console.log("controller axes",gp.axes);	
+//console.log("controller",idx,isleft,isright,isup,isdown,isa,isb,isback);	
+	// check differences to previous state and generate events
+	states[0]++; // increase time counter
+	dobutton(this,1,isleft,KeyEvent.LEFT);
+	dobutton(this,2,isright,KeyEvent.RIGHT);
+	dobutton(this,3,isup,KeyEvent.UP);
+	dobutton(this,4,isdown,KeyEvent.DOWN);
+	dobutton(this,5,isa,KeyEvent.A);
+	dobutton(this,6,isb,KeyEvent.B);
+	dobutton(this,7,isback,KeyEvent.BACK);
+	dobutton(this,8,isforward,KeyEvent.FORWARD);
+	
+	function dobutton(game,idx,pressed,keycode)
+	{
+		if (!pressed)
+		{	if (states[idx])
+			{	states[idx]=false;
+				game.onKeyUp(keycode);
+			}
+		}
+		else
+		{	var now = states[0];
+			if (!states[idx])
+			{	states[idx] = now + 30;  // initial key repeat delay
+				game.onKeyDown(keycode);
+			}
+			else if (now >= states[idx])
+			{	states[idx] = now + 3;  // subsequent key repeat delay
+				game.onKeyDown(keycode);
+			}	
+		}
+	}
+};
+	
 // -------------- handling music playback --------
 
 Game.prototype.startMusic = function(filename)

@@ -998,13 +998,14 @@ GameScreen.prototype.onKeyDown = function(code)
 {        
     // in record mode use up- and down-events               
     if (this.playmode==GameScreen.PLAYMODE_RECORD)
-    {   if (code==KeyEvent.Y && this.logic.getNumberOfPlayers()>1)   
+    {   if (code==KeyEvent.FORWARD && this.logic.getNumberOfPlayers()>1)   
         {   this.keyboardTranslator.switchControls(!this.keyboardTranslator.hasSwitchedControls());
             this.inputmodeswitchtime = 60;
             this.adjustScrolling(true);              
         }
         else
-        {   this.keyboardTranslator.keyDown(code);           
+        { 
+			this.keyboardTranslator.keyDown(code);           
         }
     }
     // outside record mode, any down-event calls up the menu

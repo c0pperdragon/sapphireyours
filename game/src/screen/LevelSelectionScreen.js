@@ -47,8 +47,8 @@ LevelSelectionScreen.prototype.draw = function()
     var lr = this.game.levelRenderer;
     
     // paint level underlay
-    if (this.selectedlevel<this.filteredlevels.length)
-    {   var l = this.filteredlevels[this.selectedlevel];
+    if (this.selectedlevel<this.filteredlevels.length && this.filteredlevels.length>0)
+    {   var l = this.filteredlevels[Math.max(this.selectedlevel,0)];
         var lo = (new Logic()).$();
         lo.attach(l, (new Walk()).$randomseed(0));
         lr.startDrawingMini(menuwidth, l.getWidth(),l.getHeight());
@@ -76,19 +76,20 @@ LevelSelectionScreen.prototype.draw = function()
         (   "Yours", x+40, y+18, smalltext,
             false, titlecolor, TextRenderer.WEIGHT_BOLD
         );
-        
+
         var numbuttonwidth = 32;
         var numbuttonheight = 32;
         x2 = menuwidth - 12 - numbuttonwidth;
         var str = ""+(this.selectednumberofplayers);
-        vr.addRoundedRect(x2,y, numbuttonwidth, numbuttonheight, 3,4, 0xff222222);
+		var isselected = this.selectedcriterium<0;
+        vr.addRoundedRect(x2,y, numbuttonwidth, numbuttonheight, 3,4,  isselected ? titlecolor : 0xff444444);
         tr.addString
         (   str, 
                 x2 + numbuttonwidth/2 - tr.determineStringWidth(str,bigtext)/2, 
                 y + (numbuttonheight-bigtext)/2, 
                 bigtext, 
                 false, 
-                titlecolor,
+                isselected ? 0xff444444 : titlecolor,
                 TextRenderer.WEIGHT_BOLD
         );
         
@@ -192,7 +193,7 @@ LevelSelectionScreen.prototype.draw = function()
                 (   c<0 ? Game.getIconForCategory(l.getCategory())
                         : Game.getIconForDifficulty(l.getDifficulty()) 
                 )
-                + " " + l.getTitle(), 
+                + "  " + l.getTitle(), 
                 x, 
                 y + (buttonheight-smalltext)/2, 
                 smalltext, 
@@ -229,6 +230,7 @@ LevelSelectionScreen.prototype.draw = function()
             var x2 = menuwidth-12 - exitbuttonwidth;
             var isselected = this.pointeractive 
             && this.isClickedExitButton(this.pointerdownx,this.pointerdowny);
+		    if (this.selectedlevel<0) { isselected=true; }
             vr.addRoundedRect(x2,y, exitbuttonwidth, exitbuttonheight, 3,4, isselected ? color : 0xff444444);
             vr.addCross(x2,y, exitbuttonwidth, exitbuttonheight, isselected ? 0xff444444 : color);        
         }
@@ -296,7 +298,7 @@ LevelSelectionScreen.prototype.filterAndSortLevels = function()
     var prefered = 0;
     this.filteredlevels.length = 0;
 
-    var pos = this.selectedcriterium;    
+    var pos = this.selectedcriterium>=0 ? this.selectedcriterium : 0;    
     for (var i=0; i<this.game.levels.length; i++)
     {   var l = this.game.levels[i];
         if 
@@ -379,10 +381,20 @@ LevelSelectionScreen.prototype.onKeyDown = function(keycode)
                     this.selectedlevel = this.filterAndSortLevels();
                     this.setDirty();
                 }
+				else if (this.selectedcriterium>-1)
+				{	this.selectedcriterium = -1;                    
+                    this.selectedlevel = this.filterAndSortLevels();
+                    this.setDirty();
+				}
                 break;
             }
             case KeyEvent.DOWN:
-            {   if (this.selectedcriterium+2<16) 
+            {   if (this.selectedcriterium==-1)
+				{	this.selectedcriterium = 0;                    
+                    this.selectedlevel = this.filterAndSortLevels();
+                    this.setDirty();
+				}
+				else if (this.selectedcriterium+2<16) 
                 {   this.selectedcriterium += 2;                    
                     this.selectedlevel = this.filterAndSortLevels();
                     this.setDirty();
@@ -390,16 +402,19 @@ LevelSelectionScreen.prototype.onKeyDown = function(keycode)
                 break;
             }            
             case KeyEvent.A:
-            {   this.selectingcriterium = false;                
-                this.scrollToVisible();
-                this.setDirty();
+            case KeyEvent.B:
+            case KeyEvent.FORWARD:
+            {   if (this.selectedcriterium<0)
+				{	this.selectednumberofplayers = (this.selectednumberofplayers===1) ? 2:1;
+					this.selectedlevel = this.filterAndSortLevels();
+					this.setDirty(); 
+				}
+				else
+				{	this.selectingcriterium = false;                
+					this.scrollToVisible();
+					this.setDirty();
+				}
                 break;
-            }
-            case KeyEvent.Y:
-            {   this.selectednumberofplayers = (this.selectednumberofplayers===1) ? 2:1;
-                this.selectedlevel = this.filterAndSortLevels();
-                this.setDirty(); 
-				break;
             }
         }
     }    
@@ -407,7 +422,7 @@ LevelSelectionScreen.prototype.onKeyDown = function(keycode)
     else
     {   switch (keycode)
         {   case KeyEvent.UP:
-            {   if (this.selectedlevel>0) 
+            {   if (this.selectedlevel>-1) 
                 {   this.selectedlevel--;
                     this.scrollToVisible();
                     this.setDirty();
@@ -423,7 +438,15 @@ LevelSelectionScreen.prototype.onKeyDown = function(keycode)
                 break;
             }
             case KeyEvent.A:
-            {   this.startSelectedLevel();
+            case KeyEvent.B:
+            case KeyEvent.FORWARD:
+            {   if (this.selectedlevel<0)
+				{	this.selectingcriterium = true;
+					this.setDirty();
+				}
+				else
+				{	this.startSelectedLevel();
+				}
                 break;
             }
         }        

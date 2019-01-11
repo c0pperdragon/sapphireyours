@@ -112,7 +112,15 @@ LevelSettingsDialog.prototype.onKeyDown = function(code)
             {   this.selected++;
                 this.setDirty();
             }
+			break;
         }
+		case KeyEvent.A:
+		{   if (this.selected==5) 
+            {   this.onBackNavigation();
+				break;
+            }
+        }
+		// fall-through
         case KeyEvent.LEFT:
         {   switch(this.selected)
             {   case 0: // difficulty
@@ -143,6 +151,7 @@ LevelSettingsDialog.prototype.onKeyDown = function(code)
             }
             break;
         }
+		case KeyEvent.B:
         case KeyEvent.RIGHT:
         {   switch(this.selected)
             {   case 0: // difficulty
@@ -170,12 +179,6 @@ LevelSettingsDialog.prototype.onKeyDown = function(code)
                     this.setDirty();
                     break;
                 }                        
-            }
-            break;
-        }
-        case KeyEvent.A:
-        {   if (this.selected==5) 
-            {   this.onBackNavigation();
             }
             break;
         }

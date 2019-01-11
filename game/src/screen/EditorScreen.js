@@ -513,7 +513,7 @@ EditorScreen.prototype.onKeyDown = function(keycode)
                 break;
             }
         
-            case KeyEvent.Y:
+            case KeyEvent.FORWARD:
             {
                 this.cursorinmap = !this.cursorinmap;
                 this.setDirty();
