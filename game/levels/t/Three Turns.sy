@@ -1,0 +1,32 @@
+{
+  "title": "Three turns",
+  "difficulty": 3,
+  "category": 0,
+  "loot": 7,
+  "map": [
+    "...................",
+    "...................",
+    "..................!",
+    "+++................",
+    "**+................",
+    "**+....4.1.........",
+    "+++................",
+    ".....c3............",
+    "...................",
+    "...._.......0......",
+    ".....44{..........E"
+  ],
+  "demos": [
+    {
+      "randomseed": 230421,
+      "moves": [
+        ".....bbbb.rr.llllllt.lttrrr..rbb.lt.blrr",
+        "rrrrrrrrrrttttttlllllllllllllllllrsrrrrr",
+        ".llllmmclbbltrtrrrrrrrrrbrbrrrbbbbllllll",
+        "tttttlllllbbbbb......r..t..rrrrrrrrrrrrr",
+        "rbbb......"
+      ]
+    }
+  ],
+  "author": "Felix"
+}

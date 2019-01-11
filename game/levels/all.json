@@ -93,6 +93,7 @@
     ]
   },
   {
+    "category": 0,
     "difficulty": 2,
     "demos": [
       {
@@ -109,7 +110,6 @@
     "loot": 6,
     "time": 70,
     "title": "Acid",
-    "category": 0,
     "map": [
       "+++++++++++",
       "+E.0000000+",
@@ -244,7 +244,7 @@
     "author": "Ronald",
     "loot": 0,
     "title": "Armageddon II",
-    "category": 3,
+    "category": 7,
     "map": [
       "##########################",
       "#%%%%%%%%%%%%%%%%%%%%%%%%#",
@@ -280,7 +280,7 @@
     "loot": 2,
     "time": 18,
     "title": "Armageddon",
-    "category": 3,
+    "category": 2,
     "map": [
       "##########################",
       "#%%%%%%%%%%%%%%%%%%%%%%%%#",
@@ -930,7 +930,7 @@
     "loot": 1,
     "time": 80,
     "title": "Bomb Dilution",
-    "category": 2,
+    "category": 7,
     "map": [
       "##########",
       "#..Q.Q.*E#",
@@ -1565,7 +1565,7 @@
     "author": "Reinhard",
     "loot": 1,
     "title": "Bugs Follow Walls",
-    "category": 3,
+    "category": 7,
     "map": [
       "###########",
       "#     5   #",
@@ -1824,7 +1824,7 @@
     "loot": 21,
     "time": 400,
     "title": "Capture",
-    "category": 3,
+    "category": 2,
     "map": [
       " $        $         Q ",
       " :########+#########+ ",
@@ -1900,7 +1900,7 @@
     "author": "Ronald",
     "loot": 30,
     "title": "Chaotic Room",
-    "category": 3,
+    "category": 7,
     "map": [
       "####################################",
       "#   # 7       #           #  8    >#",
@@ -2540,7 +2540,7 @@
     "author": "Ronald",
     "loot": 23,
     "title": "Crusher",
-    "category": 2,
+    "category": 6,
     "map": [
       "###################### ",
       "#         1          # ",
@@ -2619,7 +2619,7 @@
     "author": "Alexander",
     "loot": 0,
     "title": "Danger! Bug Zone!",
-    "category": 2,
+    "category": 7,
     "map": [
       "#########E#####",
       "#      :   G  #",
@@ -2662,7 +2662,7 @@
     "hint": "A lot of evasive action is necessary here.",
     "loot": 17,
     "title": "Dark Room",
-    "category": 2,
+    "category": 7,
     "map": [
       "##############",
       "#>          b#",
@@ -3026,7 +3026,7 @@
     "author": "Alexander",
     "loot": 1,
     "title": "Drop Off",
-    "category": 2,
+    "category": 4,
     "map": [
       "#&#####",
       "#...Q.#",
@@ -3255,7 +3255,7 @@
     "loot": 90,
     "time": 200,
     "title": "Emerald",
-    "category": 2,
+    "category": 4,
     "map": [
       "      #      ",
       "     #0#     ",
@@ -3512,7 +3512,7 @@
     "loot": 19,
     "time": 100,
     "title": "Explosion Stacking",
-    "category": 2,
+    "category": 5,
     "map": [
       "###########",
       "#  QQQ&***#",
@@ -3541,7 +3541,7 @@
     "loot": 1,
     "time": 100,
     "title": "Extract the Emerald",
-    "category": 0,
+    "category": 5,
     "map": [
       "###########",
       "#....Q....#",
@@ -3886,7 +3886,7 @@
     "loot": 18,
     "time": 300,
     "title": "Force",
-    "category": 3,
+    "category": 7,
     "map": [
       "###################",
       "#1                #",
@@ -4080,7 +4080,7 @@
     "author": "Reinhard",
     "loot": 1,
     "title": "Grand Prix",
-    "category": 3,
+    "category": 7,
     "map": [
       "#################",
       "#......  7    ..#",
@@ -4200,7 +4200,7 @@
     "author": "Jürgen",
     "loot": 351,
     "title": "Granite",
-    "category": 7,
+    "category": 6,
     "map": [
       "##############################",
       "#&&%&&&&Q&&&&&#&&&&Q&&&Q&&&&E#",
@@ -4907,7 +4907,7 @@
     "loot": 213,
     "time": 800,
     "title": "Hello",
-    "category": 2,
+    "category": 6,
     "map": [
       "##################################################",
       "#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%#",
@@ -4974,7 +4974,7 @@
     "author": "Alexander",
     "loot": 8,
     "title": "Help the Bug",
-    "category": 4,
+    "category": 7,
     "map": [
       "############",
       "#          #",
@@ -5705,7 +5705,7 @@
     "loot": 0,
     "time": 55,
     "title": "Keys Open Doors",
-    "category": 0,
+    "category": 5,
     "map": [
       "++++++++++",
       "+r Y1.B g+",
@@ -5939,7 +5939,7 @@
     "hint": "The most difficult thing to do here is to kill the YamYam-beast at the correct spot.",
     "loot": 26,
     "title": "Leo IV",
-    "category": 3,
+    "category": 1,
     "map": [
       "#########.0E#### ",
       "#* .0.0 G 0# 01y#",
@@ -6192,7 +6192,7 @@
     "loot": 91,
     "time": 200,
     "title": "Light Tower",
-    "category": 5,
+    "category": 0,
     "map": [
       "                      ",
       "                      ",
@@ -6410,7 +6410,7 @@
     "loot": 96,
     "time": 450,
     "title": "Lord of the Ring",
-    "category": 2,
+    "category": 6,
     "map": [
       "#############################",
       "#1..........................#",
@@ -7878,7 +7878,7 @@
     "author": "Reinhard",
     "loot": 3,
     "title": "Monsters Hate the Swamp",
-    "category": 5,
+    "category": 3,
     "map": [
       "################",
       "E%............1#",
@@ -8425,7 +8425,7 @@
     "loot": 28,
     "time": 300,
     "title": "Pac Man",
-    "category": 3,
+    "category": 7,
     "map": [
       "###########################",
       "#    *       $            #",
@@ -8541,7 +8541,7 @@
     "loot": 0,
     "time": 80,
     "title": "Pillow Fight",
-    "category": 0,
+    "category": 4,
     "map": [
       "          _    ",
       "     _   ___   ",
@@ -8829,7 +8829,7 @@
     "author": "Alexander",
     "loot": 100,
     "title": "Poisonous Powder",
-    "category": 5,
+    "category": 3,
     "map": [
       "###########################",
       "#E1                       #",
@@ -8935,7 +8935,7 @@
     "author": "Charilaos",
     "loot": 1,
     "title": "Psycho Tango",
-    "category": 2,
+    "category": 3,
     "map": [
       "o       ",
       "++&++ ++",
@@ -8984,7 +8984,7 @@
     "hint": "Objects that can not be collected can often be pushed aside. Make sure the space behind the rock is empty and then move the miner against the rock.",
     "loot": 1,
     "title": "Pushing the Stone",
-    "category": 4,
+    "category": 6,
     "map": [
       "++++++++++++",
       "+..........+",
@@ -9631,7 +9631,7 @@
     "author": "Jürgen",
     "loot": 3,
     "title": "Round it Goes",
-    "category": 3,
+    "category": 7,
     "map": [
       "########E########",
       "#5           5  #",
@@ -9865,7 +9865,7 @@
     "author": "Michi",
     "loot": 314,
     "title": "Sapphire Rain",
-    "category": 2,
+    "category": 7,
     "map": [
       "######################",
       "#$$$$$$$ $$$$$$$$$$$$#",
@@ -10003,7 +10003,7 @@
     "author": "Alexander",
     "loot": 5,
     "title": "Shield",
-    "category": 2,
+    "category": 7,
     "map": [
       "################**####",
       "######**********:C# b#",
@@ -10039,7 +10039,7 @@
     "author": "Reinhard",
     "loot": 56,
     "title": "Shields Up!",
-    "category": 2,
+    "category": 7,
     "map": [
       "##4##############",
       "$  #..**.*.....E#",
@@ -10326,7 +10326,7 @@
     "author": "Reinhard",
     "loot": 55,
     "title": "Sisyphus",
-    "category": 7,
+    "category": 6,
     "map": [
       "###0#0###########",
       "#$..1.          #",
@@ -10365,7 +10365,7 @@
     "hint": "Cautious handling of the fragile gems will not be enough for this level. There is also a time where swiftness of action is essential.",
     "loot": 37,
     "title": "Small Vault",
-    "category": 2,
+    "category": 4,
     "map": [
       "############",
       "#..........#",
@@ -10550,7 +10550,7 @@
     "author": "Jürgen",
     "loot": 6,
     "title": "Speed Kills",
-    "category": 3,
+    "category": 7,
     "map": [
       "###################",
       "#    5   # 5 #   5#",
@@ -11026,7 +11026,7 @@
     "author": "Ronald",
     "loot": 3,
     "title": "Swamp Bridge",
-    "category": 3,
+    "category": 7,
     "map": [
       "###############################",
       "#1gE#%%%%%%%%%%%%%%%%%%# #....#",
@@ -11136,7 +11136,7 @@
     "author": "Reinhard",
     "loot": 7,
     "title": "System Shock",
-    "category": 3,
+    "category": 2,
     "map": [
       "####################",
       "#!!!!!!!!!!!!!!!!!E#",
@@ -11979,6 +11979,38 @@
     ]
   },
   {
+    "title": "Three turns",
+    "difficulty": 3,
+    "category": 0,
+    "loot": 7,
+    "map": [
+      "...................",
+      "...................",
+      "..................!",
+      "+++................",
+      "**+................",
+      "**+....4.1.........",
+      "+++................",
+      ".....c3............",
+      "...................",
+      "...._.......0......",
+      ".....44{..........E"
+    ],
+    "demos": [
+      {
+        "randomseed": 230421,
+        "moves": [
+          ".....bbbb.rr.llllllt.lttrrr..rbb.lt.blrr",
+          "rrrrrrrrrrttttttlllllllllllllllllrsrrrrr",
+          ".llllmmclbbltrtrrrrrrrrrbrbrrrbbbbllllll",
+          "tttttlllllbbbbb......r..t..rrrrrrrrrrrrr",
+          "rbbb......"
+        ]
+      }
+    ],
+    "author": "Felix"
+  },
+  {
     "difficulty": 2,
     "demos": [
       {
@@ -12479,7 +12511,7 @@
     "loot": 36,
     "time": 200,
     "title": "Under Fire",
-    "category": 3,
+    "category": 7,
     "map": [
       "#############",
       "#E1         #",
@@ -12866,7 +12898,7 @@
     "hint": "Get to the cake before there is none left.",
     "loot": 20,
     "title": "YamYam Party",
-    "category": 3,
+    "category": 7,
     "map": [
       "####################",
       "#  .   .     .   >.#",
