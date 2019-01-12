@@ -188,32 +188,15 @@ Game.prototype.$ = function()
 		}
 	)
     
-    // cause further loading to progress
-    this.levels = [];
-    
-    // start in editor mode - no need to load integrated levels
-    if (Game.geturlparameter("editor",null) != null)
-    {   var l = new Level().$(null,null);
-        that.replaceTopScreen(new EditorScreen().$(that,l)); 
-        that.soundPlayer = (new LevelSoundPlayer()).$();
-    } 
-    // start game normally
-    else
-    {   this.loadIntegratedLevelPack
-        (   "all.json",
-            function() 
-            {   that.replaceTopScreen(new LevelSelectionScreen().$(that));  
-                that.soundPlayer = (new LevelSoundPlayer()).$();
-            }
-        );
-    }
-    
     // set up game loop
     window.requestAnimationFrame (ftick);    
     return this;
     
     function ftick() 
     {   that.tick();    // in case of exception stop the loop
+		if (that.levels==null && that.levelRenderer!=null && that.levelRenderer.isLoaded()) 
+		{	that.continueAfterLoadingRenderers();
+		}
         window.requestAnimationFrame(ftick);        
     }
         
@@ -242,6 +225,29 @@ Game.prototype.$ = function()
     }          
 };
         
+Game.prototype.continueAfterLoadingRenderers = function()
+{
+	var that = this;
+    // cause further loading to progress
+    this.levels = [];
+    
+    // start in editor mode - no need to load integrated levels
+    if (Game.geturlparameter("editor",null) != null)
+    {   var l = new Level().$(null,null);
+        that.replaceTopScreen(new EditorScreen().$(that,l)); 
+        that.soundPlayer = (new LevelSoundPlayer()).$();
+    } 
+    // start game normally
+    else
+    {   this.loadIntegratedLevelPack
+        (   "all.json",
+            function() 
+            {   that.replaceTopScreen(new LevelSelectionScreen().$(that));  
+                that.soundPlayer = (new LevelSoundPlayer()).$();
+            }
+        );
+    }
+};
     
 // ---------------- handling of global game information ---------
     
@@ -353,7 +359,8 @@ Game.prototype.tick = function()
     
     // when anything changed in the display, redraw
     if (this.needRedraw) 
-    {   if (this.allRenderersLoaded()) 
+    {   var loaded = this.loadRenderers();
+		if (loaded || (this.screens.length>0 && (this.screens[0] instanceof LoadingScreen) && this.textRenderer.isLoaded()))
         {   this.needRedraw = false;
             try { this.draw(); } 
             catch (e) { console.warn(e); }            
@@ -495,32 +502,34 @@ Game.prototype.openTextInputDialog = function(labeltext,initvalue, callback)
 // --------- loading renderers (will be triggered by system or by user key ----
 Game.prototype.loadRenderers = function()
 {   
-    // (re)initialize renderers  (create opengl state)
-    this.levelRenderer = null;      
-    this.textRenderer = null;
-    this.vectorRenderer = null;
-
-    this.vectorRenderer = new VectorRenderer().$(this);
-    console.log("VectorRenderer created");
-    
-    this.textRenderer = new TextRenderer().$(this);
-    console.log("TextRenderer created");
-
-    this.levelRenderer = new LevelRenderer().$(this);
-    console.log("LevelRenderer created");      
-    
+	var isdone = false;
+	
+    // load renderers in sequence 
+	if (this.vectorRenderer==null)
+	{   this.vectorRenderer = new VectorRenderer().$(this);
+		console.log("VectorRenderer created");
+	}
+	else if (!this.vectorRenderer.isLoaded()) {}
+	else if (this.textRenderer==null) {
+		this.textRenderer = new TextRenderer().$(this);
+		console.log("TextRenderer created");
+	}
+	else if (!this.textRenderer.isLoaded()) {}
+	else if (this.levelRenderer==null) { 
+		this.levelRenderer = new LevelRenderer().$(this);
+		console.log("LevelRenderer created");      
+	}
+    else if (this.levelRenderer.isLoaded())
+	{	isdone = true;
+	}
+	
     // check if any error has occured
     var e = this.gl.getError();
     if (e) 
     {   console.log("WebGL error on creating renderers: "+e);
     }
-}
- 
-Game.prototype.allRenderersLoaded = function()
-{
-    return this.vectorRenderer && this.vectorRenderer.isLoaded() 
-        && this.textRenderer && this.textRenderer.isLoaded() 
-        && this.levelRenderer && this.levelRenderer.isLoaded();
+	
+	return isdone;
 }
  
 

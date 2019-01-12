@@ -28,8 +28,8 @@ var KeyEvent = {
             case "ArrowLeft":       { return KeyEvent.LEFT; }
             case "Right":
             case "ArrowRight":      { return KeyEvent.RIGHT; }
-            case " ":    
             case "Enter":           { return KeyEvent.FORWARD; }
+            case " ":    
             case "Space":           { return KeyEvent.A; }
             case "Shift":
             case "ShiftLeft":       { return KeyEvent.B; }
