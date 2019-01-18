@@ -348,9 +348,11 @@ Game.prototype.loadLevelFromLocalSystem = function(callback)
 Game.prototype.tick = function()
 {
 	// query all connected controllers
-	var gp = navigator.getGamepads();
-	for (var i=0; i<this.connectedControllers.length; i++)
-	{	if (this.connectedControllers[i]) { this.processControllerInput(i,this.connectedControllers[i], gp[i]); }	
+	if (this.connectedControllers.length>0)
+	{	var gp = navigator.getGamepads();
+		for (var i=0; i<this.connectedControllers.length; i++)
+		{	if (this.connectedControllers[i]) { this.processControllerInput(i,this.connectedControllers[i], gp[i]); }	
+		}
 	}
 	
     // topmost screen always gets the tick action (other screens do not animate)
