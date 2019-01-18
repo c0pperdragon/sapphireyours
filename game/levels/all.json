@@ -231,20 +231,10 @@
     ]
   },
   {
-    "difficulty": 9,
-    "demos": [
-      {
-        "randomseed": 914347,
-        "moves": [
-          "rrbrbbrbrrrrrttttrr......."
-        ]
-      }
-    ],
-    "swamprate": 1,
-    "author": "Ronald",
-    "loot": 0,
     "title": "Armageddon II",
+    "difficulty": 9,
     "category": 7,
+    "loot": 0,
     "map": [
       "##########################",
       "#%%%%%%%%%%%%%%%%%%%%%%%%#",
@@ -262,7 +252,18 @@
       "#   % <%.  5   <   % V   #",
       "#              .       . #",
       "##########################"
-    ]
+    ],
+    "demos": [
+      {
+        "randomseed": 594453,
+        "moves": [
+          "rrbrbrrrrrrttrr......."
+        ]
+      }
+    ],
+    "author": "Ronald",
+    "swamprate": 1,
+    "yamyamremainders": "< [$% Q0>"
   },
   {
     "difficulty": 6,
@@ -280,7 +281,7 @@
     "loot": 2,
     "time": 18,
     "title": "Armageddon",
-    "category": 2,
+    "category": 7,
     "map": [
       "##########################",
       "#%%%%%%%%%%%%%%%%%%%%%%%%#",
@@ -298,7 +299,8 @@
       "#   % <%.  5   <   % V   #",
       "#              .       . #",
       "##########################"
-    ]
+    ],
+    "yamyamremainders": "< [$% Q0>"
   },
   {
     "difficulty": 4,
@@ -427,6 +429,73 @@
       "# ### ####### # #",
       "#               #",
       "#################"
+    ]
+  },
+  {
+    "difficulty": 9,
+    "author": "Ronald",
+    "loot": 25,
+    "title": "Balance III",
+    "category": 2,
+    "map": [
+      "########################################",
+      "#            0                  0      #",
+      "#                                      #",
+      "#     Q Q     0                        #",
+      "#       .                              #",
+      "#      Q       0                       #",
+      "#     ++                               #",
+      "#     Q         0                      #",
+      "#     .                                #",
+      "#      QQ        0                     #",
+      "#      ++                              #",
+      "#                 0                    #",
+      "#                                      #",
+      "#                  0                   #",
+      "#                                      #",
+      "#0                  0                  #",
+      "#+                                     #",
+      "#Q+  + +             0                 #",
+      "#Q+  + +                        $$$    #",
+      "#Q+  + +              0         $  $   #",
+      "#Q+  + +                        $$$    #",
+      "#Q+  + +               0        $ $    #",
+      "#Q+  + +                        $  $   #",
+      "#Q+  + +                0              #",
+      "#Q+  + +                               #",
+      "#Q+  + +                 0             #",
+      "#Q+  + +                               #",
+      "#Q+  + +                  0            #",
+      "#Q+  + +                               #",
+      "#Q+  + +                   0           #",
+      "#Q+  + +                               #",
+      "#Q+  + +                    0          #",
+      "#Q+                                    #",
+      "#Q+ Q                        0         #",
+      "#Q+ .                                  #",
+      "#Q+  Q                        0        #",
+      "#+Q+ ++                                #",
+      "# +Q                           0       #",
+      "#  ++                                  #",
+      "#                               0      #",
+      "#                                      #",
+      "#                                0     #",
+      "#                                      #",
+      "#                                 01   #",
+      "#Q#     #           ####################",
+      "#E     @#           #                  #",
+      "########################################"
+    ],
+    "demos": [
+      {
+        "randomseed": 21823,
+        "moves": [
+          ".l.l.l.l.l.l.l.l.l.l.l.l.l.lrrrrrrrrrrrT",
+          "LrrrRTlllllllllllltllbllllllllllrrrrrrrr",
+          "rrtrrblllllllllllllllll.bBllblllllllllll"
+        ],
+        "title": "Ronald's Madness"
+      }
     ]
   },
   {
@@ -788,7 +857,7 @@
     ]
   },
   {
-    "difficulty": 9,
+    "difficulty": 4,
     "demos": [
       {
         "randomseed": 24041,
@@ -4518,7 +4587,7 @@
       }
     ],
     "author": "Alexander",
-    "loot": 2,
+    "loot": 5,
     "title": "Growing Trap",
     "category": 3,
     "map": [
@@ -4907,6 +4976,7 @@
     "loot": 213,
     "time": 800,
     "title": "Hello",
+    "hint": "If you want to challenge yourself, try to finish without pushing any stones or bombs.",
     "category": 6,
     "map": [
       "##################################################",
@@ -5115,7 +5185,7 @@
     ]
   },
   {
-    "difficulty": 7,
+    "difficulty": 6,
     "demos": [
       {
         "randomseed": 22084,
@@ -10599,7 +10669,7 @@
     ]
   },
   {
-    "difficulty": 6,
+    "difficulty": 7,
     "demos": [
       {
         "randomseed": 15080,
@@ -11791,7 +11861,7 @@
     ]
   },
   {
-    "difficulty": 6,
+    "difficulty": 7,
     "demos": [
       {
         "randomseed": 2566,
