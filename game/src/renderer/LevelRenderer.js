@@ -898,6 +898,71 @@ LevelRenderer.prototype.determineTransformAnimation = function (oldpiece, newpie
             else if (newpiece==BUGRIGHT || newpiece==BUGRIGHT_FIXED) { return this.anim_bug_up_right; }
             break;
         }
+		case BOMB_EXPLODE:
+		case EXPLODE1_AIR:
+		case EXPLODE2_AIR:
+		case EXPLODE3_AIR:
+		case EXPLODE4_AIR:
+		case EXPLODE1_EMERALD:
+		case EXPLODE2_EMERALD:
+		case EXPLODE3_EMERALD:
+		case EXPLODE4_EMERALD:
+		case EXPLODE1_SAPPHIRE:
+		case EXPLODE2_SAPPHIRE:
+		case EXPLODE3_SAPPHIRE:
+		case EXPLODE4_SAPPHIRE:
+		case BIGBOMB_EXPLODE:
+		case LORRY_EXPLODE:
+		case BUG_EXPLODE:
+		case TIMEBOMB_EXPLODE:
+		case EXPLODE1_BAG:
+		case EXPLODE2_BAG:
+		case EXPLODE3_BAG:
+		case EXPLODE4_BAG:
+		case EXPLODE1_TNT:
+		case EXPLODE2_TNT:
+		case EXPLODE3_TNT:
+		case EXPLODE4_TNT:
+		case YAMYAM_EXPLODE:
+		case EXPLODE1_YAMYAM0:
+		case EXPLODE2_YAMYAM0:
+		case EXPLODE3_YAMYAM0:
+		case EXPLODE4_YAMYAM0:
+		case EXPLODE1_YAMYAM1:
+		case EXPLODE2_YAMYAM1:
+		case EXPLODE3_YAMYAM1:
+		case EXPLODE4_YAMYAM1:
+		case EXPLODE1_YAMYAM2:
+		case EXPLODE2_YAMYAM2:
+		case EXPLODE3_YAMYAM2:
+		case EXPLODE4_YAMYAM2:
+		case EXPLODE1_YAMYAM3:
+		case EXPLODE2_YAMYAM3:
+		case EXPLODE3_YAMYAM3:
+		case EXPLODE4_YAMYAM3:
+		case EXPLODE1_YAMYAM4:
+		case EXPLODE2_YAMYAM4:
+		case EXPLODE3_YAMYAM4:
+		case EXPLODE4_YAMYAM4:
+		case EXPLODE1_YAMYAM5:
+		case EXPLODE2_YAMYAM5:
+		case EXPLODE3_YAMYAM5:
+		case EXPLODE4_YAMYAM5:
+		case EXPLODE1_YAMYAM6:
+		case EXPLODE2_YAMYAM6:
+		case EXPLODE3_YAMYAM6:
+		case EXPLODE4_YAMYAM6:
+		case EXPLODE1_YAMYAM7:
+		case EXPLODE2_YAMYAM7:
+		case EXPLODE3_YAMYAM7:
+		case EXPLODE4_YAMYAM7:
+		case EXPLODE1_YAMYAM8:
+		case EXPLODE2_YAMYAM8:
+		case EXPLODE3_YAMYAM8:
+		case EXPLODE4_YAMYAM8:
+		{	// explosions use the animation attached to the old piece
+			return this.piecetiles[oldpiece]; 	
+		}			
     }
     switch (newpiece)
     {   case MAN1: { return this.anim_man1_nonmoving; }

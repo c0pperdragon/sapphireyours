@@ -689,7 +689,7 @@ GameScreen.prototype.createMenuScreen = function(onlypopup)
     this.stopRecordingTimeMeasurement();
         
     // create the menu screen
-    var m = new PauseMenu().$(this.game,this, this.level, onlypopup ? 0 : PauseMenu.MENUACTION_EXIT);
+    var m = new PauseMenu().$(this.game,this, this.level, onlypopup ? PauseMenu.MENUACTION_CONTINUERECORDING : PauseMenu.MENUACTION_EXIT);
         
     // this only a small user-triggered menu for commands during game progress
     if(onlypopup)

@@ -178,6 +178,7 @@ Game.prototype.$ = function()
 	(	"gamepadconnected", function(e) 
 		{	
 			console.log("connected: "+e.gamepad,e.gamepad.index,e.gamepad.id);
+			while (that.connectedControllers.length <= e.gamepad.index) { that.connectedControllers.push(null); }
 			that.connectedControllers[e.gamepad.index] = [ 0, false, false, false, false, false, false, false, false ];
 		}
 	)
@@ -640,16 +641,18 @@ Game.prototype.processControllerInput = function(idx,states, gp)
 		if (gp.axes[0]<-0.9) { isleft=true; isup=false; isdown=false; }
 		if (gp.axes[0]>0.9) { isright=true; isup=false; isdown=false; }
 	}
-	if (gp.buttons.length>0 && gp.buttons[0].pressed) { isa = true; }
-	if (gp.buttons.length>1 && gp.buttons[1].pressed) { isb = true; }
-	if (gp.buttons.length>2 && gp.buttons[2].pressed) { isback = true; }
-	if (gp.buttons.length>3 && gp.buttons[3].pressed) { isforward = true; }
-	if (gp.buttons.length>8 && gp.buttons[8].pressed) { isback = true; }
-	if (gp.buttons.length>9 && gp.buttons[9].pressed) { isforward = true; }
+	var buttons = gp.buttons;
+	if (buttons.length>0 && buttons[0].pressed) { isa = true; }
+	if (buttons.length>1 && buttons[1].pressed) { isb = true; }
+	if (buttons.length>2 && buttons[2].pressed) { isback = true; }
+	if (buttons.length>3 && buttons[3].pressed) { isforward = true; }
+	if (buttons.length>8 && buttons[8].pressed) { isback = true; }
+	if (buttons.length>9 && buttons[9].pressed) { isforward = true; }
+	if (buttons.length>12 && buttons[12].pressed) { isup = true; isdown=false; isleft=false; isright=false; }
+	if (buttons.length>13 && buttons[13].pressed) { isup = false; isdown=true; isleft=false; isright=false; }
+	if (buttons.length>14 && buttons[14].pressed) { isup = false; isdown=false; isleft=true; isright=false; }
+	if (buttons.length>15 && buttons[15].pressed) { isup = false; isdown=false; isleft=false; isright=true; }
 		
-//console.log("controller buttons",gp.buttons);	
-//console.log("controller axes",gp.axes);	
-//console.log("controller",idx,isleft,isright,isup,isdown,isa,isb,isback);	
 	// check differences to previous state and generate events
 	states[0]++; // increase time counter
 	dobutton(this,1,isleft,KeyEvent.LEFT);
