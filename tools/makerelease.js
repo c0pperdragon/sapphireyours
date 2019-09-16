@@ -47,7 +47,7 @@ var today = new Date();
 var d = today.getUTCDate();
 var m = today.getUTCMonth() + 1;
 var y = today.getUTCFullYear();
-var dest = "../website/release" + y + (m<10 ? "0"+m : ""+m) + (d<10 ? "0"+d : ""+d);
+var dest = "../../c0pperdragon.github.io/release" + y + (m<10 ? "0"+m : ""+m) + (d<10 ? "0"+d : ""+d);
 console.log(dest);
 fs.mkdirSync(dest);
 
