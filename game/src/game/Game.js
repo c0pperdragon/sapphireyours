@@ -30,6 +30,9 @@ var Game = function()
     this.isPointerDown = false;
 	
 	this.connectedControllers = [];
+    
+    this.neededIdleDraws = 0;
+    this.slowDown = 0;
 };
 
 
@@ -73,6 +76,9 @@ Game.prototype.$ = function()
     // show a loading screen at start
     this.addScreen(new LoadingScreen().$(this));
         
+    // set up slowdown according to call parameter
+    this.slowDown = Number(Game.geturlparameter("slowdown","0"));
+ 
     // install input handlers
     document.addEventListener
     (   'keydown', function(event)
@@ -347,6 +353,17 @@ Game.prototype.loadLevelFromLocalSystem = function(callback)
 // constant game loop
 Game.prototype.tick = function()
 {
+    // to slow down operation to match screen refresh
+    if (this.neededIdleDraws >= 1)
+    {
+        this.neededIdleDraws--;
+        try { 
+            this.draw(); 
+        }
+        catch (e) { console.warn(e); }  
+        return;
+    }
+    
 	// query all connected controllers
 	if (this.connectedControllers.length>0)
 	{	var gp = navigator.getGamepads();
@@ -365,8 +382,11 @@ Game.prototype.tick = function()
     {   var loaded = this.loadRenderers();
 		if (loaded || (this.screens.length>0 && (this.screens[0] instanceof LoadingScreen) && this.textRenderer.isLoaded()))
         {   this.needRedraw = false;
-            try { this.draw(); } 
-            catch (e) { console.warn(e); }            
+            try { 
+                this.draw(); 
+                this.neededIdleDraws += this.slowDown;
+            } 
+            catch (e) { console.warn(e); }
         }
     }
 };
